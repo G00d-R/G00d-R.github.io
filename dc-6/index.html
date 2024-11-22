@@ -440,7 +440,7 @@
 <p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
 <p>在主机内部找信息</p>
 <p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#x67;&#114;&#97;&#x68;&#97;&#x6d;&#x40;&#x31;&#57;&#50;&#46;&#49;&#54;&#x38;&#x2e;&#50;&#49;&#x33;&#46;&#x31;&#x35;&#x38;">&#x67;&#114;&#97;&#x68;&#97;&#x6d;&#x40;&#x31;&#57;&#50;&#46;&#49;&#54;&#x38;&#x2e;&#50;&#49;&#x33;&#46;&#x31;&#x35;&#x38;</a></p>
+<p>Ssh <a href="mailto:&#x67;&#114;&#x61;&#104;&#x61;&#x6d;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#50;&#x31;&#x33;&#46;&#x31;&#x35;&#56;">&#x67;&#114;&#x61;&#104;&#x61;&#x6d;&#x40;&#x31;&#57;&#50;&#46;&#x31;&#54;&#x38;&#46;&#50;&#x31;&#x33;&#46;&#x31;&#x35;&#56;</a></p>
 <p>提权</p>
 <p><img src="/dc-6//12.png" alt="12"></p>
 <p>我们发现当前账号对backups.sh读写操作</p>
@@ -507,9 +507,9 @@
 
 
     <div id="gitalk-container"></div>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css">
+    <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
 <script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js"></script>
 <div id="gitalk-container"></div>
 <script type="text/javascript">
       var gitalk = new Gitalk({
@@ -518,7 +518,7 @@
         repo: 'comment',
         owner: 'G00d-R',
         admin: 'G00d-R',
-        id: location.pathname,
+        id: md5(location.pathname),      
         labels: 'Gitalk'.split(',').filter(l => l),
         perPage: 100,
         pagerDirection: 'last',
