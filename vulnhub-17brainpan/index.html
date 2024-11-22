@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>9Tr0ll2 | G00d`s Blog</title>
+<title>Vulnhub-17brainpan | G00d`s Blog</title>
 
 
 
@@ -325,7 +325,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">9Tr0ll2</h1>
+            <h1 class="post-title">Vulnhub-17brainpan</h1>
             
                 <div class="post-meta">
                     
@@ -334,7 +334,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:07</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;19:19:51</a>
                         </span>
                     
                     
@@ -350,7 +350,27 @@
         </header>
 
         <div class="post-content">
-            
+            <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.111.140</span>     nmap --min-rate <span class="number">100000</span> -p9999,<span class="number">10000</span> -A <span class="number">192.168.111.140</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.111.140:10000</span>   dirb  http://<span class="number">192.168.111.140:10000</span>/      nikto -host <span class="number">192.168.111.140</span> -p <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//image-20241122192514634.png" alt="image-20241122192514634"></p>
+<p>能看到9999端口访问不了也不知道运行的什么服务，10000端口是web服务，里面放了一个图片，同时用dirsearch,dirb,nikto扫一下10000端口,都扫到了&#x2F;bin</p>
+<p><img src="/vulnhub-17brainpan//image-20241122194321671.png" alt="image-20241122194321671"></p>
+<p>访问后发现&#x2F;bin&#x2F;目录就放了一个brainpan.exe文件，这就是提示，提示我们要对这个brainpan.exe进行分析</p>
+<p><img src="/vulnhub-17brainpan//image-20241122194443015.png" alt="image-20241122194443015"></p>
+<p>尝试用IDA pro进行分析，需要用32位的。研究好久，这个太难为我了，看不懂了，参考一下其他师傅的吧</p>
+<p><img src="/vulnhub-17brainpan//image-20241122195053785.png" alt="image-20241122195053785"></p>
+<p>正片开始：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">缓冲区溢出（<span class="keyword">buffer</span> overflow），是针对程序设计缺陷，向程序输入缓冲区写入使之溢出的内容（通常是超过缓冲区能保存的最大数据量的数据），从而破坏程序运行、趁著中断之际并获取程序乃至系统的控制权。</span><br><span class="line"></span><br><span class="line">项目十七：brainpan-<span class="number">1</span>，专门考验缓冲区溢出知识，该项目仅仅开放了<span class="number">10000</span>端口作为web端，经过简单的目录爆破就能发现存在brainpan.<span class="keyword">exe</span>文件，该项目是乌班图环境并且安装了win的模块运行着<span class="keyword">exe</span>文件，该文件启动了<span class="number">9999</span>端口支撑服务，该环境就和AWD中的PWN题目一样，直播教学会有多种方法详细解释如何理解缓冲区溢出，如何发现缓冲区溢出，遇到缓冲区溢出如何利用，栈是什么等等问题详解。</span><br><span class="line"></span><br><span class="line">看了一大圈大概明白了，这个靶机是用Linux搭建的，但是通过这个<span class="keyword">exe</span>文件运行了一个Windows服务，我们只要运行这个<span class="keyword">exe</span>文件，就能模仿出靶机运行的服务，如果能在本地调试出payload，在靶机中也能使用。</span><br><span class="line"></span><br><span class="line">我们需要下载一个软件 immunity debugger（id）(漏洞挖掘+恶意软件分析),在这里我推荐从这里下载，能汉化</span><br><span class="line">https://www.xue51.<span class="keyword">com</span>/soft/<span class="number">4770</span>.html#xzdz</span><br><span class="line"></span><br><span class="line">有师傅通过<span class="keyword">python</span> brainfuzzer.<span class="keyword">py</span> <span class="number">192.168</span>.<span class="number">111.140</span> <span class="number">9999</span> ////来检查是否有缓冲区溢出，检查<span class="number">9999</span>端口，就是那个我们不知道具体用途的端口</span><br><span class="line">这一步的目的是借助批量产生的无意义的字符来冲击文件，可以得知是否存在溢出的可能</span><br><span class="line">https://github.<span class="keyword">com</span>/jessekurrus/brainpan 这里有脚本地址</span><br></pre></td></tr></table></figure>
+
+<p>现在模拟本地环境，打开immunity debugger，然后点击文件，把exe导入进去，再点开始，此时我们就能看到在我们本地开了一个等待被连接的9999端口</p>
+<p><img src="/vulnhub-17brainpan//image-20241122202721262.png" alt="image-20241122202721262"></p>
+<p><img src="/vulnhub-17brainpan//image-20241122202756210.png" alt="image-20241122202756210"></p>
+<p>但是在这里我本地搭建的环境不太行，具体原因也没有找到</p>
+<p><img src="/vulnhub-17brainpan//image-20241122203407584.png" alt="image-20241122203407584"></p>
+<p>还是继续看靶机的环境吧     这里我们看到字符数到1000以上就中断服务了，那也就是说1000以上就能溢出</p>
+<p><img src="/vulnhub-17brainpan//image-20241122200634391.png" alt="image-20241122200634391"></p>
+<p><img src="/vulnhub-17brainpan//222616929.png" alt="这里是程序开启界面，需要点击右箭头图标才可运行程序"></p>
+
         </div>
 
         
@@ -386,10 +406,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../10stapler/">10stapler</a>
             
-            
-            <a class="next" rel="next" href="../8imf/">8IMF</a>
+            <a class="next" rel="next" href="../%E5%8F%91%E5%B1%95%E5%AF%B9%E8%B1%A1%E5%9F%B9%E8%AE%AD/">发展对象培训</a>
             
         </section>
 
