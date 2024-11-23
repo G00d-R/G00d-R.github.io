@@ -17,27 +17,27 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-4 | G00d`s Blog</title>
+<title>Tag: PWN | G00d`s Blog</title>
 
 
 
-    <link rel="icon" href="../favicon.ico">
+    <link rel="icon" href="../../favicon.ico">
 
 
 
 
     <!-- stylesheets list from _config.yml -->
     
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
     
 
 
 
     <!-- scripts list from _config.yml -->
     
-    <script src="../js/script.js"></script>
+    <script src="../../js/script.js"></script>
     
-    <script src="../js/tocbot.min.js"></script>
+    <script src="../../js/tocbot.min.js"></script>
     
 
 
@@ -266,13 +266,13 @@
             <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
             <div class="menu navbar-right">
                 
-                    <a class="menu-item" href="../archives">Posts</a>
+                    <a class="menu-item" href="../../archives">Posts</a>
                 
-                    <a class="menu-item" href="../category">Categories</a>
+                    <a class="menu-item" href="../../category">Categories</a>
                 
-                    <a class="menu-item" href="../tag">Tags</a>
+                    <a class="menu-item" href="../../tag">Tags</a>
                 
-                    <a class="menu-item" href="../about">About</a>
+                    <a class="menu-item" href="../../about">About</a>
                 
                 <input id="switch_default" type="checkbox" class="switch_default">
                 <label for="switch_default" class="toggleBtn"></label>
@@ -291,13 +291,13 @@
             </div>
             <div class="menu" id="mobile-menu">
                 
-                    <a class="menu-item" href="../archives">Posts</a>
+                    <a class="menu-item" href="../../archives">Posts</a>
                 
-                    <a class="menu-item" href="../category">Categories</a>
+                    <a class="menu-item" href="../../category">Categories</a>
                 
-                    <a class="menu-item" href="../tag">Tags</a>
+                    <a class="menu-item" href="../../tag">Tags</a>
                 
-                    <a class="menu-item" href="../about">About</a>
+                    <a class="menu-item" href="../../about">About</a>
                 
             </div>
         </div>
@@ -318,228 +318,30 @@
     }
 </script>
             <div class="main">
-                <div class="container">
+                
+
     
-    
-        <div class="post-toc">
-    <div class="tocbot-list">
+<div class="container">
+    <div class="post-wrap tags">
+        <h2 class="post-title">-&nbsp;Tag&nbsp;·&nbsp;PWN-</h2>
     </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    var tocbot_timer;
-    var DEPTH_MAX = 6; // 为 6 时展开所有
-    var tocbot_default_config = {
-        tocSelector: '.tocbot-list',
-        contentSelector: '.post-content',
-        headingSelector: 'h1, h2, h3, h4, h5',
-        orderedList: false,
-        scrollSmooth: true,
-        onClick: extend_click,
-    };
-
-    function extend_click() {
-        clearTimeout(tocbot_timer);
-        tocbot_timer = setTimeout(function() {
-            tocbot.refresh(obj_merge(tocbot_default_config, {
-                hasInnerContainers: true
-            }));
-        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
-    }
-
-    document.ready(function() {
-        tocbot.init(obj_merge(tocbot_default_config, {
-            collapseDepth: 1
-        }));
-    });
-
-    function expand_toc() {
-        var b = document.querySelector('.tocbot-toc-expand');
-        var expanded = b.getAttribute('data-expanded');
-        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
-        tocbot.refresh(obj_merge(tocbot_default_config, {
-            collapseDepth: expanded ? 1 : DEPTH_MAX
-        }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function obj_merge(target, source) {
-        for (var item in source) {
-            if (source.hasOwnProperty(item)) {
-                target[item] = source[item];
-            }
-        }
-        return target;
-    }
-</script>
+    <div class="post-wrap archive">
     
-
     
-    <article class="post-wrap">
-        <header class="post-header">
-            <h1 class="post-title">DC-4</h1>
-            
-                <div class="post-meta">
-                    
-                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
-                    
-
-                    
-                        <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:19</a>
-                        </span>
-                    
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
-                            
-                        </span>
-                    
-                </div>
-            
-        </header>
-
-        <div class="post-content">
-            <h1 id="DC-4"><a href="#DC-4" class="headerlink" title="DC-4"></a>DC-4</h1><p>先找ip</p>
-<p>Arp-scan -l</p>
-<p><img src="/dc-4//1.png" alt="1"></p>
-<p>必然是192.168.213.156</p>
-<p>Nmap -A -p- -v 192.168.213.156</p>
-<p><img src="/dc-4//2.png" alt="2"></p>
-<p>显示开了80和22,中间件是nginx&#x2F;1.15.10</p>
-<p>Nikto</p>
-<p><img src="/dc-4//3.png" alt="3"></p>
-<p>目录扫描</p>
-<p>Dirb</p>
-<p><img src="/dc-4//4.png" alt="4"></p>
-<p>Dirsearch</p>
-<p>Python dirsearch.py -u 192.168.213.156</p>
-<p><img src="/dc-4//5.png" alt="5"></p>
-<p>webmap扫描</p>
-<p><img src="/dc-4//6.png" alt="6"></p>
-<p>Ok了,准备去找漏洞了,我们用searchsploit</p>
-<p><img src="/dc-4//7.png" alt="7"></p>
-<p>好了,没有能利用的漏洞库</p>
-<p>查看80端口的登录页面,尝试一下爆破了</p>
-<p><img src="/dc-4//8.png" alt="8"></p>
-<p>用burpsuite抓了包,很幸运爆出来了</p>
-<p><img src="/dc-4//9.png" alt="9"></p>
-<p>看状态码和长度</p>
-<p>登录进去是命令执行,盲猜里面是eval</p>
-<p><img src="/dc-4//10.png" alt="10"></p>
-<p><img src="/dc-4//11.png" alt="11"></p>
-<p>写了webshell但是没用</p>
-<p><img src="/dc-4//12.png"></p>
-<p><img src="/dc-4//13.png" alt="13">通过命令执行看了看passwd,看了home目录</p>
-<p><img src="/dc-4//14.png" alt="14"></p>
-<p>在主机内进行信息收集,找到了以前用的旧密码</p>
-<p><img src="/dc-4//15.png" alt="15"></p>
-<p>用hydra爆破</p>
-<p>Hydra -l jim -P &#x2F;1.txt ssh:&#x2F;&#x2F;192.168.213.156</p>
-<p><img src="/dc-4//16.png" alt="16"></p>
-<p>成功登录,找方法提权</p>
-<p>Sudo用不了</p>
-<p><img src="/dc-4//17.png" alt="17"></p>
-<p>用find找一找能提权的命令</p>
-<p>find &#x2F; -perm &#x2F;4000</p>
-<p><img src="/dc-4//18.png" alt="18"></p>
-<p>这些是有权限执行的命令,其中exim4可以提权</p>
-<p><img src="/dc-4//19.png" alt="19"></p>
-<p><img src="/dc-4//20.png" alt="20"></p>
-<p>用这个</p>
-<p>这里学一个命令scp</p>
-<p>scp 命令用于 Linux 之间复制文件和目录。scp 是 secure copy 的缩写, scp 是 linux 系统下基于 ssh 登陆进行安全的远程文件拷贝命令。scp 是加密的，rcp 是不加密的，scp 是 rcp 的加强版。</p>
-<p>Scp &#x2F;46996.sh <a href="mailto:&#106;&#105;&#109;&#64;&#49;&#57;&#50;&#46;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#51;&#x2e;&#x31;&#x35;&#x36;">&#106;&#105;&#109;&#64;&#49;&#57;&#50;&#46;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#51;&#x2e;&#x31;&#x35;&#x36;</a>:&#x2F;home&#x2F;jim</p>
-<p><img src="/dc-4//21.png" alt="21"></p>
-<p>直接执行.&#x2F;46996.sh</p>
-<p><img src="/dc-4//22.png" alt="22"></p>
-<p>第一次执行没拿到root,退出重新执行了一遍拿到root</p>
-<p><img src="/dc-4//image23.png"></p>
-
-        </div>
+        
 
         
-            <section class="post-copyright">
-                
-                
-                
-                
-                     <p class="copyright-item">
-                         <span>Slogan:</span>
-                         <span>Do you believe in <strong>DESTINY</strong>?</span>
-                     </p>
-                
-
-            </section>
+            <h3>2024</h3>
         
-        <section class="post-tags">
-            <div>
-                <span>Tag(s):</span>
-                <span class="tag">
-                    
-                    
-                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
-                    
-                        
-                </span>
-            </div>
-            <div>
-                <a href="javascript:window.history.back();">back</a>
-                <span>· </span>
-                <a href="/">home</a>
-            </div>
-        </section>
-        <section class="post-nav">
-            
-                <a class="prev" rel="prev" href="../dc-5/">DC-5</a>
-            
-            
-            <a class="next" rel="next" href="../dc-3/">DC-3</a>
-            
-        </section>
 
-
-    </article>
-</div>
-
-
-    <div id="gitalk-container"></div>
+        <article class="archive-item">
+            <a class="archive-item-link" href="../../vulnhub-18pwnlab-init/">Vulnhub-18pwnlab_init</a>
+            <span class="archive-item-date">十一月 23, 2024</span>
+        </article>
     
-<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
-<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
-<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
-<div id="gitalk-container"></div>
-<script type="text/javascript">
-      var gitalk = new Gitalk({
-        clientID: 'Ov23liYIgvRGmOua7FRQ',
-        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
-        repo: 'comment',
-        owner: 'G00d-R',
-        admin: 'G00d-R',
-        id: md5(location.pathname),      
-        labels: 'Gitalk'.split(',').filter(l => l),
-        perPage: 100,
-        pagerDirection: 'last',
-        createIssueManually: true,
-        distractionFreeMode: false
-      })
-      gitalk.render('gitalk-container')
-</script>
+    
+</div>
+</div>
 
             </div>
             <footer id="footer" class="footer">

