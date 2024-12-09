@@ -321,6 +321,71 @@
                 <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
 
     
     <article class="post-wrap">
@@ -350,7 +415,181 @@
         </header>
 
         <div class="post-content">
-            
+            <h1 id="金三胖"><a href="#金三胖" class="headerlink" title="金三胖"></a>金三胖</h1><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载压缩包打开是一个gif的动图,里面隐写了<span class="built_in">flag</span>,用puzzlesolver</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209082439926.png" alt="image-20241209082439926"></p>
+<p>​	<img src="/ctf-%E5%88%B7misc//image-20241209082322550.png" alt="image-20241209082322550"></p>
+<h1 id="你竟然赶我走"><a href="#你竟然赶我走" class="headerlink" title="你竟然赶我走"></a>你竟然赶我走</h1><p><img src="/ctf-%E5%88%B7misc//image-20241209083659271.png" alt="image-20241209083659271"></p>
+<h1 id="二维码"><a href="#二维码" class="headerlink" title="二维码"></a>二维码</h1><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先<span class="keyword">binwark </span>查看图片内有什么文件,然后foremost提取文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209084226676.png" alt="image-20241209084226676"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">压缩包有密码 爆破出来是7639</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209084805380.png" alt="image-20241209084805380"></p>
+<h1 id="大白"><a href="#大白" class="headerlink" title="大白"></a>大白</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">高度太小了,改大点就行了</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209085420915.png" alt="image-20241209085420915"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209085841331.png" alt="image-20241209085841331"></p>
+<p>​	<img src="/ctf-%E5%88%B7misc//image-20241209085828287.png" alt="image-20241209085828287"></p>
+<h1 id="乌镇峰会种图"><a href="#乌镇峰会种图" class="headerlink" title="乌镇峰会种图"></a>乌镇峰会种图</h1><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拖入<span class="number">010</span>直接<span class="built_in">find</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209095004135.png" alt="image-20241209095004135"></p>
+<h1 id="wireshark"><a href="#wireshark" class="headerlink" title="wireshark"></a>wireshark</h1><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载流量包,放进wireshark中过滤一下<span class="built_in">post</span>请求的包<span class="keyword">http</span>.request.method==POST</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209095942041.png" alt="image-20241209095942041"></p>
+<h1 id="N种方法解决"><a href="#N种方法解决" class="headerlink" title="N种方法解决"></a>N种方法解决</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">下载是一个exe文件,用010打开是<span class="built_in">base64</span>,并且提示是图片.那就是<span class="built_in">base64</span>转图片</span><br><span class="line"><span class="built_in">touch</span> 1.txt然后把<span class="built_in">base64</span>内容:从i开始到== 复制到1.txt中</span><br><span class="line"><span class="built_in">base64</span> -d 1.txt &gt; 2.png</span><br><span class="line">打开2.png就是一个二维码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209101853973.png" alt="image-20241209101853973"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209103515329.png" alt="image-20241209103515329"></p>
+<h1 id="基础破解"><a href="#基础破解" class="headerlink" title="基础破解"></a>基础破解</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">四位数字</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209104746239.png" alt="image-20241209104746239"></p>
+<h1 id="文件中的秘密"><a href="#文件中的秘密" class="headerlink" title="文件中的秘密"></a>文件中的秘密</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">没意思  010直接打开</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//451af816171762cce23916dfd178ae24.png" alt="img"></p>
+<h1 id="zip伪加密"><a href="#zip伪加密" class="headerlink" title="zip伪加密"></a>zip伪加密</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">下载zip压缩包,解压有密码,用<span class="number">010</span>打开这个就是伪加密</span><br><span class="line">https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/qq_29566629/</span>article<span class="regexp">/details/</span><span class="number">122936177</span></span><br><span class="line">https:<span class="regexp">//</span>zhuanlan.zhihu.com<span class="regexp">/p/</span><span class="number">399456259</span></span><br><span class="line">把两个<span class="number">0</span>x09改成<span class="number">0</span>x00就行了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209111519932.png" alt="image-20241209111519932"></p>
+<h1 id="LSB"><a href="#LSB" class="headerlink" title="LSB"></a>LSB</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">LSB</span>隐写 用stegsolve打开图片 打开Analyse（分析）选项卡，使用<span class="meta">Data</span> Extract（数据提取）选项，进行分析。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209112822179.png" alt="image-20241209112822179"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">https</span>://blog.csdn.net/qq_38154820/article/details/<span class="number">122694645</span></span><br><span class="line"><span class="attribute">2</span>、提取Red，Green和Blue的<span class="number">0</span>通道信息，在这三个颜色的<span class="number">0</span>通道上打勾，并按下Preview键。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209112942995.png" alt="image-20241209112942995"></p>
+<figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">按<span class="keyword">save</span> Bin键保存为PNG文件。</span><br><span class="line"><span class="number">3</span>、得到一张二维码图片，通过扫描二维码，获得flag。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209113101122.png" alt="image-20241209113101122"></p>
+<h1 id="被嗅探的流量"><a href="#被嗅探的流量" class="headerlink" title="被嗅探的流量"></a>被嗅探的流量</h1><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">分组字节流搜索字符串<span class="symbol">:flag</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209113313580.png" alt="image-20241209113313580"></p>
+<h1 id="rar"><a href="#rar" class="headerlink" title="rar"></a>rar</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4位数字,爆破</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209113536911.png" alt="image-20241209113536911"></p>
+<h1 id="qr"><a href="#qr" class="headerlink" title="qr"></a>qr</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接扫</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209113633700.png" alt="image-20241209113633700"></p>
+<h1 id="镜子里面的世界"><a href="#镜子里面的世界" class="headerlink" title="镜子里面的世界"></a>镜子里面的世界</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LSB隐写</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209113847154.png" alt="image-20241209113847154"></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st<span class="number">3</span><span class="name">g0</span>_saurus_wr<span class="number">3</span>cks</span><br></pre></td></tr></table></figure>
+
+<h1 id="爱因斯坦"><a href="#爱因斯坦" class="headerlink" title="爱因斯坦"></a>爱因斯坦</h1><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先用binwalk扫描一下有<span class="built_in">flag</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209114054947.png" alt="image-20241209114054947"></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost分离出一个压缩包,但是有密码,用<span class="number">010</span>打开图片发现密码<span class="comment">----无聊</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209114237098.png" alt="image-20241209114237098"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209114418179.png" alt="image-20241209114418179"></p>
+<h1 id="ningen"><a href="#ningen" class="headerlink" title="ningen"></a>ningen</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk发现里面有个txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209114623669.png" alt="image-20241209114623669"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">foremost</span>分离一下,压缩包有密码  四位数密码  爆破得到<span class="number">8368</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="小明的保险箱"><a href="#小明的保险箱" class="headerlink" title="小明的保险箱"></a>小明的保险箱</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">binwalk</span>分析一下有压缩包,foremost分离一下,爆破一下压缩包密码</span><br><span class="line"><span class="attribute">flag</span>&#123;<span class="number">75</span>a3d68bf071ee188c418ea6cf0bb043&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="easycap"><a href="#easycap" class="headerlink" title="easycap"></a>easycap</h1><figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接右键追踪流<span class="comment">--TCP流</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209114956810.png" alt="image-20241209114956810"></p>
+<h1 id="隐藏的钥匙"><a href="#隐藏的钥匙" class="headerlink" title="隐藏的钥匙"></a>隐藏的钥匙</h1><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">010</span>打开搜索<span class="built_in">flag</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209115145066.png" alt="image-20241209115145066"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解一下<span class="built_in">base64</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209115212700.png" alt="image-20241209115212700"></p>
+<h1 id="另外一个世界"><a href="#另外一个世界" class="headerlink" title="另外一个世界"></a>另外一个世界</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">010打开</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209122807321.png" alt="image-20241209122807321"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">01101011011011110110010101101011011010100011001101110011</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209122834973.png" alt="image-20241209122834973"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">二进制转字符</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209123341633.png" alt="image-20241209123341633"></p>
+<h1 id="数据包中的线索"><a href="#数据包中的线索" class="headerlink" title="数据包中的线索"></a>数据包中的线索</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">打开是流量包,带颜色的那个包追一下tcp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209123615969.png" alt="image-20241209123615969"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209123759352.png" alt="image-20241209123759352"></p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">base64</span>转图片,我本地工具尝试好几次没有成功https://www.lddgo.net/<span class="built_in">convert</span>/<span class="built_in">base64</span>-to-<span class="built_in">image</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209125415695.png" alt="image-20241209125415695"></p>
+<h1 id="神秘龙卷风"><a href="#神秘龙卷风" class="headerlink" title="神秘龙卷风"></a>神秘龙卷风</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">rar</span>压缩包爆破,<span class="number">4</span>位数字密码,得到这个</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//a467e5ec6c6a42ae605fd56dc3967837.png" alt="在这里插入图片描述"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是一种名为“Brainfuck”的计算机语言。https:<span class="regexp">//</span>www.w3cschool.cn<span class="regexp">/tryrun/</span>runcode?lang=brainfuck</span><br></pre></td></tr></table></figure>
+
+<h1 id="FLAG"><a href="#FLAG" class="headerlink" title="FLAG"></a>FLAG</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LSB隐写，用stegsolve打开发现是压缩包，点save <span class="built_in">bin</span>保存为<span class="number">1.</span><span class="built_in">zip</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209125958892.png" alt="image-20241209125958892"></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">压缩包打开报错了，不影响依然打开，解压然后<span class="built_in">string</span>s</span><br><span class="line"><span class="built_in">string</span>s <span class="number">1</span> &gt; <span class="number">111.</span>txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209130427989.png" alt="image-20241209130427989"></p>
+<h1 id="假如给我三天光明"><a href="#假如给我三天光明" class="headerlink" title="假如给我三天光明"></a>假如给我三天光明</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">打开是个图片和一个有密码的压缩包</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209130919231.png" alt="image-20241209130919231"></p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml">解出密码kmdonowg，打开wav文件，短的为点，长的为线，得到flag：flag</span><span class="template-variable">&#123;wpei08732?23dz&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209131013232.png" alt="image-20241209131013232"></p>
+<h1 id="后门查杀"><a href="#后门查杀" class="headerlink" title="后门查杀"></a>后门查杀</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">拖入河马查杀</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209131945953.png" alt="image-20241209131945953"></p>
+<h1 id="webshell后门"><a href="#webshell后门" class="headerlink" title="webshell后门"></a>webshell后门</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">还是d盾好用</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209132716272.png" alt="image-20241209132716272"></p>
+<h1 id="来首歌吧"><a href="#来首歌吧" class="headerlink" title="来首歌吧"></a>来首歌吧</h1><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">.....</span> -<span class="string">...</span> -<span class="string">.-.</span> <span class="params">----</span>. <span class="string">..---</span> <span class="string">.....</span> -<span class="string">....</span> <span class="string">....-</span> <span class="params">----</span>. -<span class="string">.-.</span> -<span class="string">...</span> <span class="params">-----</span> <span class="string">.----</span> <span class="params">---</span><span class="string">..</span> <span class="params">---</span><span class="string">..</span> <span class="string">..-.</span> <span class="string">.....</span> <span class="string">..---</span> . -<span class="string">....</span> <span class="string">.----</span> --<span class="string">...</span> -<span class="string">..</span> --<span class="string">...</span> <span class="params">-----</span> <span class="params">----</span>. <span class="string">..---</span> <span class="params">----</span>. <span class="string">.----</span> <span class="params">----</span>. <span class="string">.----</span> -<span class="string">.-.</span></span><br><span class="line">莫尔斯密码</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">5BC925649CB0188F52E617D70929191C</span><br></pre></td></tr></table></figure>
+
+<h1 id="面具下的flag"><a href="#面具下的flag" class="headerlink" title="面具下的flag"></a>面具下的flag</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk一下foremost一下</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209164950183.png" alt="image-20241209164950183"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">伪加密</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209165245691.png" alt="image-20241209165245691"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解压后用7z打开vmdk,拿到加密字符</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209165635791.png" alt="image-20241209165635791"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209165718681.png" alt="image-20241209165718681"></p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第二部分flag在key<span class="number">_p</span>art<span class="number">_</span>two/where<span class="number">_</span><span class="keyword">is</span><span class="number">_f</span>lag<span class="number">_p</span>art<span class="number">_</span>two.txtflag<span class="number">_p</span>art<span class="number">_</span>two<span class="number">_</span><span class="keyword">is</span><span class="number">_</span>here.txt</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209170009062.png" alt="image-20241209170009062"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无聊</span><br></pre></td></tr></table></figure>
+
+<h1 id="荷兰宽带数据泄露"><a href="#荷兰宽带数据泄露" class="headerlink" title="荷兰宽带数据泄露"></a>荷兰宽带数据泄露</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conf.<span class="built_in">bin</span>文件为一个路由器的配置文件。我们用RouterPassView打开conf.<span class="built_in">bin</span>文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//97125d63739d8dbf6ac1efc5e1393bf0.png" alt="在这里插入图片描述"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">flag</span>&#123;<span class="number">053700357621</span>&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="九连环"><a href="#九连环" class="headerlink" title="九连环"></a>九连环</h1><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">binwalk一下 </span>foremost一下</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209170539379.png" alt="image-20241209170539379"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在主压缩包的压缩源文件目录区的全局加密位出现了01 08，可以判断为压缩包伪加密，将01改为00</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209171619130.png" alt="image-20241209171619130"></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">steghide基本用法：</span><br><span class="line"></span><br><span class="line">将secret.txt文件隐藏到<span class="built_in">text</span>.jpg中：</span><br><span class="line"><span class="comment"># steghide embed -cf test.jpg -ef secret.txt -p 123456</span></span><br><span class="line"></span><br><span class="line">从<span class="built_in">text</span>.jpg解出secret.txt:</span><br><span class="line"><span class="comment">#steghide extract -sf test.jpg</span></span><br><span class="line">拿到压缩包密码bV1g6t5wZDJif^J7</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209171852786.png" alt="image-20241209171852786"></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;<span class="symbol">1RTo8w@</span>&amp;<span class="symbol">4nK@</span>z*XL&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="BJDCTF2020-认真你就输了"><a href="#BJDCTF2020-认真你就输了" class="headerlink" title="[BJDCTF2020]认真你就输了"></a>[BJDCTF2020]认真你就输了</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这是个压缩包,后缀改成<span class="built_in">zip</span>解压</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209172429248.png" alt="image-20241209172429248"></p>
+<h1 id="被劫持的神秘礼物"><a href="#被劫持的神秘礼物" class="headerlink" title="被劫持的神秘礼物"></a>被劫持的神秘礼物</h1><figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.request.method == <span class="string">&quot;<span class="keyword">POST</span>&quot;</span>追一下登录的post协议</span><br><span class="line">name=admina&amp;word=adminb</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209173359915.png" alt="image-20241209173359915"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209173525329.png" alt="image-20241209173525329"></p>
+<h1 id="被偷走的文件"><a href="#被偷走的文件" class="headerlink" title="被偷走的文件"></a>被偷走的文件</h1><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">攻击者用的<span class="keyword">ftp</span>传输的,发现了一个rar,用binwalk</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209174205928.png" alt="image-20241209174205928"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">确实有,用foremost分离</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209174327258.png" alt="image-20241209174327258"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">压缩包有密码,爆破是4位数字密码5790</span><br></pre></td></tr></table></figure>
+
+<h1 id="BJDCTF2020-藏藏藏-BJDCTF2020-藏藏藏"><a href="#BJDCTF2020-藏藏藏-BJDCTF2020-藏藏藏" class="headerlink" title="[BJDCTF2020]藏藏藏[BJDCTF2020]藏藏藏"></a>[BJDCTF2020]藏藏藏[BJDCTF2020]藏藏藏</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先binwalk然后foremost,然后解压压缩包即可</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241209174857728.png" alt="image-20241209174857728"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241209174952059.png" alt="image-20241209174952059"></p>
+
         </div>
 
         
