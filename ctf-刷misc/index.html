@@ -585,10 +585,73 @@
 <p><img src="/ctf-%E5%88%B7misc//image-20241209174327258.png" alt="image-20241209174327258"></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">压缩包有密码,爆破是4位数字密码5790</span><br></pre></td></tr></table></figure>
 
-<h1 id="BJDCTF2020-藏藏藏-BJDCTF2020-藏藏藏"><a href="#BJDCTF2020-藏藏藏-BJDCTF2020-藏藏藏" class="headerlink" title="[BJDCTF2020]藏藏藏[BJDCTF2020]藏藏藏"></a>[BJDCTF2020]藏藏藏[BJDCTF2020]藏藏藏</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先binwalk然后foremost,然后解压压缩包即可</span><br></pre></td></tr></table></figure>
+<h1 id="BJDCTF2020-藏藏藏"><a href="#BJDCTF2020-藏藏藏" class="headerlink" title="[BJDCTF2020]藏藏藏"></a>[BJDCTF2020]藏藏藏</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先binwalk然后foremost,然后解压压缩包即可</span><br></pre></td></tr></table></figure>
 
 <p><img src="/ctf-%E5%88%B7misc//image-20241209174857728.png" alt="image-20241209174857728"></p>
 <p><img src="/ctf-%E5%88%B7misc//image-20241209174952059.png" alt="image-20241209174952059"></p>
+<h1 id="GXYCTF2019-佛系青年"><a href="#GXYCTF2019-佛系青年" class="headerlink" title="[GXYCTF2019]佛系青年"></a>[GXYCTF2019]佛系青年</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">压缩包部分有密码,图片没有密码,010打开发现是伪加密,09改成00</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213151118705.png" alt="image-20241213151118705"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213151135385.png" alt="image-20241213151135385"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213151230392.png" alt="image-20241213151230392"></p>
+<h1 id="BJDCTF2020-你猜我是个啥"><a href="#BJDCTF2020-你猜我是个啥" class="headerlink" title="[BJDCTF2020]你猜我是个啥"></a>[BJDCTF2020]你猜我是个啥</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">file</span> 一下发现是个图片,直接<span class="number">010</span>搜索flag</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213151339309.png" alt="image-20241213151339309"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213151551365.png" alt="image-20241213151551365"></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">flag&#123;<span class="symbol">i_am_fl@</span>g&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="刷新过的图片"><a href="#刷新过的图片" class="headerlink" title="刷新过的图片"></a>刷新过的图片</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">隐写方法为<span class="built_in">f5</span>加密</span><br><span class="line"><span class="symbol">java</span> Extract /Desktop/<span class="number">1</span>.png</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213152042657.png" alt="image-20241213152042657"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">把上面这个文件从txt改成<span class="built_in">zip</span>,删掉伪加密,解压</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213152547772.png" alt="image-20241213152547772"></p>
+<h1 id="秘密文件"><a href="#秘密文件" class="headerlink" title="秘密文件"></a>秘密文件</h1><figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">统计-协议分级.发现FTP最大了,还是传输,肯定是用<span class="keyword">ftp</span>传了.直接过滤<span class="keyword">ftp</span>包</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213152816810.png" alt="image-20241213152816810"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213153021694.png" alt="image-20241213153021694"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost分离</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213153114971.png" alt="image-20241213153114971"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">压缩包需要密码，我们 使用工具破解密码1903</span><br></pre></td></tr></table></figure>
+
+<h1 id="BJDCTF2020-鸡你太美"><a href="#BJDCTF2020-鸡你太美" class="headerlink" title="[BJDCTF2020]鸡你太美"></a>[BJDCTF2020]鸡你太美</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">两个Gif,一个破损</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213153514116.png" alt="image-20241213153514116"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213153558423.png" alt="image-20241213153558423"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213153646305.png" alt="image-20241213153646305"></p>
+<figure class="highlight erlang-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">保存就ok</span><br></pre></td></tr></table></figure>
+
+<h1 id="BJDCTF2020-just-a-rar"><a href="#BJDCTF2020-just-a-rar" class="headerlink" title="[BJDCTF2020]just_a_rar"></a>[BJDCTF2020]just_a_rar</h1><figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">爆破,<span class="number">4</span>位数字的密码<span class="number">2016</span></span><br><span class="line">拖进<span class="number">010</span>直接搜<span class="built_in">flag</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="snake"><a href="#snake" class="headerlink" title="snake"></a>snake</h1><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binwalk一下然后foremost一下发现<span class="built_in">key</span>是<span class="built_in">base64</span>,</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213154023859.png" alt="image-20241213154023859"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213154136204.png" alt="image-20241213154136204"></p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">serpent加密，key(小写)：anaconda</span><br><span class="line">http:<span class="comment">//serpent.online-domain-tools.com/  这个在线解密工具目前用不了了,我也没有找到离线的脚本,这道题就这样吧</span></span><br><span class="line">flag&#123;who<span class="number">_k</span><span class="keyword">new</span><span class="number">_</span>serpent<span class="number">_</span>cipher<span class="number">_</span>existed&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="菜刀666"><a href="#菜刀666" class="headerlink" title="菜刀666"></a>菜刀666</h1><figure class="highlight abnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">流量分析过滤POST的包http.request.method<span class="operator">=</span><span class="operator">=</span>POST</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213175449753.png" alt="image-20241213175449753"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里有大量数据</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213175741116.png" alt="image-20241213175741116"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">传了个图片,再加上FF <span class="built_in">D8</span>开头FF <span class="built_in">D9</span>结尾，判断为jpg图片，将这些十六进制复制出来，以原始文件流写入文件</span><br><span class="line">先保存到txt里,然后导入<span class="number">16</span>进制数,保存成jpg就ok</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213180324099.png" alt="image-20241213180324099"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213180412242.png" alt="image-20241213180412242"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213180517288.png" alt="image-20241213180517288"></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">binwalk分析出还有一个zip,foremost分离出来用上面那个密码解压就可以了</span></span><br><span class="line"><span class="keyword"></span></span><br></pre></td></tr></table></figure>
+
+<h1 id="BJDCTF2020-一叶障目"><a href="#BJDCTF2020-一叶障目" class="headerlink" title="[BJDCTF2020]一叶障目"></a>[BJDCTF2020]一叶障目</h1><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CRC</span>计算</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> zlib</span><br><span class="line"><span class="keyword">import</span> struct</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">r&#x27;1.png&#x27;</span>,<span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> image_data:</span><br><span class="line">    bin_data = image_data.read()</span><br><span class="line">data = <span class="built_in">bytearray</span>(bin_data[<span class="number">12</span>:<span class="number">29</span>]) <span class="comment">#用来计算crc校验值</span></span><br><span class="line">crc32key = <span class="built_in">eval</span>(<span class="built_in">str</span>(bin_data[<span class="number">29</span>:<span class="number">33</span>]).replace(<span class="string">r&#x27;\x&#x27;</span>, <span class="string">&#x27;&#x27;</span>).replace(<span class="string">&quot;b&#x27;&quot;</span>, <span class="string">&#x27;0x&#x27;</span>).replace(<span class="string">&quot;&#x27;&quot;</span>, <span class="string">&#x27;&#x27;</span>))  <span class="comment">#这是图片自带的校验值</span></span><br><span class="line"><span class="comment">#理论上0xffffffff,但考虑到屏幕实际，0x0fff就差不多了</span></span><br><span class="line">n = <span class="number">4096</span></span><br><span class="line"><span class="comment">#高和宽一起爆破</span></span><br><span class="line"><span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">    <span class="comment"># q为8字节，i为4字节，h为2字节</span></span><br><span class="line">    width = <span class="built_in">bytearray</span>(struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, w))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(n):</span><br><span class="line">        height = <span class="built_in">bytearray</span>(struct.pack(<span class="string">&#x27;&gt;i&#x27;</span>, h))</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>):</span><br><span class="line">            data[x+<span class="number">4</span>] = width[x]</span><br><span class="line">            data[x+<span class="number">8</span>] = height[x]</span><br><span class="line">        crc32result = zlib.crc32(data)</span><br><span class="line">        <span class="keyword">if</span> crc32result == crc32key:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">&quot;width:%s  height:%s&quot;</span> % (<span class="built_in">bytearray</span>(width).<span class="built_in">hex</span>(),</span><br><span class="line">                                           <span class="built_in">bytearray</span>(height).<span class="built_in">hex</span>()))</span><br><span class="line">            exit()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213181551417.png" alt="image-20241213181551417"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">修改图片宽度和高度</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7misc//image-20241213181941565.png" alt="image-20241213181941565"></p>
+<p><img src="/ctf-%E5%88%B7misc//image-20241213182045092.png" alt="image-20241213182045092"></p>
 
         </div>
 
