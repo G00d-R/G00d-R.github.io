@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Misc-kali安装PWN环境 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Misc-kali安装PWN环境</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 1, 2024&nbsp;&nbsp;23:25:41</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/pwn%E7%8E%AF%E5%A2%83/">pwn环境</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="kali安装PWN环境"><a href="#kali安装PWN环境" class="headerlink" title="kali安装PWN环境"></a>kali安装PWN环境</h1><h2 id="安装pwntools"><a href="#安装pwntools" class="headerlink" title="安装pwntools"></a>安装pwntools</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">pwntools是一个<span class="keyword">python</span>的库，方便解pwn题的时候编写漏洞利用的<span class="built_in">exp</span>，在python2和<span class="keyword">python3</span>中都支持，我们这里就安装在<span class="keyword">python3</span>中就可以了，命令如下：</span><br><span class="line"><span class="keyword">python3</span> -<span class="keyword">m</span> pip install --upgrade pwntools</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">安装好之后，输入python，进入python3环境，试一试这个库能不能用，输入如下代码：</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">asm</span>(<span class="string">&quot;xor eax, eax&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241201232728512.png" alt="image-20241201232728512"></p>
+<figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如上图，成功输出对应的<span class="built_in">bytes</span>流，说明pwntools安装成功。</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装gdb"><a href="#安装gdb" class="headerlink" title="安装gdb"></a>安装gdb</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">命令如下，一共六条命令，按顺序执行即可，首先下载gdb压缩包，本文安装的是<span class="number">12.1</span>版本：</span><br><span class="line">wget http://ftp.gnu.org/gnu/gdb/gdb-<span class="number">15.1</span>.tar.gz</span><br><span class="line"> 然后解压：</span><br><span class="line">tar -zxvf gdb-<span class="number">15.1</span>.tar.gz</span><br><span class="line"> 解压后进入gdb-<span class="number">12.1</span>目录下：</span><br><span class="line"></span><br><span class="line"><span class="keyword">cd</span> gdb-<span class="number">15.1</span></span><br><span class="line"> 添加<span class="keyword">python</span>配置，需要根据<span class="keyword">python</span>的具体版本进行修改，我的是<span class="keyword">python3</span>.<span class="number">10</span>，不知道自己<span class="keyword">python</span>版本的直接命令行输入<span class="keyword">python</span>，进入解释器的时候会提示。</span><br><span class="line"></span><br><span class="line">./configure --with-<span class="keyword">python</span>=<span class="string">&#x27;/usr/bin/python3.10&#x27;</span></span><br><span class="line">最后运行如下两条命令，<span class="keyword">make</span>的时间可能比较长，耐心等待一会。 </span><br><span class="line"></span><br><span class="line"><span class="keyword">make</span></span><br><span class="line">sudo <span class="keyword">make</span> install</span><br><span class="line"> 安装完成后，输入gdb，如果能进入到gdb的命令行界面，就说明成功了</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241201233004457.png" alt="image-20241201233004457"></p>
+<h2 id="添加插件peda-py3需要用更低的gdb版本"><a href="#添加插件peda-py3需要用更低的gdb版本" class="headerlink" title="添加插件peda(py3需要用更低的gdb版本)"></a>添加插件peda(py3需要用更低的gdb版本)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">peda可以在调试程序的时候清除的看到寄存器、代码段、栈区的存储内存情况，是一个很方便的gdb插件工具。运行如下两行命令使用git获取peda，并添加到gdb环境，这样在下次在启动gdb的时候就自动进入gdb-peda模式：</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/longld/peda.git /usr/bin/peda</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;source /usr/bin/peda/peda.py&quot;</span> &gt;&gt; ~/.gdbinit</span><br><span class="line">安装完成之后，输入gdb，看看是否自动进入gdb-peda模式，如果是下图的状态，就成功了：</span><br></pre></td></tr></table></figure>
+
+<h2 id="安装-zsh"><a href="#安装-zsh" class="headerlink" title="安装 zsh"></a>安装 zsh</h2><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## zsh 介绍</span></span><br><span class="line"></span><br><span class="line">zsh 是一个兼容 bash 的 shell，相较 bash 具有以下优点：</span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> Tab 补全功能强大。命令、命令参数、文件路径均可以补全。</span><br><span class="line"><span class="bullet">-</span> 插件丰富。快速输入以前使用过的命令、快速跳转文件夹、显示系统负载这些都可以通过插件实现。</span><br><span class="line"><span class="bullet">-</span> 主题丰富。</span><br><span class="line"><span class="bullet">-</span> 可定制性高。</span><br><span class="line"></span><br><span class="line">关于 zsh 的更多的信息，可以访问 [<span class="string">zsh.org</span>](<span class="link">https://www.zsh.org/</span>)查看。</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">macOS： brew install zsh</span><br><span class="line">ubuntu： <span class="built_in">sudo</span> apt-get install zsh</span><br><span class="line">ArchLinux/Manjaro  <span class="built_in">sudo</span> pacman -S zsh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/shells</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241202100513924.png" alt="image-20241202100513924"></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">使用 chsh -s <span class="string">/bin/zsh</span> 命令将 zsh 设置为系统默认 shell。新开一个 Shell Session，就可以开始使用 zsh 了。</span><br><span class="line">输入 q 会直接退出配置引导，下一次运行 zsh 时会再次进入配置引导。</span><br><span class="line">输入 0，也会退出配置引导，但是会在当前用户目录生成一个空白的文件 <span class="string">.zshrc</span>，下一次运行时就不会再进入配置引导。下一次运行时是否再进入配置引导，取决于用户目录下是否存在<span class="string">.zshrc</span> 文件。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241202100831328.png" alt="image-20241202100831328"></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">由于 zsh 配置较为复杂，推荐大家使用配置管理工具来配置 zsh，花很少时间就可以得到一个称手的 zsh。下面介绍如何使用 oh-<span class="keyword">my</span>-zsh 来修改 zsh 的主题和安装常用的插件。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">安装 <span class="built_in">oh</span><span class="literal">-my-zsh</span></span><br><span class="line">安装 <span class="built_in">oh</span><span class="literal">-my-zsh</span> 之前，需要确保本地已经安装了 git。</span><br><span class="line"></span><br><span class="line">使用 <span class="built_in">curl</span> 下载脚本并安装：</span><br><span class="line"></span><br><span class="line">sh <span class="literal">-c</span> <span class="string">&quot;<span class="variable">$</span>(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)&quot;</span></span><br><span class="line">或者使用 <span class="built_in">wget</span> 下载脚本并安装：</span><br><span class="line"></span><br><span class="line">sh <span class="literal">-c</span> <span class="string">&quot;<span class="variable">$</span>(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)&quot;</span></span><br><span class="line">在配置过程中，脚本会提示将 zsh 设为默认的 shell:</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241202101342307.png" alt="image-20241202101342307"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这样就安装好 oh-my-zsh 了，下面我们开始通过 oh-my-zsh 来配置 zsh 。</span><br><span class="line">配置 zsh</span><br><span class="line">修改主题</span><br><span class="line">在 https:<span class="regexp">//gi</span>thub.com<span class="regexp">/ohmyzsh/</span>ohmyzsh<span class="regexp">/wiki/</span>Themes 中查看内置的主题样式和对应的主题名。这些内置主题已经放在 ～<span class="regexp">/.oh-my-zsh/</span>themes 目录下，不需要再下载。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//oh_my_zsh_themes.png" alt="oh-my-zsh 内置主题"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">除了内置主题外，还可以选择其他开源的主题，强烈推荐尝试一下 powerlevel10k 主题，一个顶十个，项目地址为：https://github.com/romkatv/powerlevel10k</span><br><span class="line"></span><br><span class="line">oh-my-zsh 安装这个款主题的方法：使用 git 将文件 <span class="built_in">clone</span> 只指定文件夹 ～/.oh-my-zsh/custom/themes/powerlevel10k ，命令如下：</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> --depth=1 https://github.com/romkatv/powerlevel10k.git <span class="variable">$&#123;ZSH_CUSTOM:-<span class="variable">$HOME</span>/.oh-my-zsh/custom&#125;</span>/themes/powerlevel10k</span><br><span class="line">使用 vim 编辑 .zshrc，键入以下内容并保存：</span><br><span class="line"></span><br><span class="line">ZSH_THEME=<span class="string">&quot;powerlevel10k/powerlevel10k&quot;</span></span><br><span class="line">最后，执行 <span class="built_in">source</span> ~/.zshrc 配置生效，这时会提示对主题进行配置，按照提示进行即可。</span><br><span class="line"></span><br><span class="line">安装插件</span><br><span class="line">oh-my-zsh 已经内置了 git 插件，内置插件可以在 ～/.oh-my-zsh/plugins 中查看 ，下面介绍一下我常用的三个插件，更多插件可以在 awesome-zsh-plugins 里查看。</span><br><span class="line"></span><br><span class="line">zsh-autosuggestions</span><br><span class="line">zsh-autosuggestions 是一个命令提示插件，，当你输入命令时，会自动推测你可能需要输入的命令，按下右键可以快速采用建议。效果如下：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//zsh-autosuggestions.png" alt="zsh-autosuggestions 插件效果"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">安装步骤：</span><br><span class="line"></span><br><span class="line">把插件下载到本地的 ~/.oh-my-zsh/custom/plugins 目录：</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-autosuggestions <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-autosuggestions</span><br><span class="line">在 .zshrc 中，把 zsh-autosuggestions 加入插件列表：</span><br><span class="line">plugins=(</span><br><span class="line">    <span class="comment"># other plugins...</span></span><br><span class="line">    zsh-autosuggestions  <span class="comment"># 插件之间使用空格隔开</span></span><br><span class="line">)</span><br><span class="line">开启新的 Shell 或执行 <span class="built_in">source</span> ~/.zshrc，就可以开始体验插件。</span><br><span class="line">zsh-syntax-highlighting</span><br><span class="line">zsh-syntax-highlighting 是一个命令语法校验插件，在输入命令的过程中，若指令不合法，则指令显示为红色，若指令合法就会显示为绿色。效果如下：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//zsh-syntax-highlighting.png" alt="zsh-syntax-highlighting 插件效果"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">安装步骤：</span><br><span class="line"></span><br><span class="line">把插件下载到本地的 ~/.oh-my-zsh/custom/plugins 目录:</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/zsh-users/zsh-syntax-highlighting.git <span class="variable">$&#123;ZSH_CUSTOM:-~/.oh-my-zsh/custom&#125;</span>/plugins/zsh-syntax-highlighting</span><br><span class="line">在 .zshrc 中，把  zsh-syntax-highlighting 加入插件列表：</span><br><span class="line">plugins=(</span><br><span class="line">    <span class="comment"># other plugins...</span></span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">)</span><br><span class="line">开启新的 Shell 或执行 <span class="built_in">source</span> ~/.zshrc，就可以开始体验插件了。</span><br><span class="line">z</span><br><span class="line">z 是一个文件夹快捷跳转插件，对于曾经跳转过的目录，只需要输入最终目标文件夹名称，就可以快速跳转，避免再输入长串路径，提高切换文件夹的效率。效果如下：</span><br><span class="line"></span><br><span class="line">安装步骤：</span><br><span class="line"></span><br><span class="line">由于 oh-my-zsh 内置了 z 插件，所以只需要在 .zshrc 中，把 z 加入插件列表：</span><br><span class="line">plugins=(</span><br><span class="line">    <span class="comment"># other plugins...</span></span><br><span class="line">    zsh-autosuggestions</span><br><span class="line">    zsh-syntax-highlighting</span><br><span class="line">    z</span><br><span class="line">)</span><br><span class="line">开启新的 Shell 或执行 <span class="built_in">source</span> ~/.zshrc，就可以开始体验插件了。</span><br><span class="line">设置 <span class="built_in">alias</span></span><br><span class="line">zsh 支持为较长命令设置一个别名，这样在使用时可以快捷输入。</span><br><span class="line"></span><br><span class="line">这里以 <span class="built_in">cd</span> ~/projects/hackerneo/blog 这个命令来举例：</span><br><span class="line"></span><br><span class="line">在 .zshrc 中键入：</span><br><span class="line"><span class="built_in">alias</span> cdblog=<span class="string">&quot;cd ~/projects/hackerneo/blog&quot;</span></span><br><span class="line">开启新的 Shell 或 <span class="built_in">source</span> ~/.zshrc，以使配置生效。生效后就可以使用 cdblog 进行跳转了。</span><br><span class="line">除了自己设置 <span class="built_in">alias</span> 之外，一些插件也内置内很多 <span class="built_in">alias</span>。最常用的是 git 插件内置的 <span class="built_in">alias</span>。例如，ga 就代表 git add，更多 git 插件内置 <span class="built_in">alias</span> 可以在 git plugin <span class="built_in">alias</span> 中查看。</span><br><span class="line"></span><br><span class="line">其他</span><br><span class="line">遇事不决，多敲 Tab。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">ohmyzsh主题保存路径：～/.oh-my-zsh/themes</span><br><span class="line"></span><br><span class="line">下载一个推荐的主题：git <span class="built_in">clone</span> --depth=1 https://github.com/romkatv/powerlevel10k.git <span class="variable">$&#123;ZSH_CUSTOM:-<span class="variable">$HOME</span>/.oh-my-zsh/custom&#125;</span>/themes/powerlevel10k</span><br><span class="line">使用 vim 编辑 .zshrc，vi ~/.zshrc键入以下内容并保存：</span><br><span class="line">ZSH_THEME=<span class="string">&quot;powerlevel10k/powerlevel10k&quot;</span></span><br><span class="line">最后，执行 <span class="built_in">source</span> ~/.zshrc 配置生效，这时会提示对主题进行配置，按照提示进行即可。</span><br><span class="line"></span><br><span class="line">配置出错就重启zsh：<span class="built_in">exec</span> zsh</span><br><span class="line">其次有一个问题是重启zsh后无法执行ping和ifconfig。下载一下网络配件：</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> apt install net-tools</span><br><span class="line">然后自己再改改配色啥的。</span><br><span class="line">我比较喜欢朴素一点的，还有就是xiong-chiamiov主题也不错。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//3096265-20240925201732876-58427372.png" alt="img"></p>
+<h2 id="我的主题"><a href="#我的主题" class="headerlink" title="我的主题"></a>我的主题</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">配置zsh主题 powerlevel9k (推荐)</span><br><span class="line">安装</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k</span><br><span class="line">编辑 ~/.zshrc来启用主题，在其中将ZSH_THEME 改为</span><br><span class="line"></span><br><span class="line">ZSH_THEME=<span class="string">&quot;powerlevel9k/powerlevel9k&quot;</span></span><br><span class="line"></span><br><span class="line">如果你还没有安装字体，那么可以使用下面的命令来安装所需字体。</span><br><span class="line"></span><br><span class="line">安装 powerline字体</span><br><span class="line"><span class="comment"># 下载</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/powerline/fonts.git ~/.oh-my-zsh/custom/themes/powerlevel9k/fonts</span><br><span class="line"></span><br><span class="line"><span class="comment"># 进入文件夹并安装</span></span><br><span class="line"><span class="built_in">cd</span> ~/.oh-my-zsh/custom/themes/powerlevel9k/fonts</span><br><span class="line">./install.sh</span><br><span class="line"></span><br><span class="line">安装 Awesome-Terminal Fonts字体</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/gabrielelana/awesome-terminal-fonts.git ~/.oh-my-zsh/custom/themes/powerlevel9k/fonts</span><br><span class="line"><span class="built_in">cd</span> awesome-terminal-fonts</span><br><span class="line">./install.sh</span><br><span class="line"></span><br><span class="line">安装nerd-fonts</span><br><span class="line"><span class="comment">#下载</span></span><br><span class="line"><span class="built_in">cd</span> ~/.oh-my-zsh/custom/themes/powerlevel9k/fonts</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/ryanoasis/nerd-fonts.git或者git <span class="built_in">clone</span> https://gitee.com/keyboardkiller/nerd-fonts.git</span><br><span class="line"><span class="comment">#安装同上</span></span><br><span class="line"><span class="built_in">cd</span> nerd-fonts</span><br><span class="line">./install.sh</span><br><span class="line"></span><br><span class="line">修改配置文件.zshrc</span><br><span class="line"></span><br><span class="line"><span class="comment">#Path to your oh-my-zsh installation.</span></span><br><span class="line"><span class="built_in">export</span> TERM=<span class="string">&quot;xterm-256color&quot;</span></span><br><span class="line"><span class="built_in">export</span> ZSH=<span class="string">&quot;/root/.oh-my-zsh&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#default</span></span><br><span class="line"><span class="comment">#ZSH_THEME=&quot;robbyrussell&quot;</span></span><br><span class="line"><span class="comment">#ZSH_THEME=&quot;ys&quot;</span></span><br><span class="line">ZSH_THEME=<span class="string">&quot;powerlevel9k/powerlevel9k&quot;</span></span><br><span class="line"></span><br><span class="line">plugins=(git zsh-autosuggestions)</span><br><span class="line"><span class="comment">#plugins=(git zsh-syntax-highlighting zsh-autosuggestions)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> <span class="variable">$ZSH</span>/oh-my-zsh.sh                                                                                    </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="安装工具"><a href="#安装工具" class="headerlink" title="安装工具"></a>安装工具</h2><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gcc  apt <span class="keyword">install</span> gcc</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3  apt <span class="keyword">install</span> python3-pip</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">qemu apt-get install qemu-<span class="keyword">user</span> <span class="title">qemu-system</span> </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gdb-<span class="keyword">multiarch </span> apt-get <span class="keyword">install </span>gdb-<span class="keyword">multiarch</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">pwn  先给pwn创建一个文件夹。然后再创建一个tools文件夹</span><br><span class="line">❯ <span class="built_in">cd</span> /home/kali/Desktop/</span><br><span class="line">❯ <span class="built_in">mkdir</span> PWN</span><br><span class="line">❯ <span class="built_in">cd</span> PWN</span><br><span class="line">❯ <span class="built_in">mkdir</span> tools</span><br><span class="line">❯ <span class="built_in">cd</span> tools</span><br><span class="line">❯ <span class="built_in">ls</span></span><br><span class="line">┌──(root㉿penetration)-[/home/kali/Desktop/PWN]</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">pwntools</span><br><span class="line">第一行，git报错就执行下面指令取消系统代理：</span><br><span class="line"></span><br><span class="line">git config --global --<span class="built_in">unset</span> http.proxy </span><br><span class="line">git config --global --<span class="built_in">unset</span> https.proxy</span><br><span class="line">第三行指令，pip安装会有环境依赖相关的警告。这里把警告给删了：</span><br><span class="line"><span class="built_in">sudo</span> <span class="built_in">mv</span> /usr/lib/python3.x/EXTERNALLY-MANAGED /usr/lib/python3.x/EXTERNALLY-MANAGED.bk</span><br><span class="line">这里的x我们换成12，需要和本机python环境匹配。</span><br><span class="line"></span><br><span class="line">防止python依赖冲突混乱，当然也可以装venv，参考：https://www.yaolong.net/article/pip-externally-managed-environment/</span><br><span class="line"></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/Gallopsled/pwntools.git</span><br><span class="line"><span class="built_in">sudo</span> apt-get install python3 python3-pip python3-dev git libssl-dev libffi-dev build-essential</span><br><span class="line"><span class="comment">#python3 -m pip install --upgrade pip</span></span><br><span class="line">python3 -m pip install --upgrade pwntools</span><br><span class="line"></span><br><span class="line">验证pwntools：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//3096265-20240925201753181-2110001683.png" alt="img"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">pwngdb、peda、gef</span><br><span class="line"><span class="built_in">cd</span> PWN/tools </span><br><span class="line"><span class="comment">#git clone https://github.com/longld/peda.git</span></span><br><span class="line"><span class="comment">#git clone https://github.com/hugsy/gef.git</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/pwndbg/pwndbg.git</span><br><span class="line"></span><br><span class="line">pwndbg安装：</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> pwndbg </span><br><span class="line">./setup.sh</span><br><span class="line">插件依赖安装</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> pip install keystone-engine ropper keystone-engine</span><br><span class="line">gdb挂在插件：</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> vi /usr/share/doc/texlive-doc/pdftex/tests/14-pdfadjustinterwordglue-segfault/.gdbinit</span><br><span class="line">gdbinit内容：</span><br><span class="line"></span><br><span class="line"><span class="built_in">source</span> /home/kali/Desktop/PWN/tools/pwndbg/gdbinit.py</span><br><span class="line"></span><br><span class="line">之后执行gdb查看挂载是否成功（需要进入zsh）：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//3096265-20240925201807605-1195202191.png" alt="img"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">备忘录：从这里开始是在<span class="keyword">py3</span>.<span class="number">12.7</span>虚拟环境里安装的</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">ROPgadget</span><br><span class="line"><span class="built_in">sudo</span> pip3 install capstone</span><br><span class="line"><span class="built_in">cd</span> PWN/tools </span><br><span class="line">git <span class="built_in">clone</span> https://github.com/JonathanSalwan/ROPgadget.git</span><br><span class="line"><span class="built_in">cd</span> ROPgadget</span><br><span class="line"><span class="built_in">sudo</span> python3 setup.py install</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">seccomp-tools</span><br><span class="line"><span class="built_in">sudo</span> apt install gcc ruby-dev</span><br><span class="line"><span class="built_in">sudo</span> gem install seccomp-tools</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">patchelf</span><br><span class="line"><span class="built_in">sudo</span> apt install patchelf </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">ARM</span>软件包</span><br><span class="line">具备<span class="meta">ARM</span>交叉编译gcc与<span class="meta">ARM</span>程序动态链接库</span><br><span class="line"></span><br><span class="line"><span class="symbol">sudo</span> apt-<span class="meta">get</span> install gcc-<span class="meta">arm</span>-linux-gnueabi</span><br><span class="line"><span class="symbol">sudo</span> apt-<span class="meta">get</span> install gcc-aarch64-linux-gnu</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MIPS软件包</span><br><span class="line">sudo apt-<span class="built_in">get</span> install gcc-mips-linux-gnu</span><br><span class="line">sudo apt-<span class="built_in">get</span> install gcc-mipsel-linux-gnu</span><br><span class="line">sudo apt-<span class="built_in">get</span> install gcc-mips64-linux-gnuabi64</span><br><span class="line">sudo apt-<span class="built_in">get</span> install gcc-mips64el-linux-gnuabi64</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="打开pwn环境："><a href="#打开pwn环境：" class="headerlink" title="打开pwn环境："></a>打开pwn环境：</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">把bash下安装的软件包迁移到 Zsh 下：</span><br><span class="line">~/.bashrc 的路径复制到 Zsh 的配置文件 ~/.zshrc 中</span><br><span class="line">比如conda  <span class="built_in">export</span> PATH=<span class="string">&quot;<span class="variable">$HOME</span>/miniconda3/bin:<span class="variable">$PATH</span>&quot;</span> 这个路径复制到~/.zshrc</span><br><span class="line">修改完 ~/.zshrc 后，需要重新加载 Zsh 配置文件，才能使更改生效：<span class="built_in">source</span> ~/.zshrc</span><br><span class="line">python环境默认都有</span><br><span class="line"><span class="built_in">source</span> activate py3.12.7进入虚拟py3.12.7环境然后换成zsh，输入zsh即可</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83//image-20241202105145191.png" alt="image-20241202105145191"></p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">https:</span>/<span class="regexp">/www.cnblogs.com/qsons</span><span class="regexp">/p/</span><span class="number">17718510</span>.html</span><br><span class="line"><span class="symbol">https:</span>/<span class="regexp">/www.hackerneo.com/blog</span><span class="regexp">/dev-tools/better</span>-use-terminal-<span class="keyword">with</span>-zsh</span><br><span class="line"><span class="symbol">https:</span>/<span class="regexp">/www.cnblogs.com/seyedog</span><span class="regexp">/p/</span><span class="number">18432103</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../ctf-%E5%88%B7pwn/">CTF-刷PWN</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-27pinky-s-palace-2/">Vulnhub-27Pinky.s-Palace-2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

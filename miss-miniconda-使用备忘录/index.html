@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Miss-miniconda-使用备忘录 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Miss-miniconda-使用备忘录</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 27, 2024&nbsp;&nbsp;0:44:59</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/python%E5%AD%A6%E4%B9%A0/">python学习</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="环境变量"><a href="#环境变量" class="headerlink" title="环境变量"></a>环境变量</h2><figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">path\to\your\miniconda</span><br><span class="line">path\to\your\miniconda\Library\bin</span><br><span class="line">path\to\your\miniconda\Scripts </span><br><span class="line"></span><br><span class="line">验证conda <span class="comment">--version</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="创建新的python环境"><a href="#创建新的python环境" class="headerlink" title="创建新的python环境"></a>创建新的python环境</h2><h4 id="1-添加镜像仓库"><a href="#1-添加镜像仓库" class="headerlink" title="1. 添加镜像仓库"></a>1. 添加镜像仓库</h4><figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda config --add channels https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span></span><br><span class="line">conda config --add channels https:<span class="comment">//mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span></span><br><span class="line">conda config --set show_channel_urls <span class="literal">false</span>   # 单词设为<span class="literal">true</span>,每次查看安装了哪些库的时候可以查看来源</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-创建新环境"><a href="#2-创建新环境" class="headerlink" title="2. 创建新环境"></a>2. 创建新环境</h4><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">因为不同的工程会需要不同的环境，创建不同的虚拟环境便于管理项目。</span><br><span class="line">创建一个<span class="keyword">python3</span>.<span class="number">12.7</span>的环境，其中<span class="keyword">py3</span>.<span class="number">12.7</span>是该虚拟环境的名字，输入指令：conda create -n <span class="keyword">py3</span>.<span class="number">12.7</span> <span class="keyword">python</span>=<span class="number">3.12</span>.<span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="3-进入虚拟环境"><a href="#3-进入虚拟环境" class="headerlink" title="3.进入虚拟环境"></a>3.进入虚拟环境</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conda init  # 然后重新打开一个终端</span><br><span class="line">conda activate py<span class="number">3.12</span><span class="number">.7</span></span><br><span class="line">   进入环境后安装库：conda install numpy</span><br><span class="line">pip install -n your_env_name [package]</span><br><span class="line">   pip install -r requirements.txt</span><br><span class="line">Linux: source deactivate  Windows: deactivate  # 退出虚拟环境</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-删除虚拟环境"><a href="#4-删除虚拟环境" class="headerlink" title="4.删除虚拟环境"></a>4.删除虚拟环境</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda remove -n your_env_name(虚拟环境名称) --all</span><br><span class="line">conda remove --name your_env_name  package_name  <span class="comment"># 删除环境中的某个包</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="5-禁止自动激活"><a href="#5-禁止自动激活" class="headerlink" title="5.禁止自动激活"></a>5.禁止自动激活</h3><figure class="highlight csharp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"> 禁用自动激活 <span class="keyword">base</span> 环境 如果你希望避免每次打开 PowerShell 或命令提示符时自动激活 <span class="keyword">base</span> 环境，可以通过修改 Conda 配置来禁用这个功能。执行以下命令：</span><br><span class="line"></span><br><span class="line">bash</span><br><span class="line">conda config --<span class="keyword">set</span> auto_activate_base <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="python一些基础操作"><a href="#python一些基础操作" class="headerlink" title="python一些基础操作"></a>python一些基础操作</h2><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">删除所有第三方库 pip <span class="keyword">freeze</span> | % &#123; pip uninstall -y $_ &#125;</span><br><span class="line">强制安装 pip3 install <span class="comment">--break-system-packages gmpy2</span></span><br><span class="line">导出第三方库  pip <span class="keyword">freeze</span> &gt; requestments.txt  # 如果是pip2 保证pip2 的版本为<span class="number">19.2</span><span class="number">.3</span>    否则执行 python2 -m pip install pip==<span class="number">19.2</span><span class="number">.3</span></span><br><span class="line">pip <span class="keyword">show</span> gmpy2   显示 gmpy2 包的详细信息</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> <span class="built_in">read</span> requirement; <span class="keyword">do</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Installing <span class="variable">$requirement</span>&quot;</span></span><br><span class="line">    pip install <span class="variable">$requirement</span> || <span class="built_in">echo</span> <span class="string">&quot;Failed to install <span class="variable">$requirement</span>, skipping&quot;</span></span><br><span class="line"><span class="keyword">done</span> &lt; python3.12_requirements.txt</span><br><span class="line"></span><br><span class="line">tools.sh  跳过报错安装库文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="python应用"><a href="#python应用" class="headerlink" title="python应用"></a>python应用</h3><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">使用 pipx 安装包（适用于 Python 应用）</span><br><span class="line">如果你只是需要安装一个 Python 应用（而不是库），可以使用 pipx 来管理它。pipx 会为每个应用创建独立的虚拟环境。</span><br><span class="line">安装 pipx：</span><br><span class="line">如果你的系统上没有安装 pipx，你可以通过以下命令安装：</span><br><span class="line">sudo apt <span class="keyword">install</span> pipx</span><br><span class="line">使用 pipx 安装包：</span><br><span class="line">安装所需的 Python 应用，例如：</span><br><span class="line">pipx <span class="keyword">install</span> paramiko</span><br><span class="line">这样，pipx 会为 paramiko 创建一个独立的虚拟环境并安装。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bash </span>Miniconda3-latest-Linux-x86_64.<span class="keyword">sh </span>最后一路回车，</span><br></pre></td></tr></table></figure>
+
+<p><img src="/miss-miniconda-%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95//image-20241201225053781.png" alt="image-20241201225053781"></p>
+<figure class="highlight ceylon"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">接受<span class="meta">license</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/miss-miniconda-%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95//image-20241201225104665.png" alt="image-20241201225104665"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">如果是默认路径安装直接回车</span><br></pre></td></tr></table></figure>
+
+<p><img src="/miss-miniconda-%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95//image-20241201225115175.png" alt="image-20241201225115175"></p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在选择是否需要initiate的时候选择<span class="literal">yes</span>，默认是<span class="literal">no</span>。最好选<span class="literal">yes</span>，如果选了<span class="literal">no</span>导致 conda: command <span class="keyword">not</span> found</span><br></pre></td></tr></table></figure>
+
+<p><img src="/miss-miniconda-%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95//image-20241201225135012.png" alt="image-20241201225135012"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">conda: <span class="built_in">command</span> not found 解决问题：编辑 ~/.bashrc 或 ~/.zshrc 文件</span><br><span class="line">1.如果你使用的是 bash，打开 .bashrc 文件：nano ~/.bashrc</span><br><span class="line">如果你使用的是 zsh，打开 .zshrc 文件：nano ~/.zshrc</span><br><span class="line">2.末尾添加以下内容：</span><br><span class="line"><span class="comment"># Add Miniconda to PATH</span></span><br><span class="line"><span class="built_in">export</span> PATH=<span class="string">&quot;~/miniconda3/bin:<span class="variable">$PATH</span>&quot;</span></span><br><span class="line">3.按 Ctrl + O 保存更改，然后按 Ctrl + X 退出编辑器</span><br><span class="line">4.重新加载配置文件</span><br><span class="line"><span class="built_in">source</span> ~/.bashrc   <span class="comment"># 如果你使用的是 Bash</span></span><br><span class="line"><span class="built_in">source</span> ~/.zshrc    <span class="comment"># 如果你使用的是 Zsh</span></span><br><span class="line">5. conda --version</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">关闭自动启动conda环境的命令conda<span class="built_in"> config </span>--<span class="built_in">set</span> auto_activate_base <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="离线创建python环境"><a href="#离线创建python环境" class="headerlink" title="离线创建python环境"></a>离线创建python环境</h2><figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">查看已经创建的虚拟环境，刚开始只有base  conda env list</span><br><span class="line"></span><br><span class="line">可以直接克隆base环境，来创建自己的环境</span><br><span class="line">conda<span class="built_in"> config </span>--<span class="built_in">set</span> offline <span class="literal">true</span></span><br><span class="line">conda create -n py3.12.7 --clone base</span><br><span class="line"></span><br><span class="line">也可以conda create -n py3.12.7 <span class="attribute">python</span>=3.12.7 </span><br></pre></td></tr></table></figure>
+
+<h2 id="激活-删除虚拟环境"><a href="#激活-删除虚拟环境" class="headerlink" title="激活&amp;删除虚拟环境"></a>激活&amp;删除虚拟环境</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">执行如下命令激活虚拟环境，需要注意new_env需要已经创建，通过conda env <span class="keyword">list</span>可以查看到。<span class="keyword">source</span> activate <span class="keyword">py3</span>.<span class="number">12.7</span></span><br><span class="line">删除虚拟环境命令，假设需要删除一个名为newenv 的环境：conda <span class="built_in">remove</span> -n newenv --<span class="keyword">all</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="安装第三方库"><a href="#安装第三方库" class="headerlink" title="安装第三方库"></a>安装第三方库</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">python</span> pip 更改国内源</span><br><span class="line">此方法为永久改变源，如果你需要的库，国内源没有的话，需要重置源为默认</span><br><span class="line"></span><br><span class="line">清华源相关代码</span><br><span class="line">pip config <span class="keyword">set</span> <span class="keyword">global</span>.<span class="built_in">index</span>-url https://pypi.tuna.tsinghua.edu.<span class="keyword">cn</span>/simple</span><br><span class="line">其他源</span><br><span class="line">豆瓣 https://pypi.doubanio.<span class="keyword">com</span>/simple/</span><br><span class="line">网易 https://mirrors.<span class="number">163</span>.<span class="keyword">com</span>/pypi/simple/</span><br><span class="line">阿里云 https://mirrors.aliyun.<span class="keyword">com</span>/pypi/simple/</span><br><span class="line">腾讯云 https://mirrors.cloud.tencent.<span class="keyword">com</span>/pypi/simple</span><br><span class="line">清华大学 https://pypi.tuna.tsinghua.edu.<span class="keyword">cn</span>/simple/</span><br><span class="line">取消所有源，替换为默认</span><br><span class="line">pip config unset <span class="keyword">global</span>.<span class="built_in">index</span>-url</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="退出虚拟环境"><a href="#退出虚拟环境" class="headerlink" title="退出虚拟环境"></a>退出虚拟环境</h2><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">conda deactivate</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/python/"># python</a>
+                    
+                        <a href="../tags/python%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83/"># python虚拟环境</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-hexo%E7%9A%84%E4%BD%BF%E7%94%A8/">Misc-hexo的使用</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-21hack-lab-vulnix/">Vulnhub-21Hack-Lab-Vulnix</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

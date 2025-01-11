@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>Misc-volatility | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">Misc-volatility</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十一月 28, 2024&nbsp;&nbsp;8:50:28</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E7%94%B5%E5%AD%90%E5%8F%96%E8%AF%81%E5%B7%A5%E5%85%B7/">电子取证工具</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="volatility2的使用"><a href="#volatility2的使用" class="headerlink" title="volatility2的使用"></a>volatility2的使用</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br></pre></td><td class="code"><pre><span class="line">Volatility取证分析工具 <span class="comment">#</span></span><br><span class="line">关于工具 <span class="comment">#</span></span><br><span class="line">简单描述 <span class="comment">#</span></span><br><span class="line">Volatility是一款开源内存取证框架，能够对导出的内存镜像进行分析，通过获取内核数据结构，使用插件获取内存的详细情况以及系统的运行状态。</span><br><span class="line"></span><br><span class="line">特点：</span><br><span class="line"></span><br><span class="line">开源：Python编写，易于和基于python的主机防御框架集成。</span><br><span class="line">支持多平台：Windows，Mac，Linux全支持</span><br><span class="line">易于扩展：通过插件来扩展Volatility的分析能力</span><br><span class="line">项目地址 <span class="comment">#</span></span><br><span class="line">https://github.com/volatilityfoundation/volatility</span><br><span class="line"></span><br><span class="line">Kali安装 <span class="comment">#</span></span><br><span class="line">sudo apt<span class="literal">-get</span> install volatility</span><br><span class="line">volatility <span class="literal">-h</span></span><br><span class="line"><span class="comment"># 部分报错可能kali版本过低</span></span><br><span class="line">流程图 <span class="comment">#</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">常用模块 <span class="comment">#</span></span><br><span class="line">插件名称 功能</span><br><span class="line">amcache 查看AmCache应用程序痕迹信息</span><br><span class="line">apihooks 检测内核及进程的内存空间中的API hook</span><br><span class="line">atoms 列出会话及窗口站atom表</span><br><span class="line">atomscan Atom表的池扫描(Pool scanner)</span><br><span class="line">auditpol 列出注册表HKLMSECURITYPolicyPolAdtEv的审计策略信息</span><br><span class="line">bigpools 使用BigPagePoolScanner转储大分页池(big page pools)</span><br><span class="line">bioskbd 从实时模式内存中读取键盘缓冲数据(早期电脑可以读取出BIOS开机密码)</span><br><span class="line">cachedump 获取内存中缓存的域帐号的密码哈希</span><br><span class="line">callbacks 打印全系统通知例程</span><br><span class="line">clipboard 提取Windows剪贴板中的内容</span><br><span class="line">cmdline 显示进程命令行参数</span><br><span class="line">cmdscan 提取执行的命令行历史记录（扫描_COMMAND_HISTORY信息）</span><br><span class="line">connections 打印系统打开的网络连接(仅支持Windows XP 和<span class="number">2003</span>)</span><br><span class="line">connscan 打印TCP连接信息</span><br><span class="line">consoles 提取执行的命令行历史记录（扫描_CONSOLE_INFORMATION信息）</span><br><span class="line">crashinfo 提取崩溃转储信息</span><br><span class="line">deskscan tagDESKTOP池扫描(Poolscaner)</span><br><span class="line">devicetree 显示设备树信息</span><br><span class="line">dlldump 从进程地址空间转储动态链接库</span><br><span class="line">dlllist 打印每个进程加载的动态链接库列表</span><br><span class="line">driverirp IRP hook驱动检测</span><br><span class="line">drivermodule 关联驱动对象至内核模块</span><br><span class="line">driverscan 驱动对象池扫描</span><br><span class="line">dumpcerts 提取RAS私钥及SSL公钥</span><br><span class="line">dumpfiles 提取内存中映射或缓存的文件</span><br><span class="line">dumpregistry 转储内存中注册表信息至磁盘</span><br><span class="line">editbox 查看Edit编辑控件信息 (Listbox正在实验中)</span><br><span class="line">envars 显示进程的环境变量</span><br><span class="line">eventhooks 打印Windows事件hook详细信息</span><br><span class="line">evtlogs 提取Windows事件日志（仅支持XP/<span class="number">2003</span>)</span><br><span class="line">filescan 提取文件对象（file objects）池信息</span><br><span class="line">gahti 转储用户句柄（handle）类型信息</span><br><span class="line">gditimers 打印已安装的GDI计时器(timers)及回调(callbacks)</span><br><span class="line">gdt 显示全局描述符表(Global Deor Table)</span><br><span class="line">getservicesids 获取注册表中的服务名称并返回SID信息</span><br><span class="line">getsids 打印每个进程的SID信息</span><br><span class="line">handles 打印每个进程打开的句柄的列表</span><br><span class="line">hashdump 转储内存中的Windows帐户密码哈希(LM/NTLM)</span><br><span class="line">hibinfo 转储休眠文件信息</span><br><span class="line">hivedump 打印注册表配置单元信息</span><br><span class="line">hivelist 打印注册表配置单元列表</span><br><span class="line">hivescan 注册表配置单元池扫描</span><br><span class="line">hpakextract 从HPAK文件（Fast Dump格式）提取物理内存数据</span><br><span class="line">hpakinfo 查看HPAK文件属性及相关信息</span><br><span class="line">idt 显示中断描述符表(Interrupt Deor Table)</span><br><span class="line">iehistory 重建IE缓存及访问历史记录</span><br><span class="line">imagecopy 将物理地址空间导出原生DD镜像文件</span><br><span class="line">imageinfo 查看/识别镜像信息</span><br><span class="line">impscan 扫描对导入函数的调用</span><br><span class="line">joblinks 打印进程任务链接信息</span><br><span class="line">kdbgscan 搜索和转储潜在KDBG值</span><br><span class="line">kpcrscan 搜索和转储潜在KPCR值</span><br><span class="line">ldrmodules 检测未链接的动态链接DLL</span><br><span class="line">lsadump 从注册表中提取LSA密钥信息（已解密）</span><br><span class="line">machoinfo 转储Mach<span class="literal">-O</span> 文件格式信息</span><br><span class="line">malfind 查找隐藏的和插入的代码</span><br><span class="line">mbrparser 扫描并解析潜在的主引导记录(MBR)</span><br><span class="line">memdump 转储进程的可寻址内存</span><br><span class="line">memmap 打印内存映射</span><br><span class="line">messagehooks 桌面和窗口消息钩子的线程列表</span><br><span class="line">mftparser 扫描并解析潜在的MFT条目</span><br><span class="line">moddump 转储内核驱动程序到可执行文件的示例</span><br><span class="line">modscan 内核模块池扫描</span><br><span class="line">modules 打印加载模块的列表</span><br><span class="line">multiscan 批量扫描各种对象</span><br><span class="line">mutantscan 对互斥对象池扫描</span><br><span class="line">notepad 查看记事本当前显示的文本</span><br><span class="line">objtypescan 扫描窗口对象类型对象</span><br><span class="line">patcher 基于页面扫描的补丁程序内存</span><br><span class="line">poolpeek 可配置的池扫描器插件</span><br><span class="line">printkey 打印注册表项及其子项和值</span><br><span class="line">privs 显示进程权限</span><br><span class="line">procdump 进程转储到一个可执行文件示例</span><br><span class="line">pslist 按照EPROCESS列表打印所有正在运行的进程</span><br><span class="line">psscan 进程对象池扫描</span><br><span class="line">pstree 以树型方式打印进程列表</span><br><span class="line">psxview 查找带有隐藏进程的所有进程列表</span><br><span class="line">qemuinfo 转储Qemu 信息</span><br><span class="line">raw2dmp 将物理内存原生数据转换为windbg崩溃转储格式</span><br><span class="line">screenshot 基于GDI Windows的虚拟屏幕截图保存</span><br><span class="line">servicediff Windows服务列表(ala Plugx)</span><br><span class="line">sessions _MM_SESSION_SPACE的详细信息列表(用户登录会话)</span><br><span class="line">shellbags 打印Shellbags信息</span><br><span class="line">shimcache 解析应用程序兼容性Shim缓存注册表项</span><br><span class="line">shutdowntime 从内存中的注册表信息获取机器关机时间</span><br><span class="line">sockets 打印已打开套接字列表</span><br><span class="line">sockscan TCP套接字对象池扫描</span><br><span class="line">ssdt 显示SSDT条目</span><br><span class="line">strings 物理到虚拟地址的偏移匹配(需要一些时间，带详细信息)</span><br><span class="line">svcscan Windows服务列表扫描</span><br><span class="line">symlinkscan 符号链接对象池扫描</span><br><span class="line">thrdscan 线程对象池扫描</span><br><span class="line">threads 调查_ETHREAD 和_KTHREADs</span><br><span class="line">timeliner 创建内存中的各种痕迹信息的时间线</span><br><span class="line">timers 打印内核计时器及关联模块的DPC</span><br><span class="line">truecryptmaster 恢复TrueCrypt <span class="number">7.1</span>a主密钥</span><br><span class="line">truecryptpassphrase 查找并提取TrueCrypt密码</span><br><span class="line">truecryptsummary TrueCrypt摘要信息</span><br><span class="line">unloadedmodules 打印卸载的模块信息列表</span><br><span class="line">userassist 打印注册表中UserAssist相关信息</span><br><span class="line">userhandles 转储用户句柄表</span><br><span class="line">vaddump 转储VAD数据为文件</span><br><span class="line">vadinfo 转储VAD信息</span><br><span class="line">vadtree 以树形方式显示VAD树信息</span><br><span class="line">vadwalk 显示遍历VAD树</span><br><span class="line">vboxinfo 转储Virtualbox信息（虚拟机）</span><br><span class="line">verinfo 打印PE镜像中的版本信息</span><br><span class="line">vmwareinfo 转储VMware VMSS/VMSN 信息</span><br><span class="line">volshell 内存镜像中的shell</span><br><span class="line">windows 打印桌面窗口(详细信息)</span><br><span class="line">wintree Z顺序打印桌面窗口树</span><br><span class="line">wndscan 池扫描窗口站</span><br><span class="line">yarascan 以Yara签名扫描进程或内核内存</span><br><span class="line">常用命令 <span class="comment">#</span></span><br><span class="line">功能 命令行及参数</span><br><span class="line">查看进程列表 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 pslist</span><br><span class="line">查看进程列表（树形） Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 pstree</span><br><span class="line">查看进程列表(psx视图) Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 psxview</span><br><span class="line">查看网络通讯连接 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 netscan</span><br><span class="line">查看加载的动态链接库 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 dlllist</span><br><span class="line">查看SSDT表 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 ssdt</span><br><span class="line">查看UserAssist痕迹 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 userassist</span><br><span class="line">查看ShimCache痕迹 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 shimcache</span><br><span class="line">查看ShellBags Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 shellbags</span><br><span class="line">查看服务列表 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 svcscan</span><br><span class="line">查看Windows帐户hash Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 hashdump</span><br><span class="line">查看最后关机时间 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 shutdowntime</span><br><span class="line">查看IE历史记录 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 iehistory</span><br><span class="line">提取注册表数据 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 dumpregistry</span><br><span class="line">解析MFT记录 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 mftparser</span><br><span class="line">导出MFT记录,恢复文件 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 mftparser –output<span class="operator">-file</span>=mftverbose.txt <span class="literal">-D</span> mftoutput</span><br><span class="line">获取TrueCrypt密钥信息 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 truecryptmaster</span><br><span class="line">获取TrueCrypt密码信息 Vol.exe <span class="operator">-f</span> Win7_SP1_x86.vmem –profile=Win7SP1x86 truecryptpassphras</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h1 id="volatility3的使用"><a href="#volatility3的使用" class="headerlink" title="volatility3的使用"></a>volatility3的使用</h1><figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br></pre></td><td class="code"><pre><span class="line">插件名 用法</span><br><span class="line">layerwriter 列出内存镜像 platform 信息，分割 layers</span><br><span class="line">linux.bash 从内存中恢复 bash 命令历史记录</span><br><span class="line">linux.check_afinfo 验证网络协议的操作功能指针</span><br><span class="line">linux.check_syscall 检查系统调用表中的挂钩</span><br><span class="line">linux.elfs 列出所有进程的所有内存映射ELF文件</span><br><span class="line">linux.lsmod 列出加载的内核模块</span><br><span class="line">linux.lsof 列出所有进程的所有内存映射</span><br><span class="line">linux.malfind 列出可能包含注入代码的进程内存范围</span><br><span class="line">linux.proc 列出所有进程的所有内存映射</span><br><span class="line">linux.pslist 列出 linux 内存映像中存在的进程</span><br><span class="line">linux.pstree 列出进程树</span><br><span class="line">mac.bash 从内存中恢复 bash 命令历史记录</span><br><span class="line">mac.check_syscall 检查系统调用表中的挂钩</span><br><span class="line">mac.check_sysctl 检查 sysctl 处理程序的挂钩</span><br><span class="line">mac.check_trap_table 检查 <span class="keyword">trap</span> 表中的挂钩</span><br><span class="line">mac.ifconfig 列出网卡信息</span><br><span class="line">mac.lsmod 列出加载的内核模块</span><br><span class="line">mac.lsof 列出所有进程的所有内存映射</span><br><span class="line">mac.malfind 列出可能包含注入代码的进程内存范围</span><br><span class="line">mac.netstat 列出所有进程的所有网络连接</span><br><span class="line">mac.psaux 恢复程序命令行参数</span><br><span class="line">mac.pslist 列出 mac 内存映像中存在的进程</span><br><span class="line">mac.pstree 列出进程树</span><br><span class="line">mac.tasks 列出 mac 内存映像中存在的进程</span><br><span class="line">windows.info 显示正在分析的内存样本的 OS 和内核详细信息</span><br><span class="line">windows.callbacks 列出内核回调和通知例程</span><br><span class="line">windows.cmdline 列出进程命令行参数</span><br><span class="line">windows.dlldump 将进程内存范围 DLL 转储</span><br><span class="line">windows.dlllist 列出 Windows 内存映像中已加载的 dll 模块</span><br><span class="line">windows.driverirp 在 Windows 内存映像中列出驱动程序的 IRP</span><br><span class="line">windows.driverscan 扫描 Windows 内存映像中存在的驱动程序</span><br><span class="line">windows.filescan 扫描 Windows 内存映像中存在的文件对象</span><br><span class="line">windows.handles 列出进程打开的句柄</span><br><span class="line">windows.malfind 列出可能包含注入代码的进程内存范围</span><br><span class="line">windows.moddump 转储内核模块</span><br><span class="line">windows.modscan 扫描 Windows 内存映像中存在的模块</span><br><span class="line">windows.mutantscan 扫描 Windows 内存映像中存在的互斥锁</span><br><span class="line">windows.pslist 列出 Windows 内存映像中存在的进程，转储处理可执行映像</span><br><span class="line">windows.psscan 扫描 Windows 内存映像中存在的进程</span><br><span class="line">windows.pstree 列出进程树</span><br><span class="line">windows.registry.certificates 列出注册表中存储的证书</span><br><span class="line">windows.registry.hivelist 列出内存映像中存在的注册表配置单元</span><br><span class="line">windows.registry.hivescan 扫描 Windows 内存映像中存在的注册表配置单元</span><br><span class="line">windows.registry.printkey 在配置单元或特定键值下列出注册表项</span><br><span class="line">windows.registry.userassist 打印用户助手注册表项和信息</span><br><span class="line">windows.ssdt 列出系统调用表</span><br><span class="line">windows.strings 读取字符串命令的输出，并指示每个字符串属于哪个进程</span><br><span class="line">windows.svcscan 扫描 Windows 服务</span><br><span class="line">windows.symlinkscan 扫描 Windows 内存映像中存在的链接</span><br><span class="line">操作</span><br><span class="line">查看映像信息</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.info</span><br><span class="line">查看映像进程</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.pslist</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.psscan</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.pstree</span><br><span class="line">查看指定 pid 的进程</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.pslist <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">进程转储</span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.pslist <span class="literal">--pid</span> <span class="number">1234</span> <span class="literal">--dump</span></span><br><span class="line">内存转储</span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.memmap <span class="literal">--pid</span> <span class="number">1234</span> <span class="literal">--dump</span></span><br><span class="line">查看句柄</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.handles</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.handles <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">查看 DLL</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.dlllist</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.dlllist <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">DLL 转储</span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.dlllist <span class="literal">--pid</span> <span class="number">1234</span> <span class="literal">--dump</span></span><br><span class="line">查看命令行</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.cmdline</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.cmdline <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">查看网络端口</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.netscan</span><br><span class="line">查看完整的结果，但可能包含垃圾信息和虚假信息 (谨慎使用)</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.netscan <span class="literal">--include-corrupt</span></span><br><span class="line">查看注册表信息</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.hivescan</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.hivelist</span><br><span class="line">查看指定过滤器 (文件夹) 下的注册表信息</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.hivelist <span class="literal">--filter</span> <span class="keyword">FILTER</span></span><br><span class="line">注册表信息转储</span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.hivelist <span class="literal">--filter</span> <span class="keyword">FILTER</span> <span class="literal">--dump</span></span><br><span class="line">查看注册表键值对</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.printkey</span><br><span class="line">查看指定过滤器 (文件夹) 下的注册表信息，但需要 hivelist 提供的 offset</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.printkey <span class="literal">--offset</span> OFFSET</span><br><span class="line">查看指定键下的注册表值</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.printkey <span class="literal">--key</span> KEY</span><br><span class="line">打印所有键的信息</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.registry.printkey <span class="literal">--recurse</span></span><br><span class="line">查看文件信息</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.filescan</span><br><span class="line">建议通过 powershell 的 <span class="built_in">Select-String</span> 或者 bash 的 grep 进行搜索，如：</span><br><span class="line"></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.filescan | grep <span class="string">&quot;flag&quot;</span></span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.filescan | <span class="built_in">Select-String</span> <span class="string">&quot;flag&quot;</span></span><br><span class="line">文件转储</span><br><span class="line">需要 pslist 提供的 pid</span><br><span class="line"></span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.dumpfiles <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">(推荐) 需要 filescan 提供的 offset (一般来说为 physaddr)</span><br><span class="line"></span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.dumpfiles <span class="literal">--virtaddr</span> <span class="number">0</span>xee1122</span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.dumpfiles <span class="literal">--physaddr</span> <span class="number">0</span>xee1122</span><br><span class="line">查找恶意注入代码</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.malfind</span><br><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.malfind <span class="literal">--pid</span> <span class="number">1234</span></span><br><span class="line">恶意注入代码转储</span><br><span class="line"></span><br><span class="line">vol.exe <span class="literal">-o</span> ./outputdir/ <span class="operator">-f</span> xxx.raw windows.malfind <span class="literal">--pid</span> <span class="number">1234</span> <span class="literal">--dump</span></span><br><span class="line">库使用方法</span><br><span class="line">有时候我们想要使用 Python 调用 volatility3 来实现一些自动化取证的功能，故在这里记录一下个人经验。</span><br><span class="line"></span><br><span class="line">在 volatility3 的文档和代码中，都十分推荐使用 <span class="built_in">cli</span> 模块的书写方式来编写调用代码。</span><br><span class="line"></span><br><span class="line">可以定位到 .venv\Lib\site<span class="literal">-packages</span>\volatility3\cli\__init__.py，观察 run(self) 代码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/misc-volatility//clirun.png" alt="clirun"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%B7%A5%E5%85%B7%E7%94%A8%E6%B3%95/"># 工具用法</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../misc-linux%E5%91%BD%E4%BB%A4/">Misc-Linux命令</a>
+            
+            
+            <a class="next" rel="next" href="../%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94-%E7%AC%AC%E4%B8%80%E5%B1%8A%E5%B8%95%E9%B2%81%E6%9D%AF/">应急响应-第一届帕鲁杯</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>

