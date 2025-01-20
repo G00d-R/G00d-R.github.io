@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="G00d">
+
+
+    <meta name="subtitle" content="没有人会一直一帆风顺，失败和挫折才是人生常态">
+
+
+
+    <meta name="keywords" content="G00dddd">
+
+
+<title>CTF-流量分析 | G00d`s Blog</title>
+
+
+
+    <link rel="icon" href="../favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="../css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="../js/script.js"></script>
+    
+    <script src="../js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+    <script>
+        // this function is used to check current theme before page loaded.
+        (() => {
+            const currentTheme = window.localStorage && window.localStorage.getItem('theme') || '';
+            const isDark = currentTheme === 'dark';
+            const pagebody = document.getElementsByTagName('body')[0]
+            if (isDark) {
+                pagebody.classList.add('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Dark"
+            } else {
+                pagebody.classList.remove('dark-theme');
+                // mobile
+                document.getElementById("mobile-toggle-theme").innerText = "· Light"
+            }
+        })();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //创建雪花元素
+    function snow() {
+      //获取视窗的宽高
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+  
+      var snow = document.createElement("div");             //创建元素
+  
+      //初始化雪花样式
+      size = Math.random() * 15 + 10;                          //随机生成雪花大小
+      snow.style.width = size + "px";
+      snow.style.height = size + "px";
+      snow.style.background = "url(img/雪花" + Math.floor((Math.random()*6)+1) + ".png) no-repeat";   //1-6随机选择雪花的图片
+      // snow.style.background = "url(./雪花.png) no-repeat";
+      snow.style.backgroundSize = '100% 100%';
+      snow.style.position = "fixed";                        //元素的位置相对于浏览器窗口是固定位置，即使窗口是滚动的它也不会移动
+      snow.style.filter = "blur(1px)";                      //给图片设置高斯模糊
+      snow.style.left = Math.random() * width + 'px';         //随机生成雪花的初始位置
+      snow.style.top = "10px";
+      snow.style.opacity = parseInt(Math.random()*10)/2;   //随机生成雪花的透明度
+  
+      //向body添加元素
+      document.body.appendChild(snow);
+  
+      //创建定时器，每30ms雪花下落一次
+      var timer = setInterval(function () {
+        snow.style.top = parseInt(snow.style.top) + 3 + 'px';     //每次下落3px
+  
+        //当雪花到达底部后清除元素
+        if (parseInt(snow.style.top) >= height) {
+          clearInterval(timer);
+          snow.parentNode.removeChild(snow)
+        }
+      }, 30)
+    }
+  
+    //页面加载完成执行函数
+    window.onload = function play() {
+      //创建定时器，每300ms生成一朵雪花
+      setInterval(function () {
+        snow()
+      }, 300)
+    }
+  </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    //蜘蛛网特效
+    !
+    function() {
+        function n(n, e, t) {
+            return n.getAttribute(e) || t
+        }
+        function e(n) {
+            return document.getElementsByTagName(n)
+        }
+        function t() {
+            var t = e("script"),
+            o = t.length,
+            i = t[o - 1];
+            return {
+                l: o,
+                z: n(i, "zIndex", -1),
+                o: n(i, "opacity", .9),   //透明度
+                c: n(i, "color", "255, 102, 153"),   //颜色
+                n: n(i, "count", 99)
+            }
+        }
+        function o() {
+            a = m.width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            c = m.height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        }
+        function i() {
+            r.clearRect(0, 0, a, c);
+            var n, e, t, o, m, l;
+            s.forEach(function(i, x) {
+                for (i.x += i.xa, i.y += i.ya, i.xa *= i.x > a || i.x < 0 ? -1 : 1, i.ya *= i.y > c || i.y < 0 ? -1 : 1, r.fillRect(i.x - .5, i.y - .5, 1, 1), e = x + 1; e < u.length; e++) n = u[e],
+                null !== n.x && null !== n.y && (o = i.x - n.x, m = i.y - n.y, l = o * o + m * m, l < n.max && (n === y && l >= n.max / 2 && (i.x -= .03 * o, i.y -= .03 * m), t = (n.max - l) / n.max, r.beginPath(), r.lineWidth = t / 2, r.strokeStyle = "rgba(" + d.c + "," + (t + .2) + ")", r.moveTo(i.x, i.y), r.lineTo(n.x, n.y), r.stroke()))
+            }),
+            x(i)
+        }
+        var a, c, u, m = document.createElement("canvas"),
+        d = t(),
+        l = "c_n" + d.l,
+        r = m.getContext("2d"),
+        x = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame ||
+        function(n) {
+            window.setTimeout(n, 1e3 / 45)
+        },
+        w = Math.random,
+        y = {
+            x: null,
+            y: null,
+            max: 2e4
+        };
+        m.id = l,
+        m.style.cssText = "position:fixed;top:0;left:0;z-index:" + d.z + ";opacity:" + d.o,
+        e("body")[0].appendChild(m),
+        o(),
+        window.onresize = o,
+        window.onmousemove = function(n) {
+            n = n || window.event,
+            y.x = n.clientX,
+            y.y = n.clientY
+        },
+        window.onmouseout = function() {
+            y.x = null,
+            y.y = null
+        };
+        for (var s = [], f = 0; d.n > f; f++) {
+            var h = w() * a,
+            g = w() * c,
+            v = 2 * w() - 1,
+            p = 2 * w() - 1;
+            s.push({
+                x: h,
+                y: g,
+                xa: v,
+                ya: p,
+                max: 6e3
+            })
+        }
+        u = s.concat([y]),
+        setTimeout(function() {
+            i()
+        },
+        100)
+    } ();
+
+    //蜘蛛网特效
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">G00d&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">G00d&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="../archives">Posts</a>
+                
+                    <a class="menu-item" href="../category">Categories</a>
+                
+                    <a class="menu-item" href="../tag">Tags</a>
+                
+                    <a class="menu-item" href="../about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+            <div class="main">
+                <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    var tocbot_timer;
+    var DEPTH_MAX = 6; // 为 6 时展开所有
+    var tocbot_default_config = {
+        tocSelector: '.tocbot-list',
+        contentSelector: '.post-content',
+        headingSelector: 'h1, h2, h3, h4, h5',
+        orderedList: false,
+        scrollSmooth: true,
+        onClick: extend_click,
+    };
+
+    function extend_click() {
+        clearTimeout(tocbot_timer);
+        tocbot_timer = setTimeout(function() {
+            tocbot.refresh(obj_merge(tocbot_default_config, {
+                hasInnerContainers: true
+            }));
+        }, 420); // 这个值是由 tocbot 源码里定义的 scrollSmoothDuration 得来的
+    }
+
+    document.ready(function() {
+        tocbot.init(obj_merge(tocbot_default_config, {
+            collapseDepth: 1
+        }));
+    });
+
+    function expand_toc() {
+        var b = document.querySelector('.tocbot-toc-expand');
+        var expanded = b.getAttribute('data-expanded');
+        expanded ? b.removeAttribute('data-expanded') : b.setAttribute('data-expanded', true);
+        tocbot.refresh(obj_merge(tocbot_default_config, {
+            collapseDepth: expanded ? 1 : DEPTH_MAX
+        }));
+        b.innerText = expanded ? 'Expand all' : 'Collapse all';
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function obj_merge(target, source) {
+        for (var item in source) {
+            if (source.hasOwnProperty(item)) {
+                target[item] = source[item];
+            }
+        }
+        return target;
+    }
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">CTF-流量分析</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">G00d</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 19, 2025&nbsp;&nbsp;16:20:38</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="../categories/CTF/">CTF</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="1-wireshark基本用法"><a href="#1-wireshark基本用法" class="headerlink" title="1.wireshark基本用法"></a>1.wireshark基本用法</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Wireshark的基本使用分为数据包筛选、数据包搜索、数据包还原、数据提取四个部分。</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">①数据包筛选</span><br><span class="line">ip.src == 源ip地址</span><br><span class="line">ip.dst == 目的ip地址</span><br><span class="line"></span><br><span class="line">eth.addr==A0:<span class="number">00</span>:<span class="number">00</span>:<span class="number">04</span>:C5:<span class="number">84</span> 筛选MAC地址</span><br><span class="line">eth.src ==A0:<span class="number">00</span>:<span class="number">00</span>:<span class="number">04</span>:C5:<span class="number">84</span> 筛选目标mac地址</span><br><span class="line">eth.dst ==A0:<span class="number">00</span>:<span class="number">00</span>:<span class="number">04</span>:C5:<span class="number">84</span> 筛选目标mac地址</span><br><span class="line"></span><br><span class="line">tcp.dstport == <span class="number">80</span>  筛选tcp协议的目标端口为<span class="number">80</span>的流量包</span><br><span class="line">tcp.srcport == <span class="number">80</span>  筛选tcp协议的源端口为<span class="number">80</span>的流量包</span><br><span class="line">udp.srcport == <span class="number">80</span>  筛选udp协议的源端口为<span class="number">80</span>的流量包</span><br><span class="line"></span><br><span class="line">tcp  筛选协议为tcp的流量包</span><br><span class="line">udp 筛选协议为udp的流量包</span><br><span class="line">arp/icmp/<span class="keyword">http</span>/<span class="keyword">ftp</span>/dns/ip  筛选协议为arp/icmp/<span class="keyword">http</span>/<span class="keyword">ftp</span>/dns/ip的流量包</span><br><span class="line"></span><br><span class="line">udp.<span class="built_in">length</span> ==<span class="number">20</span>   筛选长度为<span class="number">20</span>的udp流量包</span><br><span class="line">tcp.<span class="built_in">len</span> &gt;=<span class="number">20</span>  筛选长度大于<span class="number">20</span>的tcp流量包</span><br><span class="line">ip.<span class="built_in">len</span> ==<span class="number">20</span>  筛选长度为<span class="number">20</span>的IP流量包</span><br><span class="line">frame.<span class="built_in">len</span> ==<span class="number">20</span> 筛选长度为<span class="number">20</span>的整个流量包</span><br><span class="line"></span><br><span class="line">请求方法为GET：<span class="keyword">http</span>.request.method==“GET”        筛选HTTP请求方法为GET的 流量包</span><br><span class="line">请求方法为POST：<span class="keyword">http</span>.request.method==“POST”      筛选HTTP请求方法为POST的流量包</span><br><span class="line">指定URI：<span class="keyword">http</span>.request.uri==“/img/logo-edu.gif”  筛选HTTP请求的<span class="built_in">URL</span>为/img/logo-edu.gif的流量包</span><br><span class="line">请求或相应中包含特定内容：<span class="keyword">http</span> <span class="keyword">contains</span> “FLAG”    筛选HTTP内容为/FLAG的流量包</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">②数据包搜索</span><br><span class="line">在wireshark界面按“Ctrl<span class="operator">+</span><span class="built_in">F</span>”，可以进行关键字搜索：</span><br><span class="line">Wireshark的搜索功能支持正则表达式、字符串、十六进制等方式进行搜索，通常情况下直接使用字符串方式进行搜索。</span><br><span class="line">搜索栏的左边下拉，有分组列表、分组详情、分组字节流三个选项，分别对应wireshark界面的三个部分，搜索时选择不同的选项以指定搜索区域：  注意看下图</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230113647.png" alt="img"></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">③数据包还原</span><br><span class="line">在wireshark中，存在一个追踪流的功能，可以将HTTP或TCP流量集合在一起并还原成原始数据，具体操作方式如下：</span><br><span class="line">选中想要还原的流量包，右键选中，选择追踪流 – TCP流<span class="string">/UPD</span>流<span class="string">/SSL</span>流<span class="string">/HTTP</span>流。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119171802994.png" alt="image-20250119171802994"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119171827756.png" alt="image-20250119171827756"></p>
+<figure class="highlight clean"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">④数据提取</span><br><span class="line"><span class="number">1.</span>Wireshark支持提取通过http传输（上传/下载）的文件内容，方法如下：自动提取通过http传输的文件内容  文件-&gt;导出对象-&gt;HTTP</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119172311329.png" alt="image-20250119172311329"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119172449201.png" alt="image-20250119172449201"></p>
+<figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2</span>.手动提取通过<span class="selector-tag">http</span>传输的文件内容</span><br><span class="line">选中<span class="selector-tag">http</span>文件传输流量包，在分组详情中找到<span class="selector-tag">data</span>,<span class="selector-tag">Line</span><span class="selector-tag">-based</span> <span class="selector-tag">text</span>, <span class="selector-tag">JPEG</span> <span class="selector-tag">File</span> <span class="selector-tag">Interchange</span> <span class="selector-tag">Format</span>, <span class="selector-tag">data</span>:<span class="selector-tag">text</span>/<span class="selector-tag">html</span>层，鼠标右键点击 – 选中 导出分组字节流。我这里选择<span class="selector-tag">data</span>:<span class="selector-tag">text</span>/<span class="selector-tag">html</span>层,看着是<span class="selector-tag">html</span>文件,直接保存<span class="selector-tag">html</span>打开看看</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119173531898.png" alt="image-20250119173531898"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119173219507.png" alt="image-20250119173219507"></p>
+<h1 id="2-赛题"><a href="#2-赛题" class="headerlink" title="2.赛题"></a>2.赛题</h1><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">主要分为流量包修复、数据提取、WEB流量包分析、USB流量包分析、无线密码破解和工控流量包分析等等。</span><br></pre></td></tr></table></figure>
+
+<h2 id="1-题目：Cephalopod-图片提取"><a href="#1-题目：Cephalopod-图片提取" class="headerlink" title="1.题目：Cephalopod(图片提取)"></a>1.题目：Cephalopod(图片提取)</h2><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目来源：<span class="built_in">XCTF</span> <span class="number">3</span>rd-HITB <span class="built_in">CTF</span><span class="number">-2017</span></span><br><span class="line">考点：图片提取</span><br><span class="line">题目信息：(Cephalopod.pcapng)</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230114329.png" alt="img"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">数据包打开，分组字节流查询flag，发现出现了flag.png的字样，但是并没有这个图片文件，那肯定就是png呗,搜索字符串png不区分大小写</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119193910664.png" alt="image-20250119193910664"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119194621873.png" alt="image-20250119194621873"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这个包长度<span class="number">40610</span>大小也合适,追踪tcp流,获取上下完整的流量,然后显示为原始数据,另存为<span class="number">1</span><span class="selector-class">.png</span></span><br><span class="line">把前面无关数据删除掉</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119202312539.png" alt="image-20250119202312539"></p>
+<h2 id="2-题目：特殊后门-icmp协议信息传输"><a href="#2-题目：特殊后门-icmp协议信息传输" class="headerlink" title="2.题目：特殊后门(icmp协议信息传输)"></a>2.题目：特殊后门(icmp协议信息传输)</h2><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">题目来源：第七届山东省大学生网络安全技能大赛</span></span><br><span class="line"><span class="comment">考点：字符串搜索，icmp协议信息传输</span></span><br><span class="line"><span class="comment">题目信息：(backdoor</span><span class="literal">++</span><span class="string">.</span><span class="comment">pcap)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230114448.png" alt="20190804062347863"></p>
+<figure class="highlight sqf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">搜索<span class="built_in">flag</span>,发现从<span class="number">253</span>个包开始,一个包里面有<span class="built_in">flag</span>的一位,依次查看所有icmp包拼凑字符得到<span class="built_in">flag</span>&#123;Icmp_backdoor_can_transfer-some_infomation&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119202737085.png" alt="image-20250119202737085"></p>
+<h2 id="3-题目：手机热点-蓝牙传输协议obex-数据提取"><a href="#3-题目：手机热点-蓝牙传输协议obex-数据提取" class="headerlink" title="3.题目：手机热点(蓝牙传输协议obex,数据提取)"></a>3.题目：手机热点(蓝牙传输协议obex,数据提取)</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目来源：第七季极客大挑战</span><br><span class="line">考点：蓝牙传输协议obex,数据提取</span><br><span class="line">题目信息：<span class="comment">(Blatand_1.pcapng)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230114648.png" alt="img"></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这道题只要确定好是用蓝牙协议<span class="symbol">:obex</span> 过滤器直接搜协议</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119203346529.png" alt="image-20250119203346529"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">直接foremost分离吧</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119205309584.png" alt="image-20250119205309584"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//flag.gif" alt="flag"></p>
+<h2 id="4-题目：想蹭网先解开密码-无线密码破解"><a href="#4-题目：想蹭网先解开密码-无线密码破解" class="headerlink" title="4.题目：想蹭网先解开密码(无线密码破解)"></a>4.题目：想蹭网先解开密码(无线密码破解)</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目来源：bugku</span><br><span class="line">考点：无线密码破解</span><br><span class="line">题目信息：<span class="comment">(wifi.cap)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230114817.png" alt="img"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WIFI连接认证的重点在WPA的四次握手包，也就是eapol协议的包，过滤一下</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119205827304.png" alt="image-20250119205827304"></p>
+<figure class="highlight mel"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">四次握手包,意思就是有WiFi连接过程了,我们自己弄个WiFi密码的字典,然后用aircrack-ng爆破一下这个流量包</span><br><span class="line">crunch <span class="number">11</span> <span class="number">11</span> -t <span class="number">1</span>%%%%%%%%%% &gt;&gt; wifipass.txt</span><br><span class="line">aircrack-ng -w wifipass.txt wifi.cap</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119210033698.png" alt="image-20250119210033698"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">肯定是这个essid,输入3</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119210100852.png" alt="image-20250119210100852"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">flag</span>&#123;<span class="number">13910407686</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="5-题目：抓到一只苍蝇-数据包筛选-数据提取"><a href="#5-题目：抓到一只苍蝇-数据包筛选-数据提取" class="headerlink" title="5.题目：抓到一只苍蝇(数据包筛选,数据提取)"></a>5.题目：抓到一只苍蝇(数据包筛选,数据提取)</h2><figure class="highlight gcode"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">题目来源：bugku</span><br><span class="line">考点：数据包筛选,数据提取</span><br><span class="line">题目信息：<span class="comment">(misc_fly.pcapng)</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230114957.png" alt="img"></p>
+<figure class="highlight tcl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">抓到一只苍蝇---<span class="keyword">http</span> contains <span class="string">&quot;苍蝇&quot;</span>  过滤<span class="keyword">http</span>中有苍蝇的包,确实有一个包追一下<span class="keyword">http</span>流</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119211353965.png" alt="image-20250119211353965"></p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">这应该是发了一封邮件,应该是有附件,foremost一下没有发现有用信息</span><br><span class="line"><span class="keyword">http</span>.request.method==POST 过滤一下<span class="built_in">post</span>方法的<span class="keyword">http</span>包</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119214505505.png" alt="image-20250119214505505"><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119215502857.png" alt="image-20250119215502857"></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">后面那<span class="number">5</span>个包合一块就是fly<span class="selector-class">.rar</span>,挑出来这几个包,分别保存为<span class="selector-tag">a</span>,<span class="selector-tag">b</span>,c,d,e</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119215054431.png" alt="image-20250119215054431"></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">但是由于TCP包有文件头，我们需要去掉文件头才能将原始数据合成一个文件，</span><br><span class="line">文件大小是525701字节，我们需要的这5个数据包的大小(Media Type中可看到):</span><br><span class="line">131436<span class="number">*4</span>+<span class="attribute">1777</span>=527521</span><br><span class="line"><span class="attribute">527521-525701</span>=1820</span><br><span class="line">1820/<span class="attribute">5</span>=364</span><br><span class="line">tcp包的文件头就为364</span><br><span class="line">用dd依次把五个文件去掉文件头保存到另一文件</span><br><span class="line">dd <span class="attribute">if</span>=a <span class="attribute">bs</span>=1 <span class="attribute">skip</span>=364 <span class="attribute">of</span>=r1</span><br><span class="line"></span><br><span class="line">dd命令语法：</span><br><span class="line"><span class="keyword">if</span> 输入文件名</span><br><span class="line">bs 设置每次读写块的大小为1字节 </span><br><span class="line">skip 指定从输入文件开头跳过多少个块后再开始复制</span><br><span class="line">of 输出文件名</span><br><span class="line"></span><br><span class="line">cat r1 r2 r3 r4 r5 &gt; fly.rar</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119221658606.png" alt="image-20250119221658606"></p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">fly</span>.rar又被伪加密了,用<span class="number">010</span>打开<span class="number">74</span> <span class="number">84</span>改成<span class="number">74</span> <span class="number">80</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119222007052.png" alt="image-20250119222007052"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">解压打开txt里面是16进制数,直接拖入010</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119222555540.png" alt="image-20250119222555540"></p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">必须在<span class="number">32</span>位下运行,以及下方出现的PE,那么改成<span class="keyword">exe</span>文件</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119222718097.png" alt="image-20250119222718097"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">运行之后出现一堆蚊子,结束了就行</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119222824552.png" alt="image-20250119222824552"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foremost一下里面有二维码</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250119223843608.png" alt="image-20250119223843608"></p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">数据分析题</span><br><span class="line">题目一,二,三,四</span><br><span class="line">题目给了10个流量包，其中只有四个流量包能够分析出有用信息</span><br><span class="line">为了方便，分为题目一二三四对四个流量包进行了分析</span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//20201230115317.jpg" alt="img"></p>
+<h2 id="题目一-数据分析题-1-pcap"><a href="#题目一-数据分析题-1-pcap" class="headerlink" title="题目一(数据分析题&#x2F;1.pcap)"></a>题目一(数据分析题&#x2F;1.pcap)</h2><figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">题目要求：</span><br><span class="line"><span class="number">1</span>.黑客攻击的第一个受害主机的网卡<span class="built_in">IP</span>地址</span><br><span class="line"><span class="number">2</span>.黑客对URL的哪一个参数实施了SQL注入</span><br><span class="line"><span class="number">3</span>.第一个受害主机网站数据库的表前缀（加上下划线例如abc_）</span><br><span class="line"><span class="number">4</span>.第一个受害主机网站数据库的名字</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">流量包<span class="number">476</span> MB操作起来比较卡顿</span><br><span class="line">对攻击行为进行还原,应该首先是通过web服务也就是先查看http协议,第一个网卡就是<span class="number">192.168.1.8</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250120120226007.png" alt="image-20250120120226007"></p>
+<p><img src="/ctf-%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90//image-20250120120538185.png" alt="image-20250120120538185"></p>
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">这里发现有注入,注入点就是list[<span class="keyword">select</span>]</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>Do you believe in <strong>DESTINY</strong>?</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="../tags/%E5%AD%A6%E4%B9%A0/"># 学习</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="../vulnhub-easy-cloudantivirus/">Vulnhub-easy_cloudantivirus</a>
+            
+            
+            <a class="next" rel="next" href="../misc-msfconsole%E4%BD%BF%E7%94%A8/">Misc-msfconsole使用</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+
+    <div id="gitalk-container"></div>
+    
+<link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+<script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script src="//cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.js"></script>
+<div id="gitalk-container"></div>
+<script type="text/javascript">
+      var gitalk = new Gitalk({
+        clientID: 'Ov23liYIgvRGmOua7FRQ',
+        clientSecret: '3771339a3942e824992a8e506a5da60cdaa45391',
+        repo: 'comment',
+        owner: 'G00d-R',
+        admin: 'G00d-R',
+        id: md5(location.pathname),      
+        labels: 'Gitalk'.split(',').filter(l => l),
+        perPage: 100,
+        pagerDirection: 'last',
+        createIssueManually: true,
+        distractionFreeMode: false
+      })
+      gitalk.render('gitalk-container')
+</script>
+
+            </div>
+            <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© G00d
+            
+                <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+<span class="site-uv">
+    >总访客量:
+    <i class="busuanzi-value" id="busuanzi_value_site_uv"></i>
+</span>&nbsp;
+
+
+<span class="site-pv">
+    总访问量:
+    <i class="busuanzi-value" id="busuanzi_value_site_pv"></i>@
+</span>
+
+              
+              2022 - 2025
+
+            </span>
+    </div>
+</footer>
+
+    </div>
+</body>
+
+</html>
